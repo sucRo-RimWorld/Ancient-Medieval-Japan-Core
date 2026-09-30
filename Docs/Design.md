@@ -789,12 +789,33 @@ C#は、
 
 自作Defには統一プレフィックスを付ける。
 
+植物・原材料の英語表示名は、英語に一般的な名称が存在する場合はそれを優先する。
+
 例:
 
-- `AMJC_Plant_Awa`
-- `AMJC_Grain_Awa`
+- 粟 → `foxtail millet`
+- 稗 → `Japanese barnyard millet`
+- 黍 → `proso millet`
+- 大麦 → `barley`
+- 小麦 → `wheat`
+- 蕎麦 → `buckwheat`
+- 小豆 → `adzuki bean`
+- 大豆 → `soybean`
+- 荏胡麻 → `perilla`
+- 麻 → `hemp`
+
+ただし内部DefNameは、**英語名に日本語ローマ字も併記**し、開発者が日本語名から判別しやすくする。
+
+例:
+
+- `AMJC_Plant_FoxtailMillet_Awa`
+- `AMJC_Grain_FoxtailMillet_Awa`
+- `AMJC_Plant_JapaneseBarnyardMillet_Hie`
+- `AMJC_Plant_ProsoMillet_Kibi`
+- `AMJC_Plant_AdzukiBean_Azuki`
 - `AMJC_Category_Grain`
-- `AMJC_Recipe_MillBuckwheat`
+
+英語名が十分に定着している日本固有の料理・加工品は、必要に応じて `Miso`、`Natto`、`Sake` 等の名称を使用できる。
 
 実際のプレフィックスは実装開始時に確定する。
 
