@@ -129,6 +129,7 @@ CoreはDLCなしで成立させる。
 
 **任意互換候補:**
 - Food Drying
+- Famine Food
 - Dubs Bad Hygiene
 - Medieval Kingdoms: The Later Tang
 - RimImmortal系
@@ -521,6 +522,8 @@ v1以降にCore本体へ追加する候補。
 
 これらはCore側で重複PlantDefを追加せず、必要なら既存Defを共通カテゴリへ登録する。
 
+Famine Foodについては将来、採集・困窮食フェーズで任意互換を行う。Core側で同じ困窮食を再実装するのではなく、Famine Foodの既存Defを利用し、必要に応じてCoreの野生食料・採集・保存・料理カテゴリやレシピへ接続する。
+
 ### 別アドオン寄り
 
 - 発酵
@@ -563,6 +566,7 @@ v1以降にCore本体へ追加する候補。
 ### 優先度B
 
 - Dubs Bad Hygiene
+- Famine Food
 - Medieval Kingdoms: The Later Tang
 
 ### 優先度C
