@@ -838,6 +838,7 @@ Famine Foodについては将来、採集・困窮食フェーズで任意互換
 - RimImmortal / 仙路系
 - Edo Themed Expansion
 - MoeLotl
+- Yuran
 - VGP系
 - その他竹・紙・農業素材Mod
 
