@@ -753,7 +753,16 @@ MO側に存在しないため、AMJが所有する必要がある代表例:
 
 現行MO 1.6本体では、`DankPyon_Cereal` を製粉Recipe / Processの入力カテゴリとして使用している。MO本体実ファイル上、`DankPyon_CraftFlour_Manual`、`DankPyon_CraftFlour` / Bulk、Windmill / Watermillの製粉Processは `DankPyon_Cereal` を受け取り、**Flour + Hay** を出力する。
 
-一方、別Modの **Medieval Overhaul Patches（3015529451）** は「穀物を小麦粉へ加工した際、Strawを副産物にする」変更を明示的に持つ。したがって、MO本体の `Flour + Hay` と、MOPatches導入時の `Flour + Straw` は区別して扱う。MOPatches由来の変更をMO本体仕様として記述しない。
+別Modの **Medieval Overhaul Patches（3015529451）** は「穀物を小麦粉へ加工した際、Strawを副産物にする」変更を明示的に持つ。AMJでもこの変更を**Core側の標準仕様として取り込む**。
+
+AMJ Coreでは、MO本体の製粉経路を以下のようにPatchする。
+
+- `Flour + Hay` → **`Flour + Straw`**
+- 対象は手挽き、石臼、Windmill / Watermill等、MO本体の製粉Recipe / Process
+- Hayは「飼料」、Strawは「穀物加工の副産物・建築/生活素材」として役割を分離する
+- 稲作側でも `DankPyon_Straw` を使うため、小麦系と稲作系の副産物を同じStraw体系へ統一できる
+
+MOPatchesが導入済みの場合にStrawが二重追加されないよう、AMJのPatchは**現行出力がHayの場合だけStrawへ置換する条件付き処理**とする。すでにStraw化されている場合は何もしない。
 
 また、現行MO本体のAle wort Recipeも `DankPyon_Cereal` を入力に取るため、AMJ作物を「穀物だから」という理由だけでこのカテゴリへ登録すると、MOPatchesの有無にかかわらず**汎用Flourへの製粉やAle原料化**が発生する。
 
@@ -761,7 +770,7 @@ MO側に存在しないため、AMJが所有する必要がある代表例:
 - `DankPyon_Cereal` は「MO既存の製粉・醸造経路へ参加させたい穀物」に限って登録する
 - アワ・ヒエ・キビ・ソバ等を自動登録しない
 - 大麦を登録するかは、Generic Flour / Aleへの参加を意図するかを一次加工設計で決めてから判断する
-- MOPatchesを併用する場合は、製粉副産物がHayからStrawへ変わる差分も含めてAMJ側Recipeバランスを確認する
+- `DankPyon_Cereal` に登録した穀物は、AMJ標準では製粉時にStrawを副産物として得る
 - 「すべての穀物」をまとめるAMJ独自カテゴリは、Cuisine / Fermentation等で横断参照が実際に必要になった時点で追加する
 
 #### MO紙レシピと麻系繊維
