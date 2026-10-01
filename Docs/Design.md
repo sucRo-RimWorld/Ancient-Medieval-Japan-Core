@@ -1570,6 +1570,30 @@ AMJ追加作物の成長温度は以下を初期確定値とする。Vanilla/MO�
 
 「成長可能温度」は成長停止の境界として扱い、霜・低温による枯死耐性とは分けて考える。特に稲は現代の寒冷地向け品種を基準にせず、古代～中世の在来稲作を想定して低温適性を抑える。この理由は稲PlantDefのゲーム内説明文にも記載する。
 
+#### AMJ通常作物の研究段階・解禁条件確定方針
+
+作物の強弱だけを理由に後半研究へ送らず、日本での利用時期、栽培技術、後段加工、MO研究との接続から決める。普通の畑作物はなるべく早期から選べるようにし、特殊な栽培体系を研究ゲートの主対象とする。
+
+| AMJ作物 | MO併用時の栽培解禁 | 方針 |
+|---|---|---|
+| アワ | 初期 | 基本的な雑穀 |
+| ヒエ | 初期 | 基本的な雑穀 |
+| キビ | 初期 | 基本的な雑穀 |
+| ソバ | 初期 | 粗放・短期作物 |
+| 大根 | 初期 | 特殊な栽培技術を要求しない |
+| 小豆 | 初期 | 古くからの基本的な豆類 |
+| エゴマ | 初期 | 古い種実・油料作物 |
+| クズ（葛根用） | 初期 | 土地適性・長い栽培期間で差別化する |
+| 大麦 | MO `DankPyon_BasicAgriculture` | Stage Aで小麦と同時期の主穀選択肢にする |
+| 大豆 | MO `DankPyon_BasicAgriculture` | 初期豆より栽培価値・後続用途が広い |
+| 大麻（繊維用） | MO `DankPyon_BasicAgriculture` | 初期繊維だが完全な無研究解禁にはしない |
+| 里芋 | MO `DankPyon_BasicAgriculture` | 暖地・肥沃地で高収量になる作物 |
+| 稲 | Core側の水田稲作研究 | 水田・水管理という専用栽培体系と一体で解禁する |
+
+Core単体ではMOのResearchDefへ依存しない。大麦・大豆・大麻（繊維用）・里芋のPlantDefはCore単体で播種可能とし、**MO併用時だけ互換Patchで `DankPyon_BasicAgriculture` を播種前提へ追加する**。稲はMOの汎用的なAdvanced Agricultureへ置かず、Core自身の水田研究と接続する。
+
+MO 1.6の農業研究は、実ファイル上 `DankPyon_BasicAgriculture` がNeolithic / 300、`DankPyon_IntermediateAgriculture` がMedieval / 400（Basic前提）、`DankPyon_AdvancedAgriculture` がMedieval / 600（Intermediate前提）である。AMJはこの三段階を強さの序列としてそのまま流用せず、必要な範囲だけ既存研究へ接続する。
+
 樹木・多年生・再収穫型（`harvestAfterGrowth` 等）は、通常作物と同じ「播種から毎回やり直す」効率で比較すると歪むため**別枠で評価する**。
 
 別枠では、
