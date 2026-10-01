@@ -751,7 +751,7 @@ MO側に存在しないため、AMJが所有する必要がある代表例:
 
 #### `DankPyon_Cereal` は汎用穀物カテゴリとして使わない
 
-MOの `DankPyon_Cereal` は表示上はgrainsだが、実装上は**小麦加工のスイッチを兼ねている**。
+MOの `DankPyon_Cereal` は表示上はgrainsだが、現行MO 1.6では実装上**小麦加工のスイッチも兼ねている**。この「穀物カテゴリを製粉へ接続し、Flour + Hayを出す」系統は旧 `Medieval Overhaul Patches` にも見られ、現行1.6では同趣旨の仕様がMO本体Def側へ取り込まれているため、AMJは別Patchの存在を前提にせず現行MO仕様として扱う。
 
 このカテゴリを原料に取る既存処理:
 - `DankPyon_CraftFlour_Manual`
