@@ -260,12 +260,12 @@ Coreと別Modの境界は、追加要素の「量」ではなく、**他の機�
 - **低肥沃度でも耕作可能な基礎農地Terrain**
 - 野生の基礎食料資源
 - 共通Ingredient/ThingCategory
-- 製粉・焙煎などの一次加工
-- 最低限の水資源基盤
+- 製粉・焙煎などの一次加工（MO既存設備・Recipeを優先利用）
+- 稲作に必要な水田・灌漑等の**水管理機能**。汎用の水アイテム・井戸はMO既存資産を使う
 - 稲・水田・稲から米を得る一次加工（史実上の脱穀・籾摺り等は抽象化し、多数の後続機能の土台になるため将来Core候補）
 - 大麻・カラムシ（苧麻）等の基礎繊維資源と、後続機能が参照できる共通繊維カテゴリ
 - 他Modとの互換パッチ
-- MO既存の紙レシピ等を、AMJの基礎繊維資源へ接続する互換・バランスPatch
+- MO既存の紙レシピ等を、AMJの基礎繊維資源へ接続する統合・バランスPatch
 
 #### 別Modに分ける基準
 
@@ -295,7 +295,9 @@ Core外であっても、多くの日本側要素から利用され、Coreと密
 
 位置づけ:
 - Coreを必須または強く前提とする
-- Coreの作物・魚肉・塩カテゴリなどを利用し、主に塩そのものによる保存加工を追加する
+- 塩そのものはMO既存の `DankPyon_Salt` を正本として直接利用し、AMJ独自のSalt ThingDefは作らない
+- Coreの作物・魚肉とMO塩を利用し、主に塩そのものによる保存加工を追加する
+- 海水製塩等を実装する場合も、最終出力は `DankPyon_Salt` とする
 - 塩漬け・塩蔵など、発酵を主目的としない保存処理を担当する
 - Core本体を肥大化させず、導入時には自然に一体化して見える
 - 後続Addonが必要に応じて素材カテゴリや設備を利用できる
@@ -717,6 +719,54 @@ AMJ側で新規Def/カテゴリを持つ主な対象:
 > **MOにある基盤はMOを使い、AMJは差分だけ所有する。**  
 > AMJ独自カテゴリは「将来使うかもしれない」だけでは作らず、複数のAMJ機能・Addonから参照する具体的な必要が生じた時点で追加する。
 
+### 6.7 MO 1.6基盤資産の所有監査
+
+MO 1.6実ファイル（Workshop 3219596926）を基準に、AMJが自前実装しない基盤を以下のように固定する。
+
+| 分野 | MO側の正本 | AMJ側の扱い |
+|---|---|---|
+| 小麦 | `DankPyon_Plant_Wheat` / `DankPyon_RawWheat` | 新規小麦Defを作らず、必要な農業数値だけPatch |
+| 小麦粉 | `DankPyon_Flour` | AMJ Flourを作らない |
+| 製粉設備 | `DankPyon_Millstone`、CraftingSpot手挽き、Windmill / Watermill系Process | 既存経路を直接利用 |
+| 藁 | `DankPyon_Straw` | 稲等から出る藁もこれへ統合し、Rice Strawを作らない |
+| 亜麻原料 | `DankPyon_RawFlax` | MO亜麻はそのまま使用 |
+| リネン | `DankPyon_Linen` | MO既存布として維持 |
+| 紡績設備・研究 | `DankPyon_SpinningWheel` / `DankPyon_TextileSpinning` | 大麻・カラムシも設備・作業体系を再利用し、AMJ紡績台を作らない |
+| 塩 | `DankPyon_Salt` | AMJ独自Salt ThingDefを作らない。塩蔵・海水製塩の最終出力もMO塩 |
+| 粘土 | `DankPyon_Clay` | Architecture / Materialsで直接利用し、AMJ Clayを作らない |
+| 紙 | `DankPyon_Paper` | AMJ Paperを原則作らない |
+| 紙パルプ | `DankPyon_Mixture_Paper` | 木材入力を靭皮繊維へPatchして再利用 |
+| 製紙設備・研究 | `DankPyon_Press_Paper` / `DankPyon_Presser` / `DankPyon_Workbench` | 新規の基礎製紙設備をCoreに作らない |
+| 携帯水 | `DankPyon_Waterskin` | Recipe等でアイテム化した水が必要なら直接利用 |
+| 汲水設備 | `DankPyon_Well` / `DankPyon_WaterSpot` | 汎用井戸・汲水設備をAMJで複製しない |
+| 農業研究 | `DankPyon_BasicAgriculture` / `DankPyon_IntermediateAgriculture` / `DankPyon_AdvancedAgriculture` / `DankPyon_PlowedSoil` | 日本側作物を必要な位置へ直接接続・Patch |
+| 基礎料理研究・設備 | MOのCooking研究、Campfire / Stove / Grill / StewPot / Oven等 | Cuisine Addonでもまず既存設備へのRecipe追加を検討 |
+
+MO側に存在しないため、AMJが所有する必要がある代表例:
+- アワ・ヒエ・キビ・ソバ・大麦・小豆・大豆・エゴマ・里芋・大根・クズ・大麻・カラムシ・稲等のPlantDef / 収穫物
+- 低肥沃度耕作TerrainとHilliness連動生成
+- 水田・稲作固有の水管理
+- 稲・米・稲架掛けした稲等の稲作固有Def
+- 日本固有用途に必要なRecipe / Addon側の料理・加工差分
+
+#### `DankPyon_Cereal` は汎用穀物カテゴリとして使わない
+
+MOの `DankPyon_Cereal` は表示上はgrainsだが、実装上は**小麦加工のスイッチを兼ねている**。
+
+このカテゴリを原料に取る既存処理:
+- `DankPyon_CraftFlour_Manual`
+- `DankPyon_CraftFlour` / Bulk
+- Windmill / Watermillの製粉Process
+- Ale wort生成
+
+したがってAMJ作物を「穀物だから」という理由だけで `DankPyon_Cereal` へ登録すると、意図せず**汎用Flour + Hayへの製粉やAle原料化**が発生する。
+
+方針:
+- `DankPyon_Cereal` は「MO既存の製粉・醸造経路へ参加させたい穀物」に限って登録する
+- アワ・ヒエ・キビ・ソバ等を自動登録しない
+- 大麦を登録するかは、Generic Flour / Aleへの参加を意図するかを一次加工設計で決めてから判断する
+- 「すべての穀物」をまとめるAMJ独自カテゴリは、Cuisine / Fermentation等で横断参照が実際に必要になった時点で追加する
+
 #### MO紙レシピと麻系繊維
 
 MO 1.6既存仕様では紙の原料に木材を直接使う経路があるが、Core環境では**木材ルートを代替経路として残さず、麻系繊維を主要原料へ置き換える**方向とする。
@@ -921,7 +971,7 @@ v1以降にCore本体へ追加する候補。
 4. 大麻・カラムシ（苧麻）など日本側の繊維資源（栽培方式は分け、加工後は共通の靭皮繊維カテゴリへ接続）
 5. 里芋
 6. 大根
-7. 水資源の最低限システム
+7. 水田・灌漑に必要な水管理（汎用水アイテム・井戸はMOを再利用）
 8. 米・水田
 9. 脱穀・精米
 10. 稲藁
@@ -931,8 +981,7 @@ v1以降にCore本体へ追加する候補。
 - 胡麻（荏胡麻との差別化が成立する場合のみ）
 - その他油料作物
 - 葛（Coreでは葛根を薬草として実装。食品・澱粉・繊維用途はAddon側）
-- 塩資源・塩カテゴリの互換基盤
-- 海水採取
+- 海水採取（実装する場合の出力はMO `DankPyon_Salt`）
 - DBH水源互換
 
 ### Coreに入れない / 保留した農作物・植物
@@ -1857,8 +1906,9 @@ Core内の実装順は、**Coreに含めるかどうかの判断とは別に**�
   - カラムシは多年生として、定着後の再収穫を前提とする多年生植物側で調整し、Coreでは**繊維作物として一本化**する
   - カラムシは大麻のような採種用PlantDefを初期実装せず、食用・薬用等の別用途は、史実根拠とゲーム上の独立した役割が両方成立した場合のみ後続Addonで再検討する
   - **Coreでの収穫・一次加工の抽象度はMOの亜麻に揃える**。大麻・カラムシだけに浸水・剥皮・乾燥等の追加中間工程を要求せず、収穫時点で紡績等へ渡せる生繊維原料を直接得る
-  - 大麻原料・カラムシ原料・MOの亜麻原料は、下流互換用の共通靭皮繊維カテゴリへ接続し、布・縄・紙等のレシピを不必要に分裂させない
-  - 繊維を取り出すためだけの専用研究はCoreでは追加せず、その先の紡績・布化はMO既存体系へ接続する
+  - 紡績はMO `DankPyon_SpinningWheel` / `DankPyon_TextileSpinning` を直接利用し、AMJ独自の紡績設備・基礎研究を作らない
+  - 大麻原料・カラムシ原料・MOの亜麻原料は、下流用途の共通化が必要な範囲で靭皮繊維カテゴリへ接続し、布・縄・紙等のレシピを不必要に分裂させない
+  - 大麻・カラムシから最終的にMO `DankPyon_Linen` を作るか、AMJ固有布Defを作るかは、衣料性能・表示上の意味が固まるまで保留する
 - 里芋
   - 暖地・保水性のある土地・肥沃地で高い性能を出す
   - じゃがいもの痩せ地適性と差別化
@@ -1895,7 +1945,8 @@ Core内の実装順は、**Coreに含めるかどうかの判断とは別に**�
 
 Core内で最も大きな拡張段階。
 
-- 最低限の水資源基盤
+- MO既存の `DankPyon_Waterskin` / `DankPyon_Well` / `DankPyon_WaterSpot` は汎用水資源としてそのまま利用し、AMJ側で複製しない
+- AMJ側では**水田・灌漑に必要な水管理だけ**追加する
 - DBH任意互換
 - 水田
 - 稲
@@ -1947,9 +1998,9 @@ Addon群はCore v1完成を待たず、依存する基礎資源が安定した�
 - Architecture / Materials
 - Sake / Morohaku expansion
 
-Architecture / Materialsでは、土壁の基本レシピ候補を `Clay + Straw` とし、専用Soil素材は原則追加しない。
+Architecture / Materialsでは、土壁の基本レシピ候補を **MO `DankPyon_Clay` + `DankPyon_Straw`** とし、AMJ独自Clayや専用Soil素材は原則追加しない。
 
-紙関連では、**和紙系素材・障子等を追加してMO単体より紙の用途を増やす**方向とする。Core側の大麻・カラムシ由来繊維を原料基盤として利用し、和紙をMO既存Paperと同一ThingDefで扱うか別DefにするかはArchitecture / Materials詳細設計時に決める。大麻はCoreでは繊維用栽培から紙へ接続し、採種用大麻を追加する場合も紙原料は原則として繊維用系統から得る。**MO既存の亜麻も将来の製紙原料候補に含め、主用途はリネン系繊維、副用途として紙へ接続する方向で詳細設計時に再確認する。**
+紙関連では、**和紙系用途・障子等を追加してMO単体より紙の用途を増やす**方向とする。紙そのものはまずMO `DankPyon_Paper` を正本として利用し、別ThingDefの「和紙」は独立したゲーム性能・用途差が必要になった場合だけ追加する。Core側の大麻・カラムシ由来繊維を原料基盤として利用する。大麻はCoreでは繊維用栽培から紙へ接続し、採種用大麻を追加する場合も紙原料は原則として繊維用系統から得る。**MO既存の亜麻も将来の製紙原料候補に含め、主用途はリネン系繊維、副用途として紙へ接続する方向で詳細設計時に再確認する。**
 
 ---
 
