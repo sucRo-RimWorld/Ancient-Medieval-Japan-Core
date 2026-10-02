@@ -235,18 +235,19 @@ CoreはDLCなしで成立させる。
 
 ### 2.8 依存・基準環境
 
-現行のAMJ Coreでは、Medieval Overhaul（MO）を**必須Mod**とする。
+Medieval Overhaul（MO）は、AMJ Coreの**必須Mod**とする。
 
-ただし将来の **AMJ Japan Only** 完成後は、下流のAMJ Modから見た基盤依存を **「MO または Japan Only」** とする方向へ移行する。Japan OnlyはMOに追加するAddonではなく、**MOの代わりに導入できる日本向け基盤**を目標とする。
+AMJ側のPlantDef・ThingDef・C#等が技術的にMOのDefを直接参照しない箇所があっても、配布上は依存関係を明示し、MOなし環境はサポート・テスト対象にしない。
 
-Japan Only完成前は引き続きMO環境のみをサポート・テスト対象とする。完成後の依存メタデータ上のOR表現・ロード順・互換Defの提供方法は、RimWorld 1.6の実仕様と配布条件を確認して実装時に確定する。
+将来の **AMJ Japan Only** もMOを必須前提とする。Japan OnlyはMOの代替実装ではなく、**MOを残したまま西洋・非日本的なMO要素を除去・置換する日本化レイヤー**とする。
 
 方針:
-- Japan Only完成前は、`About.xml` の必須依存に **Medieval Overhaul（packageId: `DankPyon.Medieval.Overhaul`）** を登録する
-- Japan Only完成後は、Coreから見た基盤依存を **MO / Japan Only の代替関係**として扱う
-- 通常MO環境ではCoreはMOより後に読み込む。Japan Only環境ではJapan Onlyを基盤としてCoreをその後に読み込む
+- `About.xml` の必須依存に **Medieval Overhaul（packageId: `DankPyon.Medieval.Overhaul`）** を登録する
+- CoreはMOより後に読み込む
+- Japan Only併用時の基本ロード順は **MO → Japan Only → AMJ Core / 各AMJ Mod** とする
 - 作物・研究・加工・素材・料理接続・バランスは常にCore + MOを基準にする
-- **Vanilla/MO由来の西欧文化要素はAMJと共存させる。日本文化へ統一するためだけに削除・非表示・置換しない**
+- **Vanilla/MO由来の西欧文化要素は通常AMJ環境では共存させる。日本文化へ統一するためだけにCoreから削除・非表示・置換しない**
+- 完全日本化したい場合のみJapan Onlyを追加し、Japan Only側でMO由来の不要要素を整理する
 - 共存させることと、数値・研究・加工バランスを無調整で残すことは別問題とする
 - **MOの農業・食料・一次加工・関連研究は、AMJ側の基準と整合するよう必要に応じてリバランスする**
 - MO既存設備・素材・Defを再利用できる箇所では、Vanilla単体用のフォールバックDefを作らない
@@ -271,9 +272,9 @@ AMJ Coreは「単体ModにMO互換を足す」のではなく、**MOを基盤と
 - MO固有参照・Patchはできるだけ専用ファイル/ディレクトリへまとめ、MO更新時の監査範囲を追いやすくする
 - Food Drying、DBH、Edo等の**任意Modだけ**存在確認付きPatchを使う
 
-依存先の将来については先回りして一般化しない。ただしJapan Onlyは例外で、**MOから西洋・非日本的要素を除いた代替基盤**として意図的に設計する。MOのDef・コード・アセットをどこまで再利用・再実装できるかは、配布条件・権利関係・技術的依存を確認して実装方法を決める。現時点では「Japan Onlyを導入すればMOを別途導入しなくても、下流AMJ Modが必要とする基盤機能を満たす」ことを設計目標とする。
+Japan OnlyでもMO本体を残すため、外部Modが `DankPyon.Medieval.Overhaul` のpackageIdやMO DefNameを検出して適用する**既存MO互換パッチを可能な限りそのまま生かす**。ただしJapan Onlyが対象Defを無効化・置換した場合は個別互換が必要になるため、主要なMO対応ModはJapan Onlyの互換監査対象とする。
 
-以降、本設計書で「Core環境」と書く場合、Japan Only完成前は **RimWorld本体 + Medieval Overhaul + AMJ Core** を指す。Japan Only完成後は **RimWorld本体 + Japan Only + AMJ Core** も同等の基盤環境として扱う。
+以降、本設計書で「Core環境」と書く場合は、特記しない限り **RimWorld本体 + Medieval Overhaul + AMJ Core** を指す。Japan Onlyはこの基盤へ追加する任意の完全日本化レイヤーである。
 
 **任意互換候補:**
 - Food Drying
@@ -517,25 +518,23 @@ AMJ Factionsの役割は「Eventsを動かすための必須ライブラリ」�
 
 AMJ EventsはAMJ Factionsを必須にせず、対応する外部和風Faction、Vanilla/MO派閥、AMJ Factionsのいずれからでも、条件を満たす対象を取得できる疎結合構造を優先する。
 
-#### AMJ Japan Only / MO代替基盤Mod
+#### AMJ Japan Only / MO日本化レイヤー
 
-**Japan Onlyは、MOを前提にしたAMJ環境から西洋・非日本的なMO要素を取り除き、日本向けの基盤として置き換えるMod**とする。
+**Japan OnlyはMedieval Overhaulを必須前提とし、MO由来の西洋・非日本的要素を除去・置換して、完全な古代～中世日本環境へ寄せる変換レイヤー**とする。
 
-重要なのは、Japan Onlyを「AMJ全Modを束ねる統合パック」にしないことである。Factions、Events、Backgrounds、Environment、Ironworking等はそれぞれ独立Modのままとし、Japan Onlyの責務には含めない。
+Japan Only自身がMOの機能を再実装したり、AMJ全Modを束ねたりすることは目的にしない。**MOは技術基盤としてそのまま残し、Japan OnlyはMOの内容を日本向けに絞ることだけを担当する。**
 
-依存関係上の目標:
-- 通常環境: `RimWorld + MO + AMJ各Mod`
-- Japan Only環境: `RimWorld + Japan Only + AMJ各Mod`
-- 下流AMJ Modから見れば、**MOとJapan Onlyは基盤依存の代替候補**となる
-- **Japan Only自身はMOを必須依存にしない**ことを設計目標とする
-- Japan Onlyは、下流AMJ ModがMO環境で利用していた必要な基盤機能・Def・設備・カテゴリ等を、互換性を保てる形で提供する
-- 実際にMO由来コード・Def・アセットを再利用できる範囲は配布条件・権利関係を確認し、必要なら許諾、独自再実装、互換Def等の方法を選ぶ
+基本構成:
+- 通常AMJ: `RimWorld + MO + AMJ各Mod`
+- 完全日本化: `RimWorld + MO + Japan Only + AMJ各Mod`
+- Japan OnlyはMOを必須依存とし、MOより後、Japan Only対応のAMJ各Modより前に読み込む
+- MO本体を残すことで、外部ModのMO packageId判定・MO Def参照・既存MO互換Patchを可能な限り維持する
 
 責務:
-- MO由来の西洋的な作物・建築・衣服・装備・研究・派閥等のうち、日本のみの環境に不要なものを除去・置換する
-- MOの基礎機能のうち、日本側でも必要なものは維持するか、互換性のある日本側実装へ置き換える
+- MO由来の西洋的な作物・建築・衣服・装備・研究・派閥等のうち、日本のみの環境に不要なものを無効化・非表示・日本側要素へ置換する
+- MOの基礎機能・Framework接続・カテゴリ・設備等、日本側でも必要な部分はそのまま利用する
 - Mithril等、日本のみの歴史環境では扱わないMO固有の幻想的・西洋的進行経路を通常進行から外す
-- 西洋要素を外した結果、基盤として必要な機能が欠けないようにする
+- MO要素を除去する際、外部のMO互換Modが参照するDefやRecipeを不用意に壊さない。必要に応じて互換Patchを用意する
 
 責務に含めないもの:
 - 鉄資源量・砂鉄分布・製鉄地域等の設計 → Japanese Ironworking / Metallurgy
@@ -546,7 +545,7 @@ AMJ EventsはAMJ Factionsを必須にせず、対応する外部和風Faction、
 - 一般生活者の衣服追加 → AMJ Clothing
 - 発酵・酒造・漁業・保存等の独立ゲームループ
 
-Japan Onlyの開発は、MOを除去しても必要機能を日本側で代替できる段階まで各関連Modが成熟してから行う。そのため**開発順としては最終段階に近いが、責務は「AMJ全体の統合」ではなく「MOを日本向け基盤へ置き換えること」に限定する。**
+Japan Onlyの開発は、除去対象となるMO要素に日本側の代替が揃ってから進める。そのため開発順としては後期になるが、**責務は一貫して「MOの日本化」に限定する。**
 
 ### 2.10 MOの技術段階を日本史へそのまま適用しない
 
@@ -608,9 +607,9 @@ Vanilla/MOの西欧文化要素そのものは残すが、**AMJが扱う農業�
 
 ## 3. Core本体（AMJ Addonなし）の位置づけ
 
-ここでいう「Core」はAMJ Mod群の共通基盤を意味する。現行はMOを基盤として動作し、将来Japan Only完成後は **MOまたはJapan Onlyのどちらかを基盤**として動作する構成を目標とする。
+ここでいう「Core」はAMJ Mod群の共通基盤を意味し、MOなしで独立動作するという意味ではない。
 
-AMJのAddonを導入しないCore環境でも、古代日本を中心に、中世まで連続する農作物・農業基盤Modとして成立させる。
+AMJのAddonを導入しない **Core環境（RimWorld + MO + AMJ Core）**でも、古代日本を中心に、中世まで連続する農作物・農業基盤Modとして成立させる。Japan Onlyは必要な場合だけMOとCoreの間に追加する日本化レイヤーである。
 
 各資源はCore内では原則1つの主用途だけを持ち、多用途化はAddon側で行う。
 
@@ -1338,7 +1337,7 @@ Famine Foodについては将来、採集・困窮食フェーズで任意互換
 - AMJ Backgrounds / 背景
 - AMJ Factions / 派閥
 - AMJ Events / 生活・社会イベント
-- AMJ Japan Only / MO代替・完全日本化基盤
+- AMJ Japan Only / MO日本化・完全日本化レイヤー
 - Hunting & Gathering / 狩猟採集
 - 発酵
 - 酒造
@@ -1377,7 +1376,7 @@ Famine Foodについては将来、採集・困窮食フェーズで任意互換
 
 たたら製鉄は**全国一律の標準村落技術としては採用しない**。中世の砂鉄製鉄自体は実装候補に残すが、地域性・時代差を確認し、砂鉄等の条件が成立する地域でのみ利用できる生産ルートとして検討する。
 
-Japan OnlyはこのModの有無や設定値を決める側ではない。**金属系モジュールが鉄経済を担当し、Japan OnlyはMO代替基盤として不要なMithril等のMO側経路を除去・置換する**。
+Japan OnlyはこのModの有無や設定値を決める側ではない。**金属系モジュールが鉄経済を担当し、Japan OnlyはMO日本化レイヤーとして不要なMithril等のMO側経路を除去・置換する**。
 ---
 
 ## 10. 推奨バイオーム
