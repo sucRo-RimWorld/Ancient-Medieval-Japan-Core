@@ -643,6 +643,8 @@ Core自身は鉄鉱床・砂鉄等の**供給量や生成分布を変更しな�
 
 このため、修理・再利用システムはAMJ Coreから分離し、**RimWorld本体のみを必須とする独立Mod**として設計する。Medieval Overhaul（MO）、AMJ Core、Japanese Iron Resources等はいずれも必須にせず、互換・統合対象とする。
 
+**開発時期は後回しにする。** AMJ Core、Japanese Iron Resources、およびAMJの主要な生活・資源ループを先に完成・調整し、**Repair & Reuseが存在しなくてもAMJの資源管理が成立することを確認してから**独立開発へ移る。Repair & Reuseの完成をCore公開やAMJ基本バランス確定の前提にはしない。
+
 規模上は単なるレシピ追加Modではなく、**Repair Class、修理結果状態、素材回収、専用管理UI、収納中アイテムの指定、描画上の補修表現、他Mod装備への分類拡張**を持つ独立システムModとして扱う。
 
 #### 基本責務
@@ -737,7 +739,7 @@ RimWorldの既存 `Beauty` は着用中の衣服の見栄えを直接表す仕�
 互換方針:
 - **Vanilla対応を本体の最低保証**とする
 - MOは主要互換対象とし、MO既存のRepair Tools・設備・研究を重複させず統合する
-- AMJでは**強く推奨する任意併用Mod**とし、日本側装備へ適切なRepair Classを割り当てる
+- AMJでは**強く推奨する任意併用Mod**とし、日本側装備へ適切なRepair Classを割り当てる。ただし公開時期はAMJ Coreより後でよい
 - ただしAMJ側のレシピ・資源量・研究進行はRepair & Reuse未導入でも成立させ、同Modの回収量を基準供給として計算しない
 - Japanese Iron Resourcesと併用した場合は、鉄供給が限られる地域ほど修理・再利用の価値が自然に高まるが、必須依存は設けない
 - Japanese Iron Resources側の鉄・砂鉄供給量も、Repair & ReuseなしでAMJの基本進行が成立する範囲に調整する
