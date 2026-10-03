@@ -3,8 +3,8 @@
 
   <!--
     Stage A vertical slice 1: Awa / foxtail millet.
-    Graphics are temporary Medieval Overhaul wheat placeholders and must be
-    replaced only after the cultivation/balance pass is verified in game.
+    Mature and immature AMJ plant graphics are production candidates pending
+    the final in-game size/readability check.
   -->
   <ThingDef ParentName="PlantBase">
     <defName>AMJC_Plant_FoxtailMillet_Awa</defName>
@@ -42,8 +42,7 @@
       <minOptimalGrowthTemperature>18</minOptimalGrowthTemperature>
       <maxOptimalGrowthTemperature>32</maxOptimalGrowthTemperature>
       <visualSizeRange>0.5~1.0</visualSizeRange>
-      <!-- TEMP: Medieval Overhaul wheat graphic. -->
-      <immatureGraphicPath>Things/Plants/Immature/WheatPlant</immatureGraphicPath>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Awa</immatureGraphicPath>
       <wildOrder>2</wildOrder>
       <purpose>Food</purpose>
       <sowMinSkill>0</sowMinSkill>

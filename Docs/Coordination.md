@@ -60,39 +60,6 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
-### AMJ-005 — Shared millet post-harvest graphics
-
-**Requested by:** Agriculture/XML  \
-**Owner:** Art/graphics  \
-**Status:** OPEN
-
-Awa, Hie, and Kibi intentionally merge after harvest into the shared chain:
-`AMJC_RawMillet` → `AMJC_MilletInHull` → `AMJC_Millet`.
-
-These three ThingDefs still use temporary MO item graphics. Because they are shared by all three millet crops, their final art should be produced once as part of the shared millet chain rather than separately for each crop.
-
-The same locked AMJ art rules apply, with item icons flatter than plant art and with fewer/shallow shadows than the accepted plant asset.
-
-**Next action:** after the dedicated immature Awa image is accepted, create and verify final textures for raw millet, millet in hull, and edible millet. Check them at normal map/UI scale before moving on to Hie/Kibi.
-
-**Result / references:** shared processing implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; art-style baseline `2d4accb0c56bff6b81497a325877d5a5dc7d7710`.
-
-Add new items using the following form.
-
-### AMJ-XXX — Short title
-
-**Requested by:** <workstream/chat/repository>  
-**Owner:** <workstream>  
-**Status:** OPEN
-
-Context, constraints, and exact question/request.
-
-**Next action:** concrete next step.
-
-**Result / references:** add commit SHA, PR, design section, or other durable reference when available.
-
-## Completed handoffs
-
 ### AMJ-004 — Awa plant graphics
 
 **Requested by:** Agriculture/XML  \
@@ -118,13 +85,46 @@ A second in-game test showed mature plants still rendering as red question marks
 
 The actual image bytes were also audited. The PNG blob previously committed to GitHub did not match the approved local export, so the repository texture has been replaced with a freshly encoded 256×256 palette PNG generated from the approved flat Awa asset. CI/local validation now checks the PNG signature and 256×256 IHDR dimensions in addition to the MO-style `Graphic_Random` wiring. The immature stage remains the MO wheat placeholder by design.
 
-Final in-game comparison was completed beside MO wheat. The mature Awa texture renders correctly on the map and is visually acceptable as-is. It is somewhat crisper and higher-contrast than MO wheat because its outline is darker, while MO wheat uses a warmer brown outline; however, the difference remains within the accepted AMJ/MO visual envelope and also helps crop identification. No further outline/color adjustment will be made at this stage to avoid degrading the accepted asset through unnecessary iteration.
+The first mature-art comparison beside MO wheat was acceptable, but a final refinement was requested before locking it: preserve the accepted mature silhouette, reduce its on-canvas size to roughly 90%, and shift the outline from near-black toward the warmer yellow-brown/ochre family seen in MO wheat. That revised mature texture is now wired in.
 
-The mature Awa texture is accepted and remains the production asset. However, closing the plant-art slice at the mature state alone was premature: the Awa PlantDef still displays MO wheat as its immature graphic. The dedicated immature Awa texture must be created and checked in game before this plant-art slice is DONE.
+A dedicated immature Awa texture has also been added. It uses the same warm outline/palette family and is deliberately much smaller than the mature silhouette. The PlantDef now points `immatureGraphicPath` to `Things/Plants/Immature/AMJC_Awa`; the MO wheat placeholder is removed.
 
-**Next action:** create a dedicated immature Awa texture in the locked AMJ/MO-flat style, wire it to `immatureGraphicPath`, and perform one normal-zoom comparison with the accepted mature Awa and MO crops.
+**Next action:** pull latest `main`, restart RimWorld, and compare immature + mature Awa beside MO wheat at normal zoom. If both size/readability and the warmer outline look acceptable in game, mark AMJ-004 DONE.
 
 **Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`; mature Awa art `d515cb304531ae01debf1c6cd2ab859f9675fdf9`; texture-loading correction `b7813c846f5d3bb2c4ede99a53ca001336f77409`; final in-game visual comparison accepted on 2026-10-03.
+
+### AMJ-005 — Shared millet post-harvest graphics
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Art/graphics  \
+**Status:** OPEN
+
+Awa, Hie, and Kibi intentionally merge after harvest into the shared chain:
+`AMJC_RawMillet` → `AMJC_MilletInHull` → `AMJC_Millet`.
+
+These three ThingDefs still use temporary MO item graphics. Because they are shared by all three millet crops, their final art should be produced once as part of the shared millet chain rather than separately for each crop.
+
+The same locked AMJ art rules apply, with item icons flatter than plant art and with fewer/shallow shadows than the accepted plant asset.
+
+**Next action:** after AMJ-004's revised mature/immature pair passes the in-game check, use the already approved 2026-10-03 post-harvest artwork as the source for raw millet, millet in hull, and edible millet. Do not regenerate those three unless the in-game check exposes a concrete problem.
+
+**Result / references:** shared processing implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; art-style baseline `2d4accb0c56bff6b81497a325877d5a5dc7d7710`.
+
+Add new items using the following form.
+
+### AMJ-XXX — Short title
+
+**Requested by:** <workstream/chat/repository>  
+**Owner:** <workstream>  
+**Status:** OPEN
+
+Context, constraints, and exact question/request.
+
+**Next action:** concrete next step.
+
+**Result / references:** add commit SHA, PR, design section, or other durable reference when available.
+
+## Completed handoffs
 
 ### AMJ-003 — Shared millet threshing and hulling
 

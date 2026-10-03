@@ -50,6 +50,13 @@ png = awa_texture.read_bytes()
 assert png[:8] == b"\x89PNG\r\n\x1a\n"
 assert int.from_bytes(png[16:20], "big") == 256
 assert int.from_bytes(png[20:24], "big") == 256
+assert text(awa, "plant/immatureGraphicPath") == "Things/Plants/Immature/AMJC_Awa"
+awa_immature_texture = ROOT / "Textures/Things/Plants/Immature/AMJC_Awa/AMJC_Awa_Immature.png"
+assert awa_immature_texture.is_file()
+png = awa_immature_texture.read_bytes()
+assert png[:8] == b"\x89PNG\r\n\x1a\n"
+assert int.from_bytes(png[16:20], "big") == 256
+assert int.from_bytes(png[20:24], "big") == 256
 
 raw = find_def(items, "ThingDef", "AMJC_RawMillet")
 in_hull = find_def(items, "ThingDef", "AMJC_MilletInHull")

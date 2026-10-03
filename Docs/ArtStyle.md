@@ -22,9 +22,12 @@ Reference characteristics observed in MO wheat and leather/hide:
 
 The approved Awa direction uses a small number of large foxtail heads, broad leaves, a muted olive-green body, warm yellow-gold grain heads, and one common dark outline. Individual millet grains are **not** drawn on the plant.
 
-The canonical repository texture for this first accepted plant asset is:
+The canonical repository textures for this first accepted plant asset are:
 
 - `Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png`
+- `Textures/Things/Plants/Immature/AMJC_Awa/AMJC_Awa_Immature.png`
+
+The mature Awa production candidate preserves the accepted silhouette, is reduced to roughly 90% of the previous on-canvas size, and uses a warmer yellow-brown/ochre outline to sit closer to MO wheat. The immature asset uses the same outline/palette family at a clearly smaller silhouette.
 
 Use it together with the MO reference textures when calibrating future AMJ plant art.
 
@@ -34,7 +37,7 @@ Treat these as upper limits, not targets to fill.
 
 ### Plants
 
-- 1 common dark outline color;
+- 1 common warm brown / ochre-brown outline color;
 - foliage: normally 2 flat colors (base + one secondary plane);
 - flower/grain/fruit: normally 1–2 flat colors;
 - total visible fill colors: ideally 3–4, maximum 5 when required for identification;
@@ -76,14 +79,14 @@ The approved mature Awa silhouette is the style anchor:
 - a small number of broad leaves;
 - no leaf veins;
 - no botanical micro-detail;
-- warm gold heads + muted olive foliage + dark outline;
+- warm gold heads + muted olive foliage + warm ochre-brown outline;
 - flat fills with at most one secondary plane.
 
 Future Hie, Kibi, rice, beans, vegetables, fibers, tools, buildings, and processed goods should match this **information density**, even when their shapes differ.
 
 ## 4. Line / outline treatment
 
-- Use a dark brown or very dark warm neutral outline rather than a pure black photographic edge.
+- Use a warm brown to ochre-brown outline rather than pure black. MO wheat is the reference: the outline may be fairly thick, but a warmer/lighter line keeps it integrated with the fill colors.
 - Outline width must stay visually strong after downscaling.
 - The outer contour is more important than internal linework.
 - Internal outlines should be minimized; prefer adjacent color planes where possible.

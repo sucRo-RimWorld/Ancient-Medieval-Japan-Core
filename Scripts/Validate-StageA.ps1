@@ -70,6 +70,16 @@ $width = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($png
 $height = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,20))
 if ($width -ne 256 -or $height -ne 256) { Fail ("Awa mature texture must be 256x256, got {0}x{1}." -f $width,$height) }
 
+Assert-Text (Node-Text $awa "plant/immatureGraphicPath" "Awa immature texture path") "Things/Plants/Immature/AMJC_Awa" "Awa immature texture path"
+$awaImmatureTexturePath = Join-Path $RepositoryRoot "Textures\Things\Plants\Immature\AMJC_Awa\AMJC_Awa_Immature.png"
+if (-not (Test-Path -LiteralPath $awaImmatureTexturePath)) { Fail "Awa immature texture was not found: $awaImmatureTexturePath" }
+$pngBytes = [System.IO.File]::ReadAllBytes($awaImmatureTexturePath)
+if ($pngBytes.Length -lt 24) { Fail "Awa immature texture is too small to be a valid PNG." }
+for ($i = 0; $i -lt 8; $i++) { if ($pngBytes[$i] -ne $pngSignature[$i]) { Fail "Awa immature texture has an invalid PNG signature." } }
+$width = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,16))
+$height = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,20))
+if ($width -ne 256 -or $height -ne 256) { Fail ("Awa immature texture must be 256x256, got {0}x{1}." -f $width,$height) }
+
 $raw = Get-DefNode $items "ThingDef" "AMJC_RawMillet"
 $inHull = Get-DefNode $items "ThingDef" "AMJC_MilletInHull"
 $millet = Get-DefNode $items "ThingDef" "AMJC_Millet"
