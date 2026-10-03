@@ -75,10 +75,29 @@ Assert-Number (Node-Text $table "costList/DankPyon_IronIngot" "Grain processing 
 Assert-Number (Node-Text $table "statBases/WorkTableWorkSpeedFactor" "Grain processing table speed") 1 "Grain processing table speed"
 Assert-Text (Node-Text $table "researchPrerequisites/li" "Grain processing table research") "DankPyon_BasicAgriculture" "Grain processing table research"
 
+function Get-RecipeUsers($RecipeNode) {
+    $users = @($RecipeNode.SelectNodes("recipeUsers/li") | ForEach-Object { $_.InnerText.Trim() })
+    if ($users.Count -gt 0) {
+        return $users
+    }
+
+    $parentName = $RecipeNode.GetAttribute("ParentName")
+    if ([string]::IsNullOrWhiteSpace($parentName)) {
+        Fail "$($RecipeNode.defName) has no direct recipeUsers and no ParentName."
+    }
+
+    $parent = $recipes.SelectSingleNode("/Defs/RecipeDef[@Name='$parentName']")
+    if ($null -eq $parent) {
+        Fail "$($RecipeNode.defName) refers to missing RecipeDef parent '$parentName'."
+    }
+
+    return @($parent.SelectNodes("recipeUsers/li") | ForEach-Object { $_.InnerText.Trim() })
+}
+
 function Assert-Recipe([string]$DefName,[double]$WorkAmount,[string]$InputDef,[double]$InputCount,[hashtable]$Products) {
     $recipe = Get-DefNode $recipes "RecipeDef" $DefName
     Assert-Number (Node-Text $recipe "workAmount" "$DefName workAmount") $WorkAmount "$DefName workAmount"
-    $users = @($recipe.SelectNodes("recipeUsers/li") | ForEach-Object { $_.InnerText.Trim() })
+    $users = @(Get-RecipeUsers $recipe)
     foreach ($requiredUser in @("AMJC_GrainProcessingSpot","AMJC_GrainProcessingTable")) {
         if ($users -notcontains $requiredUser) { Fail "$DefName is missing recipe user $requiredUser." }
     }
