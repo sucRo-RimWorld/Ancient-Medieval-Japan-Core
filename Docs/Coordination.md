@@ -60,36 +60,6 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
-### AMJ-003 — Shared millet threshing and hulling
-
-**Requested by:** Agriculture/XML  \
-**Owner:** Agriculture/XML  \
-**Status:** IN PROGRESS
-
-Implemented the shared post-harvest path that Awa, Hie, and Kibi will use:
-- `AMJC_MilletInHull` and edible `AMJC_Millet`;
-- simple grain processing spot and full grain processing table;
-- single and x10 threshing recipes;
-- single and x10 hulling recipes;
-- threshing outputs MO `DankPyon_Straw`; hulling preserves grain count 1:1;
-- 120d raw millet → 120d millet in hull → 90d edible millet;
-- raw/intermediate/final millet remain outside `DankPyon_Cereal`;
-- Japanese localization for buildings, items, and recipes;
-- raw millet market value corrected from the initial zero-value prototype to 1.1.
-
-Static definition checks passed and the implementation-specific values were written back to `Docs/Design.md`.
-
-Automated validation now covers the repetitive numeric and Def-wiring checks:
-- GitHub Actions runs the repository Stage A validator on pushes/PRs;
-- local `run-tests.bat` performs the static check against the installed MO 1.6 source, stages isolated developer-only test mods, launches RimWorld with Pickle/Quickstarts, requires a clean 4/4 summary, and exits automatically;
-- the first CI run exposed that recipe users are inherited from the abstract RecipeDef parent; both the Python and PowerShell validators were corrected to resolve that inheritance instead of requiring duplicate child XML.
-
-The corrected GitHub Actions validator now passes on `main` (run 37116278412). Organization write access was restored after the repository transfer, so subsequent AMJ work should target `sucRo-RimWorld/Ancient-Medieval-Japan-Core`.
-
-**Next action:** run `run-tests.bat "D:\SteamLibrary\steamapps\common\RimWorld"` once on the development PC. If the Pickle suite returns a clean 4/4 pass, close AMJ-003 and retain only graphics/UI and processing-speed feel as manual smoke.
-
-**Result / references:** implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; authoritative processing values `8fcc9df4851378a48bb31cef2d9852f999e38afd`; local automated runner `a2f28dc868f172e2d770ddf10239ef7ac36d899a`; inherited-recipe validator fixes `7684c45afe8b9844544320252e2e62e3ce043d57` and `a63fc75869597e3bd327340c625109a26e875c70`; passing CI run `37116278412`.
-
 Add new items using the following form.
 
 ### AMJ-XXX — Short title
@@ -105,6 +75,34 @@ Context, constraints, and exact question/request.
 **Result / references:** add commit SHA, PR, design section, or other durable reference when available.
 
 ## Completed handoffs
+
+### AMJ-003 — Shared millet threshing and hulling
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Agriculture/XML  \
+**Status:** DONE
+
+Implemented and validated the shared post-harvest path used by Awa, Hie, and Kibi:
+- `AMJC_MilletInHull` and edible `AMJC_Millet`;
+- simple grain processing spot and full grain processing table;
+- single and x10 threshing recipes;
+- single and x10 hulling recipes;
+- threshing outputs MO `DankPyon_Straw`; hulling preserves grain count 1:1;
+- 120d raw millet → 120d millet in hull → 90d edible millet;
+- raw/intermediate/final millet remain outside `DankPyon_Cereal`;
+- Japanese localization for buildings, items, and recipes;
+- raw millet market value corrected from the initial zero-value prototype to 1.1.
+
+Automated validation now covers the repetitive numeric and Def-wiring checks:
+- GitHub Actions runs the Stage A validator on pushes/PRs;
+- local `run-tests.bat` validates repository XML against the installed MO 1.6 source, builds isolated developer-only test mods, launches RimWorld with Pickle/Quickstarts, requires a fresh clean 4/4 summary, and exits automatically;
+- the validators correctly resolve RecipeDef inheritance for recipe users rather than requiring duplicate child XML.
+
+The corrected GitHub Actions validator passes, and the development-PC local gate completed with all 4 Pickle scenarios passing. Numeric/Def-wiring smoke for this slice is therefore complete. Remaining manual checks are limited to final graphics/UI readability and processing-speed feel during normal play.
+
+**Next action:** proceed to the next vertical slice; when the grain-processing graphics are finalized, perform only the visual/play-feel smoke rather than repeating numeric checks.
+
+**Result / references:** implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; authoritative processing values `8fcc9df4851378a48bb31cef2d9852f999e38afd`; local automated runner `a2f28dc868f172e2d770ddf10239ef7ac36d899a`; inherited-recipe validator fixes `7684c45afe8b9844544320252e2e62e3ce043d57` and `a63fc75869597e3bd327340c625109a26e875c70`; batch argument fixes `708ea9e39b21765504002afe8d673b5434822ce4` and `f0961acc5c317577f4d5b3f64976ef405bc93cfb`; passing GitHub Actions run `37116278412`; local Pickle result 4/4 pass.
 
 ### AMJ-002 — Stage A Awa cultivation vertical slice
 
