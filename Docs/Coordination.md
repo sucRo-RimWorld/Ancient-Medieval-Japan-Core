@@ -69,6 +69,9 @@ Use whichever label best fits the task:
 The Awa cultivation/balance slice and shared grain-processing path are validated. Per the vertical-slice workflow, replace the temporary MO wheat mature-plant graphic before moving on to the next crop.
 
 Art target:
+- **AMJ visual style is now locked**; the durable reproduction rules are in `Docs/ArtStyle.md` and the palette/flatness swatch is `Docs/References/AMJ_ArtStyle_Palette.svg`;
+- the approved direction is the user-accepted Awa + millet-item set from 2026-10-03, produced after direct comparison with MO wheat and leather/hide;
+- future art must use MO, not RimWorld Vanilla, as the flatness/information-density baseline;
 - full-grown Awa / foxtail millet only for this step;
 - transparent background, clear small-size silhouette, RimWorld 3/4 top-down readability;
 - simplified vector-like shapes with restrained shading, matching the general information density and outline weight of Medieval Overhaul plant art without copying its wheat silhouette;

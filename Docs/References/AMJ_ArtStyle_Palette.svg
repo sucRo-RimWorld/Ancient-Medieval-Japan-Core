@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="480" viewBox="0 0 960 480">
+  <rect width="960" height="480" fill="#202322"/>
+  <text x="48" y="60" font-family="sans-serif" font-size="30" fill="#f2f0e7">AMJ / Medieval Overhaul visual baseline</text>
+  <text x="48" y="98" font-family="sans-serif" font-size="18" fill="#c8c8c2">Few flat planes · strong warm-dark outline · no gradients · silhouette first</text>
+
+  <g transform="translate(48 140)">
+    <rect x="0" y="0" width="132" height="132" rx="12" fill="#2b2418"/>
+    <text x="0" y="164" font-family="sans-serif" font-size="18" fill="#f2f0e7">Outline</text>
+    <text x="0" y="190" font-family="monospace" font-size="16" fill="#a8aaa4">#2B2418</text>
+
+    <rect x="164" y="0" width="132" height="132" rx="12" fill="#6f7538" stroke="#2b2418" stroke-width="10"/>
+    <text x="164" y="164" font-family="sans-serif" font-size="18" fill="#f2f0e7">Foliage base</text>
+    <text x="164" y="190" font-family="monospace" font-size="16" fill="#a8aaa4">#6F7538</text>
+
+    <rect x="328" y="0" width="132" height="132" rx="12" fill="#a9ad5d" stroke="#2b2418" stroke-width="10"/>
+    <text x="328" y="164" font-family="sans-serif" font-size="18" fill="#f2f0e7">Foliage plane</text>
+    <text x="328" y="190" font-family="monospace" font-size="16" fill="#a8aaa4">#A9AD5D</text>
+
+    <rect x="492" y="0" width="132" height="132" rx="12" fill="#f3c65b" stroke="#2b2418" stroke-width="10"/>
+    <text x="492" y="164" font-family="sans-serif" font-size="18" fill="#f2f0e7">Grain gold</text>
+    <text x="492" y="190" font-family="monospace" font-size="16" fill="#a8aaa4">#F3C65B</text>
+
+    <rect x="656" y="0" width="132" height="132" rx="12" fill="#b98536" stroke="#2b2418" stroke-width="10"/>
+    <text x="656" y="164" font-family="sans-serif" font-size="18" fill="#f2f0e7">Gold secondary</text>
+    <text x="656" y="190" font-family="monospace" font-size="16" fill="#a8aaa4">#B98536</text>
+  </g>
+
+  <g transform="translate(48 386)">
+    <circle cx="38" cy="0" r="32" fill="#f3ead2" stroke="#2b2418" stroke-width="8"/>
+    <text x="88" y="7" font-family="sans-serif" font-size="18" fill="#f2f0e7">Cleaned grain cream #F3EAD2 — use sparingly, with little or no internal shadow.</text>
+  </g>
+</svg>
