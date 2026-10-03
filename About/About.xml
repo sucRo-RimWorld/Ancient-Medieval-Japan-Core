@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Ancient &amp; Medieval Japan Core</name>
+  <author>sucRo0629</author>
+  <packageId>sucro.ancientmedievaljapan.core</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+
+  <modDependencies>
+    <li>
+      <packageId>DankPyon.Medieval.Overhaul</packageId>
+      <displayName>Medieval Overhaul</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>DankPyon.Medieval.Overhaul</li>
+    <li>sucro.cropcoldtoleranceoverhaul</li>
+  </loadAfter>
+
+  <description>Development build of Ancient &amp; Medieval Japan Core.
+
+Extends Medieval Overhaul with agriculture, primary processing, materials, and village-life systems inspired by pre-Edo Japan. Medieval Overhaul is required.
+
+The current development slice begins with field-crop agriculture. Crop Cold Tolerance Overhaul is optional; when present, AMJ crops use its explicit cold-death framework.</description>
+</ModMetaData>

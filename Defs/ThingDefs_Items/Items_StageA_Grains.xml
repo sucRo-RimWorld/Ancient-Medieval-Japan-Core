@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Shared unthreshed harvest for Awa/Hie/Kibi.
+    Stage A slice 1 creates the shared Def now; later millet PlantDefs reuse it.
+    It is intentionally not registered to DankPyon_Cereal, so MO's generic
+    flour/ale routes cannot bypass AMJ's planned threshing and hulling steps.
+  -->
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_RawMillet</defName>
+    <label>raw millet</label>
+    <description>Harvested millet heads before threshing and hulling. They keep well in storage but are not yet suitable for eating.</description>
+    <graphicData>
+      <!-- TEMP: Medieval Overhaul raw wheat graphic. -->
+      <texPath>Things/Item/Resource/PlantFoodRaw/RawWheat</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

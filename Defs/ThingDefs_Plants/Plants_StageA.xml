@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Stage A vertical slice 1: Awa / foxtail millet.
+    Graphics are temporary Medieval Overhaul wheat placeholders and must be
+    replaced only after the cultivation/balance pass is verified in game.
+  -->
+  <ThingDef ParentName="PlantBase">
+    <defName>AMJC_Plant_FoxtailMillet_Awa</defName>
+    <label>foxtail millet plant</label>
+    <description>Foxtail millet (awa), a hardy traditional millet grown as a basic grain crop. It tolerates poorer soil better than wheat, but prefers warm growing conditions.</description>
+    <descriptionHyperlinks>
+      <ThingDef>AMJC_RawMillet</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <!-- TEMP: Medieval Overhaul wheat graphic. -->
+      <texPath>Things/Plants/FullGrown/WheatPlant</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <maxMeshCount>4</maxMeshCount>
+      <harvestedThingDef>AMJC_RawMillet</harvestedThingDef>
+      <harvestYield>13</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <topWindExposure>0.20</topWindExposure>
+      <growDays>6</growDays>
+      <minGrowthTemperature>8</minGrowthTemperature>
+      <maxGrowthTemperature>42</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>18</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>32</maxOptimalGrowthTemperature>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <!-- TEMP: Medieval Overhaul wheat graphic. -->
+      <immatureGraphicPath>Things/Plants/Immature/WheatPlant</immatureGraphicPath>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <sowMinSkill>0</sowMinSkill>
+    </plant>
+  </ThingDef>
+
+</Defs>

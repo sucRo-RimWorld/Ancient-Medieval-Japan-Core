@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Crop Cold Tolerance Overhaul</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="AMJC_Plant_FoxtailMillet_Awa"]</xpath>
+      <value>
+        <li Class="CropColdToleranceOverhaul.ColdToleranceExtension">
+          <coldDeathTemperature>-4</coldDeathTemperature>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
