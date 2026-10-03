@@ -1,0 +1,104 @@
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$RepositoryRoot,
+    [Parameter(Mandatory = $true)]
+    [string]$MedievalOverhaulRoot
+)
+$ErrorActionPreference = "Stop"
+$Invariant = [System.Globalization.CultureInfo]::InvariantCulture
+
+function Fail([string]$Message) {
+    Write-Host "[FAIL] $Message" -ForegroundColor Red
+    exit 1
+}
+
+function Load-Xml([string]$Path) {
+    if (-not (Test-Path -LiteralPath $Path)) { Fail "Required file was not found: $Path" }
+    try { return [xml](Get-Content -LiteralPath $Path -Raw -Encoding UTF8) }
+    catch { Fail "Failed to parse XML '$Path': $($_.Exception.Message)" }
+}
+
+function Node-Text($Node, [string]$XPath, [string]$Context) {
+    $value = $Node.SelectSingleNode($XPath)
+    if ($null -eq $value) { Fail "$Context is missing XPath '$XPath'." }
+    return $value.InnerText.Trim()
+}
+
+function Assert-Text([string]$Actual, [string]$Expected, [string]$Context) {
+    if ($Actual -ne $Expected) { Fail "$Context expected '$Expected', got '$Actual'." }
+}
+
+function Assert-Number([string]$ActualText, [double]$Expected, [string]$Context) {
+    $actual = 0.0
+    if (-not [double]::TryParse($ActualText, [System.Globalization.NumberStyles]::Float, $Invariant, [ref]$actual)) { Fail "$Context is not numeric: '$ActualText'." }
+    if ([math]::Abs($actual - $Expected) -gt 0.0001) { Fail "$Context expected $Expected, got $actual." }
+}
+
+function Get-DefNode($Xml, [string]$TypeName, [string]$DefName) {
+    $node = $Xml.SelectSingleNode("/Defs/$TypeName[defName='$DefName']")
+    if ($null -eq $node) { Fail "Required $TypeName '$DefName' was not found." }
+    return $node
+}
+
+$RepositoryRoot = (Resolve-Path -LiteralPath $RepositoryRoot).Path
+$about = Load-Xml (Join-Path $RepositoryRoot "About\About.xml")
+$plants = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Plants\Plants_StageA.xml")
+$items = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Items\Items_StageA_Grains.xml")
+$buildings = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Buildings\Buildings_GrainProcessing.xml")
+$recipes = Load-Xml (Join-Path $RepositoryRoot "Defs\RecipeDefs\Recipes_GrainProcessing.xml")
+
+Assert-Text (Node-Text $about "/ModMetaData/packageId" "About.xml packageId") "sucro.ancientmedievaljapan.core" "About.xml packageId"
+if ($null -eq $about.SelectSingleNode("/ModMetaData/modDependencies/li[packageId='DankPyon.Medieval.Overhaul']")) { Fail "About.xml must require Medieval Overhaul." }
+
+$awa = Get-DefNode $plants "ThingDef" "AMJC_Plant_FoxtailMillet_Awa"
+Assert-Text (Node-Text $awa "plant/harvestedThingDef" "Awa harvest target") "AMJC_RawMillet" "Awa harvest target"
+Assert-Number (Node-Text $awa "plant/harvestYield" "Awa harvestYield") 13 "Awa harvestYield"
+Assert-Number (Node-Text $awa "plant/growDays" "Awa growDays") 6 "Awa growDays"
+Assert-Number (Node-Text $awa "plant/fertilityMin" "Awa fertilityMin") 0.5 "Awa fertilityMin"
+Assert-Number (Node-Text $awa "plant/fertilitySensitivity" "Awa fertilitySensitivity") 0.4 "Awa fertilitySensitivity"
+Assert-Number (Node-Text $awa "plant/minGrowthTemperature" "Awa minGrowthTemperature") 8 "Awa minGrowthTemperature"
+Assert-Number (Node-Text $awa "plant/maxGrowthTemperature" "Awa maxGrowthTemperature") 42 "Awa maxGrowthTemperature"
+
+$raw = Get-DefNode $items "ThingDef" "AMJC_RawMillet"
+$inHull = Get-DefNode $items "ThingDef" "AMJC_MilletInHull"
+$millet = Get-DefNode $items "ThingDef" "AMJC_Millet"
+Assert-Number (Node-Text $raw "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Raw millet rot days") 120 "Raw millet rot days"
+Assert-Number (Node-Text $inHull "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Millet-in-hull rot days") 120 "Millet-in-hull rot days"
+Assert-Number (Node-Text $millet "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Edible millet rot days") 90 "Edible millet rot days"
+if ($items.OuterXml -match "<li>DankPyon_Cereal</li>") { Fail "AMJ millet stages must not be registered to DankPyon_Cereal." }
+
+$spot = Get-DefNode $buildings "ThingDef" "AMJC_GrainProcessingSpot"
+$table = Get-DefNode $buildings "ThingDef" "AMJC_GrainProcessingTable"
+Assert-Number (Node-Text $spot "costStuffCount" "Simple processing spot cost") 10 "Simple processing spot cost"
+Assert-Number (Node-Text $spot "statBases/WorkTableWorkSpeedFactor" "Simple processing spot speed") 0.5 "Simple processing spot speed"
+Assert-Number (Node-Text $table "costList/DankPyon_IronIngot" "Grain processing table iron cost") 30 "Grain processing table iron cost"
+Assert-Number (Node-Text $table "statBases/WorkTableWorkSpeedFactor" "Grain processing table speed") 1 "Grain processing table speed"
+Assert-Text (Node-Text $table "researchPrerequisites/li" "Grain processing table research") "DankPyon_BasicAgriculture" "Grain processing table research"
+
+function Assert-Recipe([string]$DefName,[double]$WorkAmount,[string]$InputDef,[double]$InputCount,[hashtable]$Products) {
+    $recipe = Get-DefNode $recipes "RecipeDef" $DefName
+    Assert-Number (Node-Text $recipe "workAmount" "$DefName workAmount") $WorkAmount "$DefName workAmount"
+    $users = @($recipe.SelectNodes("recipeUsers/li") | ForEach-Object { $_.InnerText.Trim() })
+    foreach ($requiredUser in @("AMJC_GrainProcessingSpot","AMJC_GrainProcessingTable")) {
+        if ($users -notcontains $requiredUser) { Fail "$DefName is missing recipe user $requiredUser." }
+    }
+    Assert-Text (Node-Text $recipe "ingredients/li/filter/thingDefs/li" "$DefName input") $InputDef "$DefName input"
+    Assert-Number (Node-Text $recipe "ingredients/li/count" "$DefName input count") $InputCount "$DefName input count"
+    foreach ($productDef in $Products.Keys) {
+        Assert-Number (Node-Text $recipe "products/$productDef" "$DefName product $productDef") ([double]$Products[$productDef]) "$DefName product $productDef"
+    }
+}
+
+Assert-Recipe "AMJC_ThreshMillet" 15 "AMJC_RawMillet" 1 @{ AMJC_MilletInHull = 1; DankPyon_Straw = 1 }
+Assert-Recipe "AMJC_ThreshMilletBulk" 120 "AMJC_RawMillet" 10 @{ AMJC_MilletInHull = 10; DankPyon_Straw = 10 }
+Assert-Recipe "AMJC_HullMillet" 10 "AMJC_MilletInHull" 1 @{ AMJC_Millet = 1 }
+Assert-Recipe "AMJC_HullMilletBulk" 80 "AMJC_MilletInHull" 10 @{ AMJC_Millet = 10 }
+
+$moXmlFiles = @(Get-ChildItem -LiteralPath $MedievalOverhaulRoot -Recurse -File -Filter *.xml)
+foreach ($defName in @("DankPyon_Straw","DankPyon_IronIngot","DankPyon_BasicAgriculture","DankPyon_RawWood")) {
+    $pattern = "<defName>$defName</defName>"
+    if (-not (Select-String -Path $moXmlFiles.FullName -Pattern $pattern -SimpleMatch -Quiet)) { Fail "Installed Medieval Overhaul does not contain required Def '$defName'." }
+}
+
+Write-Host "[OK] AMJ Stage A static validation passed." -ForegroundColor Green
+exit 0
