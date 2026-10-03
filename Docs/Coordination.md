@@ -60,6 +60,29 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### AMJ-003 — Shared millet threshing and hulling
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Agriculture/XML  \
+**Status:** IN PROGRESS
+
+Implemented the shared post-harvest path that Awa, Hie, and Kibi will use:
+- `AMJC_MilletInHull` and edible `AMJC_Millet`;
+- simple grain processing spot and full grain processing table;
+- single and x10 threshing recipes;
+- single and x10 hulling recipes;
+- threshing outputs MO `DankPyon_Straw`; hulling preserves grain count 1:1;
+- 120d raw millet → 120d millet in hull → 90d edible millet;
+- raw/intermediate/final millet remain outside `DankPyon_Cereal`;
+- Japanese localization for buildings, items, and recipes;
+- raw millet market value corrected from the initial zero-value prototype to 1.1.
+
+Static definition checks passed and the implementation-specific values were written back to `Docs/Design.md`.
+
+**Next action:** runtime smoke: build both grain-processing stations, confirm both expose the same four bills, run `雑穀(生) → 殻付き雑穀 + Straw → 雑穀`, verify x10 and single remainder processing, confirm the simple spot is half-speed, and verify the final `雑穀` can be selected as an ingredient for ordinary meals. Keep the temporary MO graphics until this functional smoke is complete.
+
+**Result / references:** implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; authoritative processing values `8fcc9df4851378a48bb31cef2d9852f999e38afd`.
+
 Add new items using the following form.
 
 ### AMJ-XXX — Short title
