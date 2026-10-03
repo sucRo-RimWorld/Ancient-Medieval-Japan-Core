@@ -428,6 +428,10 @@ AMJの各Addon・姉妹Modは、詳細設計へ入る前に**同一目的・部�
 - **R⁴: Rimworld Reduce, Reuse, and Recycle**（https://steamcommunity.com/sharedfiles/filedetails/?id=3695601023）
   - 修理・穢れ除去・リサイクルという文化非依存の汎用機能を既存作業台へ追加するため、AMJ独自 Repair & Reuse の**代替候補**。
   - 新規Repair & Reuse開発は、R⁴を実プレイして不足点を確認するまで保留する。
+- **Simple Mending**（https://steamcommunity.com/sharedfiles/filedetails/?id=3657705987）
+  - 修理に機能を絞った既存Modとして比較対象に追加する。現状はリサイクルを担当しない。
+  - 将来Repair & Reuseを再検討する場合、修理をSimple Mending等の既存Modへ任せ、素材回収・リサイクルだけを独立機能として扱う分割案も候補にする。
+  - R⁴の代替として直ちに採用する決定ではなく、独自実装の必要性と責務分離を判断するための参考Modとして記録する。
 - **Vanilla Fishing Expanded**（https://steamcommunity.com/sharedfiles/filedetails/?id=1914064942） / **Fish Traps**（https://steamcommunity.com/sharedfiles/filedetails/?id=2594468074）
   - 一般的な釣りJob・水域Fishing zone・漁網/罠は先行実装が存在する。
   - Coastal Gathering詳細設計では一般的な釣りを再実装せず、日本側の独自価値を沿岸採集・貝・海藻・貝塚・淡水/汽水/海水差・保存連携等へ置く。
@@ -760,14 +764,15 @@ Core自身は鉄鉱床・砂鉄等の**供給量や生成分布を変更しな�
 
 ### Repair & Reuse / 修理・再利用Mod（仮）
 
-**独自開発は保留する。現時点ではR⁴: Rimworld Reduce, Reuse, and Recycleを汎用機能の代替候補として優先する。**
+**独自開発は保留する。現時点ではR⁴: Rimworld Reduce, Reuse, and Recycleを汎用機能の代替候補として優先し、Simple Mendingを修理専用の比較対象として記録する。**
 
-R⁴は既存作業台を使って武器・衣服のrepair / clean taint / recycleを追加し、Billと地面上Designationの双方を持つため、AMJが当初想定した中核機能と大きく重なる。
+R⁴は既存作業台を使って武器・衣服のrepair / clean taint / recycleを追加し、Billと地面上Designationの双方を持つため、AMJが当初想定した中核機能と大きく重なる。一方、Simple Mendingは現状リサイクルを扱わず修理側に機能を絞っているため、将来の責務分離を考える際の別方向の先行例になる。
 
 - AMJ Core、Japanese Iron Resources等は**修理Modなしでも成立**するようバランスを組む
 - まず通常プレイでR⁴を評価し、不足が具体化するまでAMJ独自Repair & Reuseを実装しない
+- Simple Mendingも比較対象として残し、既存Modで修理を満たせる場合は、独自開発を素材回収・リサイクル等の不足部分だけへ縮小・分離できないかを先に検討する
 - 不足が小さい場合は互換Patchや設定調整を優先する
-- 収納中装備指定、修復結果クラス、補修表現等は、R⁴で解決できず独立したゲーム価値が確認できた場合だけ再検討する
+- 収納中装備指定、修復結果クラス、補修表現等は、既存Modで解決できず独立したゲーム価値が確認できた場合だけ再検討する
 - Repair & ReuseをCore公開や鉄資源バランスの前提にしない
 
 ### Core標準Scenario
