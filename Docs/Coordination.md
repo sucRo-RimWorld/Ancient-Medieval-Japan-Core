@@ -60,28 +60,6 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
-### AMJ-002 — Stage A Awa cultivation vertical slice
-
-**Requested by:** Core/design  \
-**Owner:** Agriculture/XML  \
-**Status:** IN PROGRESS
-
-The first executable AMJ Core slice is now the Awa / foxtail millet cultivation-and-harvest path.
-
-Implemented on `main`:
-- initial `About/About.xml` with packageId `sucro.ancientmedievaljapan.core` and required Medieval Overhaul dependency;
-- `AMJC_Plant_FoxtailMillet_Awa` with Stage A values: growDays 6, final-yield baseline 13 represented directly for this first cultivation prototype, fertilityMin 0.5, fertilitySensitivity 0.4, growth 8–42 C, optimum 18–32 C, sowMinSkill 0;
-- shared unthreshed harvest `AMJC_RawMillet`, inedible and 120-day storage, deliberately excluded from `DankPyon_Cereal`;
-- optional CCTO extension for fixed cold death at -4 C;
-- Japanese DefInjected labels/descriptions;
-- temporary MO wheat/raw-wheat graphics only, pending in-game balance/visual verification before final art.
-
-Static checks confirm the implementation values match the restored Stage A table and that raw millet is not registered to MO's generic cereal category.
-
-**Next action:** runtime smoke in Core + MO (and once with CCTO) to verify mod loading, Awa visibility/sowing, growth-temperature UI, fertility behavior, harvest of 13 raw millet, 120-day rot timer, and CCTO -4 C display/behavior. Grain threshing/hulling is intentionally the next shared infrastructure slice rather than being given provisional work/ratio values here.
-
-**Result / references:** implementation commit `47ddb201ab167ac47c4af9da21d038b3096b3847`; identifier/source-of-truth update `c909843999ec5d9e2e850404a709a354d56610a4`.
-
 Add new items using the following form.
 
 ### AMJ-XXX — Short title
@@ -97,6 +75,28 @@ Context, constraints, and exact question/request.
 **Result / references:** add commit SHA, PR, design section, or other durable reference when available.
 
 ## Completed handoffs
+
+### AMJ-002 — Stage A Awa cultivation vertical slice
+
+**Requested by:** Core/design  \
+**Owner:** Agriculture/XML  \
+**Status:** DONE
+
+The first executable AMJ Core slice covers the Awa / foxtail millet cultivation-and-harvest path.
+
+Implemented on `main`:
+- initial `About/About.xml` with packageId `sucro.ancientmedievaljapan.core` and required Medieval Overhaul dependency;
+- `AMJC_Plant_FoxtailMillet_Awa` with Stage A values;
+- shared unthreshed harvest `AMJC_RawMillet`, inedible and 120-day storage, deliberately excluded from `DankPyon_Cereal`;
+- optional CCTO extension for fixed cold death at -4 C;
+- Japanese DefInjected labels/descriptions;
+- temporary MO wheat/raw-wheat graphics pending the final-art step.
+
+Runtime smoke was completed in game. The Awa Info Card showed growDays 6, fertilityMin 50%, fertility sensitivity 40%, growth range 8–42 C, harvest yield 13, and CCTO cold-death temperature -4 C. Harvest produced `雑穀(生) x13`; the item Info Card showed `AMJC_RawMillet`, AMJ Core as the source, and the expected rottable behavior. This validates the cultivation/harvest slice and confirms that the CCTO extension is loaded through the AMJ compatibility patch. CCTO's underlying fixed-threshold runtime semantics were already validated in the CCTO project and are not duplicated in AMJ.
+
+**Next action:** implement the shared grain primary-processing slice (threshing + hulling) before adding Hie/Kibi, so the three millet PlantDefs can converge on the same complete post-harvest path.
+
+**Result / references:** implementation commit `47ddb201ab167ac47c4af9da21d038b3096b3847`; identifier/source-of-truth update `c909843999ec5d9e2e850404a709a354d56610a4`.
 
 ### AMJ-001 — Stage A crop balance baseline recovery
 
