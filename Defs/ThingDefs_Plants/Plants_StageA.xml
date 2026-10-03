@@ -18,8 +18,7 @@
       <Nutrition>0.2</Nutrition>
     </statBases>
     <graphicData>
-      <!-- TEMP: Medieval Overhaul wheat graphic. -->
-      <texPath>Things/Plants/FullGrown/WheatPlant</texPath>
+      <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>

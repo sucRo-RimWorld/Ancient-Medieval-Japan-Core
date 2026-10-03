@@ -22,6 +22,12 @@ Reference characteristics observed in MO wheat and leather/hide:
 
 The approved Awa direction uses a small number of large foxtail heads, broad leaves, a muted olive-green body, warm yellow-gold grain heads, and one common dark outline. Individual millet grains are **not** drawn on the plant.
 
+The canonical repository texture for this first accepted plant asset is:
+
+- `Textures/Things/Plants/FullGrown/AMJC_Awa.png`
+
+Use it together with the MO reference textures when calibrating future AMJ plant art.
+
 ## 2. Palette and shading budget
 
 Treat these as upper limits, not targets to fill.

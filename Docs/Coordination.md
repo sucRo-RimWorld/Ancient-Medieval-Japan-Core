@@ -79,7 +79,9 @@ Art target:
 - warm yellow-gold mature panicles with muted green leaves/stems;
 - one production texture first; immature art remains the existing temporary MO wheat placeholder until the mature graphic passes an in-game appearance check.
 
-**Next action:** generate the mature Awa texture, place it under the AMJ texture namespace, update `AMJC_Plant_FoxtailMillet_Awa.graphicData.texPath`, then perform one in-game appearance check before advancing to the next crop.
+The accepted mature Awa art has now been exported as a 256×256 transparent PNG, flattened to a six-fill-color budget plus antialiased transparency, and wired into the PlantDef at `Things/Plants/FullGrown/AMJC_Awa`. The immature graphic intentionally remains the MO wheat placeholder until the mature asset passes the in-game appearance check.
+
+**Next action:** pull the latest `main`, launch the normal AMJ test environment, and perform one visual-only check of mature Awa at ordinary in-game zoom. If the silhouette/scale is acceptable beside MO crops, mark AMJ-004 DONE; do not repeat numeric processing tests.
 
 **Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`.
 
