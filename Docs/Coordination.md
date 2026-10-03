@@ -91,9 +91,11 @@ A dedicated immature Awa texture has also been added. It uses the same warm outl
 
 The first in-game comparison showed the immature Awa silhouette was noticeably too small relative to both mature Awa and MO wheat. The accepted immature image was enlarged to approximately 120% of its previous visible size while preserving its existing shape, palette, and outline treatment; the 256×256 texture canvas remains unchanged.
 
-That 1.2× replacement then rendered as a red question mark in game even though the path and Def wiring were unchanged from the previously working immature texture. Inspection showed the replacement had been re-encoded as an indexed-color PNG with a large tRNS transparency table. The same 1.2× artwork has now been re-exported as a normal RGBA truecolor PNG instead. Static validation now also requires PNG color type 6 for the immature Awa texture so this exact encoding regression is caught before another manual smoke.
+That 1.2× replacement then rendered as a red question mark in game even though the path and Def wiring were unchanged from the previously working immature texture. The initial diagnosis that indexed PNG encoding itself was the cause was not supported: the previously working immature asset was also an indexed-color PNG.
 
-**Next action:** pull latest `main`, restart RimWorld, and verify that the 1.2× immature Awa renders again. Only after the red question mark is gone should its size relationship be judged and AMJ-004 be closed.
+The replacement has therefore been rebuilt directly from the exact previously working blob `533818ce40a03f98d473821ddc2113b47531da88`: only the visible sprite was enlarged to 120% with nearest-neighbor scaling on the same 256×256 palette canvas, preserving the original palette/transparency structure. The resulting exact blob is `d9a0c7425bf327c25016ef86157b8f0eabfeac54`. The incorrect RGBA-only validator requirement has been removed.
+
+**Next action:** pull latest `main`, restart RimWorld, and verify that this exact 1.2× derivative renders. If a red question mark still appears, stop changing image bytes and capture the missing-texture/runtime log entry so the resolver/path failure can be diagnosed directly.
 
 **Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`; mature Awa art `d515cb304531ae01debf1c6cd2ab859f9675fdf9`; texture-loading correction `b7813c846f5d3bb2c4ede99a53ca001336f77409`; final in-game visual comparison accepted on 2026-10-03.
 
