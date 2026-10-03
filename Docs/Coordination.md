@@ -81,9 +81,11 @@ Art target:
 
 The accepted mature Awa art has now been exported as a 256×256 transparent PNG and stored at `Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png`. The first map test showed a missing-texture marker. Moving the file into an MO-like `Graphic_Random` directory layout was not sufficient: the Info card could still resolve an image while mature plants on the map rendered as red question marks.
 
-Because AMJ currently has only one mature Awa texture, the PlantDef now uses the simpler and deterministic path `Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature` with `Graphic_Single`. Static CI/local validators now assert both this exact graphic wiring and that the PNG exists, so a path/class mismatch is caught before another in-game smoke. The immature graphic intentionally remains the MO wheat placeholder.
+A second in-game test showed mature plants still rendering as red question marks, and switching the PlantDef to `Graphic_Single` also made the immature stage disappear. Re-checking the actual MO 1.6 source confirmed that wheat uses `Graphic_Random` with a directory path (`Things/Plants/FullGrown/WheatPlant`) and a separate `immatureGraphicPath`. The earlier switch to `Graphic_Single` was therefore reverted.
 
-**Next action:** pull the latest `main`, restart RimWorld fully, and perform one visual-only check of mature Awa at ordinary in-game zoom. If the texture renders and its silhouette/scale is acceptable beside MO crops, mark AMJ-004 DONE; do not repeat numeric processing tests.
+The actual image bytes were also audited. The PNG blob previously committed to GitHub did not match the approved local export, so the repository texture has been replaced with a freshly encoded 256×256 palette PNG generated from the approved flat Awa asset. CI/local validation now checks the PNG signature and 256×256 IHDR dimensions in addition to the MO-style `Graphic_Random` wiring. The immature stage remains the MO wheat placeholder by design.
+
+**Next action:** pull the latest `main`, restart RimWorld fully, and re-check both immature and mature Awa. Expected result: immature Awa shows the temporary MO wheat image; mature Awa shows the AMJ texture with no red question mark.
 
 **Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`.
 

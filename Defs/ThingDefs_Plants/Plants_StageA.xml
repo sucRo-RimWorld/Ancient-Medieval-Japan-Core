@@ -18,8 +18,8 @@
       <Nutrition>0.2</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
     <pathCost>10</pathCost>

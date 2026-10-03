@@ -58,10 +58,17 @@ Assert-Number (Node-Text $awa "plant/fertilityMin" "Awa fertilityMin") 0.5 "Awa 
 Assert-Number (Node-Text $awa "plant/fertilitySensitivity" "Awa fertilitySensitivity") 0.4 "Awa fertilitySensitivity"
 Assert-Number (Node-Text $awa "plant/minGrowthTemperature" "Awa minGrowthTemperature") 8 "Awa minGrowthTemperature"
 Assert-Number (Node-Text $awa "plant/maxGrowthTemperature" "Awa maxGrowthTemperature") 42 "Awa maxGrowthTemperature"
-Assert-Text (Node-Text $awa "graphicData/graphicClass" "Awa mature graphic class") "Graphic_Single" "Awa mature graphic class"
-Assert-Text (Node-Text $awa "graphicData/texPath" "Awa mature texture path") "Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature" "Awa mature texture path"
+Assert-Text (Node-Text $awa "graphicData/graphicClass" "Awa mature graphic class") "Graphic_Random" "Awa mature graphic class"
+Assert-Text (Node-Text $awa "graphicData/texPath" "Awa mature texture path") "Things/Plants/FullGrown/AMJC_Awa" "Awa mature texture path"
 $awaTexturePath = Join-Path $RepositoryRoot "Textures\Things\Plants\FullGrown\AMJC_Awa\AMJC_Awa_Mature.png"
 if (-not (Test-Path -LiteralPath $awaTexturePath)) { Fail "Awa mature texture was not found: $awaTexturePath" }
+$pngBytes = [System.IO.File]::ReadAllBytes($awaTexturePath)
+if ($pngBytes.Length -lt 24) { Fail "Awa mature texture is too small to be a valid PNG." }
+$pngSignature = [byte[]](137,80,78,71,13,10,26,10)
+for ($i = 0; $i -lt 8; $i++) { if ($pngBytes[$i] -ne $pngSignature[$i]) { Fail "Awa mature texture has an invalid PNG signature." } }
+$width = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,16))
+$height = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,20))
+if ($width -ne 256 -or $height -ne 256) { Fail ("Awa mature texture must be 256x256, got {0}x{1}." -f $width,$height) }
 
 $raw = Get-DefNode $items "ThingDef" "AMJC_RawMillet"
 $inHull = Get-DefNode $items "ThingDef" "AMJC_MilletInHull"

@@ -42,9 +42,14 @@ assert num(awa, "plant/minOptimalGrowthTemperature") == 18
 assert num(awa, "plant/maxOptimalGrowthTemperature") == 32
 assert num(awa, "plant/sowMinSkill") == 0
 assert text(awa, "plant/harvestedThingDef") == "AMJC_RawMillet"
-assert text(awa, "graphicData/graphicClass") == "Graphic_Single"
-assert text(awa, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature"
-assert (ROOT / "Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png").is_file()
+assert text(awa, "graphicData/graphicClass") == "Graphic_Random"
+assert text(awa, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Awa"
+awa_texture = ROOT / "Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png"
+assert awa_texture.is_file()
+png = awa_texture.read_bytes()
+assert png[:8] == b"\x89PNG\r\n\x1a\n"
+assert int.from_bytes(png[16:20], "big") == 256
+assert int.from_bytes(png[20:24], "big") == 256
 
 raw = find_def(items, "ThingDef", "AMJC_RawMillet")
 in_hull = find_def(items, "ThingDef", "AMJC_MilletInHull")
