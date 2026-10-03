@@ -535,23 +535,15 @@ Fermentation側の実装思想もCoreと同じく、**史実上の工程をす�
 
 #### Japanese Environment / 日本環境Mod
 
-日本の気候・地形・季節景観を扱う機能は、AMJ Coreへ統合せず、**AMJとは独立して導入できる姉妹Mod**として分離する方向とする。
+日本の気候・地形・河川・海岸線・バイオーム・野生植生・季節景観は、AMJ Coreへ統合せず、**独立姉妹Mod `Ancient-Medieval-Japan-Environment`** が所有する。
 
-基本責務候補:
-- 日本列島を意識した気候特性・降水・積雪・長雨・強風等
-- 山地が多く平地が限られる地形特性、河川・谷・低湿地・沖積地等の表現
-- バイオームごとの野生植生・森林構成
-- 紅葉・落葉・積雪等の季節景観
-- 農業・乾燥・発酵等へ意味のある範囲での天候差
+- Repository: `sucRo-RimWorld/Ancient-Medieval-Japan-Environment`
+- EnvironmentはAMJ Coreを必須にしない
+- Core側は作物・農地・水田・農業用Defと、その作物固有の成長温度・肥沃度感応度・収量・加工等を所有する
+- Environment側は、それらが置かれる外部環境である気候・標高/Hilliness・河川・海岸線・バイオーム・野生植生等を所有する
+- AMJ Core / CCTO / MO等との接続は必要に応じて任意互換とする
 
-方針:
-- AMJ Coreを必須にしない。単体では「日本列島的な環境条件をRimWorldへ加えるMod」として成立させる
-- AMJ導入時は、AMJ作物・水田・採集資源・CCTOの耐寒設定等へ任意互換で接続する
-- Environment側へ料理・動物追加・Smart Farming等の無関係な機能を抱え込まず、**気候・地形・天候・植生・季節景観**へ責務を限定する
-- ReGrowth 2は、季節植生・バイオーム植生・天候表現等の**参考実装**として調査対象にするが、AMJ/Environmentの必須依存にはしない。大規模総合Modであるため、必要な発想だけを独自設計へ落とし込む
-- 温泉・入浴はEnvironmentの必須責務に含めない。既存の **Standalone Hot Spring**（Steam Workshop: https://steamcommunity.com/sharedfiles/filedetails/?id=2205980094）等との任意併用を基本とし、必要が出た場合のみ互換を検討する
-
-Japanese Environmentの目的は景観だけを日本風にすることではなく、**土地・気候条件が農業・保存・建築・資源利用の選択につながる環境を作ること**とする。具体的な地域区分や気候数値は専用リポジトリを作成した段階で詳細設計する。
+Environment固有の詳細数値・世界生成仕様はCore側へ重複記載せず、**Environmentリポジトリの `Docs/Design.md` を正本**とする。
 
 #### Hunting & Gathering / 狩猟採集Mod
 
@@ -1550,7 +1542,7 @@ Famine Foodについては将来、採集・困窮食フェーズで任意互換
 
 ### 別アドオン / 姉妹Mod寄り
 
-- Japanese Environment / 日本環境（独立姉妹Mod、リポジトリ: `sucRo0629/Ancient-Medieval-Japan-Environment`）
+- Japanese Environment / 日本環境（独立姉妹Mod、リポジトリ: `sucRo-RimWorld/Ancient-Medieval-Japan-Environment`）
 - AMJ Backgrounds / 背景
 - AMJ Factions / 派閥
 - AMJ Events / 生活・社会イベント
