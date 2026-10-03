@@ -42,6 +42,9 @@ assert num(awa, "plant/minOptimalGrowthTemperature") == 18
 assert num(awa, "plant/maxOptimalGrowthTemperature") == 32
 assert num(awa, "plant/sowMinSkill") == 0
 assert text(awa, "plant/harvestedThingDef") == "AMJC_RawMillet"
+assert text(awa, "graphicData/graphicClass") == "Graphic_Single"
+assert text(awa, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature"
+assert (ROOT / "Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png").is_file()
 
 raw = find_def(items, "ThingDef", "AMJC_RawMillet")
 in_hull = find_def(items, "ThingDef", "AMJC_MilletInHull")

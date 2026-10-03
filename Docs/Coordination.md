@@ -79,9 +79,11 @@ Art target:
 - warm yellow-gold mature panicles with muted green leaves/stems;
 - one production texture first; immature art remains the existing temporary MO wheat placeholder until the mature graphic passes an in-game appearance check.
 
-The accepted mature Awa art has now been exported as a 256×256 transparent PNG, flattened to a six-fill-color budget plus antialiased transparency, and wired into the PlantDef at `Things/Plants/FullGrown/AMJC_Awa`. The first in-game appearance check showed the image in the Info card but a missing-texture marker on the map. Root cause: `Graphic_Random` treats `texPath` as a directory, matching MO wheat's `WheatPlant/PlantWheat_Mature.png` layout. The Awa texture was therefore moved under `Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png` while keeping the Def path unchanged. The immature graphic intentionally remains the MO wheat placeholder until the mature asset passes the map appearance check.
+The accepted mature Awa art has now been exported as a 256×256 transparent PNG and stored at `Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png`. The first map test showed a missing-texture marker. Moving the file into an MO-like `Graphic_Random` directory layout was not sufficient: the Info card could still resolve an image while mature plants on the map rendered as red question marks.
 
-**Next action:** pull the latest `main`, launch the normal AMJ test environment, and perform one visual-only check of mature Awa at ordinary in-game zoom. If the silhouette/scale is acceptable beside MO crops, mark AMJ-004 DONE; do not repeat numeric processing tests.
+Because AMJ currently has only one mature Awa texture, the PlantDef now uses the simpler and deterministic path `Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature` with `Graphic_Single`. Static CI/local validators now assert both this exact graphic wiring and that the PNG exists, so a path/class mismatch is caught before another in-game smoke. The immature graphic intentionally remains the MO wheat placeholder.
+
+**Next action:** pull the latest `main`, restart RimWorld fully, and perform one visual-only check of mature Awa at ordinary in-game zoom. If the texture renders and its silhouette/scale is acceptable beside MO crops, mark AMJ-004 DONE; do not repeat numeric processing tests.
 
 **Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`.
 

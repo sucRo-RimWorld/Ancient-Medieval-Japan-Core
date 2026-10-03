@@ -58,6 +58,10 @@ Assert-Number (Node-Text $awa "plant/fertilityMin" "Awa fertilityMin") 0.5 "Awa 
 Assert-Number (Node-Text $awa "plant/fertilitySensitivity" "Awa fertilitySensitivity") 0.4 "Awa fertilitySensitivity"
 Assert-Number (Node-Text $awa "plant/minGrowthTemperature" "Awa minGrowthTemperature") 8 "Awa minGrowthTemperature"
 Assert-Number (Node-Text $awa "plant/maxGrowthTemperature" "Awa maxGrowthTemperature") 42 "Awa maxGrowthTemperature"
+Assert-Text (Node-Text $awa "graphicData/graphicClass" "Awa mature graphic class") "Graphic_Single" "Awa mature graphic class"
+Assert-Text (Node-Text $awa "graphicData/texPath" "Awa mature texture path") "Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature" "Awa mature texture path"
+$awaTexturePath = Join-Path $RepositoryRoot "Textures\Things\Plants\FullGrown\AMJC_Awa\AMJC_Awa_Mature.png"
+if (-not (Test-Path -LiteralPath $awaTexturePath)) { Fail "Awa mature texture was not found: $awaTexturePath" }
 
 $raw = Get-DefNode $items "ThingDef" "AMJC_RawMillet"
 $inHull = Get-DefNode $items "ThingDef" "AMJC_MilletInHull"
