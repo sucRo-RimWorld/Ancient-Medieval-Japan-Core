@@ -8,6 +8,9 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$ReportDir,
 
+    [Parameter(Mandatory = $true)]
+    [string]$LogPath,
+
     [string]$RunFilter = "stage-a.feature",
 
     [int]$TimeoutSeconds = 300
@@ -21,8 +24,17 @@ if (-not (Test-Path -LiteralPath $ExePath)) {
     exit 2
 }
 
+$logDir = Split-Path -Parent $LogPath
+if (-not (Test-Path -LiteralPath $logDir)) {
+    New-Item -ItemType Directory -Force -Path $logDir | Out-Null
+}
+if (Test-Path -LiteralPath $LogPath) {
+    Remove-Item -LiteralPath $LogPath -Force
+}
+
 $arguments = @(
     '-savedatafolder="' + $SavedataFolder + '"',
+    '-logFile="' + $LogPath + '"',
     '-pickle-run="' + $RunFilter + '"',
     '-pickle-mode=fast',
     '-pickle-report-dir="' + $ReportDir + '"',
