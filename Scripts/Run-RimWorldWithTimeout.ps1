@@ -34,7 +34,7 @@ if (Test-Path -LiteralPath $LogPath) {
 
 $arguments = @(
     '-savedatafolder="' + $SavedataFolder + '"',
-    '-logFile="' + $LogPath + '"',
+    '-logFile "' + $LogPath + '"',
     '-pickle-run="' + $RunFilter + '"',
     '-pickle-mode=fast',
     '-pickle-report-dir="' + $ReportDir + '"',
