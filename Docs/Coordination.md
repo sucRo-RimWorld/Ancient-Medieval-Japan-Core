@@ -79,9 +79,14 @@ Implemented the shared post-harvest path that Awa, Hie, and Kibi will use:
 
 Static definition checks passed and the implementation-specific values were written back to `Docs/Design.md`.
 
-**Next action:** runtime smoke: build both grain-processing stations, confirm both expose the same four bills, run `雑穀(生) → 殻付き雑穀 + Straw → 雑穀`, verify x10 and single remainder processing, confirm the simple spot is half-speed, and verify the final `雑穀` can be selected as an ingredient for ordinary meals. Keep the temporary MO graphics until this functional smoke is complete.
+Automated validation now covers the repetitive numeric and Def-wiring checks:
+- GitHub Actions runs the repository Stage A validator on pushes/PRs;
+- local `run-tests.bat` performs the static check against the installed MO 1.6 source, stages isolated developer-only test mods, launches RimWorld with Pickle/Quickstarts, requires a clean 4/4 summary, and exits automatically;
+- the first CI run exposed that recipe users are inherited from the abstract RecipeDef parent; both the Python and PowerShell validators were corrected to resolve that inheritance instead of requiring duplicate child XML.
 
-**Result / references:** implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; authoritative processing values `8fcc9df4851378a48bb31cef2d9852f999e38afd`.
+**Next action:** confirm the corrected GitHub Actions run passes, then run `run-tests.bat "D:\SteamLibrary\steamapps\common\RimWorld"` once on the development PC. After that, manual smoke is limited to graphics/UI and processing-speed feel.
+
+**Result / references:** implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; authoritative processing values `8fcc9df4851378a48bb31cef2d9852f999e38afd`; local automated runner `a2f28dc868f172e2d770ddf10239ef7ac36d899a`; inherited-recipe validator fixes `7684c45afe8b9844544320252e2e62e3ce043d57` and `a63fc75869597e3bd327340c625109a26e875c70`.
 
 Add new items using the following form.
 
