@@ -51,3 +51,11 @@ Check the existing design, implementation, related systems, balance values, docu
 Only report that a GitHub file was updated when the change was actually committed to GitHub.
 
 When reporting repository changes, include the actual commit SHA.
+
+## Automated runtime-error gate
+
+For any automated test that launches RimWorld, a passing scenario/test count is not sufficient by itself.
+
+The test harness must capture an isolated runtime log and fail the overall test run if the repository-owned mod emits any ERROR-level entry. Do this even when all Pickle/RimTest scenarios otherwise pass. Warnings remain non-fatal unless a repository-specific test explicitly promotes them.
+
+Any new RimWorld runtime-test harness added to this repository must include this mod-origin ERROR gate from the start. Static-only validation does not fabricate a runtime-log result; add the gate when runtime automation is introduced.
