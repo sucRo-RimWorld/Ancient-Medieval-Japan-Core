@@ -255,6 +255,16 @@ AMJ側のPlantDef・ThingDef・C#等が技術的にMOのDefを直接参照しな
 - Vanilla既存要素は、AMJとの直接競合や明確なバランス問題がある場合を除き、原則としてそのまま残す
 - 公開時はMedieval Overhaul必須であることを明示する
 
+#### Core実装識別子
+
+実装開始時点の識別子は以下で固定する。packageIdやDefName prefixは外部Patch・セーブ・互換Modから参照されるため、公開後は原則変更しない。
+
+- packageId: `sucro.ancientmedievaljapan.core`
+- Core所有Defのprefix: `AMJC_`
+- 最初のStage A栽培スライス: `AMJC_Plant_FoxtailMillet_Awa`
+- アワ・ヒエ・キビ共通の未脱穀収穫物: `AMJC_RawMillet`
+- CCTOは任意依存のままとし、導入時のみAMJ側互換PatchからCCTOのDefModExtensionを付与する
+
 #### MOをプラットフォームとして使う
 
 AMJ Coreは「単体ModにMO互換を足す」のではなく、**MOを基盤として日本側の農業・生活要素を拡張するMod**として設計する。
