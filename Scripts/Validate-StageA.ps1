@@ -83,6 +83,26 @@ if ($width -ne 256 -or $height -ne 256) { Fail ("Awa immature texture must be 25
 $raw = Get-DefNode $items "ThingDef" "AMJC_RawMillet"
 $inHull = Get-DefNode $items "ThingDef" "AMJC_MilletInHull"
 $millet = Get-DefNode $items "ThingDef" "AMJC_Millet"
+
+$milletGraphics = @(
+    @{ Node = $raw; Name = "Raw millet"; TexPath = "Things/Item/Resource/AMJC_Millet/RawMillet"; RelativeDir = "Textures\Things\Item\Resource\AMJC_Millet\RawMillet"; Stem = "RawMillet" },
+    @{ Node = $inHull; Name = "Millet in hull"; TexPath = "Things/Item/Resource/AMJC_Millet/MilletInHull"; RelativeDir = "Textures\Things\Item\Resource\AMJC_Millet\MilletInHull"; Stem = "MilletInHull" },
+    @{ Node = $millet; Name = "Millet"; TexPath = "Things/Item/Resource/AMJC_Millet/Millet"; RelativeDir = "Textures\Things\Item\Resource\AMJC_Millet\Millet"; Stem = "Millet" }
+)
+foreach ($graphic in $milletGraphics) {
+    Assert-Text (Node-Text $graphic.Node "graphicData/graphicClass" "$($graphic.Name) graphic class") "Graphic_StackCount" "$($graphic.Name) graphic class"
+    Assert-Text (Node-Text $graphic.Node "graphicData/texPath" "$($graphic.Name) texture path") $graphic.TexPath "$($graphic.Name) texture path"
+    foreach ($suffix in @("a","b","c")) {
+        $texturePath = Join-Path $RepositoryRoot (Join-Path $graphic.RelativeDir "$($graphic.Stem)_$suffix.png")
+        if (-not (Test-Path -LiteralPath $texturePath)) { Fail "$($graphic.Name) stack texture was not found: $texturePath" }
+        $pngBytes = [System.IO.File]::ReadAllBytes($texturePath)
+        if ($pngBytes.Length -lt 24) { Fail "$($graphic.Name) stack texture is too small to be a valid PNG: $texturePath" }
+        for ($i = 0; $i -lt 8; $i++) { if ($pngBytes[$i] -ne $pngSignature[$i]) { Fail "$($graphic.Name) stack texture has an invalid PNG signature: $texturePath" } }
+        $width = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,16))
+        $height = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,20))
+        if ($width -ne 256 -or $height -ne 256) { Fail ("{0} stack texture must be 256x256, got {1}x{2}: {3}" -f $graphic.Name,$width,$height,$texturePath) }
+    }
+}
 Assert-Number (Node-Text $raw "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Raw millet rot days") 120 "Raw millet rot days"
 Assert-Number (Node-Text $inHull "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Millet-in-hull rot days") 120 "Millet-in-hull rot days"
 Assert-Number (Node-Text $millet "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Edible millet rot days") 90 "Edible millet rot days"

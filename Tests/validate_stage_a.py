@@ -62,6 +62,36 @@ raw = find_def(items, "ThingDef", "AMJC_RawMillet")
 in_hull = find_def(items, "ThingDef", "AMJC_MilletInHull")
 millet = find_def(items, "ThingDef", "AMJC_Millet")
 
+def assert_stack_graphic(node, tex_path, rel_dir, stem):
+    assert text(node, "graphicData/graphicClass") == "Graphic_StackCount"
+    assert text(node, "graphicData/texPath") == tex_path
+    for suffix in ("a", "b", "c"):
+        p = ROOT / rel_dir / f"{stem}_{suffix}.png"
+        assert p.is_file(), f"missing stack texture {p}"
+        png = p.read_bytes()
+        assert png[:8] == b"\x89PNG\r\n\x1a\n"
+        assert int.from_bytes(png[16:20], "big") == 256
+        assert int.from_bytes(png[20:24], "big") == 256
+
+assert_stack_graphic(
+    raw,
+    "Things/Item/Resource/AMJC_Millet/RawMillet",
+    "Textures/Things/Item/Resource/AMJC_Millet/RawMillet",
+    "RawMillet",
+)
+assert_stack_graphic(
+    in_hull,
+    "Things/Item/Resource/AMJC_Millet/MilletInHull",
+    "Textures/Things/Item/Resource/AMJC_Millet/MilletInHull",
+    "MilletInHull",
+)
+assert_stack_graphic(
+    millet,
+    "Things/Item/Resource/AMJC_Millet/Millet",
+    "Textures/Things/Item/Resource/AMJC_Millet/Millet",
+    "Millet",
+)
+
 def rot_days(node):
     for comp in node.findall("./comps/li"):
         if comp.attrib.get("Class") == "CompProperties_Rottable":

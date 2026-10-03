@@ -62,6 +62,14 @@ For piles of grain, use a **small number of large simplified pieces** to communi
 
 For bundles such as straw, use a few broad strips/stems and a simple binding band. Do not render fiber texture.
 
+The first canonical post-harvest millet item assets are now stored under:
+
+- `Textures/Things/Item/Resource/AMJC_Millet/RawMillet/`
+- `Textures/Things/Item/Resource/AMJC_Millet/MilletInHull/`
+- `Textures/Things/Item/Resource/AMJC_Millet/Millet/`
+
+They are isolated from the user-approved 2026-10-03 millet set rather than regenerated. The three states intentionally read as distinct material stages: warm-gold raw millet, brown hulled grain, and pale cleaned grain. They retain `Graphic_StackCount`; during this first integration pass the same approved pile silhouette is supplied to each stack-count slot so only rendering scale/readability changes are evaluated.
+
 ## 3. Shape language
 
 - Prefer large readable masses over botanical or material accuracy.

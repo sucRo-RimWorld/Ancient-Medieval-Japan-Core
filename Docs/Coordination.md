@@ -73,9 +73,13 @@ These three ThingDefs still use temporary MO item graphics. Because they are sha
 
 The same locked AMJ art rules apply, with item icons flatter than plant art and with fewer/shallow shadows than the accepted plant asset.
 
-**Next action:** use the already approved 2026-10-03 post-harvest artwork as the source for raw millet, millet in hull, and edible millet. Do not regenerate those three unless the in-game check exposes a concrete problem. Wire the three final textures to their ThingDefs, then check map/UI readability at normal zoom.
+The already approved 2026-10-03 post-harvest artwork has now been isolated into production candidates for all three shared millet states: warm-gold `AMJC_RawMillet`, brown `AMJC_MilletInHull`, and pale `AMJC_Millet`. No new artwork was generated.
 
-**Result / references:** shared processing implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; art-style baseline `2d4accb0c56bff6b81497a325877d5a5dc7d7710`.
+Each ThingDef now keeps its existing `Graphic_StackCount` behavior and points to an AMJ-owned texture directory. Three stack-count slots (`a/b/c`) are present for each state; this first integration uses the same approved pile silhouette in all three slots so the game check can focus on texture resolution, scale, and UI/map readability without introducing new unapproved art variation. Static validators now assert the exact paths plus all nine 256×256 PNGs.
+
+**Next action:** pull latest `main`, restart RimWorld, and spawn/check `AMJC_RawMillet`, `AMJC_MilletInHull`, and `AMJC_Millet` on the map and in their Info cards at ordinary zoom. If all three load without question marks and their relative size/readability is acceptable, mark AMJ-005 DONE.
+
+**Result / references:** shared processing implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; art-style baseline `2d4accb0c56bff6b81497a325877d5a5dc7d7710`; source artwork user-approved 2026-10-03.
 
 Add new items using the following form.
 
