@@ -60,6 +60,23 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### AMJ-005 — Shared millet post-harvest graphics
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Art/graphics  \
+**Status:** OPEN
+
+Awa, Hie, and Kibi intentionally merge after harvest into the shared chain:
+`AMJC_RawMillet` → `AMJC_MilletInHull` → `AMJC_Millet`.
+
+These three ThingDefs still use temporary MO item graphics. Because they are shared by all three millet crops, their final art should be produced once as part of the shared millet chain rather than separately for each crop.
+
+The same locked AMJ art rules apply, with item icons flatter than plant art and with fewer/shallow shadows than the accepted plant asset.
+
+**Next action:** after the dedicated immature Awa image is accepted, create and verify final textures for raw millet, millet in hull, and edible millet. Check them at normal map/UI scale before moving on to Hie/Kibi.
+
+**Result / references:** shared processing implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; art-style baseline `2d4accb0c56bff6b81497a325877d5a5dc7d7710`.
+
 Add new items using the following form.
 
 ### AMJ-XXX — Short title
@@ -76,11 +93,11 @@ Context, constraints, and exact question/request.
 
 ## Completed handoffs
 
-### AMJ-004 — Awa final plant graphic
+### AMJ-004 — Awa plant graphics
 
 **Requested by:** Agriculture/XML  \
 **Owner:** Art/graphics  \
-**Status:** DONE
+**Status:** IN PROGRESS
 
 The Awa cultivation/balance slice and shared grain-processing path are validated. Per the vertical-slice workflow, replace the temporary MO wheat mature-plant graphic before moving on to the next crop.
 
@@ -103,7 +120,9 @@ The actual image bytes were also audited. The PNG blob previously committed to G
 
 Final in-game comparison was completed beside MO wheat. The mature Awa texture renders correctly on the map and is visually acceptable as-is. It is somewhat crisper and higher-contrast than MO wheat because its outline is darker, while MO wheat uses a warmer brown outline; however, the difference remains within the accepted AMJ/MO visual envelope and also helps crop identification. No further outline/color adjustment will be made at this stage to avoid degrading the accepted asset through unnecessary iteration.
 
-**Next action:** proceed to the next crop/art slice. Keep the current mature Awa texture as the production asset. The immature stage may receive dedicated AMJ art later when its own slice is reached.
+The mature Awa texture is accepted and remains the production asset. However, closing the plant-art slice at the mature state alone was premature: the Awa PlantDef still displays MO wheat as its immature graphic. The dedicated immature Awa texture must be created and checked in game before this plant-art slice is DONE.
+
+**Next action:** create a dedicated immature Awa texture in the locked AMJ/MO-flat style, wire it to `immatureGraphicPath`, and perform one normal-zoom comparison with the accepted mature Awa and MO crops.
 
 **Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`; mature Awa art `d515cb304531ae01debf1c6cd2ab859f9675fdf9`; texture-loading correction `b7813c846f5d3bb2c4ede99a53ca001336f77409`; final in-game visual comparison accepted on 2026-10-03.
 
