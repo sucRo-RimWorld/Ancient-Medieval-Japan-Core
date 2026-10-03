@@ -84,9 +84,11 @@ Automated validation now covers the repetitive numeric and Def-wiring checks:
 - local `run-tests.bat` performs the static check against the installed MO 1.6 source, stages isolated developer-only test mods, launches RimWorld with Pickle/Quickstarts, requires a clean 4/4 summary, and exits automatically;
 - the first CI run exposed that recipe users are inherited from the abstract RecipeDef parent; both the Python and PowerShell validators were corrected to resolve that inheritance instead of requiring duplicate child XML.
 
-**Next action:** confirm the corrected GitHub Actions run passes, then run `run-tests.bat "D:\SteamLibrary\steamapps\common\RimWorld"` once on the development PC. After that, manual smoke is limited to graphics/UI and processing-speed feel.
+The corrected GitHub Actions validator now passes on `main` (run 37116278412). Organization write access was restored after the repository transfer, so subsequent AMJ work should target `sucRo-RimWorld/Ancient-Medieval-Japan-Core`.
 
-**Result / references:** implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; authoritative processing values `8fcc9df4851378a48bb31cef2d9852f999e38afd`; local automated runner `a2f28dc868f172e2d770ddf10239ef7ac36d899a`; inherited-recipe validator fixes `7684c45afe8b9844544320252e2e62e3ce043d57` and `a63fc75869597e3bd327340c625109a26e875c70`.
+**Next action:** run `run-tests.bat "D:\SteamLibrary\steamapps\common\RimWorld"` once on the development PC. If the Pickle suite returns a clean 4/4 pass, close AMJ-003 and retain only graphics/UI and processing-speed feel as manual smoke.
+
+**Result / references:** implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; authoritative processing values `8fcc9df4851378a48bb31cef2d9852f999e38afd`; local automated runner `a2f28dc868f172e2d770ddf10239ef7ac36d899a`; inherited-recipe validator fixes `7684c45afe8b9844544320252e2e62e3ce043d57` and `a63fc75869597e3bd327340c625109a26e875c70`; passing CI run `37116278412`.
 
 Add new items using the following form.
 
