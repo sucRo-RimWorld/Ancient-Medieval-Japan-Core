@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>[DEV] Ancient &amp; Medieval Japan Core E2E Target</name>
+  <author>sucRo0629</author>
+  <packageId>sucro.ancientmedievaljapan.core.e2etarget</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+
+  <modDependencies>
+    <li>
+      <packageId>sucro.ancientmedievaljapan.core.mofixture</packageId>
+      <displayName>Medieval Overhaul</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>sucro.ancientmedievaljapan.core.mofixture</li>
+  </loadAfter>
+
+  <description>Developer-only staged copy of AMJ Core runtime XML for isolated E2E testing. Do not publish.</description>
+</ModMetaData>

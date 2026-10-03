@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <StuffCategoryDef>
+    <defName>DankPyon_RawWood</defName>
+    <label>AMJ test raw wood</label>
+  </StuffCategoryDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>DankPyon_IronIngot</defName>
+    <label>AMJ test iron ingot</label>
+    <statBases>
+      <MarketValue>1.5</MarketValue>
+      <Mass>0.5</Mass>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>DankPyon_Straw</defName>
+    <label>AMJ test straw</label>
+    <stackLimit>200</stackLimit>
+    <statBases>
+      <MarketValue>0.7</MarketValue>
+      <Mass>0.01</Mass>
+    </statBases>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ResearchProjectDef>
+    <defName>DankPyon_BasicAgriculture</defName>
+    <label>AMJ test basic agriculture</label>
+    <description>Lightweight research fixture used only by AMJ automated tests.</description>
+    <baseCost>300</baseCost>
+    <techLevel>Neolithic</techLevel>
+  </ResearchProjectDef>
+
+</Defs>
