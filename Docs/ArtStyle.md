@@ -24,7 +24,7 @@ The approved Awa direction uses a small number of large foxtail heads, broad lea
 
 The canonical repository texture for this first accepted plant asset is:
 
-- `Textures/Things/Plants/FullGrown/AMJC_Awa.png`
+- `Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png`
 
 Use it together with the MO reference textures when calibrating future AMJ plant art.
 

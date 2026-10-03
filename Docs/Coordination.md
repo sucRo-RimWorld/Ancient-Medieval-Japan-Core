@@ -79,7 +79,7 @@ Art target:
 - warm yellow-gold mature panicles with muted green leaves/stems;
 - one production texture first; immature art remains the existing temporary MO wheat placeholder until the mature graphic passes an in-game appearance check.
 
-The accepted mature Awa art has now been exported as a 256×256 transparent PNG, flattened to a six-fill-color budget plus antialiased transparency, and wired into the PlantDef at `Things/Plants/FullGrown/AMJC_Awa`. The immature graphic intentionally remains the MO wheat placeholder until the mature asset passes the in-game appearance check.
+The accepted mature Awa art has now been exported as a 256×256 transparent PNG, flattened to a six-fill-color budget plus antialiased transparency, and wired into the PlantDef at `Things/Plants/FullGrown/AMJC_Awa`. The first in-game appearance check showed the image in the Info card but a missing-texture marker on the map. Root cause: `Graphic_Random` treats `texPath` as a directory, matching MO wheat's `WheatPlant/PlantWheat_Mature.png` layout. The Awa texture was therefore moved under `Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png` while keeping the Def path unchanged. The immature graphic intentionally remains the MO wheat placeholder until the mature asset passes the map appearance check.
 
 **Next action:** pull the latest `main`, launch the normal AMJ test environment, and perform one visual-only check of mature Awa at ordinary in-game zoom. If the silhouette/scale is acceptable beside MO crops, mark AMJ-004 DONE; do not repeat numeric processing tests.
 
