@@ -7,4 +7,16 @@
   <AMJC_RawMillet.label>雑穀(生)</AMJC_RawMillet.label>
   <AMJC_RawMillet.description>収穫直後の未脱穀の雑穀。保存性は高いが、このままでは食べられない。脱穀と殻取りを経て食用の雑穀になる。</AMJC_RawMillet.description>
 
+  <AMJC_MilletInHull.label>殻付き雑穀</AMJC_MilletInHull.label>
+  <AMJC_MilletInHull.description>脱穀を終えたものの、まだ殻が残っている雑穀。殻に守られて保存性は高いが、このままでは食べられない。</AMJC_MilletInHull.description>
+
+  <AMJC_Millet.label>雑穀</AMJC_Millet.label>
+  <AMJC_Millet.description>殻を取り除いて食べられる状態にした雑穀。日常の主食や一般的な食事の材料として利用できる。</AMJC_Millet.description>
+
+  <AMJC_GrainProcessingSpot.label>簡易穀物加工場所</AMJC_GrainProcessingSpot.label>
+  <AMJC_GrainProcessingSpot.description>手作業で穀物の脱穀や殻取りを行う簡易的な作業場所。ほとんど設備を必要としないが、本格的な穀物加工台より作業速度が遅い。</AMJC_GrainProcessingSpot.description>
+
+  <AMJC_GrainProcessingTable.label>穀物加工台</AMJC_GrainProcessingTable.label>
+  <AMJC_GrainProcessingTable.description>穀物の脱穀や殻取りを効率よく行うための作業台。簡易穀物加工場所と同じ加工を、標準の作業速度で行える。</AMJC_GrainProcessingTable.description>
+
 </LanguageData>

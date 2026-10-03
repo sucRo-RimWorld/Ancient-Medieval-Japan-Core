@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>AMJC_GrainProcessingSpot</defName>
+    <label>simple grain processing spot</label>
+    <description>A simple place for threshing and hulling grain by hand. It requires almost no infrastructure, but processing is slower than at a proper grain processing table.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <!-- TEMP: Medieval Overhaul stonecutter's block graphic. -->
+      <texPath>Things/Building/Production/StonecuttingSpot</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>(1.33,1.33)</drawSize>
+    </graphicData>
+    <defaultPlacingRot>North</defaultPlacingRot>
+    <costStuffCount>10</costStuffCount>
+    <stuffCategories>
+      <li>Woody</li>
+      <li>DankPyon_RawWood</li>
+    </stuffCategories>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <WorkToBuild>200</WorkToBuild>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Flammability>1.0</Flammability>
+      <WorkTableWorkSpeedFactor>0.5</WorkTableWorkSpeedFactor>
+    </statBases>
+    <size>(1,1)</size>
+    <designationCategory>Production</designationCategory>
+    <uiOrder>2300</uiOrder>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <placeWorkers>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>AMJC_GrainProcessingTable</defName>
+    <label>grain processing table</label>
+    <description>A dedicated worktable for threshing and hulling grain efficiently. It performs the same jobs as the simple processing spot, but at normal work speed.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <!-- TEMP: Medieval Overhaul millstone graphic, used only to distinguish this development placeholder from the simple spot. -->
+      <texPath>Things/Building/Production/Millstone</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <drawSize>(1,1)</drawSize>
+      <drawRotated>false</drawRotated>
+    </graphicData>
+    <costList>
+      <DankPyon_IronIngot>30</DankPyon_IronIngot>
+    </costList>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <WorkToBuild>800</WorkToBuild>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <WorkTableWorkSpeedFactor>1.0</WorkTableWorkSpeedFactor>
+    </statBases>
+    <size>(1,1)</size>
+    <designationCategory>Production</designationCategory>
+    <uiOrder>2301</uiOrder>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <placeWorkers>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+    <researchPrerequisites>
+      <li>DankPyon_BasicAgriculture</li>
+    </researchPrerequisites>
+  </ThingDef>
+
+</Defs>

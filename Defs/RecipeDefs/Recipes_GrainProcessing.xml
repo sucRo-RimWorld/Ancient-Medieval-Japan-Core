@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <RecipeDef Name="AMJC_MilletProcessingBase" Abstract="True">
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <workSkillLearnFactor>0.1</workSkillLearnFactor>
+    <allowMixingIngredients>false</allowMixingIngredients>
+    <recipeUsers>
+      <li>AMJC_GrainProcessingSpot</li>
+      <li>AMJC_GrainProcessingTable</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef ParentName="AMJC_MilletProcessingBase">
+    <defName>AMJC_ThreshMillet</defName>
+    <label>thresh millet</label>
+    <description>Thresh raw millet to separate the grain from the straw. The grain remains in its protective hull.</description>
+    <jobString>Threshing millet.</jobString>
+    <workAmount>15</workAmount>
+    <targetCountAdjustment>1</targetCountAdjustment>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>AMJC_RawMillet</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>AMJC_RawMillet</li>
+      </thingDefs>
+      <specialFiltersToDisallow>
+        <li>AllowRotten</li>
+      </specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products>
+      <AMJC_MilletInHull>1</AMJC_MilletInHull>
+      <DankPyon_Straw>1</DankPyon_Straw>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef ParentName="AMJC_MilletProcessingBase">
+    <defName>AMJC_ThreshMilletBulk</defName>
+    <label>thresh millet x10</label>
+    <description>Thresh a batch of raw millet to separate the grain from the straw. The grain remains in its protective hull.</description>
+    <jobString>Threshing millet in bulk.</jobString>
+    <workAmount>120</workAmount>
+    <targetCountAdjustment>10</targetCountAdjustment>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>AMJC_RawMillet</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>AMJC_RawMillet</li>
+      </thingDefs>
+      <specialFiltersToDisallow>
+        <li>AllowRotten</li>
+      </specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products>
+      <AMJC_MilletInHull>10</AMJC_MilletInHull>
+      <DankPyon_Straw>10</DankPyon_Straw>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef ParentName="AMJC_MilletProcessingBase">
+    <defName>AMJC_HullMillet</defName>
+    <label>hull millet</label>
+    <description>Remove the hulls from threshed millet to make edible grain.</description>
+    <jobString>Hulling millet.</jobString>
+    <workAmount>10</workAmount>
+    <targetCountAdjustment>1</targetCountAdjustment>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>AMJC_MilletInHull</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>AMJC_MilletInHull</li>
+      </thingDefs>
+      <specialFiltersToDisallow>
+        <li>AllowRotten</li>
+      </specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products>
+      <AMJC_Millet>1</AMJC_Millet>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef ParentName="AMJC_MilletProcessingBase">
+    <defName>AMJC_HullMilletBulk</defName>
+    <label>hull millet x10</label>
+    <description>Remove the hulls from a batch of threshed millet to make edible grain.</description>
+    <jobString>Hulling millet in bulk.</jobString>
+    <workAmount>80</workAmount>
+    <targetCountAdjustment>10</targetCountAdjustment>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>AMJC_MilletInHull</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>AMJC_MilletInHull</li>
+      </thingDefs>
+      <specialFiltersToDisallow>
+        <li>AllowRotten</li>
+      </specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products>
+      <AMJC_Millet>10</AMJC_Millet>
+    </products>
+  </RecipeDef>
+
+</Defs>

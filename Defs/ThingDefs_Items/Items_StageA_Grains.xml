@@ -2,10 +2,9 @@
 <Defs>
 
   <!--
-    Shared unthreshed harvest for Awa/Hie/Kibi.
-    Stage A slice 1 creates the shared Def now; later millet PlantDefs reuse it.
-    It is intentionally not registered to DankPyon_Cereal, so MO's generic
-    flour/ale routes cannot bypass AMJ's planned threshing and hulling steps.
+    Shared millet states for Awa/Hie/Kibi.
+    These are deliberately excluded from DankPyon_Cereal so MO's generic
+    flour/ale routes cannot bypass AMJ's threshing and hulling steps.
   -->
   <ThingDef ParentName="RoughPlantBase">
     <defName>AMJC_RawMillet</defName>
@@ -16,6 +15,9 @@
       <texPath>Things/Item/Resource/PlantFoodRaw/RawWheat</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
+    <statBases>
+      <MarketValue>1.1</MarketValue>
+    </statBases>
     <ingestible>
       <foodType>Seed</foodType>
       <preferability>NeverForNutrition</preferability>
@@ -29,6 +31,58 @@
     <thingCategories>
       <li>Foods</li>
     </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_MilletInHull</defName>
+    <label>millet in hull</label>
+    <description>Millet grain after threshing but before the hulls have been removed. The hull protects the grain during storage, but it is not yet suitable for eating.</description>
+    <graphicData>
+      <!-- TEMP: Medieval Overhaul raw wheat graphic. -->
+      <texPath>Things/Item/Resource/PlantFoodRaw/RawWheat</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.1</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>AMJC_Millet</defName>
+    <label>millet</label>
+    <description>Edible millet grain with its hull removed. A basic staple that can be eaten as grain or used as an ingredient in ordinary meals.</description>
+    <graphicData>
+      <!-- TEMP: Medieval Overhaul lentil graphic. -->
+      <texPath>Things/Item/Resource/PlantFoodRaw/RawLentils</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <tasteThought>AteRawFood</tasteThought>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>90</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
   </ThingDef>
 
 </Defs>

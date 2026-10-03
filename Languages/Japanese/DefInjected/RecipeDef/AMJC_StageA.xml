@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <AMJC_ThreshMillet.label>雑穀を脱穀する</AMJC_ThreshMillet.label>
+  <AMJC_ThreshMillet.description>雑穀(生)を脱穀し、藁と殻付き雑穀に分ける。</AMJC_ThreshMillet.description>
+  <AMJC_ThreshMillet.jobString>雑穀を脱穀している。</AMJC_ThreshMillet.jobString>
+
+  <AMJC_ThreshMilletBulk.label>雑穀を脱穀する x10</AMJC_ThreshMilletBulk.label>
+  <AMJC_ThreshMilletBulk.description>雑穀(生)10個をまとめて脱穀し、藁と殻付き雑穀に分ける。</AMJC_ThreshMilletBulk.description>
+  <AMJC_ThreshMilletBulk.jobString>雑穀をまとめて脱穀している。</AMJC_ThreshMilletBulk.jobString>
+
+  <AMJC_HullMillet.label>雑穀の殻を取る</AMJC_HullMillet.label>
+  <AMJC_HullMillet.description>殻付き雑穀から殻を取り除き、食べられる雑穀にする。</AMJC_HullMillet.description>
+  <AMJC_HullMillet.jobString>雑穀の殻を取っている。</AMJC_HullMillet.jobString>
+
+  <AMJC_HullMilletBulk.label>雑穀の殻を取る x10</AMJC_HullMilletBulk.label>
+  <AMJC_HullMilletBulk.description>殻付き雑穀10個をまとめて加工し、食べられる雑穀にする。</AMJC_HullMilletBulk.description>
+  <AMJC_HullMilletBulk.jobString>雑穀の殻をまとめて取っている。</AMJC_HullMilletBulk.jobString>
+
+</LanguageData>
