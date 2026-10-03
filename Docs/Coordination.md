@@ -93,9 +93,11 @@ The first in-game comparison showed the immature Awa silhouette was noticeably t
 
 That 1.2× replacement then rendered as a red question mark in game even though the path and Def wiring were unchanged from the previously working immature texture. The initial diagnosis that indexed PNG encoding itself was the cause was not supported: the previously working immature asset was also an indexed-color PNG.
 
-The replacement has therefore been rebuilt directly from the exact previously working blob `533818ce40a03f98d473821ddc2113b47531da88`: only the visible sprite was enlarged to 120% with nearest-neighbor scaling on the same 256×256 palette canvas, preserving the original palette/transparency structure. The resulting exact blob is `d9a0c7425bf327c25016ef86157b8f0eabfeac54`. The incorrect RGBA-only validator requirement has been removed.
+The replacement was rebuilt directly from the exact previously working blob `533818ce40a03f98d473821ddc2113b47531da88`: only the visible sprite was enlarged to 120% with nearest-neighbor scaling on the same 256×256 palette canvas, preserving the original palette/transparency structure. The resulting exact blob `d9a0c7425bf327c25016ef86157b8f0eabfeac54` rendered correctly in game, resolving the red-question-mark regression.
 
-**Next action:** pull latest `main`, restart RimWorld, and verify that this exact 1.2× derivative renders. If a red question mark still appears, stop changing image bytes and capture the missing-texture/runtime log entry so the resolver/path failure can be diagnosed directly.
+The rendered 1.2× immature Awa was still visibly too small beside surrounding vegetation and the mature stage. It has therefore been enlarged by a further 120% from the known-good rendered asset, giving roughly 1.44× the original visible size while keeping the same 256×256 palette canvas and nearest-neighbor treatment. The new exact blob is `c3b9d1c98796c684fabadadc75de27e081907861`.
+
+**Next action:** pull latest `main`, restart RimWorld, and verify only the immature Awa size/readability at normal zoom. If this scale is acceptable, close AMJ-004 and move to AMJ-005 post-harvest graphics.
 
 **Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`; mature Awa art `d515cb304531ae01debf1c6cd2ab859f9675fdf9`; texture-loading correction `b7813c846f5d3bb2c4ede99a53ca001336f77409`; final in-game visual comparison accepted on 2026-10-03.
 
