@@ -377,6 +377,70 @@ AMJ周辺Modは、**できる限り疎結合にし、AMJ Coreを導入してい�
 
 配布単位は個別Workshop Itemを基本候補としつつ、実装・保守性によって同一配布内モジュールも許容する。重要なのは配布形態ではなく、不要な機能を前提依存ごと強制しないことである。
 
+#### 詳細設計前の先行Mod監査
+
+AMJの各Addon・姉妹Modは、詳細設計へ入る前に**同一目的・部分重複・基盤Framework・互換候補となる既存Modを一度調査する**。目的は「似たModがあるからAMJ側を削る」ことではなく、**AMJでその機能を作る理由まで既存Modが満たしているか**を確認し、不要な再実装と不要な前提依存の両方を避けることである。
+
+監査では、次の順序で判断する。
+
+1. **時代範囲:** AMJの対象は新石器相当～戦国末期であり、江戸時代は対象外とする。江戸を主題とするModは、技術参考・任意互換対象にはなり得るが、古代～中世の建築・衣服・背景・生活文化の代替としては扱わない。
+2. **生活層・主題:** 武士・大名・城郭・都市文化が充実しているだけではAMJの代替にならない。農民・職人・猟師・漁師・流民・下級武士等を含む一般生活者と、小規模な農村・山村の生活基盤を満たすかを見る。
+3. **ゲーム設計:** AMJが避ける「単純なOP化」「料理/Bill/中間素材の過剰追加」「意味のない工程・在庫分裂」「一資源だけで多用途が完結する万能化」がないかを見る。
+4. **残せる割合:** 既存Modを前提化してAMJ側からPatchする場合、元Modの主要機能・主要コンテンツを十分残したまま利用できるかを見る。元Modの売りとなる料理・加工・設備・研究等を大量に削除・無効化しなければAMJ設計に合わない場合は、原則として前提化しない。
+5. **固有基盤の価値:** C#システム、汎用Framework、独自UI、広い互換基盤等、依存を増やしてでも再利用する価値がある固有実装が残るかを見る。単にThingDef・RecipeDef・画像の一部を使いたいだけなら、独自実装を優先する。
+6. **文化非依存の汎用機能:** 修理・リサイクル・一般的な釣り等、日本固有でない汎用システムは、AMJが再実装するより既存Modをそのまま利用・推奨・任意互換できないかを先に検討する。
+7. **作者・利用者から見た自然さ:** 技術的にPatch可能でも、元Modの主要内容をAMJ側で大半無効化する構成は避ける。公開時に「なぜこのModが前提なのか」が明確で、元Modの設計を素材集のように扱わない依存関係を優先する。
+
+監査後の分類は以下を基本とする。
+
+- **前提採用:** 元Modの主要機能をそのまま大きく活用できる
+- **任意統合 / 互換:** 元Mod導入時だけAMJ資源・カテゴリ・工程を接続する
+- **汎用機能の代替候補:** AMJで新規開発せず既存Modへ任せられる可能性が高い
+- **実装参考:** 技術・UI・Def構成等のみ参考にし、依存しない
+- **比較 / 反面教師:** AMJが解消したい問題点を確認する対象
+- **前提化不適:** AMJ化するには元Modの主要内容を大量削除・置換する必要がある
+- **独自実装継続:** AMJの時代・生活層・ゲーム設計を満たす既存Modが見つからない、または既存Modでは責務が異なる
+
+現時点で確認済みの代表例:
+
+- **Soybean Products**（https://steamcommunity.com/sharedfiles/filedetails/?id=3586634388）
+  - 大豆加工・料理の比較対象。
+  - 大豆を中心に多数の加工品・料理・効果を持つ方向は、AMJの「工程・Recipeを意味のあるものだけに絞る」「一作物を万能化しない」方針と大きく異なる。
+  - AMJ向けにすると主要なBill・料理・加工物を大量に削ることになるため、**前提化不適**。大豆加工は必要最小限をAMJ側で独自設計する。
+- **〖ZP〗Rice cultivating civilization**（https://steamcommunity.com/sharedfiles/filedetails/?id=3046830338）
+  - 稲作・加工・料理・酒造・たたら製鉄等の比較・実装参考。
+  - AMJは同Modへの不満点を含めて稲作を再設計しており、総合Modとしての主要部分を大量に削らなければAMJの責務分離・料理数・労働量・資源設計に合わない。
+  - よって**前提化不適**。稲作はAMJ Core側の独自設計を維持する。
+- **Edo Themed Expansion / Edo Themed Backstories / UNAGI Japanese Assortment**
+  - 江戸期を主題とするため、AMJの建築・衣服・背景の代替判定からは外す。
+  - 必要に応じて実装参考・通常AMJでの任意互換対象とする。
+- **R⁴: Rimworld Reduce, Reuse, and Recycle**（https://steamcommunity.com/sharedfiles/filedetails/?id=3695601023）
+  - 修理・穢れ除去・リサイクルという文化非依存の汎用機能を既存作業台へ追加するため、AMJ独自 Repair & Reuse の**代替候補**。
+  - 新規Repair & Reuse開発は、R⁴を実プレイして不足点を確認するまで保留する。
+- **Vanilla Fishing Expanded**（https://steamcommunity.com/sharedfiles/filedetails/?id=1914064942） / **Fish Traps**（https://steamcommunity.com/sharedfiles/filedetails/?id=2594468074）
+  - 一般的な釣りJob・水域Fishing zone・漁網/罠は先行実装が存在する。
+  - Fisheries詳細設計では、これらを再実装する必要性を先に検証し、日本側の独自価値を沿岸採集・貝・海藻・貝塚・淡水/汽水/海水差・保存連携等へ置く。
+- **Food Drying**（https://steamcommunity.com/sharedfiles/filedetails/?id=3664822476）
+  - 汎用乾燥は既存Modを優先し、AMJ Coreで重複実装しない既存方針を維持する。
+- **Salted Meat**（https://steamcommunity.com/sharedfiles/filedetails/?id=2606419180）
+  - 塩蔵の先行例だが、独自塩・干し魚・ソーセージ等まで含む。AMJではMO `DankPyon_Salt` を正本とするため、そのままの前提候補ではなく、Salt Preservation詳細設計時の比較・実装参考とする。
+- **[SYR] Processor Framework (Continued)**（https://steamcommunity.com/sharedfiles/filedetails/?id=3210544395）
+  - 発酵・熟成等の時間経過加工に使える汎用基盤。MO自体が既に必須依存しているため、Core + MO環境では追加依存を増やさず利用できる。
+  - Fermentation / Sake詳細設計では、内容Modを前提化して大量削除するより、こうしたFrameworkを基盤として必要工程だけ独自定義する案を優先比較する。
+- **Medieval Kingdoms: Shogunate**（https://steamcommunity.com/sharedfiles/filedetails/?id=3632552850）
+  - 中世日本Factionの直接比較対象。氏族・兵種・文化・宗教側の先行実装として調査する。
+  - AMJ Factionsの村落共同体・在地勢力・寺社・交易等の社会構成や、AMJ Eventsの一般社会イベントまで同一責務ではないため、現段階では代替確定とせず任意互換・実装参考候補とする。
+- **Tasty Armory - Sengoku**（https://steamcommunity.com/sharedfiles/filedetails/?id=3494429497）
+  - AMJ対象末期に含まれる戦国後期装備の直接比較対象。武具Addonでは既存装備を重複追加する前に互換・棲み分けを検討する。
+- **ReGrowth 2**（https://steamcommunity.com/sharedfiles/filedetails/?id=2260097569）
+  - Japanese Environmentの季節植生・バイオーム・天候表現の参考実装とし、必須依存にはしない既存方針を維持する。
+- **Rimedieval**（https://steamcommunity.com/sharedfiles/filedetails/?id=2516523040）
+  - Japan OnlyがMO要素を非表示・制限する実装を検討する際の技術参考。中世化そのものと日本化は責務が異なるため代替ではない。
+
+この監査は一度行えば終わりではなく、各Addonの詳細設計開始時に1.6の現行Mod状況を再確認する。先行Modが存在するだけで計画を縮小せず、**AMJの存在理由まで満たす場合にのみ代替・前提化する**。
+
+
+
 #### Mod構成そのものを設定として扱う
 
 AMJ群では、巨大なSettings画面で多数の機能をON/OFFさせるより、**導入するModそのものによって機能構成を決める**設計を優先する。
@@ -628,7 +692,7 @@ Core自身は鉄鉱床・砂鉄等の**供給量や生成分布を変更しな�
 - 通常AMJ環境ではMO側ルートを強制削除せず、鉄消費・材料構成・工程差によってAMJ側を自然な選択肢にする
 - Japan Onlyでは、対応する日本側代替が成立した分野についてMO側の西洋的重複ルートを別途整理できる
 - 鉄資源そのものの希少化・地域分布はCoreでは行わず、Japanese Iron Resourcesが担当する
-- **修理・再利用そのものは日本固有要素ではないためCoreの責務にしない**。独立ModのRepair & Reuseで扱う
+- **修理・再利用そのものは日本固有要素ではないためCoreの責務にしない**。既存の汎用修理Mod（R⁴等）または必要時のみ独立したRepair & Reuse機能枠で扱う
 - **AMJの資源バランスはRepair & Reuseなしでも成立させる**。同Modによる修理・素材回収を前提に、鉄・布・革等の供給量やAMJレシピを不足側へ追い込まない
 - Repair & Reuseは資源効率・継戦能力・装備寿命を改善する**強く推奨する補助システム**であって、AMJ進行を成立させるための隠れた必須依存にはしない
 - 鉄が不足したときは、**代替素材・低鉄消費のAMJ設備・砂鉄・採掘・交易・優先順位付け**など、複数の対処経路を持たせる
@@ -1483,7 +1547,7 @@ Famine Foodについては将来、採集・困窮食フェーズで任意互換
 - 宗教
 - 武具
 - AMJ Clothing / 一般生活者の衣服
-- Repair & Reuse / 修理・再利用（RimWorld本体のみ必須。武具・道具・衣服の修理、素材回収、パッチワーク。MO/AMJ等は互換対象）
+- Repair & Reuse / 修理・再利用（機能枠。新規開発はR⁴等で代替可能か実プレイ評価するまで保留。AMJ進行上の必須依存にはしない）
 - Japanese Iron Resources / 地域鉄資源（Core同時公開候補。鉄鉱石分布・砂鉄・採取・MO溶鉱炉精錬）
 - Japanese Ironworking / Metallurgy（高度な鍛冶・製鉄。たたらは地域条件付き候補）
 
