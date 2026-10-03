@@ -60,6 +60,26 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### AMJ-004 — Awa final plant graphic
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Art/graphics  \
+**Status:** IN PROGRESS
+
+The Awa cultivation/balance slice and shared grain-processing path are validated. Per the vertical-slice workflow, replace the temporary MO wheat mature-plant graphic before moving on to the next crop.
+
+Art target:
+- full-grown Awa / foxtail millet only for this step;
+- transparent background, clear small-size silhouette, RimWorld 3/4 top-down readability;
+- simplified vector-like shapes with restrained shading, matching the general information density and outline weight of Medieval Overhaul plant art without copying its wheat silhouette;
+- visibly distinct foxtail seed heads: narrow cylindrical/bristled panicles rather than wheat ears;
+- warm yellow-gold mature panicles with muted green leaves/stems;
+- one production texture first; immature art remains the existing temporary MO wheat placeholder until the mature graphic passes an in-game appearance check.
+
+**Next action:** generate the mature Awa texture, place it under the AMJ texture namespace, update `AMJC_Plant_FoxtailMillet_Awa.graphicData.texPath`, then perform one in-game appearance check before advancing to the next crop.
+
+**Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`.
+
 Add new items using the following form.
 
 ### AMJ-XXX — Short title
