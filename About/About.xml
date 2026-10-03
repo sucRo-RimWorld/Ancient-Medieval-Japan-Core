@@ -23,5 +23,7 @@
 
 Extends Medieval Overhaul with agriculture, primary processing, materials, and village-life systems inspired by pre-Edo Japan. Medieval Overhaul is required.
 
-The current development slice begins with field-crop agriculture. Crop Cold Tolerance Overhaul is optional; when present, AMJ crops use its explicit cold-death framework.</description>
+The current development slice begins with field-crop agriculture. Crop Cold Tolerance Overhaul is optional; when present, AMJ crops use its explicit cold-death framework.
+
+Save compatibility: Adding to or removing from existing saves has not been verified. This development build adds custom crops, items, and processing content; safe removal is not guaranteed.</description>
 </ModMetaData>

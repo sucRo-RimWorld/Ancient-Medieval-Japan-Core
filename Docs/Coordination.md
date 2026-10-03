@@ -221,3 +221,16 @@ AMJ Core E2E now:
 
 Implementation: `9bb1038691147f0ea1046aa206332374217ec3f9`, `dbccb4f92053c14869a11bcf4079b3954a0e41a3`, `c6eed6b1f862e2def624db8998a2884f7c38318e`, `0ed52c49a1bb4cf5542a0f97b99d62964dae0538`.
 Project-rule commits: `7e8e3229bf3d05e3a747a3a94b4e6d160b69ece7`, `990d329456126ceb1291a5c2d76a04c327d0d03e`.
+
+
+### DOC-001 — Shared public-description format and save compatibility
+
+**Requested by:** author / public-description policy (2026-10-04 JST)  
+**Owner:** Documentation/release  
+**Status:** DONE (repository documentation)
+
+All AMJ-related mod descriptions must include save compatibility. CCTO is the evolving format baseline. Durable shared policy: [Docs/ModDescriptionGuidelines.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Core/blob/main/Docs/ModDescriptionGuidelines.md). Addition/removal safety must reflect each mod's actual implementation; custom content and world-generation mods do not inherit CCTO's safe-removal claim.
+
+About.xml now states the development build's save-compatibility limits; AGENTS.md points to the shared policy for future README/Workshop preparation.
+
+**Next action:** Use the shared CCTO-based format when preparing the public description; verify save addition/removal before making stronger claims.
