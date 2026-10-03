@@ -21,12 +21,15 @@ The gate:
 3. generates three development-only test mods under `RimWorld\Mods`;
 4. compiles the Pickle and Quickstarts test assemblies;
 5. creates an isolated RimWorld save-data profile without changing the normal mod list;
-6. launches RimWorld automatically;
+6. launches RimWorld automatically and redirects runtime output to an isolated `TestResults\Pickle\Player.log`;
 7. runs the four `stage-a.feature` scenarios;
 8. requires a fresh clean 4/4 Pickle summary;
-9. lets Pickle exit RimWorld automatically.
+9. scans the isolated runtime log and fails the full gate if AMJ Core / its staged E2E target emitted any ERROR-level entry;
+10. lets Pickle exit RimWorld automatically.
 
 Required local Workshop helpers are Pickle (3791648678) and Quickstarts (3793646067), plus their normal Harmony/RimLogging requirements.
+
+A clean Pickle scenario count is not sufficient if the target mod logged an ERROR. Runtime ERROR inspection is part of the authoritative local gate.
 
 Generated test mods:
 
