@@ -60,11 +60,27 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+Add new items using the following form.
+
+### AMJ-XXX — Short title
+
+**Requested by:** <workstream/chat/repository>  
+**Owner:** <workstream>  
+**Status:** OPEN
+
+Context, constraints, and exact question/request.
+
+**Next action:** concrete next step.
+
+**Result / references:** add commit SHA, PR, design section, or other durable reference when available.
+
+## Completed handoffs
+
 ### AMJ-004 — Awa final plant graphic
 
 **Requested by:** Agriculture/XML  \
 **Owner:** Art/graphics  \
-**Status:** IN PROGRESS
+**Status:** DONE
 
 The Awa cultivation/balance slice and shared grain-processing path are validated. Per the vertical-slice workflow, replace the temporary MO wheat mature-plant graphic before moving on to the next crop.
 
@@ -85,25 +101,11 @@ A second in-game test showed mature plants still rendering as red question marks
 
 The actual image bytes were also audited. The PNG blob previously committed to GitHub did not match the approved local export, so the repository texture has been replaced with a freshly encoded 256×256 palette PNG generated from the approved flat Awa asset. CI/local validation now checks the PNG signature and 256×256 IHDR dimensions in addition to the MO-style `Graphic_Random` wiring. The immature stage remains the MO wheat placeholder by design.
 
-**Next action:** pull the latest `main`, restart RimWorld fully, and re-check both immature and mature Awa. Expected result: immature Awa shows the temporary MO wheat image; mature Awa shows the AMJ texture with no red question mark.
+Final in-game comparison was completed beside MO wheat. The mature Awa texture renders correctly on the map and is visually acceptable as-is. It is somewhat crisper and higher-contrast than MO wheat because its outline is darker, while MO wheat uses a warmer brown outline; however, the difference remains within the accepted AMJ/MO visual envelope and also helps crop identification. No further outline/color adjustment will be made at this stage to avoid degrading the accepted asset through unnecessary iteration.
 
-**Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`.
+**Next action:** proceed to the next crop/art slice. Keep the current mature Awa texture as the production asset. The immature stage may receive dedicated AMJ art later when its own slice is reached.
 
-Add new items using the following form.
-
-### AMJ-XXX — Short title
-
-**Requested by:** <workstream/chat/repository>  
-**Owner:** <workstream>  
-**Status:** OPEN
-
-Context, constraints, and exact question/request.
-
-**Next action:** concrete next step.
-
-**Result / references:** add commit SHA, PR, design section, or other durable reference when available.
-
-## Completed handoffs
+**Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`; mature Awa art `d515cb304531ae01debf1c6cd2ab859f9675fdf9`; texture-loading correction `b7813c846f5d3bb2c4ede99a53ca001336f77409`; final in-game visual comparison accepted on 2026-10-03.
 
 ### AMJ-003 — Shared millet threshing and hulling
 
