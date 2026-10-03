@@ -8,6 +8,7 @@ set "ROOT=%~dp0"
 set "RIMWORLD_EXE=%RIMWORLD_DIR%\RimWorldWin64.exe"
 set "REPORT_DIR=%ROOT%TestResults\Pickle"
 set "TEST_SAVEDATA=%ROOT%TestResults\SaveData"
+set "RUNTIME_LOG=%REPORT_DIR%\Player.log"
 
 echo.
 echo Resetting isolated AMJ test output...
@@ -45,6 +46,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "%ROOT%Scripts\Run-RimWorldW
     -ExePath "%RIMWORLD_EXE%" ^
     -SavedataFolder "%TEST_SAVEDATA%" ^
     -ReportDir "%REPORT_DIR%" ^
+    -LogPath "%RUNTIME_LOG%" ^
     -RunFilter "stage-a.feature" ^
     -TimeoutSeconds 300
 
@@ -55,6 +57,15 @@ if "%RESULT%"=="0" (
     echo Verifying fresh AMJ Pickle summary...
     powershell -NoProfile -ExecutionPolicy Bypass -File "%ROOT%Scripts\Validate-PickleSummary.ps1" ^
         -SummaryPath "%REPORT_DIR%\summary.json"
+    if errorlevel 1 set "RESULT=2"
+)
+
+if "%RESULT%"=="0" (
+    echo.
+    echo Checking AMJ Core runtime log for mod-origin ERROR entries...
+    powershell -NoProfile -ExecutionPolicy Bypass -File "%ROOT%Scripts\Validate-RuntimeLog.ps1" ^
+        -LogPath "%RUNTIME_LOG%" ^
+        -ModIdPrefixes "sucro.ancientmedievaljapan.core.e2etarget;sucro.ancientmedievaljapan.core"
     if errorlevel 1 set "RESULT=2"
 )
 
