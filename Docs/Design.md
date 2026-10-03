@@ -1457,7 +1457,7 @@ MO 1.6実データとの重複整理:
 - **板床:** MOに `DankPyon_Floor_RusticWoodFloor_*` が存在するため、通常の板張り床は追加しない
 - **土壁:** MOの `DankPyon_TudorWall` は木組み + clayによるwattle and daubで、構造・材料面では日本の土壁と近い。日本固有の外観・薄壁構造を表現する必要がある場合のみ、MOの材料/バランスを参考に日本側ThingDefを追加する
 - **木壁・木戸:** MOにlog wall、rustic door等があるため、単なる木製壁・開き戸は追加しない
-- **囲炉裏:** MOの `DankPyon_RusticHearth` は簡単な調理、Gather Spot、照明、暖房を兼ね、機能上ほぼ囲炉裏の役割を満たす。AMJ独自Irori ThingDefは原則作らず、AMJ料理を既存Hearthへ接続する。完全日本化時に外観差が必要ならJapan Onlyで名称/テクスチャ置換を検討する
+- **囲炉裏:** MOの `DankPyon_RusticHearth` は調理、Gather Spot、照明、暖房という機能面では参考になるが、実体は**Stony素材60を要求する2x1の石造暖炉**で、外観・材料・建築形式とも囲炉裏とは異なる。したがってMO Hearthを囲炉裏そのものの代替とは扱わない。囲炉裏はAMJ Architecture側の独自ThingDef候補へ戻す。ただし調理機能を一から複製せず、MO Hearthで利用可能な既存Recipeを必要に応じてIroriのrecipeUsersへ接続し、暖房・Gather Spot等も既存Compを再利用する方向を優先する
 - **収納:** MOにgrain shelf、crate、sack等が充実しているため、単なる「穀物を地面から離して保管する」機能だけを理由に新しい倉庫を追加しない
 
 AMJ側で残す候補:
@@ -1481,7 +1481,7 @@ RimWorldの標準Terrain/Buildingには連続した高さ・床下空間の概�
 
 **屋根表現の追加・茅葺/板葺/瓦葺等の専用Roofシステムは当面実装しない。** RimWorld標準屋根を利用し、建物の時代・文化差は壁・床・戸・家具・設備・素材で表現する。
 
-したがってArchitectureの初期候補は、MOと重複しない**障子/引戸・薄い間仕切り・必要に応じた日本式土壁外観・和紙用途**を中心に再精査する。
+したがってArchitectureの初期候補は、MOと重複しない**障子/引戸・薄い間仕切り・必要に応じた日本式土壁外観・囲炉裏・和紙用途**を中心に再精査する。囲炉裏は既存和風Modにも先行例があるため、それらを前提化するのではなく、AMJ単体で必要な最小機能と材料構成を詳細設計時に比較する。
 
 ### 8.7 宗教・価値観
 
