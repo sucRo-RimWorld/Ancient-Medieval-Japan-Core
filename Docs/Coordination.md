@@ -236,3 +236,16 @@ All AMJ-related mod descriptions must include save compatibility. CCTO is the ev
 About.xml now states the development build's save-compatibility limits; AGENTS.md points to the shared policy for future README/Workshop preparation.
 
 **Next action:** Use the shared CCTO-based format when preparing the public description; verify save addition/removal before making stronger claims.
+
+
+### DOC-002 — Workshop descriptions omit detailed versions and test results
+
+**Requested by:** author (2026-10-04 JST)  
+**Owner:** Documentation/release  
+**Status:** DONE (repository documentation)
+
+The shared public-description policy now omits detailed mod version numbers, Version sections, and test counts/results from Workshop descriptions. Keep the supported RimWorld version and Alpha/Beta stage, features, dependencies, supported content, and save compatibility. Detailed release numbers and validation evidence belong in README/development/release records; changes belong in Workshop changelogs and GitHub releases.
+
+Durable source updated: Docs/ModDescriptionGuidelines.md. All related repositories already refer to this shared guide through AGENTS.md.
+
+**Next action:** Use this policy for all future AMJ-related Workshop descriptions.
