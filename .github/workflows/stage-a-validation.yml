@@ -1,0 +1,16 @@
+name: Stage A validation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  validate-stage-a:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate Stage A crop and grain processing XML
+        run: python Tests/validate_stage_a.py
