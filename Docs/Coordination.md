@@ -87,9 +87,11 @@ The actual image bytes were also audited. The PNG blob previously committed to G
 
 The first mature-art comparison beside MO wheat was acceptable, but a final refinement was requested before locking it: preserve the accepted mature silhouette, reduce its on-canvas size to roughly 90%, and shift the outline from near-black toward the warmer yellow-brown/ochre family seen in MO wheat. That revised mature texture is now wired in.
 
-A dedicated immature Awa texture has also been added. It uses the same warm outline/palette family and is deliberately much smaller than the mature silhouette. The PlantDef now points `immatureGraphicPath` to `Things/Plants/Immature/AMJC_Awa`; the MO wheat placeholder is removed.
+A dedicated immature Awa texture has also been added. It uses the same warm outline/palette family. The PlantDef now points `immatureGraphicPath` to `Things/Plants/Immature/AMJC_Awa`; the MO wheat placeholder is removed.
 
-**Next action:** pull latest `main`, restart RimWorld, and compare immature + mature Awa beside MO wheat at normal zoom. If both size/readability and the warmer outline look acceptable in game, mark AMJ-004 DONE.
+The first in-game comparison showed the immature Awa silhouette was noticeably too small relative to both mature Awa and MO wheat. The accepted immature image has therefore been enlarged to approximately 120% of its previous visible size while preserving its existing shape, palette, and outline treatment; the 256×256 texture canvas remains unchanged.
+
+**Next action:** pull latest `main`, restart RimWorld, and re-check the enlarged immature Awa beside the current mature Awa and MO wheat at normal zoom. If the growth-stage size relationship is acceptable, mark AMJ-004 DONE.
 
 **Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`; mature Awa art `d515cb304531ae01debf1c6cd2ab859f9675fdf9`; texture-loading correction `b7813c846f5d3bb2c4ede99a53ca001336f77409`; final in-game visual comparison accepted on 2026-10-03.
 
