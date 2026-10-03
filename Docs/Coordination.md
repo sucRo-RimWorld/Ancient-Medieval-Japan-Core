@@ -78,4 +78,23 @@ Context, constraints, and exact question/request.
 
 ## Completed handoffs
 
-None yet.
+### AMJ-001 — Stage A crop balance baseline recovery
+
+**Requested by:** Core/design  \
+**Owner:** Agriculture/XML  \
+**Status:** DONE
+
+Recovered the previously confirmed Stage A balance values for the six first-Alpha field crops (Awa, Hie, Kibi, barley, MO wheat, buckwheat) from repository history and reconciled them with the current MO-required / standalone-CCTO architecture.
+
+The restored authoritative design now includes:
+- growDays;
+- final edible-grain yield baselines;
+- fertilityMin / fertilitySensitivity;
+- growth-temperature design values;
+- sowMinSkill and research unlocks;
+- grain processing/storage tiers;
+- CCTO-compatible fixed cold-death temperatures, using CCTO only when installed rather than duplicating its C# framework in Core.
+
+Historical design references used for recovery include `9b6807b48cf43da50a70caf1a99a5989391473ca` (growDays), `768665413e70ad7451b6b2255c67eb349ea32099` (yield/fertility/temperature), `33430521c97e22e2a52fe1ca661deeb6faf5c025` (skill/storage), and `36f271de4d82162fb002922bbb295ae5f68f31ae` (later grain-processing/storage structure). Current CCTO AMJ values are sourced from CCTO `Docs/ImplementationTable.md`.
+
+**Result / references:** `Docs/Design.md` commit `f8190ecdaf5ca2d2313e54496b928f8eb66b5685`.
