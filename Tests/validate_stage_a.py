@@ -74,7 +74,21 @@ def recipe(name):
     return find_def(recipes, "RecipeDef", name)
 
 def recipe_users(node):
-    return sorted(li.text for li in node.findall("./recipeUsers/li"))
+    users = [li.text for li in node.findall("./recipeUsers/li")]
+    if users:
+        return sorted(users)
+
+    parent_name = node.attrib.get("ParentName")
+    assert parent_name, "recipe has no direct recipeUsers and no ParentName"
+
+    parent = None
+    for candidate in recipes.findall("RecipeDef"):
+        if candidate.attrib.get("Name") == parent_name:
+            parent = candidate
+            break
+
+    assert parent is not None, f"missing RecipeDef parent {parent_name}"
+    return sorted(li.text for li in parent.findall("./recipeUsers/li"))
 
 def product_count(node, name):
     p = node.find(f"./products/{name}")
