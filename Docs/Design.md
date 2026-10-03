@@ -972,12 +972,28 @@ MOに既存の加工系があるものはそれを利用し、AMJ Coreでは**�
 
 脱穀・殻取り・籾摺りは料理台へ混在させず、**穀物一次加工専用の設備へまとめる**。設備構成はMOの石切り設備と同じ二段階を基準にする。
 
-- **簡易穀物加工場所（仮称）:** MO `DankPyon_StonecuttingSpot` と同じ初期設備の位置づけ。1×1 + interaction cell、木材系10を初期値、`WorkTableWorkSpeedFactor=0.5` を基準とする
-- **穀物加工台（仮称）:** 本格設備。MO環境の `TableStonecutter` と同じく鉄インゴット30を初期建築コストの基準とし、標準作業速度で処理する
+- **簡易穀物加工場所 / `AMJC_GrainProcessingSpot`:** 初期から利用可能な1×1作業場所。木材系10、interaction cellあり、`WorkTableWorkSpeedFactor=0.5`。MO `DankPyon_StonecuttingSpot` と同じ「設備をほぼ要求しない代わりに遅い」位置づけとする
+- **穀物加工台 / `AMJC_GrainProcessingTable`:** 1×1の本格設備。鉄インゴット30、`DankPyon_BasicAgriculture` 解禁、標準作業速度1.0。初期設備と同じRecipeを処理する
 - 両設備で**同じ脱穀・殻取り・籾摺りRecipeを実行可能**にし、上位設備だけの必須Recipeは原則作らない
 - 上位設備の価値は主に処理速度・大量生産時の省力化とし、初期設備だけでも生活を成立させる
 - 製粉はこの設備へ統合せず、MO既存の製粉設備・製粉体系を引き続き利用する
-- 初期設備・上位設備の正式名称、画像、最終コストは実装時にMO設備との視認性・バランスを確認して確定する
+- 開発中の画像は既存MO設備の仮画像を使う。機能・数値確認後に本番画像へ置き換える
+
+Stage Aの雑穀加工は以下で固定する。
+
+| Recipe | 入力 | 出力 | workAmount |
+|---|---|---|---:|
+| 雑穀を脱穀する | 雑穀(生) 1 | 殻付き雑穀 1 + `DankPyon_Straw` 1 | 15 |
+| 雑穀を脱穀する x10 | 雑穀(生) 10 | 殻付き雑穀 10 + `DankPyon_Straw` 10 | 120 |
+| 雑穀の殻を取る | 殻付き雑穀 1 | 雑穀 1 | 10 |
+| 雑穀の殻を取る x10 | 殻付き雑穀 10 | 雑穀 10 | 80 |
+
+- 加工で穀粒数を減らさず、PlantDef側で決めた最終可食穀粒の基準収量を1:1で維持する。脱穀だけがStraw副産物を発生させる
+- x10 Recipeは単品10回より作業量を20%減らし、大量処理時のBill/Job負荷を抑える。端数は単品Recipeで処理できる
+- Recipeの作業速度は `GeneralLaborSpeed`、作業Skillは `Crafting` とする。穀物加工だけのために独自WorkType/C#を追加しない
+- アワ・ヒエ・キビは `AMJC_RawMillet` → `AMJC_MilletInHull` → `AMJC_Millet` の共通経路へ合流する
+- 保存期間は順に120日 → 120日 → 90日。未脱穀・殻付きでは保存差を機械的に作らず、殻取りで初めて保存性を下げる
+- `AMJC_RawMillet` / `AMJC_MilletInHull` / `AMJC_Millet` は `DankPyon_Cereal` へ登録しない。MO汎用製粉・Ale経路を意図せず迂回させない
 
 ### 5.3 完成料理
 
