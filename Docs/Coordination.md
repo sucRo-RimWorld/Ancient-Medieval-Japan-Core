@@ -198,3 +198,20 @@ The restored authoritative design now includes:
 Historical design references used for recovery include `9b6807b48cf43da50a70caf1a99a5989391473ca` (growDays), `768665413e70ad7451b6b2255c67eb349ea32099` (yield/fertility/temperature), `33430521c97e22e2a52fe1ca661deeb6faf5c025` (skill/storage), and `36f271de4d82162fb002922bbb295ae5f68f31ae` (later grain-processing/storage structure). Current CCTO AMJ values are sourced from CCTO `Docs/ImplementationTable.md`.
 
 **Result / references:** `Docs/Design.md` commit `f8190ecdaf5ca2d2313e54496b928f8eb66b5685`.
+
+### TEST-001 — AMJ-wide runtime ERROR gate
+
+**Requested by:** project-wide automated-test policy  
+**Owner:** testing/tooling  
+**Status:** DONE
+
+AMJ automated tests that launch RimWorld must treat repository-owned ERROR-level runtime log entries as test failures even when the scenario count itself passes.
+
+AMJ Core E2E now:
+- redirects RimWorld/Unity runtime output to isolated `TestResults\Pickle\Player.log`;
+- validates the normal 4/4 Pickle summary;
+- then scans the isolated log for ERROR entries attributed to AMJ Core / the staged E2E target;
+- fails the overall gate when such an ERROR exists.
+
+Implementation: `9bb1038691147f0ea1046aa206332374217ec3f9`, `dbccb4f92053c14869a11bcf4079b3954a0e41a3`, `c6eed6b1f862e2def624db8998a2884f7c38318e`, `0ed52c49a1bb4cf5542a0f97b99d62964dae0538`.
+Project-rule commits: `7e8e3229bf3d05e3a747a3a94b4e6d160b69ece7`, `990d329456126ceb1291a5c2d76a04c327d0d03e`.
