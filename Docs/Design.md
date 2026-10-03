@@ -1550,7 +1550,7 @@ Famine Foodについては将来、採集・困窮食フェーズで任意互換
 
 ### 別アドオン / 姉妹Mod寄り
 
-- Japanese Environment / 日本環境（独立姉妹Mod）
+- Japanese Environment / 日本環境（独立姉妹Mod、リポジトリ: `sucRo0629/Ancient-Medieval-Japan-Environment`）
 - AMJ Backgrounds / 背景
 - AMJ Factions / 派閥
 - AMJ Events / 生活・社会イベント
