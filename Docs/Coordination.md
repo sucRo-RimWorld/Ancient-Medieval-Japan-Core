@@ -60,11 +60,44 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
-### AMJ-004 — Awa plant graphics
+### AMJ-005 — Shared millet post-harvest graphics
 
 **Requested by:** Agriculture/XML  \
 **Owner:** Art/graphics  \
 **Status:** IN PROGRESS
+
+Awa, Hie, and Kibi intentionally merge after harvest into the shared chain:
+`AMJC_RawMillet` → `AMJC_MilletInHull` → `AMJC_Millet`.
+
+These three ThingDefs still use temporary MO item graphics. Because they are shared by all three millet crops, their final art should be produced once as part of the shared millet chain rather than separately for each crop.
+
+The same locked AMJ art rules apply, with item icons flatter than plant art and with fewer/shallow shadows than the accepted plant asset.
+
+**Next action:** use the already approved 2026-10-03 post-harvest artwork as the source for raw millet, millet in hull, and edible millet. Do not regenerate those three unless the in-game check exposes a concrete problem. Wire the three final textures to their ThingDefs, then check map/UI readability at normal zoom.
+
+**Result / references:** shared processing implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; art-style baseline `2d4accb0c56bff6b81497a325877d5a5dc7d7710`.
+
+Add new items using the following form.
+
+### AMJ-XXX — Short title
+
+**Requested by:** <workstream/chat/repository>  
+**Owner:** <workstream>  
+**Status:** OPEN
+
+Context, constraints, and exact question/request.
+
+**Next action:** concrete next step.
+
+**Result / references:** add commit SHA, PR, design section, or other durable reference when available.
+
+## Completed handoffs
+
+### AMJ-004 — Awa plant graphics
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Art/graphics  \
+**Status:** DONE
 
 The Awa cultivation/balance slice and shared grain-processing path are validated. Per the vertical-slice workflow, replace the temporary MO wheat mature-plant graphic before moving on to the next crop.
 
@@ -97,42 +130,11 @@ The replacement was rebuilt directly from the exact previously working blob `533
 
 The rendered 1.2× immature Awa was still visibly too small beside surrounding vegetation and the mature stage. It has therefore been enlarged by a further 120% from the known-good rendered asset, giving roughly 1.44× the original visible size while keeping the same 256×256 palette canvas and nearest-neighbor treatment. The new exact blob is `c3b9d1c98796c684fabadadc75de27e081907861`.
 
-**Next action:** pull latest `main`, restart RimWorld, and verify only the immature Awa size/readability at normal zoom. If this scale is acceptable, close AMJ-004 and move to AMJ-005 post-harvest graphics.
+The final ~1.44× immature texture rendered correctly in game and its size/readability was accepted at normal zoom on 2026-10-04 JST. Mature and immature Awa plant graphics are therefore complete for this slice.
 
-**Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`; mature Awa art `d515cb304531ae01debf1c6cd2ab859f9675fdf9`; texture-loading correction `b7813c846f5d3bb2c4ede99a53ca001336f77409`; final in-game visual comparison accepted on 2026-10-03.
+**Next action:** none for AMJ-004; move to AMJ-005 post-harvest graphics.
 
-### AMJ-005 — Shared millet post-harvest graphics
-
-**Requested by:** Agriculture/XML  \
-**Owner:** Art/graphics  \
-**Status:** OPEN
-
-Awa, Hie, and Kibi intentionally merge after harvest into the shared chain:
-`AMJC_RawMillet` → `AMJC_MilletInHull` → `AMJC_Millet`.
-
-These three ThingDefs still use temporary MO item graphics. Because they are shared by all three millet crops, their final art should be produced once as part of the shared millet chain rather than separately for each crop.
-
-The same locked AMJ art rules apply, with item icons flatter than plant art and with fewer/shallow shadows than the accepted plant asset.
-
-**Next action:** after AMJ-004's revised mature/immature pair passes the in-game check, use the already approved 2026-10-03 post-harvest artwork as the source for raw millet, millet in hull, and edible millet. Do not regenerate those three unless the in-game check exposes a concrete problem.
-
-**Result / references:** shared processing implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; art-style baseline `2d4accb0c56bff6b81497a325877d5a5dc7d7710`.
-
-Add new items using the following form.
-
-### AMJ-XXX — Short title
-
-**Requested by:** <workstream/chat/repository>  
-**Owner:** <workstream>  
-**Status:** OPEN
-
-Context, constraints, and exact question/request.
-
-**Next action:** concrete next step.
-
-**Result / references:** add commit SHA, PR, design section, or other durable reference when available.
-
-## Completed handoffs
+**Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`; mature Awa art `d515cb304531ae01debf1c6cd2ab859f9675fdf9`; texture-loading correction `b7813c846f5d3bb2c4ede99a53ca001336f77409`; final mature in-game visual comparison accepted on 2026-10-03; final immature texture commit `7f69d28a26af14ecd7311ac263bdf9dcd1ce3bb7`, accepted in game on 2026-10-04 JST.
 
 ### AMJ-003 — Shared millet threshing and hulling
 
