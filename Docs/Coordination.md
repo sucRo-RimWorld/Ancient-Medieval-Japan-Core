@@ -596,3 +596,16 @@ AMJ-authored descriptions should include supported historical facts and, where s
 Authoring remains Japanese-first: research/draft Japanese, obtain author approval, then translate only the approved Japanese text into English. Durable research/source rationale is retained outside Coordination.
 
 **Result / references:** shared guideline `Docs/HistoricalDescriptionGuidelines.md` commit `ca17b37eb3cca5266d1f62a2d73f527a503d76e5`; Core AGENTS link `3a501077be572b651dcc4d646cf84fd1730b976e`; Environment application `0e1b74173eca79dde09dffa2287fc5f72a583c27`, `3b8b7c753b79951b315c2ffe31822416a31595c8`; CCTO scope/reference `5b60adbc676f35f98e6c7c9801f22846e5ebf097`.
+
+### POLICY — Golden Path closeout after verified success
+
+**Requested by:** author / AMJ project operations  
+**Owner:** shared AMJ development policy  
+**Status:** DONE
+
+AMJ now has a project-wide completion rule for non-trivial/repeatable work: once an implementation reaches a verified successful state, the workstream must capture the successful sequence as a Golden Path before moving on. Deterministic/repetitive steps should be automated, discovered failure modes should receive regression guards when practical, and the reusable procedure must live in durable repository documentation/scripts rather than only in chat or Coordination.
+
+Canonical shared policy: `Docs/DevelopmentGoldenPathGuidelines.md` in Core, commit `c54cefd71093edae61035b13793bee372edaa52a`. Core agent instructions reference the rule in `0cbcb28c382740db6dadb80b35bbc8bdcb5e7c6e`.
+
+Environment and CCTO agent instructions have also been bound to the shared rule. Repository-specific Golden Paths remain owned by each repository.
+
