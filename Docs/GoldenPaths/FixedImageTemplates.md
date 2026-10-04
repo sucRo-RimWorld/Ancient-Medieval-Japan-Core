@@ -8,7 +8,7 @@
 
 ## テンプレート登録
 
-各系統の所有リポジトリに次を保存する。未登録のものを「固定済み」と報告しない。
+各系統の所有リポジトリを登録簿の正本とし、次を登録する。バイナリの固定マスター/マスクは原則として所有リポジトリに置く。ただし、ChatGPTの別チャット間で同じ実画像を共有するため persistent Library をバイナリ正本として使う系統では、所有リポジトリに **Libraryの完全パス・寸法・SHA-256・マスク意味・合成/検証手順を含むJSONマニフェスト** を必ず置き、取得不能時はBLOCKEDとする。この条件を満たさないものを「固定済み」と報告しない。
 
 - 承認済み固定マスター（可逆PNG）。元画像がJPEGなら一度だけデコードしてPNG化し、そのRGBAを基準とする。JPEGを繰り返し保存しない。
 - 同寸法の8-bitグレースケールPNGマスク。0=保護、255=変更可能。中間値は禁止。輪郭のアンチエイリアスも保護画素に含める。
@@ -63,7 +63,7 @@ variable.pngは登録寸法に配置済みの透明レイヤー。ツールは�
 ## 現在の移行状態と新規チャット
 
 - 枡：承認済みマスターは `Textures/Things/Item/Resource/AMJC_Shared/Masu/AMJC_Masu_Empty.png`。派生制作前に内部/前縁を区別した固定マスク・マニフェストを登録する。
-- 表紙：承認済み視覚参照は `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`。次の表紙制作前に空の共通PNGマスター・Addon名/右図案マスク・マニフェストを登録する。SVGは参考図であり画素マスターではない。
+- 表紙：**v1固定テンプレート登録済み。** 視覚参照 `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`、空の共通PNGマスター `/AMJ/References/AMJ_WorkshopCover_CommonBase.png`、Addon名/右図案マスク `/AMJ/References/AMJ_WorkshopCover_VariableMask.png` をpersistent Libraryに固定し、登録簿は `Docs/References/AMJ_WorkshopCover_Template.json`、制作手順は `Docs/GoldenPaths/WorkshopCoverPipeline.md` とする。最終表紙をImageGenで直接生成せず、右図案のみ生成して決定的に合成・検査する。SVGは参考図であり画素マスターではない。
 - 樹木：現行Sudajii/ブナは画風の参照。別樹種は別形状。共用する幹等を宣言する状態差分にはそのパーツの固定テンプレートを登録する。
 
 この方針の設定は新しい画像案の承認ではない。既存画像を一括で描き直す指示でもない。新規・更新する共通パーツ派生から必須適用する。新しいチャットもチャットの記憶ではなくmainの本書・系統仕様・実画像・テンプレートを読むこと。
