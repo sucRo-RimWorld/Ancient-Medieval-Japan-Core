@@ -340,7 +340,7 @@ Coreと別Modの境界は、追加要素の「量」ではなく、**他の機�
 例:
 - 基礎作物
 - 豆類・油料・繊維作物
-- **低肥沃度でも耕作可能な基礎農地Terrain**
+- 作物ごとの `fertilityMin` / `fertilitySensitivity` と、自然土壌・農地改善へ接続する肥沃度バランス基準
 - 野生の基礎食料資源
 - 共通Ingredient/ThingCategory
 - 製粉・焙煎などの一次加工（MO既存設備・Recipeを優先利用）
@@ -889,57 +889,37 @@ Stage Aの穀物は、加工前後の保存性も作物選択と備蓄判断に�
 
 この確定表は「一種類の最適作物」を作らないための基準である。短期・痩せ地はソバ/キビ、標準～肥沃な畑で収穫回数を抑える雑穀はアワ、寒冷側はヒエ/大麦、肥沃地で長期高収量・粉食は小麦、という役割差を維持する。
 
-### 4.3 低肥沃度の耕作可能Terrain
+### 4.3 低肥沃度環境との接続
 
-Vanilla + MO 1.6では、通常の耕作可能Terrainの下限が実質的に肥沃度0.7付近にあり、それ未満は栽培不能地へ急に切り替わる。  
-このままでは、蕎麦・黍・ジャガイモ等に低い `fertilityMin` を設定しても、実際に植え分ける土地が存在せず、痩せ地適性がゲーム上の特徴として機能しにくい。
+自然に生成される土壌品質・TerrainDef・マップ上の分布は、独立姉妹Mod **Ancient & Medieval Japan: Environment** の責務とする。Coreは自然Terrainを重複定義せず、**作物側の `fertilityMin` と `fertilitySensitivity` を所有する**。
 
-そのため、**低肥沃度でも耕作可能な農地TerrainをAMJ Coreに含める**。
+Environment側の正本は `sucRo-RimWorld/Ancient-Medieval-Japan-Environment:Docs/Design.md §10 Natural soil fertility`。AlphaではVanilla/MOの既存地形を再利用しつつ、Environmentが耕作可能な `AMJ_ThinSoil`（fertility 0.50）を追加する。0.40の第二の極端な痩せ地TerrainはAlphaでは追加しない。
 
-方針:
-- Vanilla/MOの既存Terrainを全面置換するのではなく、AMJ側の追加Terrainを基本とする
-- 0.7未満にも少なくとも1～2段階の耕作可能な肥沃度帯を作る
-- **従来なら通常のSoilになっていた場所の一部を低肥沃度Terrainへ置き換える**ことを基本とし、Marsh・水面・岩盤等の耕作不能地を大量に農地化しない
-- 蕎麦・ジャガイモ等の救荒・痩せ地向け作物は、通常作物より低い `fertilityMin` を実際の性能として利用できるようにする
-- 肥沃な土地では小麦・トウモロコシ等が有利、痩せ地では適応作物が相対的に有利になる構造を目指す
-- **Hillinessに応じて痩せ地の出現量を変える**。Flatでは少なめ、Small Hills → Large Hills → Mountainousの順に増やし、平地を農業しやすい立地として残す
-- Mountainousは岩盤による耕作面積減少だけでも難度が高いため、痩せ地率を過度に上げず実地テストで調整する
-- 分布は厳密な面積比を保証せず、ノイズを使って自然な塊として生成する
-- Hilliness連動がXMLだけでは不自然・煩雑になる場合は、**新規マップ生成時に一度だけ動く小規模C# GenStep**でSoilの一部を低肥沃度Terrainへ置換する
-- Terrainの正確な肥沃度、名称、Hilliness別の閾値・出現量、自然生成方法はStage A詳細設計とマップ生成テストで決定する
-- 既存セーブや他ModのTerrain生成への副作用を避けるため、VanillaのSoft sand等を直接改造する案は第一選択にしない
+Core側では0.50を代表的な低肥沃度テスト点として扱う。Stage A確定値では:
 
-これにより、肥沃度を単なる収量倍率ではなく、**作物選択そのものを変える土地条件**として扱う。
+| 作物 | fertilityMin | fertilitySensitivity | fertility 0.50で播種 | 肥沃度成長倍率 |
+|---|---:|---:|---|---:|
+| ソバ | 0.4 | 0.25 | 可 | 87.5% |
+| キビ | 0.5 | 0.3 | 可 | 85% |
+| アワ | 0.5 | 0.4 | 可 | 80% |
+| ヒエ | 0.5 | 0.5 | 可 | 75% |
+| 大麦 | 0.5 | 0.6 | 可 | 70% |
+| 小麦（MO） | 0.7 | 0.9 | **不可** | — |
 
-### 4.4 ワールドHillinessの緩やかな山岳化
+これにより、Environment併用時はThin Soil上で小麦を外しつつ、短期・低投入のソバ/キビほど減速が小さいというStage Aの土地適性がそのまま表れる。
 
-AMJ Coreでは、日本列島らしい「平地が比較的貴重で、丘陵・山地が多い」立地傾向をゲーム上の土地選択へ反映するため、**VanillaよりHillinessをやや丘陵・山岳寄りにする**。
+ソバの `fertilityMin=0.4` は、Environmentへ0.40 Terrain追加を要求する値ではない。外部Terrain Mod・将来の土地設計との互換余地、および作物自身の最低条件として保持する。Environment側で0.40帯を追加するのは、0.50/0.70の既存段階では不足する具体的なゲームプレイ上の理由が確認された場合だけとする。
 
-ただし、日本列島そのものを再現する地理Modにはせず、RimWorldのワールド生成を壊さない程度の緩やかな補正に留める。
+Core + MOだけでも農業・一次加工は成立し、VanillaのGravel 0.70でも肥沃度感応度差は働く。EnvironmentはCoreの必須依存ではなく、**自然地形分布によって土地選択をより強く表現する推奨姉妹Mod**と位置づける。
 
-初期調整値は、Vanillaが決定した元のHillinessを基準に、陸地タイルを最大1段階だけ昇格させる方式とする。
+### 4.4 ワールド地形・Hillinessの責務
 
-| 元のHilliness | 初期昇格率 | 昇格先 |
-|---|---:|---|
-| Flat | **15%** | Small Hills |
-| Small Hills | **12%** | Large Hills |
-| Large Hills | **8%** | Mountainous |
-| Mountainous | **0%** | 変更なし |
-| Impassable | **0%** | 変更なし |
+ワールドHilliness、標高、気候、河川、海岸線、およびそれらに連動する自然土壌分布は **Ancient & Medieval Japan: Environment** が所有する。Coreはワールド生成Patch・Hilliness補正・自然土壌GenStepを持たない。
 
-この率は「最終的な世界の各Hilliness比率」ではなく、**各元カテゴリから1段階上へ移す初期目標率**である。世界Seed・陸地率・Vanilla側の生成結果により最終比率は変動する。
+以前のCore案にあった「Flat→Small Hills等を一定確率で昇格する」「Hillinessに応じてCore自身が痩せ地を生成する」という設計は廃止し、Environmentの実装・検証済み世界生成へ一本化する。具体的なHilliness比率、地形分布、生成アルゴリズム、検証値はEnvironmentリポジトリの `Docs/Design.md` を唯一の正本とし、Core側へ複製しない。
 
-方針:
-- Flatを消さず、農業しやすい立地として残す
-- Small Hills / Large Hillsを中心に増やし、Mountainousも少し増やす
-- MountainousからImpassableへの昇格は行わず、居住可能タイルそのものを減らしすぎない
-- 1回の生成処理で2段階以上昇格させない
-- 独立乱数で点状に散らすのではなく、低周波ノイズ等を用いて丘陵・山地が地域的にまとまる分布を優先する
-- 痩せ地生成と組み合わせ、Flatは良質農地が多く、丘陵・山岳ほど低肥沃度Terrainが増えやすい構造にする
-- 初期値15% / 12% / 8%は固定値ではなく、ワールド生成テストで概ね±5ポイントの範囲を目安に調整してよい
-- 既存セーブのワールドHillinessを後から書き換えず、新規ワールド生成時のみ適用する
+Coreが保持するのは、生成された土地条件に対して各作物がどう反応するかという農業バランスである。
 
-これにより、土地難易度を単純に上げるのではなく、**平地を選ぶ価値と、丘陵・山岳で痩せ地適応作物を使う価値を同時に作る**。
 
 ---
 
@@ -1231,12 +1211,14 @@ MO 1.6実ファイル（Workshop 3219596926）を基準に、AMJが自前実装�
 | 農業研究 | `DankPyon_BasicAgriculture` / `DankPyon_IntermediateAgriculture` / `DankPyon_AdvancedAgriculture` / `DankPyon_PlowedSoil` | 日本側作物を必要な位置へ直接接続・Patch |
 | 基礎料理研究・設備 | MOのCooking研究、Campfire / Stove / Grill / StewPot / Oven等 | AMJで料理Recipeを追加する場合も、まず既存設備への追加を検討 |
 
-MO側に存在しないため、AMJが所有する必要がある代表例:
+MO側に存在しないため、**Coreが**所有する必要がある代表例:
 - アワ・ヒエ・キビ・ソバ・大麦・小豆・大豆・エゴマ・里芋・大根・クズ・大麻・カラムシ・稲等のPlantDef / 収穫物
-- 低肥沃度耕作TerrainとHilliness連動生成
+- 作物ごとの肥沃度条件・感応度と、Environment等の自然土壌へ接続する農業バランス
 - 水田・稲作固有の水管理
 - 稲・米・乾燥した稲等の稲作固有Def
 - 日本固有用途に必要なRecipe / Addon側の料理・加工差分
+
+一方、自然TerrainDef・自然土壌分布・Hilliness・ワールド生成はCoreではなく **Ancient & Medieval Japan: Environment** が所有する。Core側では同じ地形機能を重複実装しない。
 
 #### `DankPyon_Cereal` は汎用穀物カテゴリとして使わない
 

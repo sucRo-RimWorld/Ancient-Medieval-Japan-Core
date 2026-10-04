@@ -288,6 +288,29 @@ AMJ integration:
 
 **Result / references:** target DefName is `AMJC_Wheat`; harvested `DankPyon_RawWheat` remains the MO wheat-sheaf asset/display override.
 
+### AMJ-014 — Natural-soil ownership and Stage A fertility integration
+
+**Requested by:** Agriculture/XML / Core design  \
+**Owner:** Agriculture/XML / Testing/tooling  \
+**Status:** IN PROGRESS
+
+Core's older design still claimed ownership of low-fertility natural Terrain and Hilliness-linked generation, but Environment has already implemented and validated that responsibility as ENV-004.
+
+Reconciled ownership:
+- Environment owns naturally generated soil TerrainDefs/distribution and all Hilliness/world-generation changes;
+- Core owns crop `fertilityMin` / `fertilitySensitivity`, processing and other crop balance;
+- Environment Alpha uses one additional growable `AMJ_ThinSoil` at fertility 0.50, reusing Gravel 0.70 / Soil 1.00 / SoilRich 1.40 and intentionally not adding a 0.40 tier;
+- Core does not duplicate `AMJ_ThinSoil` or add a natural-soil/worldgen GenStep;
+- Soba's `fertilityMin=0.4` remains a crop property / compatibility floor, not a requirement for an Environment 0.40 terrain.
+
+At the shared 0.50 integration point, Stage A intent is: Soba/Kibi/Awa/Hie/Barley sowable, MO Wheat not sowable; growth-factor ordering Soba 87.5% > Kibi 85% > Awa 80% > Hie 75% > Barley 70%.
+
+**Validation:** add static and loaded-Def regression coverage for the 0.50 fertility integration point. Environment's own terrain placement/runtime validation remains owned by ENV-004 and is not duplicated here.
+
+**Next action:** run the normal Core `run-tests.bat` after the fertility assertions are added. AMJ-014 becomes DONE after the existing five-scenario Pickle suite and zero-ERROR gate pass.
+
+**Result / references:** Core design reconciliation commit follows; Environment source of truth is ENV-004 / `Docs/Design.md §10`.
+
 Add new items using the following form.
 
 ### AMJ-XXX — Short title
