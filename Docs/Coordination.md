@@ -248,7 +248,7 @@ Harness corrections:
 
 **Requested by:** Agriculture/XML  \
 **Owner:** Agriculture/XML / Testing/tooling  \
-**Status:** IN PROGRESS
+**Status:** DONE
 
 Audit and integrate Medieval Overhaul 1.6 wheat without creating a duplicate wheat PlantDef.
 
@@ -274,11 +274,11 @@ AMJ integration:
 
 **2026-10-04 installed-MO audit finding:** after the Hay-XPath validator fix, the local gate next stopped with `Expected exactly one active MO ThingDef 'DankPyon_Flour', found 2.` This was another audit false positive rather than duplicate loaded ThingDefs. Medieval Overhaul uses the same `DankPyon_Flour` defName for both a `ThingDef` and a `ThingCategoryDef` in separate XML files. The original `Get-MoDef` helper counted files containing the raw `<defName>DankPyon_Flour</defName>` text before filtering by XML node type, so it counted both files. The helper now parses candidate XML and counts only `/Defs/$TypeName[defName='$DefName']` nodes. No AMJ or MO gameplay value changed.
 
-**Validation:** implementation and all repository-side regression coverage are now in place. Python static validation checks the canonical wheat row, AMJ wheat Patch structure, `AMJC_Wheat`, wheat threshing recipes and 28→28 quantity preservation. Local PowerShell validation additionally audits the installed MO 1.6 source assumptions before running. The isolated Pickle fixture reproduces MO's pre-patch wheat state and the existing five-scenario suite checks the final loaded crop, threshing, flour storage, milling filter/Hay behavior, quantity preservation and meal compatibility. GitHub Actions is green through `201bbe90aa92a0d2d55ac9d1d16c92bdf6f28c11`.
+**Validation:** implementation and all repository-side regression coverage are in place. Python static validation checks the canonical wheat row, AMJ wheat Patch structure, `AMJC_Wheat`, wheat threshing recipes and 28→28 quantity preservation. Local PowerShell validation audits the installed MO 1.6 source assumptions before running. The isolated Pickle fixture reproduces MO's pre-patch wheat state and the existing five-scenario suite checks the final loaded crop, threshing, flour storage, milling filter/Hay behavior, quantity preservation and meal compatibility. GitHub Actions is green for the validator fixes, including `a2679a7064bca50d05758b8385f89c635bb62479` and `ca026ad13bf153b8125927c63e829e345da80563`. On 2026-10-04 JST, the author reported the latest development-PC `run-tests.bat` gate passing. Because that runner completes only after the five-scenario Pickle suite and isolated zero-ERROR runtime gate both pass, this confirms **5/5 Pickle PASS + zero runtime ERROR entries** with the MO wheat integration active.
 
-**Next action:** pull latest `main` including MO node-type audit fix `ca026ad13bf153b8125927c63e829e345da80563` and rerun the normal development-PC `run-tests.bat` gate. Mark AMJ-012 DONE only after 5/5 Pickle PASS + zero runtime ERROR entries.
+**Next action:** none for the wheat data slice. Dedicated wheat-grain graphics remain separately tracked in AMJ-013.
 
-**Result / references:** validator fix `a2679a7064bca50d05758b8385f89c635bb62479`; implementation `91141565150bdf696bac1b5915257122bcd0958e`; Python/static coverage `f0e0cc04ed9ecca58f440a40650527a51ea4cb17`; installed-MO source audit `a97d9e84fad476a13632f2c81fc160d0007aa3e2`; E2E fixture `d772e9ceb6cd1f30953ab85a3a95f11977b4f898`; loaded-Def/Pickle coverage `bc8aea41e460986209893ead9881812d6b7fe0c0`; source fingerprints `2a55d4b72efbeb9fea9b7f3165c1c20a27025f3d`.
+**Result / references:** validator XPath fix `a2679a7064bca50d05758b8385f89c635bb62479`; MO node-type audit fix `ca026ad13bf153b8125927c63e829e345da80563`; implementation `91141565150bdf696bac1b5915257122bcd0958e`; Python/static coverage `f0e0cc04ed9ecca58f440a40650527a51ea4cb17`; installed-MO source audit `a97d9e84fad476a13632f2c81fc160d0007aa3e2`; E2E fixture `d772e9ceb6cd1f30953ab85a3a95f11977b4f898`; loaded-Def/Pickle coverage `bc8aea41e460986209893ead9881812d6b7fe0c0`; source fingerprints `2a55d4b72efbeb9fea9b7f3165c1c20a27025f3d`; local 5/5 + zero-ERROR gate confirmed 2026-10-04 JST.
 
 ### AMJ-013 — Wheat grain graphics
 
@@ -296,7 +296,7 @@ AMJ integration:
 
 **Requested by:** Agriculture/XML / Core design  \
 **Owner:** Agriculture/XML / Testing/tooling  \
-**Status:** IN PROGRESS
+**Status:** DONE
 
 Core's older design still claimed ownership of low-fertility natural Terrain and Hilliness-linked generation, but Environment has already implemented and validated that responsibility as ENV-004.
 
@@ -309,11 +309,11 @@ Reconciled ownership:
 
 At the shared 0.50 integration point, Stage A intent is: Soba/Kibi/Awa/Hie/Barley sowable, MO Wheat not sowable; growth-factor ordering Soba 87.5% > Kibi 85% > Awa 80% > Hie 75% > Barley 70%.
 
-**Validation:** Core design ownership is reconciled and automated coverage is added. Python/static, PowerShell and loaded-Def Pickle tests now lock fertility 0.50 as the cross-repository integration point: Soba/Kibi/Awa/Hie/Barley are sowable, MO Wheat is not, and the growth-factor order is Soba 87.5% > Kibi 85% > Awa 80% > Hie 75% > Barley 70%. GitHub Actions passed for both design reconciliation `c841b66547f51af79743a72d3db20d38b7345816` and regression coverage `201bbe90aa92a0d2d55ac9d1d16c92bdf6f28c11`. Environment's own terrain placement/runtime validation remains owned by ENV-004 and is not duplicated here.
+**Validation:** Core design ownership is reconciled and automated coverage is added. Python/static, PowerShell and loaded-Def Pickle tests lock fertility 0.50 as the cross-repository integration point: Soba/Kibi/Awa/Hie/Barley are sowable, MO Wheat is not, and the growth-factor order is Soba 87.5% > Kibi 85% > Awa 80% > Hie 75% > Barley 70%. GitHub Actions passed for design reconciliation `c841b66547f51af79743a72d3db20d38b7345816` and regression coverage `201bbe90aa92a0d2d55ac9d1d16c92bdf6f28c11`. On 2026-10-04 JST, the author reported the latest development-PC `run-tests.bat` gate passing; therefore the same loaded-Def assertions passed in the **5/5 Pickle suite with zero runtime ERROR entries**. Environment's terrain placement/runtime validation remains owned by ENV-004 and is not duplicated here.
 
-**Next action:** run the normal Core `run-tests.bat` after the fertility assertions are added. AMJ-014 becomes DONE after the existing five-scenario Pickle suite and zero-ERROR gate pass.
+**Next action:** none. Keep fertility 0.50 as the permanent Core↔Environment contract test point unless the Environment soil design is intentionally revised.
 
-**Result / references:** Core design reconciliation `c841b66547f51af79743a72d3db20d38b7345816`; Core fertility regression coverage `201bbe90aa92a0d2d55ac9d1d16c92bdf6f28c11`; Environment coordination alignment `7a1d59288eca9b42c2dfd4573295d981177c9a7d`; Environment source of truth remains ENV-004 / `Docs/Design.md §10`.
+**Result / references:** Core design reconciliation `c841b66547f51af79743a72d3db20d38b7345816`; Core fertility regression coverage `201bbe90aa92a0d2d55ac9d1d16c92bdf6f28c11`; Environment coordination alignment `7a1d59288eca9b42c2dfd4573295d981177c9a7d`; Environment source of truth remains ENV-004 / `Docs/Design.md §10`; local 5/5 + zero-ERROR Core gate confirmed 2026-10-04 JST.
 
 Add new items using the following form.
 
