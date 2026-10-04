@@ -176,7 +176,7 @@ These are starting points, not immutable final compositions. Each cover must sti
 
 For every new AMJ Workshop cover:
 
-1. **Read this document, open the current approved cover image itself, and inspect the current reference schematic before proposing or generating anything.** The schematic alone is not sufficient.
+1. **Read this document, retrieve and open the current approved cover image itself, and inspect the current reference schematic before proposing or generating anything.** The schematic alone is not sufficient. The persistent cross-chat visual reference is stored in the user's Library at `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`.
 2. **Do not generate immediately.** First propose the composition and design in words.
 3. The proposal must state:
    - the 2–5 main right-side motifs;
@@ -187,7 +187,7 @@ For every new AMJ Workshop cover:
 4. In the same proposal, explicitly state which approved cover image was visually checked, and that the **common-left block is unchanged** from that image: `Ancient &` / `Medieval` / `Japan` in the locked three-line layout, with `Japan` in muted reddish-brown and only the addon name changed.
 5. Wait for author approval or revision.
 6. Before calling image generation, perform this preflight:
-   - an **actual approved Environment/Core cover image has been opened and visually inspected in the current work context**; if no approved image can be accessed, stop and obtain the canonical reference before generating;
+   - an **actual approved Environment/Core cover image has been opened and visually inspected in the current work context**; first look up `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg` in the Library; if no approved image can be accessed, stop and obtain the canonical reference before generating;
    - the approved image, not memory or the text prompt, is the visual source of truth for the shared background, title placement, typography hierarchy, ornament placement, and left/right balance;
    - common-left wording and three-line breaks are present in the prompt;
    - `Japan` is the only title accent;
@@ -210,7 +210,7 @@ For every new AMJ Workshop cover:
 
 ### Cross-chat rule
 
-Do not rely on another chat remembering an accepted cover. A new chat must **retrieve and visually inspect an approved cover image before generation**, then read this document and the reference schematic. If the actual approved image is unavailable, generation is blocked until it is made available. The text rules and schematic explain constraints; they do not replace visual inspection of the approved image.
+Do not rely on another chat remembering an accepted cover. A new chat must **retrieve and visually inspect an approved cover image before generation**, then read this document and the reference schematic. The canonical cross-chat visual reference is `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg` in the user's Library. If the actual approved image is unavailable, generation is blocked until it is made available. The text rules and schematic explain constraints; they do not replace visual inspection of the approved image.
 ## 12. Prompt baseline
 
 Use this shared semantic baseline **verbatim in meaning** for every cover. Do not shorten it to only the addon-specific right side:
@@ -224,4 +224,4 @@ See:
 
 `Docs/References/AMJ_WorkshopCover_Template.svg`
 
-The SVG is the canonical cross-chat schematic for the invariant common-left layout and overall split, **but it is not sufficient by itself**. Before every generation, an actual author-approved Environment/Core cover image must also be opened and visually inspected. The approved image is the visual source of truth; the SVG documents geometry and structure. If those visual reference pixels are unavailable to the current work context, do not generate a new cover until the reference image is retrieved.
+The SVG is the canonical cross-chat schematic for the invariant common-left layout and overall split, **but it is not sufficient by itself**. Before every generation, the actual author-approved visual reference in Library `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg` (or a later explicitly approved replacement) must also be opened and visually inspected. The approved image is the visual source of truth; the SVG documents geometry and structure. If those visual reference pixels are unavailable to the current work context, do not generate a new cover until the reference image is retrieved.
