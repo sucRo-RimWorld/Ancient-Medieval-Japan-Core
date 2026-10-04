@@ -453,6 +453,11 @@ AMJの各Addon・姉妹Modは、詳細設計へ入る前に**同一目的・部�
 - **Medieval Kingdoms: Shogunate**（https://steamcommunity.com/sharedfiles/filedetails/?id=3632552850）
   - 中世日本Factionの直接比較対象。氏族・兵種・文化・宗教側の先行実装として調査する。
   - AMJ Factionsの村落共同体・在地勢力・寺社・交易等の社会構成や、AMJ Eventsの一般社会イベントまで同一責務ではないため、現段階では代替確定とせず任意互換・実装参考候補とする。
+- **Vanilla Factions Expanded - Medieval 2**（https://steamcommunity.com/sharedfiles/filedetails/?id=3444347874）
+  - AMJの必須依存や総合中世コンテンツの取り込み対象ではなく、**AMJ Eventsの主要な先行研究元**として扱う。
+  - 使えるイベントのゲームループだけを抽出し、日本史・AMJのFaction役割・生活者視点へ再設計する。西欧固有の城・紋章・Faction設定・専用経済をそのまま移植しない。
+  - 優先研究対象は、敵勢力の集結地を期限内に叩かなければ後に大規模襲撃へ発展する仕組み、Faction間の小競り合いへ介入する仕組み、行商・市場・交易のイベント化である。
+  - Heraldry/物々交換等の独立システムはEventsの初期責務へ含めず、家紋・本格交易などが必要になった段階でFactions等の別責務として再検討する。
 - **Tasty Armory - Sengoku**（https://steamcommunity.com/sharedfiles/filedetails/?id=3494429497）
   - AMJ対象末期に含まれる戦国後期装備の直接比較対象。武具Addonでは既存装備を重複追加する前に互換・棲み分けを検討する。
 - **ReGrowth 2**（https://steamcommunity.com/sharedfiles/filedetails/?id=2260097569）
@@ -639,6 +644,9 @@ AMJ Factionsの役割は「Eventsを動かすための必須ライブラリ」�
 - **流民・逃散者:** 食料負担と引き換えに加入候補となる
 - **旅人・行商・漂泊職人:** 自動的なTrader/Enemyではなく、素性や目的が不確かな来訪者として扱える
 - **徴発:** 近隣勢力から食料・物資・労働等を要求される
+- **敵勢力の集結地 / 陣:** 近隣に出現した敵勢力を期限内に先制攻撃するか、放置して後のより大きな襲撃を迎え撃つかを選ばせる。VFE Medieval 2のSiege Campをゲームループ参考とし、日本側の陣・砦・賊の集結地等へ再設計する
+- **Faction間の小競り合い:** 友好・中立勢力と敵対勢力の戦闘サイトへ介入し、支援・不介入等を選べるようにする。VFE Medieval 2のSkirmishを先行研究とし、AMJ Factionsを必須にせず役割ベースで対象Factionを取得する
+- **定期市・行商・市場:** 取引そのものを全面的な純物々交換へ置き換えず、地域・相手・時代によって欲しがる品や交換条件が変わるイベントとして検討する
 - **水争い / 水喧嘩:** 水田・灌漑等の水利用が実装された後、農業へ直接影響する社会イベントとして検討する
 - **戦乱の余波:** 追手、避難者、敗走兵等が村へ流れ込む
 
