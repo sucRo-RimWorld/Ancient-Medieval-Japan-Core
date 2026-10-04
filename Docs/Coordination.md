@@ -255,3 +255,18 @@ The shared public-description policy now omits detailed mod version numbers, Ver
 Durable source updated: Docs/ModDescriptionGuidelines.md. All related repositories already refer to this shared guide through AGENTS.md.
 
 **Next action:** Use this policy for all future AMJ-related Workshop descriptions.
+
+
+### TEST-POLICY-002 — RimTest Redux / Pickle automation-first policy
+
+**Requested by:** author (2026-10-04 JST)  
+**Owner:** Testing/tooling  
+**Status:** DONE (policy documentation)
+
+The shared project policy now prioritizes RimTest Redux / Pickle automated testing and minimizes human manual tests. Durable instructions are in `AGENTS.md` and `Docs/DevelopmentTools.md`. Reproducible logic, loaded Defs, runtime behavior and release regressions should be automated; manual testing is reserved for appearance, readability and play/interaction feel. Build/static checks remain complementary, and runtime suites retain the mandatory mod-origin ERROR gate.
+
+This documentation update does not claim new runtime coverage or a new test PASS. Existing implementation/test history remains unchanged.
+
+**Next action:** apply this policy to subsequent feature, fix and release work; record unautomated coverage explicitly and move reproducible checks into the automated gate.
+
+**Result / references:** AGENTS policy commit `db8b697cb4e633e5e52a128d0c980744e93018d2`; development workflow commit `c0a9603a02613f41a67a70bf2411fb18c600d33a`.
