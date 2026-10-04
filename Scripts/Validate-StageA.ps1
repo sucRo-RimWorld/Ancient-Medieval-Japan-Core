@@ -46,9 +46,20 @@ $plants = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Plants\Plants_Stag
 $items = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Items\Items_StageA_Grains.xml")
 $buildings = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Buildings\Buildings_GrainProcessing.xml")
 $recipes = Load-Xml (Join-Path $RepositoryRoot "Defs\RecipeDefs\Recipes_GrainProcessing.xml")
+$cctoPatch = Load-Xml (Join-Path $RepositoryRoot "Patches\Compatibility\CCTO_StageA.xml")
 
 Assert-Text (Node-Text $about "/ModMetaData/packageId" "About.xml packageId") "sucro.ancientmedievaljapan.core" "About.xml packageId"
 if ($null -eq $about.SelectSingleNode("/ModMetaData/modDependencies/li[packageId='DankPyon.Medieval.Overhaul']")) { Fail "About.xml must require Medieval Overhaul." }
+
+$cctoOp = $cctoPatch.SelectSingleNode("/Patch/Operation[@Class='PatchOperationFindMod'][mods/li='Crop Cold Tolerance Overhaul']")
+if ($null -eq $cctoOp) { Fail "CCTO_StageA.xml must contain the Awa PatchOperationFindMod." }
+Assert-Text (Node-Text $cctoOp "match/xpath" "Awa CCTO patch xpath") '/Defs/ThingDef[defName="AMJC_Plant_FoxtailMillet_Awa"]' "Awa CCTO patch xpath"
+$cctoExtension = $cctoOp.SelectSingleNode("match/value/li[@Class='CropColdToleranceOverhaul.ColdToleranceExtension']")
+if ($null -eq $cctoExtension) { Fail "Awa CCTO patch must add CropColdToleranceOverhaul.ColdToleranceExtension." }
+if (@($cctoOp.SelectNodes("match/value/li[@Class='CropColdToleranceOverhaul.ColdToleranceExtension']")).Count -ne 1) { Fail "Awa CCTO patch must add exactly one ColdToleranceExtension." }
+Assert-Number (Node-Text $cctoExtension "coldDeathTemperature" "Awa CCTO coldDeathTemperature") -3 "Awa CCTO coldDeathTemperature"
+$coldDormancy = $cctoExtension.SelectSingleNode("coldDormancy")
+if ($null -ne $coldDormancy -and $coldDormancy.InnerText.Trim().ToLowerInvariant() -ne "false") { Fail "Awa must not enable CCTO cold dormancy." }
 
 $awa = Get-DefNode $plants "ThingDef" "AMJC_Plant_FoxtailMillet_Awa"
 Assert-Text (Node-Text $awa "plant/harvestedThingDef" "Awa harvest target") "AMJC_RawMillet" "Awa harvest target"

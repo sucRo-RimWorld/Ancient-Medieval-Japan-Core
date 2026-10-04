@@ -21,10 +21,44 @@ def text(node, path):
 def num(node, path):
     return float(text(node, path))
 
+def markdown_row(rel, section_heading, first_cell):
+    body = (ROOT / rel).read_text(encoding="utf-8")
+    assert section_heading in body, f"missing section {section_heading} in {rel}"
+    section = body.split(section_heading, 1)[1]
+    for line in section.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            continue
+        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+        if cells and cells[0] == first_cell:
+            return cells
+    raise AssertionError(f"missing markdown row {first_cell} under {section_heading} in {rel}")
+
 about = load("About/About.xml")
 assert text(about, "packageId") == "sucro.ancientmedievaljapan.core"
 deps = [n.findtext("packageId") for n in about.findall("./modDependencies/li")]
 assert "DankPyon.Medieval.Overhaul" in deps
+
+ccto_patch = load("Patches/Compatibility/CCTO_StageA.xml")
+ccto_ops = [
+    op for op in ccto_patch.findall("Operation")
+    if op.attrib.get("Class") == "PatchOperationFindMod"
+    and [li.text.strip() for li in op.findall("./mods/li") if li.text]
+    == ["Crop Cold Tolerance Overhaul"]
+]
+assert len(ccto_ops) == 1, "expected exactly one CCTO PatchOperationFindMod"
+ccto_op = ccto_ops[0]
+match = ccto_op.find("match")
+assert match is not None and match.attrib.get("Class") == "PatchOperationAddModExtension"
+assert text(ccto_op, "match/xpath") == '/Defs/ThingDef[defName="AMJC_Plant_FoxtailMillet_Awa"]'
+extensions = [
+    node for node in ccto_op.findall("./match/value/li")
+    if node.attrib.get("Class") == "CropColdToleranceOverhaul.ColdToleranceExtension"
+]
+assert len(extensions) == 1, "Awa CCTO patch must add exactly one ColdToleranceExtension"
+assert num(extensions[0], "coldDeathTemperature") == -3
+cold_dormancy = extensions[0].find("coldDormancy")
+assert cold_dormancy is None or cold_dormancy.text.strip().lower() == "false"
 
 plants = load("Defs/ThingDefs_Plants/Plants_StageA.xml")
 items = load("Defs/ThingDefs_Items/Items_StageA_Grains.xml")
@@ -42,6 +76,27 @@ assert num(awa, "plant/minOptimalGrowthTemperature") == 18
 assert num(awa, "plant/maxOptimalGrowthTemperature") == 32
 assert num(awa, "plant/sowMinSkill") == 0
 assert text(awa, "plant/harvestedThingDef") == "AMJC_RawMillet"
+
+design_awa = markdown_row(
+    "Docs/Design.md",
+    "### 4.2.1 Stage A畑作6作物の確定バランス",
+    "アワ",
+)
+assert float(design_awa[1]) == num(awa, "plant/growDays")
+assert float(design_awa[2]) == num(awa, "plant/harvestYield")
+assert float(design_awa[3]) == num(awa, "plant/fertilityMin")
+assert float(design_awa[4]) == num(awa, "plant/fertilitySensitivity")
+assert design_awa[5] == "8～42℃"
+assert design_awa[6] == "18～32℃"
+assert design_awa[7] == "-3℃"
+
+cold_awa = markdown_row(
+    "Docs/Balance/Crops/ColdTolerance.md",
+    "## 確定した固定枯死・休眠値",
+    "Foxtail millet",
+)
+assert cold_awa[1] == "8°C"
+assert cold_awa[2] == "-3°C"
 
 jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_StageA.xml")
 assert text(jp, "AMJC_RawMillet.label") == "雑穀束"
