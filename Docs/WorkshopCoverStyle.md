@@ -176,7 +176,7 @@ These are starting points, not immutable final compositions. Each cover must sti
 
 For every new AMJ Workshop cover:
 
-1. **Read this document and the current reference schematic before proposing or generating anything.**
+1. **Read this document, open the current approved cover image itself, and inspect the current reference schematic before proposing or generating anything.** The schematic alone is not sufficient.
 2. **Do not generate immediately.** First propose the composition and design in words.
 3. The proposal must state:
    - the 2–5 main right-side motifs;
@@ -184,9 +184,11 @@ For every new AMJ Workshop cover:
    - the intended silhouette hierarchy;
    - how the cover differs from adjacent AMJ addons;
    - any historically specific object that might need verification.
-4. In the same proposal, explicitly state that the **common-left block is unchanged**: `Ancient &` / `Medieval` / `Japan` in the locked three-line layout, with `Japan` in muted reddish-brown and only the addon name changed.
+4. In the same proposal, explicitly state which approved cover image was visually checked, and that the **common-left block is unchanged** from that image: `Ancient &` / `Medieval` / `Japan` in the locked three-line layout, with `Japan` in muted reddish-brown and only the addon name changed.
 5. Wait for author approval or revision.
 6. Before calling image generation, perform this preflight:
+   - an **actual approved Environment/Core cover image has been opened and visually inspected in the current work context**; if no approved image can be accessed, stop and obtain the canonical reference before generating;
+   - the approved image, not memory or the text prompt, is the visual source of truth for the shared background, title placement, typography hierarchy, ornament placement, and left/right balance;
    - common-left wording and three-line breaks are present in the prompt;
    - `Japan` is the only title accent;
    - addon name is correct;
@@ -195,30 +197,31 @@ For every new AMJ Workshop cover:
    - no people;
    - flat / low-saturation / limited-color rules are present.
 7. Generate only after the preflight passes.
-8. **Addon-specific instructions are allowed to modify the right side only.** They must not override or omit the common-left block.
-9. Inspect the generated image in this order:
+8. **Prefer reference-image editing over fresh whole-canvas generation.** When the approved cover image is available to the image tool, use it as the starting/reference image and preserve the common background/title/ornament/layout; change only the addon name and the approved addon-specific right-side illustration. Do not ask the model to reinvent the common area from text.
+9. **Addon-specific instructions are allowed to modify the right side and addon name only.** They must not override or omit the common-left block.
+10. Inspect the generated image side-by-side against the approved reference image in this order:
    1. common-left text and layout;
    2. addon name;
    3. right-side composition;
    4. flatness, saturation, and detail level.
-10. Reject and regenerate if the left-side wording, line breaks, hierarchy, accent color, or composition drifted, even if the right side is successful.
-11. If the image becomes scenic, realistic, too saturated, too detailed, or stylistically inconsistent, return to the approved composition and regenerate with stronger simplification.
-12. Once a cover is accepted, preserve that accepted image as the reference for that addon. Do not casually regenerate it.
+11. Reject and regenerate if the shared background, left-side wording, line breaks, hierarchy, ornament placement, accent color, approximate geometry, or common composition drifted from the approved image, even if the right side is successful.
+12. If the image becomes scenic, realistic, too saturated, too detailed, or stylistically inconsistent, return to the approved composition and regenerate with stronger simplification.
+13. Once a cover is accepted, preserve that accepted image as the reference for that addon. Do not casually regenerate it.
 
 ### Cross-chat rule
 
-Do not rely on another chat remembering an accepted cover. The repository document and reference schematic are the transfer mechanism. A new chat must reconstruct the cover from these locked rules rather than from memory or a partial addon-only prompt.
+Do not rely on another chat remembering an accepted cover. A new chat must **retrieve and visually inspect an approved cover image before generation**, then read this document and the reference schematic. If the actual approved image is unavailable, generation is blocked until it is made available. The text rules and schematic explain constraints; they do not replace visual inspection of the approved image.
 ## 12. Prompt baseline
 
 Use this shared semantic baseline **verbatim in meaning** for every cover. Do not shorten it to only the addon-specific right side:
 
 > Wide 16:9 Steam Workshop cover for the Ancient & Medieval Japan series. Warm pale parchment background with extremely subtle paper grain. The common-left series block is fixed and must not be redesigned: large editorial serif title on three lines reading exactly “Ancient &” / “Medieval” / “Japan”; the first two lines are dark muted green-charcoal or warm charcoal, and “Japan” alone is muted reddish-brown. Beneath the title is the same restrained thin divider / tiny neutral floral mark used by the series, followed by the addon name in smaller widely tracked capitals. Preserve the same left-side hierarchy, line breaks, approximate scale, position, and negative space as the accepted Environment/Core covers. Do not add “中世日本OH”, A/M/J initial highlighting, a dark left panel, Japan map, red brush badge, or new left-side decoration. The right side is a symbolic, highly simplified flat editorial illustration, not a scenic landscape. No people. No stereotypical Japanese decorative symbols. Low-saturation limited palette. Each motif uses about three colors: base, darker plane, lighter plane, with only a very light gradient if useful. Large clean silhouettes, minimal detail, no photorealism, no cinematic lighting, no painterly texture, readable at small Workshop thumbnail size.
 
-Then append only the addon-specific **right-side** approved motif/composition instructions and the addon name. Do not rewrite the common-left specification.
+Then append only the addon-specific **right-side** approved motif/composition instructions and the addon name. Do not rewrite the common-left specification. When image-reference/edit mode is available, attach/use the approved cover and explicitly instruct the tool to preserve the shared background, title block, ornament, spacing, and overall left/right geometry while replacing only the addon name and right-side motifs.
 ## 13. Reference layout
 
 See:
 
 `Docs/References/AMJ_WorkshopCover_Template.svg`
 
-The SVG is the canonical cross-chat schematic for the invariant common-left layout and overall split. It is not a production cover, but any new generation must preserve its left-side wording, three-line structure, hierarchy, and addon-name position. The accepted generated Environment/Core covers remain the visual quality references.
+The SVG is the canonical cross-chat schematic for the invariant common-left layout and overall split, **but it is not sufficient by itself**. Before every generation, an actual author-approved Environment/Core cover image must also be opened and visually inspected. The approved image is the visual source of truth; the SVG documents geometry and structure. If those visual reference pixels are unavailable to the current work context, do not generate a new cover until the reference image is retrieved.
