@@ -182,6 +182,27 @@ $width = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($png
 $height = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,20))
 if ($width -ne 256 -or $height -ne 256) { Fail ("Awa immature texture must be 256x256, got {0}x{1}." -f $width,$height) }
 
+Assert-Text (Node-Text $hie "graphicData/graphicClass" "Hie mature graphic class") "Graphic_Random" "Hie mature graphic class"
+Assert-Text (Node-Text $hie "graphicData/texPath" "Hie mature texture path") "Things/Plants/FullGrown/AMJC_Hie" "Hie mature texture path"
+$hieTexturePath = Join-Path $RepositoryRoot "Textures\Things\Plants\FullGrown\AMJC_Hie\AMJC_Hie_Mature.png"
+if (-not (Test-Path -LiteralPath $hieTexturePath)) { Fail "Hie mature texture was not found: $hieTexturePath" }
+$pngBytes = [System.IO.File]::ReadAllBytes($hieTexturePath)
+if ($pngBytes.Length -lt 24) { Fail "Hie mature texture is too small to be a valid PNG." }
+for ($i = 0; $i -lt 8; $i++) { if ($pngBytes[$i] -ne $pngSignature[$i]) { Fail "Hie mature texture has an invalid PNG signature." } }
+$width = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,16))
+$height = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,20))
+if ($width -ne 256 -or $height -ne 256) { Fail ("Hie mature texture must be 256x256, got {0}x{1}." -f $width,$height) }
+
+Assert-Text (Node-Text $hie "plant/immatureGraphicPath" "Hie immature texture path") "Things/Plants/Immature/AMJC_Hie" "Hie immature texture path"
+$hieImmatureTexturePath = Join-Path $RepositoryRoot "Textures\Things\Plants\Immature\AMJC_Hie\AMJC_Hie_Immature.png"
+if (-not (Test-Path -LiteralPath $hieImmatureTexturePath)) { Fail "Hie immature texture was not found: $hieImmatureTexturePath" }
+$pngBytes = [System.IO.File]::ReadAllBytes($hieImmatureTexturePath)
+if ($pngBytes.Length -lt 24) { Fail "Hie immature texture is too small to be a valid PNG." }
+for ($i = 0; $i -lt 8; $i++) { if ($pngBytes[$i] -ne $pngSignature[$i]) { Fail "Hie immature texture has an invalid PNG signature." } }
+$width = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,16))
+$height = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,20))
+if ($width -ne 256 -or $height -ne 256) { Fail ("Hie immature texture must be 256x256, got {0}x{1}." -f $width,$height) }
+
 $raw = Get-DefNode $items "ThingDef" "AMJC_RawMillet"
 $inHull = Get-DefNode $items "ThingDef" "AMJC_MilletInHull"
 $millet = Get-DefNode $items "ThingDef" "AMJC_Millet"
