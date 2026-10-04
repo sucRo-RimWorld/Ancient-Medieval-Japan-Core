@@ -234,7 +234,9 @@ Required before public Alpha:
 - MO/AMJ style and small-scale readability per `Docs/ArtStyle.md`;
 - wire only the texture paths; do not change crop balance or the shared post-harvest Defs.
 
-**Next action:** Art/graphics should complete Hie first, then Kibi, using Awa only as the style anchor rather than as the final texture.
+**2026-10-04 visual-direction lock:** The author accepted the latest Awa/Hie comparison as the common Stage A crop-art baseline. Use the same warm medium-dark brown outline for all crop-plant contours; do not split outline hue by grain head vs foliage. Match Awa/Hie at the same simplified information density, expressing species primarily through silhouette. The newly simplified Awa replaces the previous fixed Awa production look. Per-asset in-game comparison is intentionally deferred; after the crop-art backlog is complete, the author will line up all final crops in game and perform one combined normal-zoom visual check.
+
+**Next action:** export clean isolated transparent production candidates for the new Awa and Hie from this locked direction, then continue to Kibi. Do not change crop balance or shared post-harvest Defs.
 
 **Result / references:** `AMJC_Plant_BarnyardMillet_Hie` and `AMJC_Plant_ProsoMillet_Kibi` currently point to `Things/Plants/FullGrown/AMJC_Awa` and `Things/Plants/Immature/AMJC_Awa`.
 
