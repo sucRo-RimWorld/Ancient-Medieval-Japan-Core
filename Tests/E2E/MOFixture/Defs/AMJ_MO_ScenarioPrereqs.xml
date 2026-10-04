@@ -6,8 +6,8 @@
     <label>AMJ test raw wood</label>
     <description>Raw wood fixture for the New Village start.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/WoodLogs</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <texPath>E2E/Placeholder</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>0.8</MarketValue>
