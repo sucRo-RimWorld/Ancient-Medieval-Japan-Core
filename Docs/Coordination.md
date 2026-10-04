@@ -627,3 +627,22 @@ The repair restored only the four broken PNG blobs from the earlier same-workstr
 
 **Result / references:** repair `0262092fa06c4578450af15c5b936fdd80156113`; dedicated PNG gate `c0823137002c37cc6e5f9ae69f0ea819c98e7e2a`; successful workflow run #131 (`37216862456`) with `validate-png-assets`, `validate-stage-a`, and `validate-windows-powershell` all Green.
 
+### DESIGN-015 — AMJ共通容器（甕）の別途検討
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Common systems / Fermentation-Preservation design  
+**Status:** OPEN — design investigation only; implementation not approved
+
+AMJで、前近代日本の汎用「甕」を1つの共通容器として持ち、用途に応じて **貯蔵 / 保存 / 発酵** に使い分ける案を別途検討する。現時点では実装確定ではない。
+
+優先して確認する点:
+- 既存の土器・甕・Storage・Processor系Modに、同一容器を3用途で使い分けられる実装があるか再監査する
+- 3機能を同時発揮させず、通常貯蔵 / 封をした保存 / 発酵仕込み中の占有、という排他的な状態切替がゲームとして有効か検討する
+- RimWorld標準StorageとProcessor系の差を踏まえ、内部収納・Job/UI・腐敗処理・Framework接続の技術プロトタイプを行う
+- Core所有とした場合でも、Core非必須を基本とするFermentation / Salt Preservation等との依存関係を壊さない構成を決める
+- 既存Modで十分な場合は重複実装しない
+
+Durable design source: `Docs/Design.md` section **AMJ共通容器（甕）— 別途検討する設計候補**, commit `b042e3f7e0e8d768a658fd9ae345c020cb11daca`.
+
+**Next action:** 容器システムを扱う別作業系統で、既存Mod監査 → 最小プロトタイプ → 所有/依存設計の順に検討し、採否が決まった時点で正式仕様へ更新する。
+
