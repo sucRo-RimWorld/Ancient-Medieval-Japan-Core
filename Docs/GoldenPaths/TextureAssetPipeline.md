@@ -33,7 +33,7 @@ The author-approved **empty square masu** is the canonical container master.
 
 Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
 
-Canonical repository asset: `Textures/Things/Item/Resource/AMJC_Shared/Masu/AMJC_Masu_Empty.png`. This 256×256 transparent PNG is the cross-chat/cross-agent master. Fetch it from `main` before producing any boxed-resource derivative; do not regenerate the container from prose.
+Registered fixed-template manifest: `Docs/References/AMJ_Masu_Template.json`; editable mask: `Textures/Shared/Containers/AMJ_Masu_EditableMask.png`. New chats/agents must fetch the manifest, master, and mask from `main`, then use `Scripts/Art/fixed_template.py`; do not regenerate the container from prose.
 
 ### Immutable parts
 
@@ -61,8 +61,10 @@ Only the contents change.
 7. Use deterministic local compositing from the first derivative; whole-icon generation cannot certify fixed pixels.
 8. Export to the repository's production texture requirements.
 9. Run:
+   `python Scripts/Art/fixed_template.py validate Docs/References/AMJ_Masu_Template.json <final.png>`
+   `python Tests/test_masu_template.py`
    `python Tests/validate_png_assets.py`
-10. Commit only after the PNG integrity gate passes.
+10. Commit only after both protected-pixel and PNG-integrity gates pass.
 
 ### Vanilla / Medieval Overhaul retextures
 

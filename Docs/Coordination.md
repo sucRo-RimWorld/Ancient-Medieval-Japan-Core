@@ -200,8 +200,7 @@ The Soba data slice uses temporary Awa/millet graphics only. Under `Docs/Design.
 
 **Result / references:** data DefNames are `AMJC_Plant_Buckwheat_Soba`, `AMJC_RawBuckwheat`, `AMJC_BuckwheatInHull`, `AMJC_Buckwheat`; current temporary paths reuse Awa/millet assets.
 **2026-10-05 boxed-resource icon lock:** The author approved a dedicated empty **Japanese masu** as the canonical boxed-resource master. AMJ keeps the familiar Vanilla/MO boxed-item silhouette language, but all compatible AMJ/Vanilla/MO retextures should use the same masu treatment. The container geometry, viewing angle, rim, joinery, palette, shading and placement are fixed; only the contents change. Generate/draw contents separately and composite them into the fixed master. If whole-icon generation drifts twice, stop regenerating and use deterministic local compositing. Durable procedure: `Docs/GoldenPaths/TextureAssetPipeline.md`; visual source of truth: `Docs/ArtStyle.md`.
-Canonical repository master: `Textures/Things/Item/Resource/AMJC_Shared/Masu/AMJC_Masu_Empty.png` (256×256 transparent PNG). New chats/agents should fetch this file from `main` and composite contents into it rather than regenerating the masu.
-Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`. New chats/workstreams must fetch and reuse this file instead of recreating the masu from prose.
+Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`. New chats/workstreams must fetch and reuse this file instead of recreating the masu from prose. Fixed-template registration: `Docs/References/AMJ_Masu_Template.json`; editable mask: `Textures/Shared/Containers/AMJ_Masu_EditableMask.png`.
 
 
 ### AMJ-010 — Barley cultivation and primary processing data slice
@@ -697,7 +696,7 @@ Durable rule commits: `81a1fe37df58dea63f7591d802fad9a3ca45cc42` (`Docs/Workshop
 
 Author requested pixel-identical reused parts across AMJ image families. Canonical policy: `Docs/GoldenPaths/FixedImageTemplates.md`. AGENTS, ArtStyle, texture Golden Path and cover workflow now require a hashed lossless master, binary editable mask, deterministic compositing, and zero protected RGBA differences. `Scripts/Art/fixed_template.py` implements compositing/validation; its regression test is in CI. Visual-reference editing alone is no longer sufficient.
 
-No image was generated or replaced. Existing masu has its accepted master but needs a registered interior mask/manifest before the next derivative. Covers need a clean shared master/approved editable mask from the accepted visual reference before the next cover. Do not claim all existing assets are already pixel-locked. Species style references remain references rather than identical-species templates. Pending species proposals remain pending.
+No image was generated or replaced in ART-TEMPLATE-001 itself. The masu registration gap identified here is closed by ART-TEMPLATE-004 below. Covers are registered separately in ART-TEMPLATE-003. Do not claim unrelated asset families are pixel-locked unless they have their own master/mask/manifest registration. Species style references remain references rather than identical-species templates. Pending species proposals remain pending.
 
 ### ART-TEMPLATE-002 — Automatically register future shared image families
 
@@ -737,3 +736,23 @@ The three Library rasters were re-listed, materialized into a fresh container di
 
 **Next action:** apply this v1 pipeline to every subsequent AMJ Workshop cover. If any canonical Library raster is unavailable or hash-mismatched, stop production rather than reconstructing it.
 
+
+
+### ART-TEMPLATE-004 — Masu v1 deterministic template registered
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** DONE
+
+A consistency audit found that two different files were simultaneously documented as the canonical masu master. The later duplicate path is retained as the sole v1 source of truth because it is the 256×256 master explicitly stored for cross-chat reuse; the older `Textures/Things/Item/Resource/AMJC_Shared/Masu/AMJC_Masu_Empty.png` copy is removed to eliminate ambiguous masters.
+
+Registered v1:
+- master: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`
+  - SHA-256 `d10d44008698a692c9ad2369deb548f2af13f93d0621f7454cd84697e2a92d7b`
+- editable mask: `Textures/Shared/Containers/AMJ_Masu_EditableMask.png`
+  - SHA-256 `e1ef4ef8144e7029d908c91397e2491f17a232fef6a5f6c7a6258c81414d7af5`
+- manifest: `Docs/References/AMJ_Masu_Template.json`
+
+The editable region is limited to the masu interior cavity. Rim, exterior faces, outline, joinery, wood shading, placement and transparent margins remain protected. `Tests/test_masu_template.py` loads the real manifest and verifies deterministic composition with zero protected RGBA differences; CI runs it before Stage A validation.
+
+**Next action:** all boxed-resource derivatives, beginning with Soba, must create only the contents layer and compose/validate it through the registered v1 template.

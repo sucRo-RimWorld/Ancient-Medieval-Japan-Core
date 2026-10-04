@@ -18,6 +18,9 @@ jobs:
       - name: Regression-test fixed template protection
         run: python Tests/test_fixed_template.py
 
+      - name: Validate registered masu template
+        run: python Tests/test_masu_template.py
+
       - name: Regression-test PNG validator
         run: python Tests/test_validate_png_assets.py
 

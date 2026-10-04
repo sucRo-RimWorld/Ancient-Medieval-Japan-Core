@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "family": "amj-boxed-resource-masu",
+  "template_revision": "v1",
+  "approval": "author-approved empty square masu; AMJ boxed-resource shared component",
+  "size": [
+    256,
+    256
+  ],
+  "master": {
+    "path": "../../Textures/Shared/Containers/AMJ_Masu_Empty_Master.png",
+    "sha256": "d10d44008698a692c9ad2369deb548f2af13f93d0621f7454cd84697e2a92d7b"
+  },
+  "editable_mask": {
+    "path": "../../Textures/Shared/Containers/AMJ_Masu_EditableMask.png",
+    "sha256": "e1ef4ef8144e7029d908c91397e2491f17a232fef6a5f6c7a6258c81414d7af5"
+  },
+  "editable_region": "masu interior cavity only; all rim/exterior/outline/joinery/wood shading/placement/transparent-margin pixels are protected",
+  "fixed_layer_order": [
+    "canonical master",
+    "variable contents inside editable mask",
+    "restore all protected master RGBA pixels"
+  ]
+}
