@@ -8,8 +8,8 @@
   -->
   <ThingDef ParentName="RoughPlantBase">
     <defName>AMJC_RawMillet</defName>
-    <label>raw millet</label>
-    <description>Harvested millet heads before threshing and hulling. They keep well in storage but are not yet suitable for eating.</description>
+    <label>millet sheaf</label>
+    <description>Harvested millet stalks and seed heads bundled together before threshing and hulling. They keep well in storage but are not yet suitable for eating.</description>
     <graphicData>
       <texPath>Things/Item/Resource/AMJC_Millet/RawMillet</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>

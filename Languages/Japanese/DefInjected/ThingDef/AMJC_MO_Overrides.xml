@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- AMJ grain-state naming: harvested stalk + head grain uses the ～束 convention. -->
+  <DankPyon_RawWheat.label>小麦束</DankPyon_RawWheat.label>
+
+</LanguageData>

@@ -42,6 +42,11 @@ assert num(awa, "plant/minOptimalGrowthTemperature") == 18
 assert num(awa, "plant/maxOptimalGrowthTemperature") == 32
 assert num(awa, "plant/sowMinSkill") == 0
 assert text(awa, "plant/harvestedThingDef") == "AMJC_RawMillet"
+
+jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_StageA.xml")
+assert text(jp, "AMJC_RawMillet.label") == "雑穀束"
+mo_jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_MO_Overrides.xml")
+assert text(mo_jp, "DankPyon_RawWheat.label") == "小麦束"
 assert text(awa, "graphicData/graphicClass") == "Graphic_Random"
 assert text(awa, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Awa"
 awa_texture = ROOT / "Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png"

@@ -73,11 +73,13 @@ These three ThingDefs still use temporary MO item graphics. Because they are sha
 
 The same locked AMJ art rules apply, with item icons flatter than plant art and with fewer/shallow shadows than the accepted plant asset.
 
-The already approved 2026-10-03 post-harvest artwork has now been isolated into production candidates for all three shared millet states: warm-gold `AMJC_RawMillet`, brown `AMJC_MilletInHull`, and pale `AMJC_Millet`. No new artwork was generated.
+The already approved 2026-10-03 post-harvest artwork has now been isolated into production candidates for all three shared millet states. The in-game size/readability check passed, but the warm-gold pile used for `AMJC_RawMillet` was identified as semantically wrong: the harvested state is still stalks + seed heads and should read as a sheaf/bundle, not loose grain. Brown `AMJC_MilletInHull` and pale `AMJC_Millet` remain acceptable.
 
 Each ThingDef now keeps its existing `Graphic_StackCount` behavior and points to an AMJ-owned texture directory. Three stack-count slots (`a/b/c`) are present for each state; this first integration uses the same approved pile silhouette in all three slots so the game check can focus on texture resolution, scale, and UI/map readability without introducing new unapproved art variation. Static validators now assert the exact paths plus all nine 256×256 PNGs.
 
-**Next action:** pull latest `main`, restart RimWorld, and spawn/check `AMJC_RawMillet`, `AMJC_MilletInHull`, and `AMJC_Millet` on the map and in their Info cards at ordinary zoom. If all three load without question marks and their relative size/readability is acceptable, mark AMJ-005 DONE.
+**Naming decision:** harvested stalk+head grain states use the `～束` convention. `AMJC_RawMillet` is displayed as `雑穀束` / `millet sheaf`; `(生)` is not used for grain processing states. MO `DankPyon_RawWheat` receives the Japanese display override `小麦束` for the same reason. Internal DefNames are unchanged.
+
+**Next action:** replace only the current `AMJC_RawMillet` loose-grain texture with a stalk+head millet sheaf/bundle asset in the locked AMJ/MO style, then re-check it at the already accepted map scale. Keep the current hull and edible-millet textures unless a concrete problem appears.
 
 **Result / references:** shared processing implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; art-style baseline `2d4accb0c56bff6b81497a325877d5a5dc7d7710`; source artwork user-approved 2026-10-03.
 

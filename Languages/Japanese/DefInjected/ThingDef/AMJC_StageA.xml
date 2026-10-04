@@ -4,8 +4,8 @@
   <AMJC_Plant_FoxtailMillet_Awa.label>アワ</AMJC_Plant_FoxtailMillet_Awa.label>
   <AMJC_Plant_FoxtailMillet_Awa.description>古くから栽培されてきた雑穀の一種。小麦より痩せた土地でも育てやすいが、生育には比較的暖かい環境を好む。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_FoxtailMillet_Awa.description>
 
-  <AMJC_RawMillet.label>雑穀(生)</AMJC_RawMillet.label>
-  <AMJC_RawMillet.description>収穫直後の未脱穀の雑穀。保存性は高いが、このままでは食べられない。脱穀と殻取りを経て食用の雑穀になる。</AMJC_RawMillet.description>
+  <AMJC_RawMillet.label>雑穀束</AMJC_RawMillet.label>
+  <AMJC_RawMillet.description>茎と穂が付いたまま刈り取った未脱穀の雑穀束。保存性は高いが、このままでは食べられない。脱穀と殻取りを経て食用の雑穀になる。</AMJC_RawMillet.description>
 
   <AMJC_MilletInHull.label>殻付き雑穀</AMJC_MilletInHull.label>
   <AMJC_MilletInHull.description>脱穀を終えたものの、まだ殻が残っている雑穀。殻に守られて保存性は高いが、このままでは食べられない。</AMJC_MilletInHull.description>
