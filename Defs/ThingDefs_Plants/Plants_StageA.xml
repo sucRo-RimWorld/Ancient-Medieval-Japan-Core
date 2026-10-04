@@ -59,7 +59,7 @@
       <Nutrition>0.2</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
+      <texPath>Things/Plants/FullGrown/AMJC_Hie</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -81,7 +81,7 @@
       <minOptimalGrowthTemperature>15</minOptimalGrowthTemperature>
       <maxOptimalGrowthTemperature>30</maxOptimalGrowthTemperature>
       <visualSizeRange>0.5~1.0</visualSizeRange>
-      <immatureGraphicPath>Things/Plants/Immature/AMJC_Awa</immatureGraphicPath>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Hie</immatureGraphicPath>
       <wildOrder>3</wildOrder>
       <purpose>Food</purpose>
       <sowMinSkill>0</sowMinSkill>
