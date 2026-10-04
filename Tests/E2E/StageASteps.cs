@@ -15,7 +15,10 @@ namespace AncientMedievalJapanCore.E2E
         public void AssertLoadedCropAndGrainDefs(PickleContext ctx)
         {
             ThingDef awa = RequireThingDef(ctx, "AMJC_Plant_FoxtailMillet_Awa");
-            ctx.Require(awa.plant != null, "AMJC_Plant_FoxtailMillet_Awa is not a plant.");
+            if (awa.plant == null)
+            {
+                throw new InvalidOperationException("AMJC_Plant_FoxtailMillet_Awa is not a plant.");
+            }
 
             ctx.Assert(Math.Abs(awa.plant.growDays - 6f) < 0.001f, "Awa growDays should be 6.");
             ctx.Assert(Math.Abs(awa.plant.fertilityMin - 0.5f) < 0.001f, "Awa fertilityMin should be 0.5.");
@@ -200,8 +203,14 @@ namespace AncientMedievalJapanCore.E2E
             ThingDef millet = RequireThingDef(ctx, "AMJC_Millet");
             RecipeDef simpleMeal = DefDatabase<RecipeDef>.GetNamedSilentFail("CookMealSimple");
 
-            ctx.Require(simpleMeal != null, "Vanilla CookMealSimple RecipeDef was not found.");
-            ctx.Require(simpleMeal.fixedIngredientFilter != null, "CookMealSimple has no fixed ingredient filter.");
+            if (simpleMeal == null)
+            {
+                throw new InvalidOperationException("Vanilla CookMealSimple RecipeDef was not found.");
+            }
+            if (simpleMeal.fixedIngredientFilter == null)
+            {
+                throw new InvalidOperationException("CookMealSimple has no fixed ingredient filter.");
+            }
             ctx.Assert(simpleMeal.fixedIngredientFilter.Allows(millet), "Edible AMJ millet should be accepted by the vanilla simple meal ingredient filter.");
             ThingDef buckwheat = RequireThingDef(ctx, "AMJC_Buckwheat");
             ctx.Assert(simpleMeal.fixedIngredientFilter.Allows(buckwheat), "Edible AMJ buckwheat should be accepted by the vanilla simple meal ingredient filter.");
@@ -215,7 +224,10 @@ namespace AncientMedievalJapanCore.E2E
             float minOptimal, float maxOptimal, int sowMinSkill, string harvestedDefName)
         {
             ThingDef crop = RequireThingDef(ctx, defName);
-            ctx.Require(crop.plant != null, defName + " is not a plant.");
+            if (crop.plant == null)
+            {
+                throw new InvalidOperationException(defName + " is not a plant.");
+            }
             ctx.Assert(Math.Abs(crop.plant.growDays - growDays) < 0.001f, defName + " growDays mismatch.");
             ctx.Assert(Math.Abs(crop.plant.harvestYield - harvestYield) < 0.001f, defName + " harvestYield mismatch.");
             ctx.Assert(Math.Abs(crop.plant.fertilityMin - fertilityMin) < 0.001f, defName + " fertilityMin mismatch.");
@@ -233,7 +245,10 @@ namespace AncientMedievalJapanCore.E2E
             float fertilitySensitivity, float minGrowth, float maxGrowth, float minOptimal, float maxOptimal)
         {
             ThingDef crop = RequireThingDef(ctx, defName);
-            ctx.Require(crop.plant != null, defName + " is not a plant.");
+            if (crop.plant == null)
+            {
+                throw new InvalidOperationException(defName + " is not a plant.");
+            }
             ctx.Assert(Math.Abs(crop.plant.growDays - growDays) < 0.001f, defName + " growDays mismatch.");
             ctx.Assert(Math.Abs(crop.plant.harvestYield - harvestYield) < 0.001f, defName + " harvestYield mismatch.");
             ctx.Assert(Math.Abs(crop.plant.fertilityMin - 0.5f) < 0.001f, defName + " fertilityMin mismatch.");
@@ -258,8 +273,14 @@ namespace AncientMedievalJapanCore.E2E
             Type extensionType = extension.GetType();
             FieldInfo deathField = extensionType.GetField("coldDeathTemperature", BindingFlags.Instance | BindingFlags.Public);
             FieldInfo dormancyField = extensionType.GetField("coldDormancy", BindingFlags.Instance | BindingFlags.Public);
-            ctx.Require(deathField != null, "CCTO fixture extension is missing coldDeathTemperature.");
-            ctx.Require(dormancyField != null, "CCTO fixture extension is missing coldDormancy.");
+            if (deathField == null)
+            {
+                throw new InvalidOperationException("CCTO fixture extension is missing coldDeathTemperature.");
+            }
+            if (dormancyField == null)
+            {
+                throw new InvalidOperationException("CCTO fixture extension is missing coldDormancy.");
+            }
             float coldDeathTemperature = Convert.ToSingle(deathField.GetValue(extension));
             bool coldDormancy = Convert.ToBoolean(dormancyField.GetValue(extension));
             ctx.Assert(Math.Abs(coldDeathTemperature - expectedDeathTemperature) < 0.001f, defName + " CCTO cold-death temperature mismatch.");
@@ -293,7 +314,10 @@ namespace AncientMedievalJapanCore.E2E
                 ? null
                 : recipe.ingredients.FirstOrDefault(x => x.filter != null && x.filter.Allows(inputDef));
 
-            ctx.Require(ingredient != null, defName + " is missing expected input " + inputDefName + ".");
+            if (ingredient == null)
+            {
+                throw new InvalidOperationException(defName + " is missing expected input " + inputDefName + ".");
+            }
             ctx.Assert(Math.Abs(ingredient.GetBaseCount() - expectedInputCount) < 0.001f, defName + " input count mismatch.");
 
             foreach (KeyValuePair<string, int> expected in expectedProducts)
@@ -306,10 +330,16 @@ namespace AncientMedievalJapanCore.E2E
 
         private static int ProductCount(PickleContext ctx, RecipeDef recipe, string productDefName)
         {
-            ctx.Require(recipe.products != null, recipe.defName + " has no products.");
+            if (recipe.products == null)
+            {
+                throw new InvalidOperationException(recipe.defName + " has no products.");
+            }
             ThingDefCountClass product = recipe.products.FirstOrDefault(
                 x => x.thingDef != null && x.thingDef.defName == productDefName);
-            ctx.Require(product != null, recipe.defName + " is missing product " + productDefName + ".");
+            if (product == null)
+            {
+                throw new InvalidOperationException(recipe.defName + " is missing product " + productDefName + ".");
+            }
             return product.count;
         }
 
@@ -319,7 +349,10 @@ namespace AncientMedievalJapanCore.E2E
                 ? null
                 : def.comps.OfType<CompProperties_Rottable>().FirstOrDefault();
 
-            ctx.Require(rot != null, def.defName + " is missing CompProperties_Rottable.");
+            if (rot == null)
+            {
+                throw new InvalidOperationException(def.defName + " is missing CompProperties_Rottable.");
+            }
             ctx.Assert(
                 Math.Abs(rot.daysToRotStart - expectedDays) < 0.001f,
                 def.defName + " daysToRotStart mismatch.");
@@ -333,23 +366,35 @@ namespace AncientMedievalJapanCore.E2E
 
         private static float ReadStatBase(PickleContext ctx, ThingDef def, StatDef stat)
         {
-            ctx.Require(def.statBases != null, def.defName + " has no statBases.");
+            if (def.statBases == null)
+            {
+                throw new InvalidOperationException(def.defName + " has no statBases.");
+            }
             StatModifier modifier = def.statBases.FirstOrDefault(x => x.stat == stat);
-            ctx.Require(modifier != null, def.defName + " is missing stat " + stat.defName + ".");
+            if (modifier == null)
+            {
+                throw new InvalidOperationException(def.defName + " is missing stat " + stat.defName + ".");
+            }
             return modifier.value;
         }
 
         private static ThingDef RequireThingDef(PickleContext ctx, string defName)
         {
             ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
-            ctx.Require(def != null, "Required ThingDef '" + defName + "' was not found.");
+            if (def == null)
+            {
+                throw new InvalidOperationException("Required ThingDef '" + defName + "' was not found.");
+            }
             return def;
         }
 
         private static RecipeDef RequireRecipe(PickleContext ctx, string defName)
         {
             RecipeDef def = DefDatabase<RecipeDef>.GetNamedSilentFail(defName);
-            ctx.Require(def != null, "Required RecipeDef '" + defName + "' was not found.");
+            if (def == null)
+            {
+                throw new InvalidOperationException("Required RecipeDef '" + defName + "' was not found.");
+            }
             return def;
         }
     }
