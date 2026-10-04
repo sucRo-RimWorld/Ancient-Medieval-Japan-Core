@@ -212,11 +212,11 @@ Harness corrections:
 - in the isolated profile, fail the automated gate on **any** ERROR-level runtime entry rather than only entries carrying an AMJC mod_id;
 - emit `TestResults/Pickle/source-state.txt` containing the local Git HEAD and scenario names so uploaded reports can be tied to the exact local test source.
 
-**Validation:** GitHub static CI first; then rerun the current local main. The next report must show the current "Loaded AMJ crop CCTO..." scenario name, 5/5, and zero ERROR-level entries.
+**Validation:** GitHub Stage A validation passed for harness cleanup `005442b2b12719cb77d4643479716f93866d444d`, explicit null-diagnostic hardening `b0ae057cc4beeea01b47c0060f4c1e3ffce2ab97`, and the Windows source-state syntax fix `962fb1cc7f741b8c6c4ee229724824b828a9f59a`. The uploaded 4/5 report is intentionally not counted as Barley validation because it contains the older "Loaded AMJ millet CCTO..." scenario name and therefore predates the current Barley suite. The next report must show the current "Loaded AMJ crop CCTO..." scenario name, 5/5, and zero ERROR-level entries.
 
-**Next action:** rerun the latest local main after this harness change; inspect the new report if it fails.
+**Next action:** rerun the latest local main after this harness change; inspect `source-state.txt`, `summary.json`, and `Player.log` if it fails.
 
-**Result / references:** harness-fix commit follows.
+**Result / references:** harness cleanup `005442b2b12719cb77d4643479716f93866d444d`; explicit failure diagnostics `b0ae057cc4beeea01b47c0060f4c1e3ffce2ab97`; batch source-state fix `962fb1cc7f741b8c6c4ee229724824b828a9f59a`.
 
 Add new items using the following form.
 
