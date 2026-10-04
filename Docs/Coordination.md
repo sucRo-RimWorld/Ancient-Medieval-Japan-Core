@@ -621,9 +621,9 @@ The repair restored only the four broken PNG blobs from the earlier same-workstr
 
 **Validation:** repair commit `0262092fa06c4578450af15c5b936fdd80156113`; GitHub Actions Stage A validation run #129 completed successfully, including both `validate-stage-a` and `validate-windows-powershell`.
 
-**Golden Path follow-up:** `Docs/ArtStyle.md` now requires `python Tests/validate_stage_a.py` before committing PNG assets and explicitly treats header/dimension checks or viewer-open success as insufficient. Existing CI continues to scan all production textures for chunk, CRC, compressed-stream and scanline integrity.
+**Golden Path follow-up:** PNG integrity now has a dedicated `Tests/validate_png_assets.py` gate. It scans every production texture for chunk boundaries, CRCs, complete IDAT/zlib data, valid scanlines and IEND, and reports all broken PNGs in one run. `Tests/test_validate_png_assets.py` regression-tests both truncated-IDAT and bad-CRC failures. `Docs/ArtStyle.md` and `AGENTS.md` require this gate for PNG work.
 
-**Next action:** none. Continue using the existing validator before art commits; if the PNG checks are later split into a dedicated script, keep that script in the normal pre-commit/CI path.
+**Next action:** none. GitHub Actions runs `validate-png-assets` before `validate-stage-a`; binary texture writes must not be treated as successful until the repository-side gate passes.
 
-**Result / references:** repair `0262092fa06c4578450af15c5b936fdd80156113`; successful workflow run #129 (`37216328943`).
+**Result / references:** repair `0262092fa06c4578450af15c5b936fdd80156113`; dedicated PNG gate `c0823137002c37cc6e5f9ae69f0ea819c98e7e2a`; successful workflow run #131 (`37216862456`) with `validate-png-assets`, `validate-stage-a`, and `validate-windows-powershell` all Green.
 
