@@ -200,6 +200,7 @@ The Soba data slice uses temporary Awa/millet graphics only. Under `Docs/Design.
 
 **Result / references:** data DefNames are `AMJC_Plant_Buckwheat_Soba`, `AMJC_RawBuckwheat`, `AMJC_BuckwheatInHull`, `AMJC_Buckwheat`; current temporary paths reuse Awa/millet assets.
 **2026-10-05 boxed-resource icon lock:** The author approved a dedicated empty **Japanese masu** as the canonical boxed-resource master. AMJ keeps the familiar Vanilla/MO boxed-item silhouette language, but all compatible AMJ/Vanilla/MO retextures should use the same masu treatment. The container geometry, viewing angle, rim, joinery, palette, shading and placement are fixed; only the contents change. Generate/draw contents separately and composite them into the fixed master. If whole-icon generation drifts twice, stop regenerating and use deterministic local compositing. Durable procedure: `Docs/GoldenPaths/TextureAssetPipeline.md`; visual source of truth: `Docs/ArtStyle.md`.
+Canonical repository master: `Textures/Things/Item/Resource/AMJC_Shared/Masu/AMJC_Masu_Empty.png` (256×256 transparent PNG). New chats/agents should fetch this file from `main` and composite contents into it rather than regenerating the masu.
 
 
 ### AMJ-010 — Barley cultivation and primary processing data slice
