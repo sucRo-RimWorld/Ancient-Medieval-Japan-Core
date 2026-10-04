@@ -646,3 +646,24 @@ Durable design source: `Docs/Design.md` section **AMJ共通容器（甕）— �
 
 **Next action:** 容器システムを扱う別作業系統で、既存Mod監査 → 最小プロトタイプ → 所有/依存設計の順に検討し、採否が決まった時点で正式仕様へ更新する。
 
+### DOC-010 — Workshop cover common-left drift prevention
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art direction / Workshop covers  
+**Status:** DONE (documentation guard; image-generation model output still requires visual inspection)
+
+Root cause of the cross-chat cover inconsistency was not only generation variance. The repository guidance itself had drifted from the actually accepted Environment/Core visual system: `Docs/WorkshopCoverStyle.md` and the SVG schematic still described the superseded `中世日本OH` + A/M/J-initial-emphasis left block, while the accepted covers use a three-line `Ancient &` / `Medieval` / `Japan` editorial block with `Japan` in muted reddish-brown. Because a separate chat does not reliably carry the previous chat's visual context, this stale/contradictory source allowed the left side to be reconstructed incorrectly.
+
+Prevention now in place:
+- the common-left block is explicitly invariant across the series;
+- addon-specific instructions may modify the right-side illustration and addon name only;
+- the old Japanese heading, A/M/J emphasis, dark panel, Japan map, and red brush badge are explicitly forbidden;
+- the pre-generation workflow requires a left-side preflight before image generation;
+- generated results must be checked left-side first and rejected if wording, line breaks, hierarchy, or accent placement drift;
+- cross-chat work must read the repository source and schematic rather than rely on remembered chat context;
+- `Docs/References/AMJ_WorkshopCover_Template.svg` now matches the accepted left layout.
+
+**Result / references:** Workshop style lock `a9e360155bb7d4daa4d1cc2b8c2bcd55d6d694d8`; reference schematic `4a35862af845e2b1971d1a489ad6f3f2ec6030fc`; ArtStyle binding `7526366b415e166fc15434038b9395b0a56b4ac6`.
+
+**Next action:** for every future cover, proposal → author approval → preflight → generation → left-side-first inspection. Do not accept a right-side-successful image if the shared left block drifted.
+
