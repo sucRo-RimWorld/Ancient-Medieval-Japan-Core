@@ -559,3 +559,17 @@ The existing Awa native growth minimum and AMJC-side extension already follow th
 Audited AMJC's 68 direct label/description/jobString fields against Japanese DefInjected entries: no missing fields. Updated only AMJC_ThreshMillet.description and AMJC_ThreshMilletBulk.description from the obsolete 雑穀(生) name to the accepted 雑穀束 name recorded in AMJ-005. Quantities, recipes, DefNames, English text, and gameplay data are unchanged.
 
 **Validation:** PowerShell Stage A static validator PASS; localization XML parses; git diff whitespace check PASS. No game UI/runtime validation claimed.
+
+### DOC-008 — AMJ-wide historical description audit policy
+
+**Requested by:** author (2026-10-04 JST)  
+**Owner:** Documentation/localization / content design  
+**Status:** DONE (policy documentation; content audits remain per-feature work)
+
+AMJ now treats inherited Vanilla and Medieval Overhaul descriptions as historical-presentation content that must be audited rather than automatically retained. When AMJ adopts, patches, retextures, selects, or localizes existing items, plants, animals, or comparable content, descriptions are checked from the perspective of ancient/medieval Japan and rewritten when they are anachronistic, culturally mismatched, misleading, overly modern, or otherwise unsuitable.
+
+AMJ-authored descriptions should include supported historical facts and, where supportable, a meaningful difference from modern Japan, modern use, modern distribution, or modern production. Historically unsuitable content must not be made to look authentic through invented prose; if wording cannot solve the mismatch, the content is flagged for a separate keep/replace/remove design decision.
+
+Authoring remains Japanese-first: research/draft Japanese, obtain author approval, then translate only the approved Japanese text into English. Durable research/source rationale is retained outside Coordination.
+
+**Result / references:** shared guideline `Docs/HistoricalDescriptionGuidelines.md` commit `ca17b37eb3cca5266d1f62a2d73f527a503d76e5`; Core AGENTS link `3a501077be572b651dcc4d646cf84fd1730b976e`; Environment application `0e1b74173eca79dde09dffa2287fc5f72a583c27`, `3b8b7c753b79951b315c2ffe31822416a31595c8`; CCTO scope/reference `5b60adbc676f35f98e6c7c9801f22846e5ebf097`.
