@@ -31,6 +31,8 @@ AMJ keeps the familiar Vanilla / Medieval Overhaul boxed-resource silhouette lan
 
 The author-approved **empty square masu** is the canonical container master.
 
+Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
+
 Canonical repository asset: `Textures/Things/Item/Resource/AMJC_Shared/Masu/AMJC_Masu_Empty.png`. This 256×256 transparent PNG is the cross-chat/cross-agent master. Fetch it from `main` before producing any boxed-resource derivative; do not regenerate the container from prose.
 
 ### Immutable parts

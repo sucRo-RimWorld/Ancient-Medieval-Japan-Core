@@ -140,6 +140,8 @@ For loose harvested produce, beans, grains, hulled grain, and similar resources,
 
 The author-approved **empty square masu** is the canonical container master. The container is a reusable production component, not something to redraw for every resource.
 
+Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
+
 Repository source of truth: `Textures/Things/Item/Resource/AMJC_Shared/Masu/AMJC_Masu_Empty.png` (256×256 RGBA, transparent background). All future boxed-resource work must fetch and reuse this exact repository master rather than reconstructing the masu from chat context or a text prompt.
 
 Fixed container properties:
