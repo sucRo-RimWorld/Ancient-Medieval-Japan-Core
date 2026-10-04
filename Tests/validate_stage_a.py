@@ -40,66 +40,78 @@ deps = [n.findtext("packageId") for n in about.findall("./modDependencies/li")]
 assert "DankPyon.Medieval.Overhaul" in deps
 
 ccto_patch = load("Patches/Compatibility/CCTO_StageA.xml")
-ccto_ops = [
-    op for op in ccto_patch.findall("Operation")
-    if op.attrib.get("Class") == "PatchOperationFindMod"
-    and [li.text.strip() for li in op.findall("./mods/li") if li.text]
-    == ["Crop Cold Tolerance Overhaul"]
-]
-assert len(ccto_ops) == 1, "expected exactly one CCTO PatchOperationFindMod"
-ccto_op = ccto_ops[0]
-match = ccto_op.find("match")
-assert match is not None and match.attrib.get("Class") == "PatchOperationAddModExtension"
-assert text(ccto_op, "match/xpath") == '/Defs/ThingDef[defName="AMJC_Plant_FoxtailMillet_Awa"]'
-extensions = [
-    node for node in ccto_op.findall("./match/value/li")
-    if node.attrib.get("Class") == "CropColdToleranceOverhaul.ColdToleranceExtension"
-]
-assert len(extensions) == 1, "Awa CCTO patch must add exactly one ColdToleranceExtension"
-assert num(extensions[0], "coldDeathTemperature") == -3
-cold_dormancy = extensions[0].find("coldDormancy")
-assert cold_dormancy is None or cold_dormancy.text.strip().lower() == "false"
-
 plants = load("Defs/ThingDefs_Plants/Plants_StageA.xml")
 items = load("Defs/ThingDefs_Items/Items_StageA_Grains.xml")
 buildings = load("Defs/ThingDefs_Buildings/Buildings_GrainProcessing.xml")
 recipes = load("Defs/RecipeDefs/Recipes_GrainProcessing.xml")
 
-awa = find_def(plants, "ThingDef", "AMJC_Plant_FoxtailMillet_Awa")
-assert num(awa, "plant/growDays") == 6
-assert num(awa, "plant/harvestYield") == 13
-assert num(awa, "plant/fertilityMin") == 0.5
-assert num(awa, "plant/fertilitySensitivity") == 0.4
-assert num(awa, "plant/minGrowthTemperature") == 8
-assert num(awa, "plant/maxGrowthTemperature") == 42
-assert num(awa, "plant/minOptimalGrowthTemperature") == 18
-assert num(awa, "plant/maxOptimalGrowthTemperature") == 32
-assert num(awa, "plant/sowMinSkill") == 0
-assert text(awa, "plant/harvestedThingDef") == "AMJC_RawMillet"
+def assert_ccto_patch(def_name, death_temp):
+    matches = []
+    for op in ccto_patch.findall("Operation"):
+        if op.attrib.get("Class") != "PatchOperationFindMod":
+            continue
+        mods = [li.text.strip() for li in op.findall("./mods/li") if li.text]
+        if mods != ["Crop Cold Tolerance Overhaul"]:
+            continue
+        xpath_node = op.find("./match/xpath")
+        if xpath_node is not None and xpath_node.text and def_name in xpath_node.text:
+            matches.append(op)
+    assert len(matches) == 1, f"expected exactly one CCTO patch for {def_name}"
+    op = matches[0]
+    assert text(op, "match/xpath") == f'/Defs/ThingDef[defName="{def_name}"]'
+    match = op.find("match")
+    assert match is not None and match.attrib.get("Class") == "PatchOperationAddModExtension"
+    extensions = [node for node in op.findall("./match/value/li") if node.attrib.get("Class") == "CropColdToleranceOverhaul.ColdToleranceExtension"]
+    assert len(extensions) == 1, f"{def_name} must add exactly one ColdToleranceExtension"
+    assert num(extensions[0], "coldDeathTemperature") == death_temp
+    dormancy = extensions[0].find("coldDormancy")
+    assert dormancy is None or dormancy.text.strip().lower() == "false"
 
-design_awa = markdown_row(
-    "Docs/Design.md",
-    "### 4.2.1 Stage A畑作6作物の確定バランス",
-    "アワ",
-)
-assert float(design_awa[1]) == num(awa, "plant/growDays")
-assert float(design_awa[2]) == num(awa, "plant/harvestYield")
-assert float(design_awa[3]) == num(awa, "plant/fertilityMin")
-assert float(design_awa[4]) == num(awa, "plant/fertilitySensitivity")
-assert design_awa[5] == "8～42℃"
-assert design_awa[6] == "18～32℃"
-assert design_awa[7] == "-3℃"
+def assert_crop(def_name, grow_days, harvest_yield, fertility_sensitivity, min_temp, max_temp, min_opt, max_opt):
+    crop = find_def(plants, "ThingDef", def_name)
+    assert num(crop, "plant/growDays") == grow_days
+    assert num(crop, "plant/harvestYield") == harvest_yield
+    assert num(crop, "plant/fertilityMin") == 0.5
+    assert num(crop, "plant/fertilitySensitivity") == fertility_sensitivity
+    assert num(crop, "plant/minGrowthTemperature") == min_temp
+    assert num(crop, "plant/maxGrowthTemperature") == max_temp
+    assert num(crop, "plant/minOptimalGrowthTemperature") == min_opt
+    assert num(crop, "plant/maxOptimalGrowthTemperature") == max_opt
+    assert num(crop, "plant/sowMinSkill") == 0
+    assert text(crop, "plant/harvestedThingDef") == "AMJC_RawMillet"
+    return crop
 
-cold_awa = markdown_row(
-    "Docs/Balance/Crops/ColdTolerance.md",
-    "## 確定した固定枯死・休眠値",
-    "Foxtail millet",
-)
-assert cold_awa[1] == "8°C"
-assert cold_awa[2] == "-3°C"
+awa = assert_crop("AMJC_Plant_FoxtailMillet_Awa", 6, 13, 0.4, 8, 42, 18, 32)
+hie = assert_crop("AMJC_Plant_BarnyardMillet_Hie", 6, 12, 0.5, 5, 40, 15, 30)
+kibi = assert_crop("AMJC_Plant_ProsoMillet_Kibi", 5, 11, 0.3, 8, 42, 18, 32)
+
+assert_ccto_patch("AMJC_Plant_FoxtailMillet_Awa", -3)
+assert_ccto_patch("AMJC_Plant_BarnyardMillet_Hie", -2)
+assert_ccto_patch("AMJC_Plant_ProsoMillet_Kibi", -3)
+
+for design_name, crop, death in (
+    ("アワ", awa, "-3℃"),
+    ("ヒエ", hie, "-2℃"),
+    ("キビ", kibi, "-3℃"),
+):
+    row = markdown_row("Docs/Design.md", "### 4.2.1 Stage A畑作6作物の確定バランス", design_name)
+    assert float(row[1]) == num(crop, "plant/growDays")
+    assert float(row[2]) == num(crop, "plant/harvestYield")
+    assert float(row[3]) == num(crop, "plant/fertilityMin")
+    assert float(row[4]) == num(crop, "plant/fertilitySensitivity")
+    assert row[7] == death
+
+for cold_name, min_temp, death in (
+    ("Foxtail millet", "8°C", "-3°C"),
+    ("Barnyard millet", "5°C", "-2°C"),
+    ("Proso millet", "8°C", "-3°C"),
+):
+    row = markdown_row("Docs/Balance/Crops/ColdTolerance.md", "## 確定した固定枯死・休眠値", cold_name)
+    assert row[1] == min_temp
+    assert row[2] == death
 
 jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_StageA.xml")
-assert text(jp, "AMJC_RawMillet.label") == "雑穀束"
+assert text(jp, "AMJC_Plant_FoxtailMillet_Awa.label") == "アワ"\nassert text(jp, "AMJC_Plant_BarnyardMillet_Hie.label") == "ヒエ"\nassert text(jp, "AMJC_Plant_ProsoMillet_Kibi.label") == "キビ"\nassert text(jp, "AMJC_RawMillet.label") == "雑穀束"
 mo_jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_MO_Overrides.xml")
 assert text(mo_jp, "DankPyon_RawWheat.label") == "小麦束"
 assert text(awa, "graphicData/graphicClass") == "Graphic_Random"

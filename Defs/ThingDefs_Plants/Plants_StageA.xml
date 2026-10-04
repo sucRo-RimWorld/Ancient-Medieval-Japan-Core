@@ -2,14 +2,14 @@
 <Defs>
 
   <!--
-    Stage A vertical slice 1: Awa / foxtail millet.
-    Mature and immature AMJ plant graphics are production candidates pending
-    the final in-game size/readability check.
+    Stage A millets share the same harvested ThingDef and post-harvest chain.
+    Hie and Kibi temporarily reuse the accepted Awa plant graphics until their
+    crop-specific art is delivered by the separate Art/graphics workstream.
   -->
   <ThingDef ParentName="PlantBase">
     <defName>AMJC_Plant_FoxtailMillet_Awa</defName>
     <label>foxtail millet plant</label>
-    <description>Foxtail millet (awa), a hardy traditional millet grown as a basic grain crop. It tolerates poorer soil better than wheat, but prefers warm growing conditions.</description>
+    <description>Foxtail millet (awa), a traditional dryland millet used as a staple grain. It takes longer to mature than kibi but produces more grain per harvest, making it well suited to ordinary main fields.</description>
     <descriptionHyperlinks>
       <ThingDef>AMJC_RawMillet</ThingDef>
     </descriptionHyperlinks>
@@ -32,9 +32,7 @@
       <maxMeshCount>4</maxMeshCount>
       <harvestedThingDef>AMJC_RawMillet</harvestedThingDef>
       <harvestYield>13</harvestYield>
-      <sowTags>
-        <li>Ground</li>
-      </sowTags>
+      <sowTags><li>Ground</li></sowTags>
       <topWindExposure>0.20</topWindExposure>
       <growDays>6</growDays>
       <minGrowthTemperature>8</minGrowthTemperature>
@@ -44,6 +42,88 @@
       <visualSizeRange>0.5~1.0</visualSizeRange>
       <immatureGraphicPath>Things/Plants/Immature/AMJC_Awa</immatureGraphicPath>
       <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <sowMinSkill>0</sowMinSkill>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>AMJC_Plant_BarnyardMillet_Hie</defName>
+    <label>Japanese barnyard millet plant</label>
+    <description>Japanese barnyard millet (hie), a traditional grain crop suited to cool growing conditions. It can keep growing at lower temperatures than awa or kibi, but it is not especially frost hardy.</description>
+    <descriptionHyperlinks>
+      <ThingDef>AMJC_RawMillet</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <maxMeshCount>4</maxMeshCount>
+      <harvestedThingDef>AMJC_RawMillet</harvestedThingDef>
+      <harvestYield>12</harvestYield>
+      <sowTags><li>Ground</li></sowTags>
+      <topWindExposure>0.20</topWindExposure>
+      <growDays>6</growDays>
+      <minGrowthTemperature>5</minGrowthTemperature>
+      <maxGrowthTemperature>40</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>15</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>30</maxOptimalGrowthTemperature>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Awa</immatureGraphicPath>
+      <wildOrder>3</wildOrder>
+      <purpose>Food</purpose>
+      <sowMinSkill>0</sowMinSkill>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>AMJC_Plant_ProsoMillet_Kibi</defName>
+    <label>proso millet plant</label>
+    <description>Proso millet (kibi), a fast-growing traditional millet suited to short growing seasons and poorer soils. It matures faster than awa or hie but produces less grain per harvest.</description>
+    <descriptionHyperlinks>
+      <ThingDef>AMJC_RawMillet</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <maxMeshCount>4</maxMeshCount>
+      <harvestedThingDef>AMJC_RawMillet</harvestedThingDef>
+      <harvestYield>11</harvestYield>
+      <sowTags><li>Ground</li></sowTags>
+      <topWindExposure>0.20</topWindExposure>
+      <growDays>5</growDays>
+      <minGrowthTemperature>8</minGrowthTemperature>
+      <maxGrowthTemperature>42</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>18</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>32</maxOptimalGrowthTemperature>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Awa</immatureGraphicPath>
+      <wildOrder>4</wildOrder>
       <purpose>Food</purpose>
       <sowMinSkill>0</sowMinSkill>
     </plant>

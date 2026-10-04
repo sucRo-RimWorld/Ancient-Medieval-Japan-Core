@@ -2,7 +2,13 @@
 <LanguageData>
 
   <AMJC_Plant_FoxtailMillet_Awa.label>アワ</AMJC_Plant_FoxtailMillet_Awa.label>
-  <AMJC_Plant_FoxtailMillet_Awa.description>古くから栽培されてきた雑穀の一種。小麦より痩せた土地でも育てやすいが、生育には比較的暖かい環境を好む。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_FoxtailMillet_Awa.description>
+  <AMJC_Plant_FoxtailMillet_Awa.description>古くから栽培されてきた雑穀の一種。キビより成熟は遅いが、一度の収穫量が多く、標準的な畑の主力作物として扱いやすい。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_FoxtailMillet_Awa.description>
+
+  <AMJC_Plant_BarnyardMillet_Hie.label>ヒエ</AMJC_Plant_BarnyardMillet_Hie.label>
+  <AMJC_Plant_BarnyardMillet_Hie.description>古くから栽培されてきた雑穀の一種。アワやキビより低い気温でも生育でき、寒冷地や春秋の栽培期間を活かしやすい。ただし、霜そのものへの耐性が特に高いわけではない。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_BarnyardMillet_Hie.description>
+
+  <AMJC_Plant_ProsoMillet_Kibi.label>キビ</AMJC_Plant_ProsoMillet_Kibi.label>
+  <AMJC_Plant_ProsoMillet_Kibi.description>古くから栽培されてきた雑穀の一種。3種の雑穀の中で最も早く成熟し、肥沃度の低下による生育速度への影響も小さい。一度の収穫量はアワやヒエより少ない。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_ProsoMillet_Kibi.description>
 
   <AMJC_RawMillet.label>雑穀束</AMJC_RawMillet.label>
   <AMJC_RawMillet.description>茎と穂が付いたまま刈り取った未脱穀の雑穀束。保存性は高いが、このままでは食べられない。脱穀と殻取りを経て食用の雑穀になる。</AMJC_RawMillet.description>

@@ -26,7 +26,7 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(Math.Abs(awa.plant.maxOptimalGrowthTemperature - 32f) < 0.001f, "Awa maximum optimal growth temperature should be 32 C.");
             ctx.Assert(awa.plant.sowMinSkill == 0, "Awa sowMinSkill should be 0.");
             ctx.Assert(Math.Abs(awa.plant.harvestYield - 13f) < 0.001f, "Awa harvest yield should be 13.");
-            ctx.Assert(awa.plant.harvestedThingDef != null && awa.plant.harvestedThingDef.defName == "AMJC_RawMillet", "Awa must harvest AMJC_RawMillet.");
+            ctx.Assert(awa.plant.harvestedThingDef != null && awa.plant.harvestedThingDef.defName == "AMJC_RawMillet", "Awa must harvest AMJC_RawMillet.");\n\n            AssertLoadedMilletCrop(ctx, "AMJC_Plant_BarnyardMillet_Hie", 6f, 12f, 0.5f, 5f, 40f, 15f, 30f);\n            AssertLoadedMilletCrop(ctx, "AMJC_Plant_ProsoMillet_Kibi", 5f, 11f, 0.3f, 8f, 42f, 18f, 32f);
 
             ThingDef raw = RequireThingDef(ctx, "AMJC_RawMillet");
             ThingDef inHull = RequireThingDef(ctx, "AMJC_MilletInHull");
@@ -46,35 +46,12 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(Math.Abs(ReadStatBase(ctx, millet, StatDefOf.Nutrition) - 0.05f) < 0.001f, "Edible millet nutrition should be 0.05.");
         }
 
-        [Then("loaded Awa CCTO compatibility data matches the AMJC cold tolerance design")]
-        public void AssertLoadedAwaCctoCompatibility(PickleContext ctx)
+        [Then("loaded AMJ millet CCTO compatibility data matches the cold tolerance design")]
+        public void AssertLoadedMilletCctoCompatibility(PickleContext ctx)
         {
-            ThingDef awa = RequireThingDef(ctx, "AMJC_Plant_FoxtailMillet_Awa");
-            List<DefModExtension> extensions = awa.modExtensions == null
-                ? new List<DefModExtension>()
-                : awa.modExtensions
-                    .Where(x => x != null && x.GetType().FullName == "CropColdToleranceOverhaul.ColdToleranceExtension")
-                    .ToList();
-
-            ctx.Assert(extensions.Count == 1, "Awa must load exactly one CCTO ColdToleranceExtension.");
-            if (extensions.Count != 1)
-            {
-                return;
-            }
-
-            object extension = extensions[0];
-            Type extensionType = extension.GetType();
-            FieldInfo deathField = extensionType.GetField("coldDeathTemperature", BindingFlags.Instance | BindingFlags.Public);
-            FieldInfo dormancyField = extensionType.GetField("coldDormancy", BindingFlags.Instance | BindingFlags.Public);
-
-            ctx.Require(deathField != null, "CCTO fixture extension is missing coldDeathTemperature.");
-            ctx.Require(dormancyField != null, "CCTO fixture extension is missing coldDormancy.");
-
-            float coldDeathTemperature = Convert.ToSingle(deathField.GetValue(extension));
-            bool coldDormancy = Convert.ToBoolean(dormancyField.GetValue(extension));
-
-            ctx.Assert(Math.Abs(coldDeathTemperature - (-3f)) < 0.001f, "Awa CCTO cold-death temperature should be -3 C.");
-            ctx.Assert(!coldDormancy, "Awa should use fixed cold death, not cold dormancy.");
+            AssertLoadedCctoExtension(ctx, "AMJC_Plant_FoxtailMillet_Awa", -3f);
+            AssertLoadedCctoExtension(ctx, "AMJC_Plant_BarnyardMillet_Hie", -2f);
+            AssertLoadedCctoExtension(ctx, "AMJC_Plant_ProsoMillet_Kibi", -3f);
         }
 
         [Then("loaded AMJ grain processing buildings and recipes match the design values")]
@@ -154,6 +131,44 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Require(simpleMeal != null, "Vanilla CookMealSimple RecipeDef was not found.");
             ctx.Require(simpleMeal.fixedIngredientFilter != null, "CookMealSimple has no fixed ingredient filter.");
             ctx.Assert(simpleMeal.fixedIngredientFilter.Allows(millet), "Edible AMJ millet should be accepted by the vanilla simple meal ingredient filter.");
+        }
+
+        private static void AssertLoadedMilletCrop(
+            PickleContext ctx, string defName, float growDays, float harvestYield,
+            float fertilitySensitivity, float minGrowth, float maxGrowth, float minOptimal, float maxOptimal)
+        {
+            ThingDef crop = RequireThingDef(ctx, defName);
+            ctx.Require(crop.plant != null, defName + " is not a plant.");
+            ctx.Assert(Math.Abs(crop.plant.growDays - growDays) < 0.001f, defName + " growDays mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.harvestYield - harvestYield) < 0.001f, defName + " harvestYield mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.fertilityMin - 0.5f) < 0.001f, defName + " fertilityMin mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.fertilitySensitivity - fertilitySensitivity) < 0.001f, defName + " fertilitySensitivity mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.minGrowthTemperature - minGrowth) < 0.001f, defName + " minGrowthTemperature mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.maxGrowthTemperature - maxGrowth) < 0.001f, defName + " maxGrowthTemperature mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.minOptimalGrowthTemperature - minOptimal) < 0.001f, defName + " minOptimalGrowthTemperature mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.maxOptimalGrowthTemperature - maxOptimal) < 0.001f, defName + " maxOptimalGrowthTemperature mismatch.");
+            ctx.Assert(crop.plant.sowMinSkill == 0, defName + " sowMinSkill should be 0.");
+            ctx.Assert(crop.plant.harvestedThingDef != null && crop.plant.harvestedThingDef.defName == "AMJC_RawMillet", defName + " must harvest AMJC_RawMillet.");
+        }
+
+        private static void AssertLoadedCctoExtension(PickleContext ctx, string defName, float expectedDeathTemperature)
+        {
+            ThingDef crop = RequireThingDef(ctx, defName);
+            List<DefModExtension> extensions = crop.modExtensions == null
+                ? new List<DefModExtension>()
+                : crop.modExtensions.Where(x => x != null && x.GetType().FullName == "CropColdToleranceOverhaul.ColdToleranceExtension").ToList();
+            ctx.Assert(extensions.Count == 1, defName + " must load exactly one CCTO ColdToleranceExtension.");
+            if (extensions.Count != 1) return;
+            object extension = extensions[0];
+            Type extensionType = extension.GetType();
+            FieldInfo deathField = extensionType.GetField("coldDeathTemperature", BindingFlags.Instance | BindingFlags.Public);
+            FieldInfo dormancyField = extensionType.GetField("coldDormancy", BindingFlags.Instance | BindingFlags.Public);
+            ctx.Require(deathField != null, "CCTO fixture extension is missing coldDeathTemperature.");
+            ctx.Require(dormancyField != null, "CCTO fixture extension is missing coldDormancy.");
+            float coldDeathTemperature = Convert.ToSingle(deathField.GetValue(extension));
+            bool coldDormancy = Convert.ToBoolean(dormancyField.GetValue(extension));
+            ctx.Assert(Math.Abs(coldDeathTemperature - expectedDeathTemperature) < 0.001f, defName + " CCTO cold-death temperature mismatch.");
+            ctx.Assert(!coldDormancy, defName + " should use fixed cold death, not cold dormancy.");
         }
 
         private static void AssertRecipe(

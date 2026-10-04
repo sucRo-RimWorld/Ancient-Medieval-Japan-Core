@@ -2,11 +2,33 @@
 <Patch>
 
   <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Crop Cold Tolerance Overhaul</li>
-    </mods>
+    <mods><li>Crop Cold Tolerance Overhaul</li></mods>
     <match Class="PatchOperationAddModExtension">
       <xpath>/Defs/ThingDef[defName="AMJC_Plant_FoxtailMillet_Awa"]</xpath>
+      <value>
+        <li Class="CropColdToleranceOverhaul.ColdToleranceExtension">
+          <coldDeathTemperature>-3</coldDeathTemperature>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Crop Cold Tolerance Overhaul</li></mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="AMJC_Plant_BarnyardMillet_Hie"]</xpath>
+      <value>
+        <li Class="CropColdToleranceOverhaul.ColdToleranceExtension">
+          <coldDeathTemperature>-2</coldDeathTemperature>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Crop Cold Tolerance Overhaul</li></mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="AMJC_Plant_ProsoMillet_Kibi"]</xpath>
       <value>
         <li Class="CropColdToleranceOverhaul.ColdToleranceExtension">
           <coldDeathTemperature>-3</coldDeathTemperature>

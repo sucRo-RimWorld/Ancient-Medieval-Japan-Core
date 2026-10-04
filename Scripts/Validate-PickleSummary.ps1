@@ -23,7 +23,7 @@ catch {
 
 $required = @(
     "Loaded AMJ Stage A crop and grain Defs match the design values",
-    "Loaded Awa CCTO compatibility data matches the AMJC cold tolerance design",
+    "Loaded AMJ millet CCTO compatibility data matches the cold tolerance design",
     "Loaded AMJ grain processing buildings and recipes match the design values",
     "Thirteen raw millet is conserved through bulk plus remainder processing",
     "Edible millet is accepted by the vanilla simple meal ingredient filter"
