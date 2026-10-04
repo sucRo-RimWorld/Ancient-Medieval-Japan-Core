@@ -52,6 +52,12 @@ Only report that a GitHub file was updated when the change was actually committe
 
 When reporting repository changes, include the actual commit SHA.
 
+## PNG asset integrity gate
+
+Every committed production PNG must pass `python Tests/validate_png_assets.py`. The validator checks every `Textures/**/*.png` for complete chunk boundaries, CRCs, a complete IDAT/zlib stream, valid scanlines, and a final IEND. It reports all broken PNGs found in one run rather than stopping after the first file.
+
+The GitHub Actions `validate-png-assets` job is a prerequisite for Stage A validation. For binary writes made through automation or Git/GitHub APIs, treat the committed/checked-out bytes as authoritative: do not report the image write as successful until the repository-side PNG integrity gate passes. A valid PNG signature, dimensions, or successful viewer open is not sufficient.
+
 ## 自動テスト優先方針（AMJ共通）
 
 AMJおよび関連Modでは、RimTest Redux・Pickleを積極的に用いた自動テストを優先し、人間による手動テストを最小限にする。

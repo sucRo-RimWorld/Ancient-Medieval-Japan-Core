@@ -6,7 +6,20 @@ on:
   pull_request:
 
 jobs:
+  validate-png-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Regression-test PNG validator
+        run: python Tests/test_validate_png_assets.py
+
+      - name: Validate all PNG assets
+        run: python Tests/validate_png_assets.py
+
   validate-stage-a:
+    needs: validate-png-assets
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
