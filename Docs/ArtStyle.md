@@ -142,7 +142,7 @@ The author-approved **empty square masu** is the canonical container master. The
 
 Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
 
-Deterministic template registration: `Docs/References/AMJ_Masu_Template.json` with editable mask `Textures/Shared/Containers/AMJ_Masu_EditableMask.png`. The editable region is the masu interior only; rim, exterior faces, outline, joinery, wood shading, placement, and transparent margins are protected and must have zero RGBA pixel differences.
+Deterministic template registration: `Docs/References/AMJ_Masu_Template.json` with editable mask `Docs/References/AMJ_Masu_EditableMask.png`. The editable region is the masu interior only; rim, exterior faces, outline, joinery, wood shading, placement, and transparent margins are protected and must have zero RGBA pixel differences.
 
 Fixed container properties:
 - square masu silhouette and the approved three-quarter viewing angle;

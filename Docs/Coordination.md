@@ -200,7 +200,7 @@ The Soba data slice uses temporary Awa/millet graphics only. Under `Docs/Design.
 
 **Result / references:** data DefNames are `AMJC_Plant_Buckwheat_Soba`, `AMJC_RawBuckwheat`, `AMJC_BuckwheatInHull`, `AMJC_Buckwheat`; current temporary paths reuse Awa/millet assets.
 **2026-10-05 boxed-resource icon lock:** The author approved a dedicated empty **Japanese masu** as the canonical boxed-resource master. AMJ keeps the familiar Vanilla/MO boxed-item silhouette language, but all compatible AMJ/Vanilla/MO retextures should use the same masu treatment. The container geometry, viewing angle, rim, joinery, palette, shading and placement are fixed; only the contents change. Generate/draw contents separately and composite them into the fixed master. If whole-icon generation drifts twice, stop regenerating and use deterministic local compositing. Durable procedure: `Docs/GoldenPaths/TextureAssetPipeline.md`; visual source of truth: `Docs/ArtStyle.md`.
-Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`. New chats/workstreams must fetch and reuse this file instead of recreating the masu from prose. Fixed-template registration: `Docs/References/AMJ_Masu_Template.json`; editable mask: `Textures/Shared/Containers/AMJ_Masu_EditableMask.png`.
+Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`. New chats/workstreams must fetch and reuse this file instead of recreating the masu from prose. Fixed-template registration: `Docs/References/AMJ_Masu_Template.json`; editable mask: `Docs/References/AMJ_Masu_EditableMask.png`.
 
 
 ### AMJ-010 — Barley cultivation and primary processing data slice
@@ -749,7 +749,7 @@ A consistency audit found that two different files were simultaneously documente
 Registered v1:
 - master: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`
   - SHA-256 `d10d44008698a692c9ad2369deb548f2af13f93d0621f7454cd84697e2a92d7b`
-- editable mask: `Textures/Shared/Containers/AMJ_Masu_EditableMask.png`
+- editable mask: `Docs/References/AMJ_Masu_EditableMask.png`
   - SHA-256 `e1ef4ef8144e7029d908c91397e2491f17a232fef6a5f6c7a6258c81414d7af5`
 - manifest: `Docs/References/AMJ_Masu_Template.json`
 

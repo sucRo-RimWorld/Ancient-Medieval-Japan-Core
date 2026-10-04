@@ -33,7 +33,7 @@ The author-approved **empty square masu** is the canonical container master.
 
 Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
 
-Registered fixed-template manifest: `Docs/References/AMJ_Masu_Template.json`; editable mask: `Textures/Shared/Containers/AMJ_Masu_EditableMask.png`. New chats/agents must fetch the manifest, master, and mask from `main`, then use `Scripts/Art/fixed_template.py`; do not regenerate the container from prose.
+Registered fixed-template manifest: `Docs/References/AMJ_Masu_Template.json`; editable mask: `Docs/References/AMJ_Masu_EditableMask.png`. New chats/agents must fetch the manifest, master, and mask from `main`, then use `Scripts/Art/fixed_template.py`; do not regenerate the container from prose.
 
 ### Immutable parts
 

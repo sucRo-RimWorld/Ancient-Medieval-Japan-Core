@@ -62,7 +62,7 @@ variable.pngは登録寸法に配置済みの透明レイヤー。ツールは�
 
 ## 現在の移行状態と新規チャット
 
-- 枡：**v1固定テンプレート登録済み。** マスター `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`、変更可能マスク `Textures/Shared/Containers/AMJ_Masu_EditableMask.png`、登録簿 `Docs/References/AMJ_Masu_Template.json`。変更可能なのは内部領域のみで、外縁・前面・輪郭・木組み・木の陰影・配置・透明余白は保護する。派生は `Scripts/Art/fixed_template.py` で合成/検証し、保護RGBA差分0画素を必須とする。
+- 枡：**v1固定テンプレート登録済み。** マスター `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`、変更可能マスク `Docs/References/AMJ_Masu_EditableMask.png`、登録簿 `Docs/References/AMJ_Masu_Template.json`。変更可能なのは内部領域のみで、外縁・前面・輪郭・木組み・木の陰影・配置・透明余白は保護する。派生は `Scripts/Art/fixed_template.py` で合成/検証し、保護RGBA差分0画素を必須とする。
 - 表紙：**v1固定テンプレート登録済み。** 視覚参照 `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`、空の共通PNGマスター `/AMJ/References/AMJ_WorkshopCover_CommonBase.png`、Addon名/右図案マスク `/AMJ/References/AMJ_WorkshopCover_VariableMask.png` をpersistent Libraryに固定し、登録簿は `Docs/References/AMJ_WorkshopCover_Template.json`、制作手順は `Docs/GoldenPaths/WorkshopCoverPipeline.md` とする。最終表紙をImageGenで直接生成せず、右図案のみ生成して決定的に合成・検査する。SVGは参考図であり画素マスターではない。
 - 樹木：現行Sudajii/ブナは画風の参照。別樹種は別形状。共用する幹等を宣言する状態差分にはそのパーツの固定テンプレートを登録する。
 
