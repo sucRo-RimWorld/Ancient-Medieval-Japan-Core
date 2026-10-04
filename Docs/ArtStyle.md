@@ -94,9 +94,11 @@ The approved mature Awa silhouette is the style anchor:
 
 Future Hie, Kibi, rice, beans, vegetables, fibers, tools, buildings, and processed goods should match this **information density**, even when their shapes differ.
 
+**2026-10-04 Stage A crop refinement:** the accepted comparison also resets the plant-detail baseline slightly simpler than the previous fixed Awa texture. Awa itself will move to this simplified version. Hie and subsequent Stage A crop plants should use approximately the same number of major leaves, fill planes, and symbolic seed-head masses. Botanical differences should be expressed primarily through silhouette, not through a higher count of individual grains, branches, veins, or interior marks.
+
 ## 4. Line / outline treatment
 
-- Use a warm brown to ochre-brown outline rather than pure black. MO wheat is the reference: the outline may be fairly thick, but a warmer/lighter line keeps it integrated with the fill colors.
+- **Stage A crop plants use one shared outline color.** The accepted 2026-10-04 Awa/Hie comparison establishes a warm, medium-dark brown contour that reads clearly dark without appearing near-black. Do not vary the outline hue by crop, seed head, or foliage; silhouette and fill colors carry the botanical distinction. This supersedes the earlier per-material/color-trace outline experiment.
 - Outline width must stay visually strong after downscaling.
 - The outer contour is more important than internal linework.
 - Internal outlines should be minimized; prefer adjacent color planes where possible.
