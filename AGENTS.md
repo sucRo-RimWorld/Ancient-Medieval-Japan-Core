@@ -102,3 +102,7 @@ For production texture work, also follow `Docs/GoldenPaths/TextureAssetPipeline.
 After a non-trivial task succeeds, especially after debugging or failed attempts, do not move on with only the working implementation. Record the successful reusable procedure in the owning repository, automate deterministic/repetitive steps, and add regression guards for failure modes discovered during the work. For recurring work, completion includes the reusable documented/automated path, not only the one successful result.
 
 `Docs/Coordination.md` remains status/handoff only; the procedure itself must live in durable repository documentation/scripts.
+
+## Pixel-exact shared image components
+
+Follow `Docs/GoldenPaths/FixedImageTemplates.md` for every reused component. Registered masters and binary editable masks are mandatory before producing derivatives. Generate variable material only, composite deterministically, and require zero decoded RGBA differences in protected pixels. Reference-image editing and visual similarity are insufficient. Existing style references do not imply identical silhouettes for different species.

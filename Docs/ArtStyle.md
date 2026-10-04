@@ -159,7 +159,7 @@ Production rule:
 3. Composite the contents into the master so that the container itself remains unchanged. Where useful, keep the rear/interior and front-rim portions as separate fixed layers so the contents sit naturally inside the masu.
 4. For stack-count variants, keep the same master and change only content amount/arrangement.
 5. If image generation alters the masu silhouette, perspective, rim, joinery, wood colors, or placement, reject that output rather than treating the changed container as a new base.
-6. If two consecutive attempts drift in the same way, stop regenerating the whole icon and switch to deterministic local compositing/editing.
+6. Whole-icon regeneration is not a production path for shared parts. Use deterministic local compositing from the first derivative and require zero protected RGBA pixel differences under `Docs/GoldenPaths/FixedImageTemplates.md`.
 7. Normalize the finished production texture to the repository format and run `python Tests/validate_png_assets.py` before committing.
 
 When AMJ retextures compatible Vanilla / Medieval Overhaul boxed raw-resource icons, preserve their familiar **boxed-item reading at game scale**, but use this same canonical masu treatment for series consistency.
@@ -265,3 +265,7 @@ The swatches are not mandatory exact colors. They document the approved relation
 - pale cream for cleaned grain.
 
 The consistent relationship and low number of planes matter more than exact RGB values.
+
+## Pixel-exact shared image components
+
+Follow `Docs/GoldenPaths/FixedImageTemplates.md` for every reused component. Registered masters and binary editable masks are mandatory before producing derivatives. Generate variable material only, composite deterministically, and require zero decoded RGBA differences in protected pixels. Reference-image editing and visual similarity are insufficient. Existing style references do not imply identical silhouettes for different species.

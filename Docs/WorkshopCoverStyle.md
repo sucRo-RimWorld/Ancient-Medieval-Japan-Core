@@ -197,14 +197,14 @@ For every new AMJ Workshop cover:
    - no people;
    - flat / low-saturation / limited-color rules are present.
 7. Generate only after the preflight passes.
-8. **Prefer reference-image editing over fresh whole-canvas generation.** When the approved cover image is available to the image tool, use it as the starting/reference image and preserve the common background/title/ornament/layout; change only the addon name and the approved addon-specific right-side illustration. Do not ask the model to reinvent the common area from text.
+8. **Generate only variable motifs; composite the final cover deterministically.** Follow `Docs/GoldenPaths/FixedImageTemplates.md`: register a lossless common master and an approved editable mask, generate the right-side motifs separately, and render the addon name only in its editable region. Reference-image editing alone does not guarantee invariant pixels. Copy all protected RGBA pixels from the master and require zero pixel differences after final PNG decoding.
 9. **Addon-specific instructions are allowed to modify the right side and addon name only.** They must not override or omit the common-left block.
 10. Inspect the generated image side-by-side against the approved reference image in this order:
    1. common-left text and layout;
    2. addon name;
    3. right-side composition;
    4. flatness, saturation, and detail level.
-11. Reject and regenerate if the shared background, left-side wording, line breaks, hierarchy, ornament placement, accent color, approximate geometry, or common composition drifted from the approved image, even if the right side is successful.
+11. Reject any final output with a protected-pixel difference. Repair the composite using the unchanged master; do not regenerate the common region. Inspect the variable motifs separately for visual acceptance.
 12. If the image becomes scenic, realistic, too saturated, too detailed, or stylistically inconsistent, return to the approved composition and regenerate with stronger simplification.
 13. Once a cover is accepted, preserve that accepted image as the reference for that addon. Do not casually regenerate it.
 
@@ -225,3 +225,7 @@ See:
 `Docs/References/AMJ_WorkshopCover_Template.svg`
 
 The SVG is the canonical cross-chat schematic for the invariant common-left layout and overall split, **but it is not sufficient by itself**. Before every generation, the actual author-approved visual reference in Library `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg` (or a later explicitly approved replacement) must also be opened and visually inspected. The approved image is the visual source of truth; the SVG documents geometry and structure. If those visual reference pixels are unavailable to the current work context, do not generate a new cover until the reference image is retrieved.
+
+## Pixel-exact production gate
+
+`Docs/GoldenPaths/FixedImageTemplates.md` governs final production and supersedes any earlier suggestion that reference-based generation/editing or approximate geometry is sufficient to preserve common parts. The prompt above describes visual intent; it is not a request to regenerate the common title/background. Actual approved-reference inspection remains required.

@@ -56,7 +56,7 @@ Only the contents change.
 4. Composite them into the master. Prefer fixed rear/interior and front-rim layers so the contents are naturally occluded by the front wall.
 5. For stack-count variants, reuse the same master and alter only the quantity/arrangement of contents.
 6. Compare against the empty master. Any drift in container silhouette, angle, rim, joinery, palette, shading, or placement is a rejection.
-7. If two whole-icon attempts drift, stop regenerating and complete the asset by deterministic local compositing.
+7. Use deterministic local compositing from the first derivative; whole-icon generation cannot certify fixed pixels.
 8. Export to the repository's production texture requirements.
 9. Run:
    `python Tests/validate_png_assets.py`
@@ -79,3 +79,7 @@ Viewer-open success, a PNG signature, or correct IHDR dimensions are not suffici
 All production PNGs must pass `Tests/validate_png_assets.py`, which checks complete chunk boundaries, CRCs, compressed image data, scanlines, and IEND. GitHub Actions runs the same dedicated PNG gate before Stage A validation.
 
 For automated Git/GitHub binary writes, validate the bytes that are actually committed/checked out. Prefer an exact previously validated blob when recovering accepted art from history.
+
+## Pixel-exact shared image components
+
+Follow `Docs/GoldenPaths/FixedImageTemplates.md` for every reused component. Registered masters and binary editable masks are mandatory before producing derivatives. Generate variable material only, composite deterministically, and require zero decoded RGBA differences in protected pixels. Reference-image editing and visual similarity are insufficient. Existing style references do not imply identical silhouettes for different species.

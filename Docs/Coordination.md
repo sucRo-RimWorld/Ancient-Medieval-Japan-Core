@@ -688,3 +688,12 @@ Durable rule commits: `81a1fe37df58dea63f7591d802fad9a3ca45cc42` (`Docs/Workshop
 
 **Next action:** every future cover must pass visual-reference retrieval → proposal → approval → preflight → reference-based generation/edit → side-by-side inspection.
 
+
+### ART-TEMPLATE-001 — Pixel-exact shared component policy
+
+**Owner:** shared art/tooling
+**Status:** DONE (policy/tooling); OPEN (per-family template registration at next derivative)
+
+Author requested pixel-identical reused parts across AMJ image families. Canonical policy: `Docs/GoldenPaths/FixedImageTemplates.md`. AGENTS, ArtStyle, texture Golden Path and cover workflow now require a hashed lossless master, binary editable mask, deterministic compositing, and zero protected RGBA differences. `Scripts/Art/fixed_template.py` implements compositing/validation; its regression test is in CI. Visual-reference editing alone is no longer sufficient.
+
+No image was generated or replaced. Existing masu has its accepted master but needs a registered interior mask/manifest before the next derivative. Covers need a clean shared master/approved editable mask from the accepted visual reference before the next cover. Do not claim all existing assets are already pixel-locked. Species style references remain references rather than identical-species templates. Pending species proposals remain pending.
