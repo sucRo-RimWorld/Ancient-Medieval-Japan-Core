@@ -18,6 +18,10 @@
   <ThingDef ParentName="RoughPlantBase">
     <defName>DankPyon_Straw</defName>
     <label>AMJ test straw</label>
+    <graphicData>
+      <texPath>E2E/Placeholder</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
     <stackLimit>200</stackLimit>
     <statBases>
       <MarketValue>0.7</MarketValue>

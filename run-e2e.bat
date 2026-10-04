@@ -34,6 +34,21 @@ if errorlevel 1 exit /b 1
 
 if not exist "%REPORT_DIR%" mkdir "%REPORT_DIR%"
 
+set "SOURCE_STATE=%REPORT_DIR%\source-state.txt"
+> "%SOURCE_STATE%" echo sourceRoot=%ROOT%
+>> "%SOURCE_STATE%" echo generatedAt=%DATE% %TIME%
+where git >nul 2>&1
+if not errorlevel 1 (
+    if exist "%ROOT%.git" (
+        for /f %%H in ('git -C "%ROOT%" rev-parse HEAD 2^>nul') do >> "%SOURCE_STATE%" echo gitHead=%%H
+    ) else (
+        >> "%SOURCE_STATE%" echo gitHead=unavailable-not-a-git-checkout
+    )
+) else (
+    >> "%SOURCE_STATE%" echo gitHead=unavailable-git-not-found
+)
+for /f "usebackq tokens=*" %%L in (`findstr /B /C:"  Scenario:" "%ROOT%Tests\E2E\TestMod\Pickle\Features\stage-a.feature"`) do >> "%SOURCE_STATE%" echo feature=%%L
+
 echo.
 echo Running AMJ Stage A Pickle suite...
 echo Feature filter: stage-a.feature
@@ -65,7 +80,8 @@ if "%RESULT%"=="0" (
     echo Checking AMJ Core runtime log for mod-origin ERROR entries...
     powershell -NoProfile -ExecutionPolicy Bypass -File "%ROOT%Scripts\Validate-RuntimeLog.ps1" ^
         -LogPath "%RUNTIME_LOG%" ^
-        -ModIdPrefixes "sucro.ancientmedievaljapan.core.e2etarget;sucro.ancientmedievaljapan.core"
+        -ModIdPrefixes "sucro.ancientmedievaljapan.core.e2etarget;sucro.ancientmedievaljapan.core;sucro.ancientmedievaljapan.core.mofixture;sucro.ancientmedievaljapan.core.cctofixture" ^
+        -FailOnAnyError
     if errorlevel 1 set "RESULT=2"
 )
 

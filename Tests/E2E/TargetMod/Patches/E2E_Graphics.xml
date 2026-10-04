@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    E2E-only graphics substitutions.
+    The isolated test profile intentionally does not load Medieval Overhaul's
+    full texture content, so production placeholder paths that point into MO
+    are replaced with AMJC-owned textures staged into the target mod.
+  -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="AMJC_GrainProcessingSpot"]/graphicData</xpath>
+    <value>
+      <graphicData>
+        <texPath>Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(1,1)</drawSize>
+      </graphicData>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="AMJC_GrainProcessingTable"]/graphicData</xpath>
+    <value>
+      <graphicData>
+        <texPath>Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature</texPath>
+        <graphicClass>Graphic_Single</graphicClass>
+        <drawSize>(1,1)</drawSize>
+      </graphicData>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="AMJC_Plant_Barley"]/graphicData</xpath>
+    <value>
+      <graphicData>
+        <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
+        <graphicClass>Graphic_Random</graphicClass>
+      </graphicData>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="AMJC_Plant_Barley"]/plant/immatureGraphicPath</xpath>
+    <value>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Awa</immatureGraphicPath>
+    </value>
+  </Operation>
+
+</Patch>
