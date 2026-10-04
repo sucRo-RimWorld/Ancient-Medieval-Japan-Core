@@ -79,9 +79,11 @@ Each ThingDef now keeps its existing `Graphic_StackCount` behavior and points to
 
 **Naming decision:** harvested stalk+head grain states use the `～束` convention. `AMJC_RawMillet` is displayed as `雑穀束` / `millet sheaf`; `(生)` is not used for grain processing states. MO `DankPyon_RawWheat` receives the Japanese display override `小麦束` for the same reason. Internal DefNames are unchanged.
 
-A dedicated millet-sheaf texture was then produced in the locked AMJ/MO style and accepted by the author on 2026-10-04 JST. It preserves the same warm yellow/olive palette family and simplified broad shapes as the accepted Awa art, but now correctly depicts harvested stalks + seed heads tied as a bundle. The accepted 256×256 palette PNG is wired to all three `Graphic_StackCount` slots for `AMJC_RawMillet` so the stack behavior remains unchanged while using one approved silhouette.
+A dedicated millet-sheaf texture was then produced in the locked AMJ/MO style and accepted by the author on 2026-10-04 JST. It preserves the same warm yellow/olive palette family and simplified broad shapes as the accepted Awa art, but now correctly depicts harvested stalks + seed heads tied as a bundle.
 
-**Next action:** pull latest `main`, restart RimWorld, and check only `雑穀束` at normal map/UI scale beside the already accepted `殻付き雑穀` and `雑穀`. If its size and readability are acceptable, mark AMJ-005 DONE.
+The first quantized 256×256 export rendered as a red question mark for `AMJC_RawMillet` while the unchanged hull and edible-millet textures still rendered normally. To isolate the image asset itself without changing Def wiring, all three `Graphic_StackCount` slots have now been replaced with the same accepted 256×256 RGBA source export, leaving paths and stack behavior unchanged.
+
+**Next action:** pull latest `main`, restart RimWorld, and verify only whether `雑穀束` now renders instead of a question mark. If it renders, judge size/readability; if it still does not, inspect the runtime missing-texture/Unity import error rather than making another blind image-format change.
 
 **Result / references:** shared processing implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; art-style baseline `2d4accb0c56bff6b81497a325877d5a5dc7d7710`; source artwork user-approved 2026-10-03.
 
