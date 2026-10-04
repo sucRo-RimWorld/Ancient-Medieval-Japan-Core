@@ -128,6 +128,13 @@ def validate(mo_root=None, core_defs=None):
     fixture = definitions(ROOT / "Tests/E2E/MOFixture/Defs")
     for typ, name in [("ThingDef", n) for n in SUPPLIES if n.startswith("DankPyon_")] + [("ResearchProjectDef", n) for n in RESEARCH]:
         assert len(fixture.get((typ, name), [])) == 1, f"Missing/duplicate typed fixture: {typ} {name}"
+    # All isolated MO fixture graphics must resolve to the texture staged by build-e2e.
+    for nodes in fixture.values():
+        for node in nodes:
+            graphic = node.find("graphicData")
+            if graphic is not None:
+                assert graphic.findtext("texPath") == "E2E/Placeholder", "Fixture texture is not staged"
+                assert graphic.findtext("graphicClass") == "Graphic_Single", "Fixture placeholder is a single texture"
     iron = fixture[("ThingDef", "DankPyon_IronIngot")][0]
     assert iron.findtext("stuffProps/categories/li") == "Metallic"
 
