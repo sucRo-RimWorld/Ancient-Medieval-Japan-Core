@@ -132,7 +132,17 @@ For item/resource icons add:
 
 ## 7. Required iteration procedure
 
-For new AMJ art, use this loop:
+Prefer **reuse and local image processing before new image generation**. Image generation is comparatively slow and may time out, while most AMJ follow-up work after a style/silhouette is accepted can be completed more reliably by transforming the accepted source asset.
+
+Use this priority order:
+
+1. Reuse an already accepted AMJ asset when the subject or visual family is the same.
+2. For size, crop, transparent-margin, palette, outline-color, simple recolor, stack-slot, or export-format changes, modify the accepted image locally without regenerating the artwork.
+3. For related assets that can be derived from an approved source without inventing a new silhouette, use local editing/compositing first.
+4. Use image generation only when a genuinely new silhouette, object structure, or subject-specific drawing is required.
+5. Once a generated source is accepted, preserve that accepted source and make later revisions from it rather than repeatedly regenerating near-identical variants.
+
+For genuinely new AMJ art, use this loop:
 
 1. Generate **one isolated asset**, not an infographic or multi-asset presentation.
 2. Compare it directly with the relevant MO reference at similar display size.
