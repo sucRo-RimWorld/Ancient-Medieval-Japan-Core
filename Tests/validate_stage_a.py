@@ -278,6 +278,22 @@ assert png[:8] == b"\x89PNG\r\n\x1a\n"
 assert int.from_bytes(png[16:20], "big") == 256
 assert int.from_bytes(png[20:24], "big") == 256
 
+assert text(hie, "graphicData/graphicClass") == "Graphic_Random"
+assert text(hie, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Hie"
+hie_texture = ROOT / "Textures/Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png"
+assert hie_texture.is_file()
+png = hie_texture.read_bytes()
+assert png[:8] == b"\x89PNG\r\n\x1a\n"
+assert int.from_bytes(png[16:20], "big") == 256
+assert int.from_bytes(png[20:24], "big") == 256
+assert text(hie, "plant/immatureGraphicPath") == "Things/Plants/Immature/AMJC_Hie"
+hie_immature_texture = ROOT / "Textures/Things/Plants/Immature/AMJC_Hie/AMJC_Hie_Immature.png"
+assert hie_immature_texture.is_file()
+png = hie_immature_texture.read_bytes()
+assert png[:8] == b"\x89PNG\r\n\x1a\n"
+assert int.from_bytes(png[16:20], "big") == 256
+assert int.from_bytes(png[20:24], "big") == 256
+
 raw = find_def(items, "ThingDef", "AMJC_RawMillet")
 in_hull = find_def(items, "ThingDef", "AMJC_MilletInHull")
 millet = find_def(items, "ThingDef", "AMJC_Millet")
