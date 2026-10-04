@@ -182,7 +182,7 @@ Medieval Overhaul 1.6 was checked before implementation and does not define a Ba
 
 **Next action:** complete regression coverage and run the normal automated gate.
 
-**Result / references:** implementation commit follows.
+**Result / references:** implementation `40d9914db9e1e0d9417f13a399465f61e1a3c2da`; automated-test integration commit follows.
 
 ### AMJ-011 — Barley crop/item graphics
 
