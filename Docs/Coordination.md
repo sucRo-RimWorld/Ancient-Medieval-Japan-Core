@@ -259,6 +259,19 @@ Durable source updated: Docs/ModDescriptionGuidelines.md. All related repositori
 **Next action:** Use this policy for all future AMJ-related Workshop descriptions.
 
 
+### DOC-003 — README and Workshop have distinct information depth
+
+**Requested by:** author (2026-10-04 JST)  
+**Owner:** Documentation/release  
+**Status:** DONE (repository documentation)
+
+README is the detailed public source of truth and may retain rationale, full values/specifications, development and validation detail. Workshop descriptions are not shortened copies of README: they should deliberately select only information needed to understand and evaluate the mod, including its purpose, key design/feature points, major supported scope, dependencies, and save compatibility, with README used for detailed reference.
+
+CCTO is the current reference implementation of this policy: its Workshop English/Japanese copy was substantially shortened while strengthening the realism-focused balance and reusable framework positioning.
+
+**Result / references:** shared guideline commit `3886774ee678859a2ed181df37e0fb63ed897ea7`; CCTO description commit `e6db12b27b1837161c7983c9f0db1a167dae70bd`.
+
+
 ### TEST-POLICY-002 — RimTest Redux / Pickle automation-first policy
 
 **Requested by:** author (2026-10-04 JST)  
