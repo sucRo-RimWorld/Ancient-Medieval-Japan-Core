@@ -34,4 +34,21 @@
   <AMJC_HullBuckwheatBulk.description>殻付きソバ10個をまとめて加工し、食べられるソバ穀粒にする。</AMJC_HullBuckwheatBulk.description>
   <AMJC_HullBuckwheatBulk.jobString>ソバの殻をまとめて取っている。</AMJC_HullBuckwheatBulk.jobString>
 
+
+  <AMJC_ThreshBarley.label>大麦を脱穀する</AMJC_ThreshBarley.label>
+  <AMJC_ThreshBarley.description>大麦束を脱穀し、藁と殻付き大麦に分ける。</AMJC_ThreshBarley.description>
+  <AMJC_ThreshBarley.jobString>大麦を脱穀している。</AMJC_ThreshBarley.jobString>
+
+  <AMJC_ThreshBarleyBulk.label>大麦を脱穀する x10</AMJC_ThreshBarleyBulk.label>
+  <AMJC_ThreshBarleyBulk.description>大麦束10個をまとめて脱穀し、藁と殻付き大麦に分ける。</AMJC_ThreshBarleyBulk.description>
+  <AMJC_ThreshBarleyBulk.jobString>大麦をまとめて脱穀している。</AMJC_ThreshBarleyBulk.jobString>
+
+  <AMJC_HullBarley.label>大麦の殻を取る</AMJC_HullBarley.label>
+  <AMJC_HullBarley.description>殻付き大麦から殻を取り除き、食べられる大麦穀粒にする。</AMJC_HullBarley.description>
+  <AMJC_HullBarley.jobString>大麦の殻を取っている。</AMJC_HullBarley.jobString>
+
+  <AMJC_HullBarleyBulk.label>大麦の殻を取る x10</AMJC_HullBarleyBulk.label>
+  <AMJC_HullBarleyBulk.description>殻付き大麦10個をまとめて加工し、食べられる大麦穀粒にする。</AMJC_HullBarleyBulk.description>
+  <AMJC_HullBarleyBulk.jobString>大麦の殻をまとめて取っている。</AMJC_HullBarleyBulk.jobString>
+
 </LanguageData>

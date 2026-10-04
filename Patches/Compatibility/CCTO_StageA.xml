@@ -50,4 +50,17 @@
     </match>
   </Operation>
 
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Crop Cold Tolerance Overhaul</li></mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="AMJC_Plant_Barley"]</xpath>
+      <value>
+        <li Class="CropColdToleranceOverhaul.ColdToleranceExtension">
+          <coldDeathTemperature>-8</coldDeathTemperature>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
 </Patch>

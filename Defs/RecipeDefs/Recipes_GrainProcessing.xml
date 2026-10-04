@@ -232,4 +232,102 @@
     <products><AMJC_Buckwheat>10</AMJC_Buckwheat></products>
   </RecipeDef>
 
+
+  <RecipeDef Name="AMJC_BarleyProcessingBase" Abstract="True">
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <workSkillLearnFactor>0.1</workSkillLearnFactor>
+    <allowMixingIngredients>false</allowMixingIngredients>
+    <recipeUsers>
+      <li>AMJC_GrainProcessingSpot</li>
+      <li>AMJC_GrainProcessingTable</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef ParentName="AMJC_BarleyProcessingBase">
+    <defName>AMJC_ThreshBarley</defName>
+    <label>thresh barley</label>
+    <description>Thresh a barley sheaf to separate the grain from the straw. The grain remains in its hull.</description>
+    <jobString>Threshing barley.</jobString>
+    <workAmount>15</workAmount>
+    <targetCountAdjustment>1</targetCountAdjustment>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>AMJC_RawBarley</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs><li>AMJC_RawBarley</li></thingDefs>
+      <specialFiltersToDisallow><li>AllowRotten</li></specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products>
+      <AMJC_BarleyInHull>1</AMJC_BarleyInHull>
+      <DankPyon_Straw>1</DankPyon_Straw>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef ParentName="AMJC_BarleyProcessingBase">
+    <defName>AMJC_ThreshBarleyBulk</defName>
+    <label>thresh barley x10</label>
+    <description>Thresh ten barley sheaves in one batch.</description>
+    <jobString>Threshing barley in bulk.</jobString>
+    <workAmount>120</workAmount>
+    <targetCountAdjustment>10</targetCountAdjustment>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>AMJC_RawBarley</li></thingDefs></filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs><li>AMJC_RawBarley</li></thingDefs>
+      <specialFiltersToDisallow><li>AllowRotten</li></specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products>
+      <AMJC_BarleyInHull>10</AMJC_BarleyInHull>
+      <DankPyon_Straw>10</DankPyon_Straw>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef ParentName="AMJC_BarleyProcessingBase">
+    <defName>AMJC_HullBarley</defName>
+    <label>hull barley</label>
+    <description>Remove the hull from threshed barley to make edible grain.</description>
+    <jobString>Hulling barley.</jobString>
+    <workAmount>10</workAmount>
+    <targetCountAdjustment>1</targetCountAdjustment>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>AMJC_BarleyInHull</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs><li>AMJC_BarleyInHull</li></thingDefs>
+      <specialFiltersToDisallow><li>AllowRotten</li></specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products><AMJC_Barley>1</AMJC_Barley></products>
+  </RecipeDef>
+
+  <RecipeDef ParentName="AMJC_BarleyProcessingBase">
+    <defName>AMJC_HullBarleyBulk</defName>
+    <label>hull barley x10</label>
+    <description>Remove the hulls from ten threshed barley grains in one batch.</description>
+    <jobString>Hulling barley in bulk.</jobString>
+    <workAmount>80</workAmount>
+    <targetCountAdjustment>10</targetCountAdjustment>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>AMJC_BarleyInHull</li></thingDefs></filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs><li>AMJC_BarleyInHull</li></thingDefs>
+      <specialFiltersToDisallow><li>AllowRotten</li></specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products><AMJC_Barley>10</AMJC_Barley></products>
+  </RecipeDef>
+
 </Defs>

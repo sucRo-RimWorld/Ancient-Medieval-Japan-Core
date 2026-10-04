@@ -161,6 +161,41 @@ The Soba data slice uses temporary existing AMJ graphics only. Dedicated art is 
 
 **Result / references:** data DefNames are `AMJC_Plant_Buckwheat_Soba`, `AMJC_RawBuckwheat`, `AMJC_BuckwheatInHull`, `AMJC_Buckwheat`.
 
+### AMJ-010 — Barley cultivation and primary processing data slice
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Agriculture/XML / Testing/tooling  \
+**Status:** IN PROGRESS
+
+Medieval Overhaul 1.6 was checked before implementation and does not define a Barley crop, so AMJC owns the Stage A Barley PlantDef and processing states rather than duplicating an MO Def.
+
+- PlantDef: `AMJC_Plant_Barley`, growDays 10, yield 22, fertilityMin 0.5, sensitivity 0.6, growth 0–35°C, optimum 5–22°C, sowMinSkill 2.
+- Cultivation requires MO `DankPyon_BasicAgriculture`.
+- Optional CCTO compatibility: fixed death -8°C.
+- Processing path: `AMJC_RawBarley` (120d) → threshing → `AMJC_BarleyInHull` (120d) + MO straw → hulling → `AMJC_Barley` (90d).
+- Conversion is 1:1 through both stages, preserving the design baseline of 22 edible grain per harvest.
+- Straw is produced at threshing, not at harvest; the MO wheat `Plant_SecondaryDrop` behavior is intentionally not reused.
+- Barley flour is not added in Stage A because the current design only requires edible barley grain; later barley-specific uses can extend from `AMJC_Barley`.
+- No image asset is created or modified here. The plant temporarily uses MO wheat texture paths; processing items temporarily reuse existing AMJ grain texture paths.
+
+**Validation:** extend static, local PowerShell, and existing five-scenario Pickle coverage before marking DONE.
+
+**Next action:** complete regression coverage and run the normal automated gate.
+
+**Result / references:** implementation commit follows.
+
+### AMJ-011 — Barley crop/item graphics
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Art/graphics  \
+**Status:** OPEN
+
+The Barley data slice uses only temporary existing graphics. Dedicated Barley art can be produced independently after the currently active graphics work.
+
+**Next action:** Art/graphics should create Barley plant/item assets following `Docs/ArtStyle.md`; data validation does not wait for this item.
+
+**Result / references:** data DefNames are `AMJC_Plant_Barley`, `AMJC_RawBarley`, `AMJC_BarleyInHull`, and `AMJC_Barley`.
+
 Add new items using the following form.
 
 ### AMJ-XXX — Short title

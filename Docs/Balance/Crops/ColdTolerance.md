@@ -34,7 +34,7 @@ AMJC固有作物の耐寒データは、**AMJCが所有・管理する**。CCTO�
 
 クズ（Kudzu）は低温で地上部が休眠し、根株が生存して回復できる作物として扱う。休眠は最低成長温度未満で始まり、固定枯死の判定は閾値未満（strict `<`）で行う。閾値ちょうどでは枯死しない。
 
-現時点でPlantDefとCCTO互換XMLが実装されているStage AのAMJC作物は、アワ `AMJC_Plant_FoxtailMillet_Awa`、ヒエ `AMJC_Plant_BarnyardMillet_Hie`、キビ `AMJC_Plant_ProsoMillet_Kibi`、ソバ `AMJC_Plant_Buckwheat_Soba`。各最低成長温度は `Defs/ThingDefs_Plants/Plants_StageA.xml`、固定枯死温度は `Patches/Compatibility/CCTO_StageA.xml` が持つ。他の行は今後の作物実装で利用する設計値であり、対応済みの作物一覧ではない。未実装作物のDefNameを先行確定したり、存在しないDefを対象とするPatchを追加したりしない。
+現時点でPlantDefとCCTO互換XMLが実装されているStage AのAMJC作物は、アワ `AMJC_Plant_FoxtailMillet_Awa`、ヒエ `AMJC_Plant_BarnyardMillet_Hie`、キビ `AMJC_Plant_ProsoMillet_Kibi`、ソバ `AMJC_Plant_Buckwheat_Soba`、大麦 `AMJC_Plant_Barley`。各最低成長温度は `Defs/ThingDefs_Plants/Plants_StageA.xml`、固定枯死温度は `Patches/Compatibility/CCTO_StageA.xml` が持つ。他の行は今後の作物実装で利用する設計値であり、対応済みの作物一覧ではない。未実装作物のDefNameを先行確定したり、存在しないDefを対象とするPatchを追加したりしない。
 
 ## 2026-10-04 アワ・ヒエ・キビの凍霜害再監査
 

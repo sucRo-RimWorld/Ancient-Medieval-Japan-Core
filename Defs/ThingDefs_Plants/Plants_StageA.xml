@@ -174,4 +174,52 @@
     </plant>
   </ThingDef>
 
+
+  <ThingDef ParentName="PlantBase">
+    <defName>AMJC_Plant_Barley</defName>
+    <label>barley plant</label>
+    <description>Barley, a cool-season cereal crop suited to relatively poor soils and cold growing conditions. It takes longer to mature than the Stage A millets but yields a larger harvest and is useful as a staple grain.</description>
+    <descriptionHyperlinks>
+      <ThingDef>AMJC_RawBarley</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <!-- TEMP: Medieval Overhaul wheat plant art until Art/graphics supplies Barley-specific textures. -->
+      <texPath>Things/Plants/FullGrown/WheatPlant</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.6</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <maxMeshCount>4</maxMeshCount>
+      <harvestedThingDef>AMJC_RawBarley</harvestedThingDef>
+      <harvestYield>22</harvestYield>
+      <sowResearchPrerequisites>
+        <li>DankPyon_BasicAgriculture</li>
+      </sowResearchPrerequisites>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <topWindExposure>0.20</topWindExposure>
+      <growDays>10</growDays>
+      <minGrowthTemperature>0</minGrowthTemperature>
+      <maxGrowthTemperature>35</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>5</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>22</maxOptimalGrowthTemperature>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <immatureGraphicPath>Things/Plants/Immature/WheatPlant</immatureGraphicPath>
+      <wildOrder>6</wildOrder>
+      <purpose>Food</purpose>
+      <sowMinSkill>2</sowMinSkill>
+    </plant>
+  </ThingDef>
+
 </Defs>
