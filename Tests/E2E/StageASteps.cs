@@ -14,6 +14,9 @@ namespace AncientMedievalJapanCore.E2E
         [Then("loaded AMJ Stage A crop and grain Defs match the design values")]
         public void AssertLoadedCropAndGrainDefs(PickleContext ctx)
         {
+            string checkpoint = "Awa crop";
+            try
+            {
             ThingDef awa = RequireThingDef(ctx, "AMJC_Plant_FoxtailMillet_Awa");
             if (awa.plant == null)
             {
@@ -31,8 +34,10 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(Math.Abs(awa.plant.harvestYield - 13f) < 0.001f, "Awa harvest yield should be 13.");
             ctx.Assert(awa.plant.harvestedThingDef != null && awa.plant.harvestedThingDef.defName == "AMJC_RawMillet", "Awa must harvest AMJC_RawMillet.");
 
+                checkpoint = "Hie and Kibi crop Defs";
             AssertLoadedMilletCrop(ctx, "AMJC_Plant_BarnyardMillet_Hie", 6f, 12f, 0.5f, 5f, 40f, 15f, 30f);
             AssertLoadedMilletCrop(ctx, "AMJC_Plant_ProsoMillet_Kibi", 5f, 11f, 0.3f, 8f, 42f, 18f, 32f);
+                checkpoint = "Soba and Barley crop Defs";
             AssertLoadedCrop(ctx, "AMJC_Plant_Buckwheat_Soba", 4f, 8f, 0.4f, 0.25f, 5f, 35f, 12f, 25f, 1, "AMJC_RawBuckwheat");
             AssertLoadedCrop(ctx, "AMJC_Plant_Barley", 10f, 22f, 0.5f, 0.6f, 0f, 35f, 5f, 22f, 2, "AMJC_RawBarley");
             ThingDef barleyPlant = RequireThingDef(ctx, "AMJC_Plant_Barley");
@@ -41,6 +46,7 @@ namespace AncientMedievalJapanCore.E2E
                 && barleyPlant.plant.sowResearchPrerequisites.Any(x => x != null && x.defName == "DankPyon_BasicAgriculture"),
                 "Barley must require DankPyon_BasicAgriculture to sow.");
 
+                checkpoint = "grain ThingDef lookup and storage";
             ThingDef raw = RequireThingDef(ctx, "AMJC_RawMillet");
             ThingDef inHull = RequireThingDef(ctx, "AMJC_MilletInHull");
             ThingDef millet = RequireThingDef(ctx, "AMJC_Millet");
@@ -64,6 +70,7 @@ namespace AncientMedievalJapanCore.E2E
             AssertRotDays(ctx, barleyInHull, 120f);
             AssertRotDays(ctx, barley, 90f);
 
+                checkpoint = "grain categories";
             ctx.Assert(!HasThingCategory(raw, "DankPyon_Cereal"), "Raw millet must not be in DankPyon_Cereal.");
             ctx.Assert(!HasThingCategory(inHull, "DankPyon_Cereal"), "Millet in hull must not be in DankPyon_Cereal.");
             ctx.Assert(!HasThingCategory(millet, "DankPyon_Cereal"), "Edible millet must not be in DankPyon_Cereal.");
@@ -74,6 +81,7 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(!HasThingCategory(barleyInHull, "DankPyon_Cereal"), "Barley in hull must not be in DankPyon_Cereal.");
             ctx.Assert(!HasThingCategory(barley, "DankPyon_Cereal"), "Edible barley must not be in DankPyon_Cereal.");
 
+                checkpoint = "grain ingestible and nutrition properties";
             ctx.Assert(raw.ingestible != null && raw.ingestible.preferability == FoodPreferability.NeverForNutrition, "Raw millet must be non-food for normal nutrition.");
             ctx.Assert(inHull.ingestible != null && inHull.ingestible.preferability == FoodPreferability.NeverForNutrition, "Millet in hull must be non-food for normal nutrition.");
             ctx.Assert(millet.ingestible != null, "Edible millet must have ingestible properties.");
@@ -86,6 +94,14 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(barleyInHull.ingestible != null && barleyInHull.ingestible.preferability == FoodPreferability.NeverForNutrition, "Barley in hull must be non-food for normal nutrition.");
             ctx.Assert(barley.ingestible != null, "Edible barley must have ingestible properties.");
             ctx.Assert(Math.Abs(ReadStatBase(ctx, barley, StatDefOf.Nutrition) - 0.05f) < 0.001f, "Edible barley nutrition should be 0.05.");
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    "Stage A crop/grain validation failed at checkpoint '" + checkpoint
+                    + "': " + ex.GetType().Name + ": " + ex.Message,
+                    ex);
+            }
         }
 
         [Then("loaded AMJ crop CCTO compatibility data matches the cold tolerance design")]
