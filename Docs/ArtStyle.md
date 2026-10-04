@@ -2,7 +2,7 @@
 
 This document is the durable visual reference for **Ancient & Medieval Japan (AMJ)** assets.
 
-The style was locked after comparing generated Awa/millet assets directly against Medieval Overhaul (MO) wheat and leather/hide textures. The user-approved Awa + grain + straw set from 2026-10-03 is the canonical direction. Because the exact chat image is not a repository asset, the rules below are the reproducible source of truth for future generation and manual art work.
+The style was locked after comparing AMJ cereal/resource assets directly against Medieval Overhaul (MO) wheat and leather/hide textures. The author-approved Awa, Hie, and Kibi plant set from 2026-10-04 is the canonical cereal-plant baseline; the accepted millet-item/straw set remains the resource baseline. The rules and production assets below are the reproducible source of truth for future generation and manual art work.
 
 ## 1. Primary target
 
@@ -20,20 +20,24 @@ Reference characteristics observed in MO wheat and leather/hide:
 - no photorealistic material rendering;
 - enough simplification to remain readable at small in-game size.
 
-The approved Awa direction uses a small number of large foxtail heads, broad leaves, a muted olive-green body, warm yellow-gold grain heads, and one common dark outline. Individual millet grains are **not** drawn on the plant.
+The accepted Stage A cereal direction uses broad simplified leaves, a shared warm medium-dark brown outline, few large color planes, and crop identity carried primarily by the seed-head silhouette. Individual grains and fine botanical structure are suppressed unless essential to recognition.
 
-The canonical repository textures for this first accepted plant asset are:
+The canonical cereal-plant textures are:
 
 - `Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png`
 - `Textures/Things/Plants/Immature/AMJC_Awa/AMJC_Awa_Immature.png`
+- `Textures/Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png`
+- `Textures/Things/Plants/Immature/AMJC_Hie/AMJC_Hie_Immature.png`
+- `Textures/Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png`
+- `Textures/Things/Plants/Immature/AMJC_Kibi/AMJC_Kibi_Immature.png`
 
-On 2026-10-04 the author replaced both production plant images with cutouts from the recovered immature/mature Awa sheet. The author approved removal of the surrounding semitransparent haze. ImageGen extraction preserves the requested two-green-head immature / three-gold-head mature composition and warm brown outline family, but is not a pixel-identical crop. Each separate transparent square output is downsampled to a 256×256 RGBA PNG without further palette changes. These replace the earlier 90%-mature / enlarged-immature exports; their map rendering and current outline weight were subsequently confirmed by the author. The existing Graphic_Random directory wiring is retained.
+These six transparent 256×256 production textures were accepted together on 2026-10-04. Awa uses dense upright foxtail heads, Hie uses compact branched/drooping heads, and Kibi uses a more open branched panicle. Mature and immature states retain the same crop silhouette language while changing the head maturity/color. Future cereal crops should match this trio's outline weight, color budget, leaf treatment, and information density.
 
-Use it together with the MO reference textures when calibrating future AMJ plant art.
+Use this set together with the MO reference textures when calibrating future AMJ plant art.
 
 ## 2. Palette and shading budget
 
-2026-10-04 author refinement: mature Awa and the shared RawMillet sheaf use stronger warm-brown contours calibrated against the installed MO mature wheat sprite. The local replacement thickens the contour with image editing, keeping the three-head composition, palette family and transparent 256×256 exports. Immature Awa and millet-in-hull are unchanged. This supersedes the previous thin-contour candidates. The author confirmed the in-game result by screenshot and provisionally accepted the current outline weight on 2026-10-04; no further art adjustment is requested for this slice.
+2026-10-04 cereal refinement: Awa, Hie, and Kibi now share the same warm medium-dark brown contour treatment and simplified information density. This supersedes earlier Awa/Hie production candidates and the short-lived per-material/color-trace outline experiment. The shared RawMillet sheaf remains in the same broad warm-outline family, but the crop-plant trio is the canonical reference for subsequent cereal plants.
 
 Treat these as upper limits, not targets to fill.
 
@@ -80,21 +84,17 @@ They are isolated from the user-approved 2026-10-03 millet set rather than regen
 - Interior divisions should be few and large.
 - At 64 px display size, the asset should remain identifiable without relying on interior texture.
 
-### Awa / foxtail millet anchor
+### Stage A cereal anchors
 
-The approved mature Awa silhouette is the style anchor:
+The accepted Awa / Hie / Kibi trio is the cereal style anchor:
 
-- approximately 3–4 large foxtail panicles;
-- each panicle is a single simplified jagged/segmented mass, not a cluster of individually drawn grains;
-- a small number of broad leaves;
-- no leaf veins;
-- no botanical micro-detail;
-- warm gold heads + muted olive foliage + warm ochre-brown outline;
-- flat fills with at most one secondary plane.
+- **Awa:** approximately three dense, upright foxtail panicles; each reads as one large compact mass rather than separate branches or grains.
+- **Hie:** a small number of compact branched panicles that visibly droop when mature; immature heads may be somewhat more upright but keep the same simplified massing.
+- **Kibi:** an open, airy branched panicle with clear gaps between major branches; do not turn it into either Awa's dense baton or Hie's heavier compact droop.
+- all three use a small number of broad leaves, no leaf veins, no botanical micro-detail, and flat fills with at most one secondary plane;
+- all three use the same warm medium-dark brown outline and approximately the same information density.
 
-Future Hie, Kibi, rice, beans, vegetables, fibers, tools, buildings, and processed goods should match this **information density**, even when their shapes differ.
-
-**2026-10-04 Stage A crop refinement:** the accepted comparison also resets the plant-detail baseline slightly simpler than the previous fixed Awa texture. Awa itself will move to this simplified version. Hie and subsequent Stage A crop plants should use approximately the same number of major leaves, fill planes, and symbolic seed-head masses. Botanical differences should be expressed primarily through silhouette, not through a higher count of individual grains, branches, veins, or interior marks.
+Future cereals should match this **information density** even when their silhouettes differ. Other plants, fibers, tools, buildings, and processed goods should follow the same silhouette-first principle without mechanically copying cereal anatomy. Botanical differences should be expressed primarily through silhouette, not through a higher count of individual grains, branches, veins, or interior marks.
 
 ## 4. Line / outline treatment
 

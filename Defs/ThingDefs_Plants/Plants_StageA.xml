@@ -3,8 +3,8 @@
 
   <!--
     Stage A millets share the same harvested ThingDef and post-harvest chain.
-    Hie and Kibi temporarily reuse the accepted Awa plant graphics until their
-    crop-specific art is delivered by the separate Art/graphics workstream.
+    Awa, Hie, and Kibi use crop-specific mature and immature plant textures;
+    their harvested states intentionally converge on the shared millet chain.
   -->
   <ThingDef ParentName="PlantBase">
     <defName>AMJC_Plant_FoxtailMillet_Awa</defName>

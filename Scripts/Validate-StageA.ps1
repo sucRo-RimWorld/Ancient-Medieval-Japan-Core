@@ -203,6 +203,27 @@ $width = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($png
 $height = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,20))
 if ($width -ne 256 -or $height -ne 256) { Fail ("Hie immature texture must be 256x256, got {0}x{1}." -f $width,$height) }
 
+Assert-Text (Node-Text $kibi "graphicData/graphicClass" "Kibi mature graphic class") "Graphic_Random" "Kibi mature graphic class"
+Assert-Text (Node-Text $kibi "graphicData/texPath" "Kibi mature texture path") "Things/Plants/FullGrown/AMJC_Kibi" "Kibi mature texture path"
+$kibiTexturePath = Join-Path $RepositoryRoot "Textures\Things\Plants\FullGrown\AMJC_Kibi\AMJC_Kibi_Mature.png"
+if (-not (Test-Path -LiteralPath $kibiTexturePath)) { Fail "Kibi mature texture was not found: $kibiTexturePath" }
+$pngBytes = [System.IO.File]::ReadAllBytes($kibiTexturePath)
+if ($pngBytes.Length -lt 24) { Fail "Kibi mature texture is too small to be a valid PNG." }
+for ($i = 0; $i -lt 8; $i++) { if ($pngBytes[$i] -ne $pngSignature[$i]) { Fail "Kibi mature texture has an invalid PNG signature." } }
+$width = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,16))
+$height = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,20))
+if ($width -ne 256 -or $height -ne 256) { Fail ("Kibi mature texture must be 256x256, got {0}x{1}." -f $width,$height) }
+
+Assert-Text (Node-Text $kibi "plant/immatureGraphicPath" "Kibi immature texture path") "Things/Plants/Immature/AMJC_Kibi" "Kibi immature texture path"
+$kibiImmatureTexturePath = Join-Path $RepositoryRoot "Textures\Things\Plants\Immature\AMJC_Kibi\AMJC_Kibi_Immature.png"
+if (-not (Test-Path -LiteralPath $kibiImmatureTexturePath)) { Fail "Kibi immature texture was not found: $kibiImmatureTexturePath" }
+$pngBytes = [System.IO.File]::ReadAllBytes($kibiImmatureTexturePath)
+if ($pngBytes.Length -lt 24) { Fail "Kibi immature texture is too small to be a valid PNG." }
+for ($i = 0; $i -lt 8; $i++) { if ($pngBytes[$i] -ne $pngSignature[$i]) { Fail "Kibi immature texture has an invalid PNG signature." } }
+$width = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,16))
+$height = [System.Net.IPAddress]::NetworkToHostOrder([BitConverter]::ToInt32($pngBytes,20))
+if ($width -ne 256 -or $height -ne 256) { Fail ("Kibi immature texture must be 256x256, got {0}x{1}." -f $width,$height) }
+
 $raw = Get-DefNode $items "ThingDef" "AMJC_RawMillet"
 $inHull = Get-DefNode $items "ThingDef" "AMJC_MilletInHull"
 $millet = Get-DefNode $items "ThingDef" "AMJC_Millet"
