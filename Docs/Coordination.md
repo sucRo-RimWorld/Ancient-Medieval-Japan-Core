@@ -224,7 +224,7 @@ The Barley data slice uses temporary MO wheat plant graphics and AMJ millet item
 
 **Requested by:** Alpha visual-completion audit  \
 **Owner:** Art/graphics  \
-**Status:** OPEN
+**Status:** IN PROGRESS
 
 Hie and Kibi have validated crop data, but both PlantDefs still reuse the accepted Awa mature and immature texture paths. Their post-harvest chain intentionally converges on the shared millet ThingDefs, so **only the growing-plant states need crop-specific art**; the shared millet sheaf / in-hull / edible-grain assets must not be duplicated.
 
