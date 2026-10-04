@@ -67,32 +67,36 @@ def assert_ccto_patch(def_name, death_temp):
     dormancy = extensions[0].find("coldDormancy")
     assert dormancy is None or dormancy.text.strip().lower() == "false"
 
-def assert_crop(def_name, grow_days, harvest_yield, fertility_sensitivity, min_temp, max_temp, min_opt, max_opt):
+def assert_crop(def_name, grow_days, harvest_yield, fertility_min, fertility_sensitivity,
+                min_temp, max_temp, min_opt, max_opt, sow_min_skill, harvested_def):
     crop = find_def(plants, "ThingDef", def_name)
     assert num(crop, "plant/growDays") == grow_days
     assert num(crop, "plant/harvestYield") == harvest_yield
-    assert num(crop, "plant/fertilityMin") == 0.5
+    assert num(crop, "plant/fertilityMin") == fertility_min
     assert num(crop, "plant/fertilitySensitivity") == fertility_sensitivity
     assert num(crop, "plant/minGrowthTemperature") == min_temp
     assert num(crop, "plant/maxGrowthTemperature") == max_temp
     assert num(crop, "plant/minOptimalGrowthTemperature") == min_opt
     assert num(crop, "plant/maxOptimalGrowthTemperature") == max_opt
-    assert num(crop, "plant/sowMinSkill") == 0
-    assert text(crop, "plant/harvestedThingDef") == "AMJC_RawMillet"
+    assert num(crop, "plant/sowMinSkill") == sow_min_skill
+    assert text(crop, "plant/harvestedThingDef") == harvested_def
     return crop
 
-awa = assert_crop("AMJC_Plant_FoxtailMillet_Awa", 6, 13, 0.4, 8, 42, 18, 32)
-hie = assert_crop("AMJC_Plant_BarnyardMillet_Hie", 6, 12, 0.5, 5, 40, 15, 30)
-kibi = assert_crop("AMJC_Plant_ProsoMillet_Kibi", 5, 11, 0.3, 8, 42, 18, 32)
+awa = assert_crop("AMJC_Plant_FoxtailMillet_Awa", 6, 13, 0.5, 0.4, 8, 42, 18, 32, 0, "AMJC_RawMillet")
+hie = assert_crop("AMJC_Plant_BarnyardMillet_Hie", 6, 12, 0.5, 0.5, 5, 40, 15, 30, 0, "AMJC_RawMillet")
+kibi = assert_crop("AMJC_Plant_ProsoMillet_Kibi", 5, 11, 0.5, 0.3, 8, 42, 18, 32, 0, "AMJC_RawMillet")
+soba = assert_crop("AMJC_Plant_Buckwheat_Soba", 4, 8, 0.4, 0.25, 5, 35, 12, 25, 1, "AMJC_RawBuckwheat")
 
 assert_ccto_patch("AMJC_Plant_FoxtailMillet_Awa", -3)
 assert_ccto_patch("AMJC_Plant_BarnyardMillet_Hie", -2)
 assert_ccto_patch("AMJC_Plant_ProsoMillet_Kibi", -3)
+assert_ccto_patch("AMJC_Plant_Buckwheat_Soba", -2)
 
 for design_name, crop, death in (
     ("アワ", awa, "-3℃"),
     ("ヒエ", hie, "-2℃"),
     ("キビ", kibi, "-3℃"),
+    ("ソバ", soba, "-2℃"),
 ):
     row = markdown_row("Docs/Design.md", "### 4.2.1 Stage A畑作6作物の確定バランス", design_name)
     assert float(row[1]) == num(crop, "plant/growDays")
@@ -105,6 +109,7 @@ for cold_name, min_temp, death in (
     ("Foxtail millet", "8°C", "-3°C"),
     ("Barnyard millet", "5°C", "-2°C"),
     ("Proso millet", "8°C", "-3°C"),
+    ("Buckwheat", "5°C", "-2°C"),
 ):
     row = markdown_row("Docs/Balance/Crops/ColdTolerance.md", "## 確定した固定枯死・休眠値", cold_name)
     assert row[1] == min_temp
@@ -114,7 +119,11 @@ jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_StageA.xml")
 assert text(jp, "AMJC_Plant_FoxtailMillet_Awa.label") == "アワ"
 assert text(jp, "AMJC_Plant_BarnyardMillet_Hie.label") == "ヒエ"
 assert text(jp, "AMJC_Plant_ProsoMillet_Kibi.label") == "キビ"
+assert text(jp, "AMJC_Plant_Buckwheat_Soba.label") == "ソバ"
 assert text(jp, "AMJC_RawMillet.label") == "雑穀束"
+assert text(jp, "AMJC_RawBuckwheat.label") == "ソバ束"
+assert text(jp, "AMJC_BuckwheatInHull.label") == "殻付きソバ"
+assert text(jp, "AMJC_Buckwheat.label") == "ソバ穀粒"
 mo_jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_MO_Overrides.xml")
 assert text(mo_jp, "DankPyon_RawWheat.label") == "小麦束"
 assert text(awa, "graphicData/graphicClass") == "Graphic_Random"
@@ -136,6 +145,9 @@ assert int.from_bytes(png[20:24], "big") == 256
 raw = find_def(items, "ThingDef", "AMJC_RawMillet")
 in_hull = find_def(items, "ThingDef", "AMJC_MilletInHull")
 millet = find_def(items, "ThingDef", "AMJC_Millet")
+raw_buckwheat = find_def(items, "ThingDef", "AMJC_RawBuckwheat")
+buckwheat_in_hull = find_def(items, "ThingDef", "AMJC_BuckwheatInHull")
+buckwheat = find_def(items, "ThingDef", "AMJC_Buckwheat")
 
 def assert_stack_graphic(node, tex_path, rel_dir, stem):
     assert text(node, "graphicData/graphicClass") == "Graphic_StackCount"
@@ -176,9 +188,13 @@ def rot_days(node):
 assert rot_days(raw) == 120
 assert rot_days(in_hull) == 120
 assert rot_days(millet) == 90
+assert rot_days(raw_buckwheat) == 120
+assert rot_days(buckwheat_in_hull) == 120
+assert rot_days(buckwheat) == 60
 assert num(millet, "statBases/Nutrition") == 0.05
+assert num(buckwheat, "statBases/Nutrition") == 0.05
 
-for node in (raw, in_hull, millet):
+for node in (raw, in_hull, millet, raw_buckwheat, buckwheat_in_hull, buckwheat):
     cats = [li.text for li in node.findall("./thingCategories/li")]
     assert "DankPyon_Cereal" not in cats
 
@@ -222,6 +238,10 @@ cases = {
     "AMJC_ThreshMilletBulk": (120, "AMJC_RawMillet", 10, {"AMJC_MilletInHull": 10, "DankPyon_Straw": 10}),
     "AMJC_HullMillet": (10, "AMJC_MilletInHull", 1, {"AMJC_Millet": 1}),
     "AMJC_HullMilletBulk": (80, "AMJC_MilletInHull", 10, {"AMJC_Millet": 10}),
+    "AMJC_ThreshBuckwheat": (15, "AMJC_RawBuckwheat", 1, {"AMJC_BuckwheatInHull": 1, "DankPyon_Straw": 1}),
+    "AMJC_ThreshBuckwheatBulk": (120, "AMJC_RawBuckwheat", 10, {"AMJC_BuckwheatInHull": 10, "DankPyon_Straw": 10}),
+    "AMJC_HullBuckwheat": (10, "AMJC_BuckwheatInHull", 1, {"AMJC_Buckwheat": 1}),
+    "AMJC_HullBuckwheatBulk": (80, "AMJC_BuckwheatInHull", 10, {"AMJC_Buckwheat": 10}),
 }
 
 for name, (work, input_def, input_count, products) in cases.items():
@@ -250,6 +270,13 @@ assert straw == 13
 assert edible == 13
 assert num(thresh_bulk, "workAmount") < num(thresh_one, "workAmount") * 10
 assert num(hull_bulk, "workAmount") < num(hull_one, "workAmount") * 10
+
+soba_thresh = recipe("AMJC_ThreshBuckwheat")
+soba_hull = recipe("AMJC_HullBuckwheat")
+assert product_count(soba_thresh, "AMJC_BuckwheatInHull") == 1
+assert product_count(soba_thresh, "DankPyon_Straw") == 1
+assert product_count(soba_hull, "AMJC_Buckwheat") == 1
+assert 8 * product_count(soba_thresh, "AMJC_BuckwheatInHull") * product_count(soba_hull, "AMJC_Buckwheat") == 8
 
 fixture = load("Tests/E2E/MOFixture/Defs/AMJ_MO_Prereqs.xml")
 fixture_names = {n.findtext("defName") for n in fixture}

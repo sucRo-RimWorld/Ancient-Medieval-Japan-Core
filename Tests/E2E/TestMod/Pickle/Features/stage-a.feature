@@ -9,8 +9,8 @@ Feature: AMJ Core Stage A agriculture
   Scenario: Loaded AMJ grain processing buildings and recipes match the design values
     Then loaded AMJ grain processing buildings and recipes match the design values
 
-  Scenario: Thirteen raw millet is conserved through bulk plus remainder processing
-    Then thirteen raw millet is conserved through bulk plus remainder processing
+  Scenario: Stage A grain quantities are conserved through processing
+    Then stage A grain quantities are conserved through processing
 
-  Scenario: Edible millet is accepted by the vanilla simple meal ingredient filter
-    Then edible millet is accepted by the vanilla simple meal ingredient filter
+  Scenario: Edible AMJ grains are accepted by the vanilla simple meal ingredient filter
+    Then edible AMJ grains are accepted by the vanilla simple meal ingredient filter

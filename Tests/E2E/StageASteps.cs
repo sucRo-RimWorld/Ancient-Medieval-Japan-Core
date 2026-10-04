@@ -30,23 +30,37 @@ namespace AncientMedievalJapanCore.E2E
 
             AssertLoadedMilletCrop(ctx, "AMJC_Plant_BarnyardMillet_Hie", 6f, 12f, 0.5f, 5f, 40f, 15f, 30f);
             AssertLoadedMilletCrop(ctx, "AMJC_Plant_ProsoMillet_Kibi", 5f, 11f, 0.3f, 8f, 42f, 18f, 32f);
+            AssertLoadedCrop(ctx, "AMJC_Plant_Buckwheat_Soba", 4f, 8f, 0.4f, 0.25f, 5f, 35f, 12f, 25f, 1, "AMJC_RawBuckwheat");
 
             ThingDef raw = RequireThingDef(ctx, "AMJC_RawMillet");
             ThingDef inHull = RequireThingDef(ctx, "AMJC_MilletInHull");
             ThingDef millet = RequireThingDef(ctx, "AMJC_Millet");
+            ThingDef rawBuckwheat = RequireThingDef(ctx, "AMJC_RawBuckwheat");
+            ThingDef buckwheatInHull = RequireThingDef(ctx, "AMJC_BuckwheatInHull");
+            ThingDef buckwheat = RequireThingDef(ctx, "AMJC_Buckwheat");
 
             AssertRotDays(ctx, raw, 120f);
             AssertRotDays(ctx, inHull, 120f);
             AssertRotDays(ctx, millet, 90f);
+            AssertRotDays(ctx, rawBuckwheat, 120f);
+            AssertRotDays(ctx, buckwheatInHull, 120f);
+            AssertRotDays(ctx, buckwheat, 60f);
 
             ctx.Assert(!HasThingCategory(raw, "DankPyon_Cereal"), "Raw millet must not be in DankPyon_Cereal.");
             ctx.Assert(!HasThingCategory(inHull, "DankPyon_Cereal"), "Millet in hull must not be in DankPyon_Cereal.");
             ctx.Assert(!HasThingCategory(millet, "DankPyon_Cereal"), "Edible millet must not be in DankPyon_Cereal.");
+            ctx.Assert(!HasThingCategory(rawBuckwheat, "DankPyon_Cereal"), "Raw buckwheat must not be in DankPyon_Cereal.");
+            ctx.Assert(!HasThingCategory(buckwheatInHull, "DankPyon_Cereal"), "Buckwheat in hull must not be in DankPyon_Cereal.");
+            ctx.Assert(!HasThingCategory(buckwheat, "DankPyon_Cereal"), "Edible buckwheat must not be in DankPyon_Cereal.");
 
             ctx.Assert(raw.ingestible != null && raw.ingestible.preferability == FoodPreferability.NeverForNutrition, "Raw millet must be non-food for normal nutrition.");
             ctx.Assert(inHull.ingestible != null && inHull.ingestible.preferability == FoodPreferability.NeverForNutrition, "Millet in hull must be non-food for normal nutrition.");
             ctx.Assert(millet.ingestible != null, "Edible millet must have ingestible properties.");
             ctx.Assert(Math.Abs(ReadStatBase(ctx, millet, StatDefOf.Nutrition) - 0.05f) < 0.001f, "Edible millet nutrition should be 0.05.");
+            ctx.Assert(rawBuckwheat.ingestible != null && rawBuckwheat.ingestible.preferability == FoodPreferability.NeverForNutrition, "Raw buckwheat must be non-food for normal nutrition.");
+            ctx.Assert(buckwheatInHull.ingestible != null && buckwheatInHull.ingestible.preferability == FoodPreferability.NeverForNutrition, "Buckwheat in hull must be non-food for normal nutrition.");
+            ctx.Assert(buckwheat.ingestible != null, "Edible buckwheat must have ingestible properties.");
+            ctx.Assert(Math.Abs(ReadStatBase(ctx, buckwheat, StatDefOf.Nutrition) - 0.05f) < 0.001f, "Edible buckwheat nutrition should be 0.05.");
         }
 
         [Then("loaded AMJ millet CCTO compatibility data matches the cold tolerance design")]
@@ -55,6 +69,7 @@ namespace AncientMedievalJapanCore.E2E
             AssertLoadedCctoExtension(ctx, "AMJC_Plant_FoxtailMillet_Awa", -3f);
             AssertLoadedCctoExtension(ctx, "AMJC_Plant_BarnyardMillet_Hie", -2f);
             AssertLoadedCctoExtension(ctx, "AMJC_Plant_ProsoMillet_Kibi", -3f);
+            AssertLoadedCctoExtension(ctx, "AMJC_Plant_Buckwheat_Soba", -2f);
         }
 
         [Then("loaded AMJ grain processing buildings and recipes match the design values")]
@@ -79,6 +94,14 @@ namespace AncientMedievalJapanCore.E2E
                 new Dictionary<string, int> { { "AMJC_Millet", 1 } });
             AssertRecipe(ctx, "AMJC_HullMilletBulk", 80f, "AMJC_MilletInHull", 10f,
                 new Dictionary<string, int> { { "AMJC_Millet", 10 } });
+            AssertRecipe(ctx, "AMJC_ThreshBuckwheat", 15f, "AMJC_RawBuckwheat", 1f,
+                new Dictionary<string, int> { { "AMJC_BuckwheatInHull", 1 }, { "DankPyon_Straw", 1 } });
+            AssertRecipe(ctx, "AMJC_ThreshBuckwheatBulk", 120f, "AMJC_RawBuckwheat", 10f,
+                new Dictionary<string, int> { { "AMJC_BuckwheatInHull", 10 }, { "DankPyon_Straw", 10 } });
+            AssertRecipe(ctx, "AMJC_HullBuckwheat", 10f, "AMJC_BuckwheatInHull", 1f,
+                new Dictionary<string, int> { { "AMJC_Buckwheat", 1 } });
+            AssertRecipe(ctx, "AMJC_HullBuckwheatBulk", 80f, "AMJC_BuckwheatInHull", 10f,
+                new Dictionary<string, int> { { "AMJC_Buckwheat", 10 } });
 
             List<string> spotRecipes = DefDatabase<RecipeDef>.AllDefs
                 .Where(x => x.recipeUsers != null && x.recipeUsers.Contains(spot) && x.defName.StartsWith("AMJC_"))
@@ -93,10 +116,10 @@ namespace AncientMedievalJapanCore.E2E
                 .ToList();
 
             ctx.Assert(spotRecipes.SequenceEqual(tableRecipes), "Both grain-processing stations should expose the same AMJ recipes.");
-            ctx.Assert(spotRecipes.Count == 4, "Both grain-processing stations should expose exactly four Stage A millet bills.");
+            ctx.Assert(spotRecipes.Count == 8, "Both grain-processing stations should expose exactly eight Stage A grain-processing bills.");
         }
 
-        [Then("thirteen raw millet is conserved through bulk plus remainder processing")]
+        [Then("stage A grain quantities are conserved through processing")]
         public void AssertThirteenUnitConservation(PickleContext ctx)
         {
             RecipeDef threshOne = RequireRecipe(ctx, "AMJC_ThreshMillet");
@@ -123,9 +146,18 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(edible == 13, "Hulling the 13 millet in hull should yield 13 edible millet.");
             ctx.Assert(threshBulk.workAmount < threshOne.workAmount * 10f, "Bulk threshing should save work versus ten single jobs.");
             ctx.Assert(hullBulk.workAmount < hullOne.workAmount * 10f, "Bulk hulling should save work versus ten single jobs.");
+
+            RecipeDef sobaThresh = RequireRecipe(ctx, "AMJC_ThreshBuckwheat");
+            RecipeDef sobaHull = RequireRecipe(ctx, "AMJC_HullBuckwheat");
+            int sobaInHull = 8 * ProductCount(ctx, sobaThresh, "AMJC_BuckwheatInHull");
+            int sobaStraw = 8 * ProductCount(ctx, sobaThresh, "DankPyon_Straw");
+            int sobaEdible = sobaInHull * ProductCount(ctx, sobaHull, "AMJC_Buckwheat");
+            ctx.Assert(sobaInHull == 8, "Threshing one Soba harvest baseline should preserve 8 buckwheat in hull.");
+            ctx.Assert(sobaStraw == 8, "Threshing one Soba harvest baseline should yield 8 straw.");
+            ctx.Assert(sobaEdible == 8, "Hulling one Soba harvest baseline should preserve 8 edible buckwheat.");
         }
 
-        [Then("edible millet is accepted by the vanilla simple meal ingredient filter")]
+        [Then("edible AMJ grains are accepted by the vanilla simple meal ingredient filter")]
         public void AssertSimpleMealAcceptsMillet(PickleContext ctx)
         {
             ThingDef millet = RequireThingDef(ctx, "AMJC_Millet");
@@ -134,6 +166,27 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Require(simpleMeal != null, "Vanilla CookMealSimple RecipeDef was not found.");
             ctx.Require(simpleMeal.fixedIngredientFilter != null, "CookMealSimple has no fixed ingredient filter.");
             ctx.Assert(simpleMeal.fixedIngredientFilter.Allows(millet), "Edible AMJ millet should be accepted by the vanilla simple meal ingredient filter.");
+            ThingDef buckwheat = RequireThingDef(ctx, "AMJC_Buckwheat");
+            ctx.Assert(simpleMeal.fixedIngredientFilter.Allows(buckwheat), "Edible AMJ buckwheat should be accepted by the vanilla simple meal ingredient filter.");
+        }
+
+        private static void AssertLoadedCrop(
+            PickleContext ctx, string defName, float growDays, float harvestYield,
+            float fertilityMin, float fertilitySensitivity, float minGrowth, float maxGrowth,
+            float minOptimal, float maxOptimal, int sowMinSkill, string harvestedDefName)
+        {
+            ThingDef crop = RequireThingDef(ctx, defName);
+            ctx.Require(crop.plant != null, defName + " is not a plant.");
+            ctx.Assert(Math.Abs(crop.plant.growDays - growDays) < 0.001f, defName + " growDays mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.harvestYield - harvestYield) < 0.001f, defName + " harvestYield mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.fertilityMin - fertilityMin) < 0.001f, defName + " fertilityMin mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.fertilitySensitivity - fertilitySensitivity) < 0.001f, defName + " fertilitySensitivity mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.minGrowthTemperature - minGrowth) < 0.001f, defName + " minGrowthTemperature mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.maxGrowthTemperature - maxGrowth) < 0.001f, defName + " maxGrowthTemperature mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.minOptimalGrowthTemperature - minOptimal) < 0.001f, defName + " minOptimalGrowthTemperature mismatch.");
+            ctx.Assert(Math.Abs(crop.plant.maxOptimalGrowthTemperature - maxOptimal) < 0.001f, defName + " maxOptimalGrowthTemperature mismatch.");
+            ctx.Assert(crop.plant.sowMinSkill == sowMinSkill, defName + " sowMinSkill mismatch.");
+            ctx.Assert(crop.plant.harvestedThingDef != null && crop.plant.harvestedThingDef.defName == harvestedDefName, defName + " harvestedThingDef mismatch.");
         }
 
         private static void AssertLoadedMilletCrop(

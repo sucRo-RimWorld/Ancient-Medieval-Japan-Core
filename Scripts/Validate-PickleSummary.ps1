@@ -25,8 +25,8 @@ $required = @(
     "Loaded AMJ Stage A crop and grain Defs match the design values",
     "Loaded AMJ millet CCTO compatibility data matches the cold tolerance design",
     "Loaded AMJ grain processing buildings and recipes match the design values",
-    "Thirteen raw millet is conserved through bulk plus remainder processing",
-    "Edible millet is accepted by the vanilla simple meal ingredient filter"
+    "Stage A grain quantities are conserved through processing",
+    "Edible AMJ grains are accepted by the vanilla simple meal ingredient filter"
 )
 
 if ([int]$summary.total -ne 5) {

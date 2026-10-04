@@ -82,10 +82,23 @@ Assert-Number (Node-Text $kibi "plant/maxGrowthTemperature" "Kibi maxGrowthTempe
 Assert-Number (Node-Text $kibi "plant/minOptimalGrowthTemperature" "Kibi minOptimalGrowthTemperature") 18 "Kibi minOptimalGrowthTemperature"
 Assert-Number (Node-Text $kibi "plant/maxOptimalGrowthTemperature" "Kibi maxOptimalGrowthTemperature") 32 "Kibi maxOptimalGrowthTemperature"
 
+$soba = Get-DefNode $plants "ThingDef" "AMJC_Plant_Buckwheat_Soba"
+Assert-Text (Node-Text $soba "plant/harvestedThingDef" "Soba harvest target") "AMJC_RawBuckwheat" "Soba harvest target"
+Assert-Number (Node-Text $soba "plant/harvestYield" "Soba harvestYield") 8 "Soba harvestYield"
+Assert-Number (Node-Text $soba "plant/growDays" "Soba growDays") 4 "Soba growDays"
+Assert-Number (Node-Text $soba "plant/fertilityMin" "Soba fertilityMin") 0.4 "Soba fertilityMin"
+Assert-Number (Node-Text $soba "plant/fertilitySensitivity" "Soba fertilitySensitivity") 0.25 "Soba fertilitySensitivity"
+Assert-Number (Node-Text $soba "plant/minGrowthTemperature" "Soba minGrowthTemperature") 5 "Soba minGrowthTemperature"
+Assert-Number (Node-Text $soba "plant/maxGrowthTemperature" "Soba maxGrowthTemperature") 35 "Soba maxGrowthTemperature"
+Assert-Number (Node-Text $soba "plant/minOptimalGrowthTemperature" "Soba minOptimalGrowthTemperature") 12 "Soba minOptimalGrowthTemperature"
+Assert-Number (Node-Text $soba "plant/maxOptimalGrowthTemperature" "Soba maxOptimalGrowthTemperature") 25 "Soba maxOptimalGrowthTemperature"
+Assert-Number (Node-Text $soba "plant/sowMinSkill" "Soba sowMinSkill") 1 "Soba sowMinSkill"
+
 foreach ($case in @(
     @{ DefName = "AMJC_Plant_FoxtailMillet_Awa"; Death = -3 },
     @{ DefName = "AMJC_Plant_BarnyardMillet_Hie"; Death = -2 },
-    @{ DefName = "AMJC_Plant_ProsoMillet_Kibi"; Death = -3 }
+    @{ DefName = "AMJC_Plant_ProsoMillet_Kibi"; Death = -3 },
+    @{ DefName = "AMJC_Plant_Buckwheat_Soba"; Death = -2 }
 )) {
     $xpathText = '/Defs/ThingDef[defName="' + $case.DefName + '"]'
     $op = $cctoPatch.SelectSingleNode("/Patch/Operation[@Class='PatchOperationFindMod'][mods/li='Crop Cold Tolerance Overhaul'][match/xpath='$xpathText']")
@@ -145,6 +158,15 @@ foreach ($graphic in $milletGraphics) {
 Assert-Number (Node-Text $raw "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Raw millet rot days") 120 "Raw millet rot days"
 Assert-Number (Node-Text $inHull "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Millet-in-hull rot days") 120 "Millet-in-hull rot days"
 Assert-Number (Node-Text $millet "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Edible millet rot days") 90 "Edible millet rot days"
+
+$rawBuckwheat = Get-DefNode $items "ThingDef" "AMJC_RawBuckwheat"
+$buckwheatInHull = Get-DefNode $items "ThingDef" "AMJC_BuckwheatInHull"
+$buckwheat = Get-DefNode $items "ThingDef" "AMJC_Buckwheat"
+Assert-Number (Node-Text $rawBuckwheat "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Raw buckwheat rot days") 120 "Raw buckwheat rot days"
+Assert-Number (Node-Text $buckwheatInHull "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Buckwheat-in-hull rot days") 120 "Buckwheat-in-hull rot days"
+Assert-Number (Node-Text $buckwheat "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Edible buckwheat rot days") 60 "Edible buckwheat rot days"
+Assert-Number (Node-Text $buckwheat "statBases/Nutrition" "Buckwheat nutrition") 0.05 "Buckwheat nutrition"
+
 if ($items.OuterXml -match "<li>DankPyon_Cereal</li>") { Fail "AMJ millet stages must not be registered to DankPyon_Cereal." }
 
 $spot = Get-DefNode $buildings "ThingDef" "AMJC_GrainProcessingSpot"
@@ -192,6 +214,10 @@ Assert-Recipe "AMJC_ThreshMillet" 15 "AMJC_RawMillet" 1 @{ AMJC_MilletInHull = 1
 Assert-Recipe "AMJC_ThreshMilletBulk" 120 "AMJC_RawMillet" 10 @{ AMJC_MilletInHull = 10; DankPyon_Straw = 10 }
 Assert-Recipe "AMJC_HullMillet" 10 "AMJC_MilletInHull" 1 @{ AMJC_Millet = 1 }
 Assert-Recipe "AMJC_HullMilletBulk" 80 "AMJC_MilletInHull" 10 @{ AMJC_Millet = 10 }
+Assert-Recipe "AMJC_ThreshBuckwheat" 15 "AMJC_RawBuckwheat" 1 @{ AMJC_BuckwheatInHull = 1; DankPyon_Straw = 1 }
+Assert-Recipe "AMJC_ThreshBuckwheatBulk" 120 "AMJC_RawBuckwheat" 10 @{ AMJC_BuckwheatInHull = 10; DankPyon_Straw = 10 }
+Assert-Recipe "AMJC_HullBuckwheat" 10 "AMJC_BuckwheatInHull" 1 @{ AMJC_Buckwheat = 1 }
+Assert-Recipe "AMJC_HullBuckwheatBulk" 80 "AMJC_BuckwheatInHull" 10 @{ AMJC_Buckwheat = 10 }
 
 $moXmlFiles = @(Get-ChildItem -LiteralPath $MedievalOverhaulRoot -Recurse -File -Filter *.xml)
 foreach ($defName in @("DankPyon_Straw","DankPyon_IronIngot","DankPyon_BasicAgriculture","DankPyon_RawWood")) {

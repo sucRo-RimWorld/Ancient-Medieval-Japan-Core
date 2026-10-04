@@ -147,7 +147,7 @@ Implement the approved Stage A Soba role as the next data-side vertical slice.
 
 **Next action:** complete regression coverage and run the normal automated gate.
 
-**Result / references:** implementation commit follows.
+**Result / references:** implementation `4d5bad9a466507116c314584d3e7b20d0599c22d`; automated-test integration commit follows.
 
 ### AMJ-009 — Soba crop/item graphics
 
