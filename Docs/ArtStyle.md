@@ -134,6 +134,18 @@ For item/resource icons add:
 
 > Even flatter than the plant art. Use one base fill and at most one secondary plane per material. No per-piece highlights or deep contact shadows.
 
+### Canonical produce crate / masu-style container
+
+For loose harvested produce, beans, grains, hulled grain, and similar resources that use the Medieval Overhaul / Vanilla shallow wooden-box presentation, **the container itself must not be regenerated per asset**.
+
+- The accepted `AMJC_BuckwheatInHull` shallow wooden box is the canonical container master.
+- Future AMJ container icons must reuse the **exact same box pixels** after the production texture is normalized to 256×256.
+- Box geometry, perspective, outline, rim thickness, wood colors, shading planes, and placement are fixed.
+- Only the contents above/inside the box may change.
+- Generate or draw the contents separately on transparency, then composite them into the canonical box with deterministic local image processing.
+- Do not ask the image generator to redraw the box for each resource; this rule exists specifically to prevent visual drift.
+- When a different container class is genuinely required, define a new canonical master for that class rather than mutating this one.
+
 ## 7. Required iteration procedure
 
 Prefer **reuse and local image processing before new image generation**. Image generation is comparatively slow and may time out, while most AMJ follow-up work after a style/silhouette is accepted can be completed more reliably by transforming the accepted source asset.
