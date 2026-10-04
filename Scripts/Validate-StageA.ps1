@@ -51,16 +51,6 @@ $cctoPatch = Load-Xml (Join-Path $RepositoryRoot "Patches\Compatibility\CCTO_Sta
 Assert-Text (Node-Text $about "/ModMetaData/packageId" "About.xml packageId") "sucro.ancientmedievaljapan.core" "About.xml packageId"
 if ($null -eq $about.SelectSingleNode("/ModMetaData/modDependencies/li[packageId='DankPyon.Medieval.Overhaul']")) { Fail "About.xml must require Medieval Overhaul." }
 
-$cctoOp = $cctoPatch.SelectSingleNode("/Patch/Operation[@Class='PatchOperationFindMod'][mods/li='Crop Cold Tolerance Overhaul']")
-if ($null -eq $cctoOp) { Fail "CCTO_StageA.xml must contain the Awa PatchOperationFindMod." }
-Assert-Text (Node-Text $cctoOp "match/xpath" "Awa CCTO patch xpath") '/Defs/ThingDef[defName="AMJC_Plant_FoxtailMillet_Awa"]' "Awa CCTO patch xpath"
-$cctoExtension = $cctoOp.SelectSingleNode("match/value/li[@Class='CropColdToleranceOverhaul.ColdToleranceExtension']")
-if ($null -eq $cctoExtension) { Fail "Awa CCTO patch must add CropColdToleranceOverhaul.ColdToleranceExtension." }
-if (@($cctoOp.SelectNodes("match/value/li[@Class='CropColdToleranceOverhaul.ColdToleranceExtension']")).Count -ne 1) { Fail "Awa CCTO patch must add exactly one ColdToleranceExtension." }
-Assert-Number (Node-Text $cctoExtension "coldDeathTemperature" "Awa CCTO coldDeathTemperature") -3 "Awa CCTO coldDeathTemperature"
-$coldDormancy = $cctoExtension.SelectSingleNode("coldDormancy")
-if ($null -ne $coldDormancy -and $coldDormancy.InnerText.Trim().ToLowerInvariant() -ne "false") { Fail "Awa must not enable CCTO cold dormancy." }
-
 $awa = Get-DefNode $plants "ThingDef" "AMJC_Plant_FoxtailMillet_Awa"
 Assert-Text (Node-Text $awa "plant/harvestedThingDef" "Awa harvest target") "AMJC_RawMillet" "Awa harvest target"
 Assert-Number (Node-Text $awa "plant/harvestYield" "Awa harvestYield") 13 "Awa harvestYield"
@@ -69,6 +59,44 @@ Assert-Number (Node-Text $awa "plant/fertilityMin" "Awa fertilityMin") 0.5 "Awa 
 Assert-Number (Node-Text $awa "plant/fertilitySensitivity" "Awa fertilitySensitivity") 0.4 "Awa fertilitySensitivity"
 Assert-Number (Node-Text $awa "plant/minGrowthTemperature" "Awa minGrowthTemperature") 8 "Awa minGrowthTemperature"
 Assert-Number (Node-Text $awa "plant/maxGrowthTemperature" "Awa maxGrowthTemperature") 42 "Awa maxGrowthTemperature"
+
+$hie = Get-DefNode $plants "ThingDef" "AMJC_Plant_BarnyardMillet_Hie"
+Assert-Text (Node-Text $hie "plant/harvestedThingDef" "Hie harvest target") "AMJC_RawMillet" "Hie harvest target"
+Assert-Number (Node-Text $hie "plant/harvestYield" "Hie harvestYield") 12 "Hie harvestYield"
+Assert-Number (Node-Text $hie "plant/growDays" "Hie growDays") 6 "Hie growDays"
+Assert-Number (Node-Text $hie "plant/fertilityMin" "Hie fertilityMin") 0.5 "Hie fertilityMin"
+Assert-Number (Node-Text $hie "plant/fertilitySensitivity" "Hie fertilitySensitivity") 0.5 "Hie fertilitySensitivity"
+Assert-Number (Node-Text $hie "plant/minGrowthTemperature" "Hie minGrowthTemperature") 5 "Hie minGrowthTemperature"
+Assert-Number (Node-Text $hie "plant/maxGrowthTemperature" "Hie maxGrowthTemperature") 40 "Hie maxGrowthTemperature"
+Assert-Number (Node-Text $hie "plant/minOptimalGrowthTemperature" "Hie minOptimalGrowthTemperature") 15 "Hie minOptimalGrowthTemperature"
+Assert-Number (Node-Text $hie "plant/maxOptimalGrowthTemperature" "Hie maxOptimalGrowthTemperature") 30 "Hie maxOptimalGrowthTemperature"
+
+$kibi = Get-DefNode $plants "ThingDef" "AMJC_Plant_ProsoMillet_Kibi"
+Assert-Text (Node-Text $kibi "plant/harvestedThingDef" "Kibi harvest target") "AMJC_RawMillet" "Kibi harvest target"
+Assert-Number (Node-Text $kibi "plant/harvestYield" "Kibi harvestYield") 11 "Kibi harvestYield"
+Assert-Number (Node-Text $kibi "plant/growDays" "Kibi growDays") 5 "Kibi growDays"
+Assert-Number (Node-Text $kibi "plant/fertilityMin" "Kibi fertilityMin") 0.5 "Kibi fertilityMin"
+Assert-Number (Node-Text $kibi "plant/fertilitySensitivity" "Kibi fertilitySensitivity") 0.3 "Kibi fertilitySensitivity"
+Assert-Number (Node-Text $kibi "plant/minGrowthTemperature" "Kibi minGrowthTemperature") 8 "Kibi minGrowthTemperature"
+Assert-Number (Node-Text $kibi "plant/maxGrowthTemperature" "Kibi maxGrowthTemperature") 42 "Kibi maxGrowthTemperature"
+Assert-Number (Node-Text $kibi "plant/minOptimalGrowthTemperature" "Kibi minOptimalGrowthTemperature") 18 "Kibi minOptimalGrowthTemperature"
+Assert-Number (Node-Text $kibi "plant/maxOptimalGrowthTemperature" "Kibi maxOptimalGrowthTemperature") 32 "Kibi maxOptimalGrowthTemperature"
+
+foreach ($case in @(
+    @{ DefName = "AMJC_Plant_FoxtailMillet_Awa"; Death = -3 },
+    @{ DefName = "AMJC_Plant_BarnyardMillet_Hie"; Death = -2 },
+    @{ DefName = "AMJC_Plant_ProsoMillet_Kibi"; Death = -3 }
+)) {
+    $xpathText = '/Defs/ThingDef[defName="' + $case.DefName + '"]'
+    $op = $cctoPatch.SelectSingleNode("/Patch/Operation[@Class='PatchOperationFindMod'][mods/li='Crop Cold Tolerance Overhaul'][match/xpath='$xpathText']")
+    if ($null -eq $op) { Fail "CCTO_StageA.xml is missing the patch for $($case.DefName)." }
+    $extension = $op.SelectSingleNode("match/value/li[@Class='CropColdToleranceOverhaul.ColdToleranceExtension']")
+    if ($null -eq $extension) { Fail "$($case.DefName) is missing ColdToleranceExtension." }
+    Assert-Number (Node-Text $extension "coldDeathTemperature" "$($case.DefName) coldDeathTemperature") ([double]$case.Death) "$($case.DefName) coldDeathTemperature"
+    $dormancy = $extension.SelectSingleNode("coldDormancy")
+    if ($null -ne $dormancy -and $dormancy.InnerText.Trim().ToLowerInvariant() -ne "false") { Fail "$($case.DefName) must not enable cold dormancy." }
+}
+
 Assert-Text (Node-Text $awa "graphicData/graphicClass" "Awa mature graphic class") "Graphic_Random" "Awa mature graphic class"
 Assert-Text (Node-Text $awa "graphicData/texPath" "Awa mature texture path") "Things/Plants/FullGrown/AMJC_Awa" "Awa mature texture path"
 $awaTexturePath = Join-Path $RepositoryRoot "Textures\Things\Plants\FullGrown\AMJC_Awa\AMJC_Awa_Mature.png"

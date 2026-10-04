@@ -107,6 +107,26 @@ Implemented:
 
 **Result / references:** static-data test commit `050f835f7ea9eeca753cda8ef96d3c85ee7f87b7`; loaded-Def/Pickle test commit `c0b2de1c9f07e97dda66cb07654fb56968188450`; local 5/5 automated gate confirmed 2026-10-04 JST.
 
+### AMJ-007 — Hie and Kibi cultivation data slice
+
+**Requested by:** Agriculture/XML  \\
+**Owner:** Agriculture/XML / Testing/tooling  \\
+**Status:** IN PROGRESS
+
+Hie and Kibi are implemented from the already-approved Stage A balance and connected to the shared millet post-harvest chain. This item is data-side only; crop-specific graphics remain owned by the separate Art/graphics workstream.
+
+- Hie `AMJC_Plant_BarnyardMillet_Hie`: growDays 6, yield 12, fertilityMin 0.5, sensitivity 0.5, growth 5–40°C, optimum 15–30°C, CCTO fixed death -2°C.
+- Kibi `AMJC_Plant_ProsoMillet_Kibi`: growDays 5, yield 11, fertilityMin 0.5, sensitivity 0.3, growth 8–42°C, optimum 18–32°C, CCTO fixed death -3°C.
+- Both harvest `AMJC_RawMillet` and therefore use the existing shared threshing/hulling path.
+- Until dedicated graphics arrive, both temporarily reuse the accepted Awa mature/immature texture paths. No image asset is changed by this workstream.
+- Static and Pickle regression coverage now checks all three millet PlantDefs and all three AMJC-owned CCTO extension values.
+
+**Validation:** GitHub static CI must pass on the corrected implementation. RimWorld/Pickle runtime PASS is not claimed until the development-PC `run-tests.bat` gate is rerun.
+
+**Next action:** run `run-tests.bat`; if the existing five-scenario suite passes with a clean runtime ERROR gate, mark the data slice DONE. Art remains independent.
+
+**Result / references:** implementation `03273bfb999fc70f6e97b9deb23d5e4e74f220ba`; corrective test wiring commit follows.
+
 Add new items using the following form.
 
 ### AMJ-XXX — Short title
