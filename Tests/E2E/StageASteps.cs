@@ -61,7 +61,32 @@ namespace AncientMedievalJapanCore.E2E
             ThingDef rawBarley = RequireThingDef(ctx, "AMJC_RawBarley");
             ThingDef barleyInHull = RequireThingDef(ctx, "AMJC_BarleyInHull");
             ThingDef barley = RequireThingDef(ctx, "AMJC_Barley");
+            ThingDef rawWheat = RequireThingDef(ctx, "DankPyon_RawWheat");
+            ThingDef wheat = RequireThingDef(ctx, "AMJC_Wheat");
+            ThingDef flour = RequireThingDef(ctx, "DankPyon_Flour");
+            ThingDef wheatPlant = RequireThingDef(ctx, "DankPyon_Plant_Wheat");
 
+                checkpoint = "MO wheat patched crop Def";
+            ctx.Assert(wheatPlant.thingClass == typeof(Plant), "MO wheat must use normal Plant after AMJ removes harvest-time secondary drop.");
+            ctx.Assert(wheatPlant.plant != null, "MO wheat must remain a plant.");
+            ctx.Assert(Math.Abs(wheatPlant.plant.growDays - 12f) < 0.001f, "MO wheat growDays should remain 12.");
+            ctx.Assert(Math.Abs(wheatPlant.plant.harvestYield - 28f) < 0.001f, "MO wheat harvestYield should remain 28.");
+            ctx.Assert(Math.Abs(wheatPlant.plant.fertilityMin - 0.7f) < 0.001f, "AMJ wheat fertilityMin should be 0.7.");
+            ctx.Assert(Math.Abs(wheatPlant.plant.fertilitySensitivity - 0.9f) < 0.001f, "MO wheat fertilitySensitivity should remain 0.9.");
+            ctx.Assert(
+                wheatPlant.plant.harvestedThingDef != null
+                && wheatPlant.plant.harvestedThingDef.defName == "DankPyon_RawWheat",
+                "MO wheat must still harvest DankPyon_RawWheat.");
+            ctx.Assert(
+                wheatPlant.plant.sowResearchPrerequisites != null
+                && wheatPlant.plant.sowResearchPrerequisites.Any(x => x != null && x.defName == "DankPyon_BasicAgriculture"),
+                "MO wheat must retain DankPyon_BasicAgriculture.");
+            ctx.Assert(
+                wheatPlant.modExtensions == null
+                || !wheatPlant.modExtensions.Any(x => x != null && x.GetType().FullName == "MedievalOverhaul.SecondaryPlantDropExtension"),
+                "AMJ wheat must not retain the MO harvest-time secondary-drop extension.");
+
+                checkpoint = "grain ThingDef lookup and storage";
             AssertRotDays(ctx, raw, 120f);
             AssertRotDays(ctx, inHull, 120f);
             AssertRotDays(ctx, millet, 90f);
@@ -71,6 +96,9 @@ namespace AncientMedievalJapanCore.E2E
             AssertRotDays(ctx, rawBarley, 120f);
             AssertRotDays(ctx, barleyInHull, 120f);
             AssertRotDays(ctx, barley, 90f);
+            AssertRotDays(ctx, rawWheat, 120f);
+            AssertRotDays(ctx, wheat, 90f);
+            AssertRotDays(ctx, flour, 60f);
 
                 checkpoint = "grain categories";
             ctx.Assert(!HasThingCategory(raw, "DankPyon_Cereal"), "Raw millet must not be in DankPyon_Cereal.");
@@ -82,6 +110,8 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(!HasThingCategory(rawBarley, "DankPyon_Cereal"), "Raw barley must not be in DankPyon_Cereal.");
             ctx.Assert(!HasThingCategory(barleyInHull, "DankPyon_Cereal"), "Barley in hull must not be in DankPyon_Cereal.");
             ctx.Assert(!HasThingCategory(barley, "DankPyon_Cereal"), "Edible barley must not be in DankPyon_Cereal.");
+            ctx.Assert(!HasThingCategory(rawWheat, "DankPyon_Cereal"), "Unthreshed MO wheat must not remain in DankPyon_Cereal.");
+            ctx.Assert(HasThingCategory(wheat, "DankPyon_Cereal"), "Threshed AMJ wheat grain must be in DankPyon_Cereal.");
 
                 checkpoint = "grain ingestible and nutrition properties";
             ctx.Assert(raw.ingestible != null && raw.ingestible.preferability == FoodPreferability.NeverForNutrition, "Raw millet must be non-food for normal nutrition.");
@@ -96,6 +126,9 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(barleyInHull.ingestible != null && barleyInHull.ingestible.preferability == FoodPreferability.NeverForNutrition, "Barley in hull must be non-food for normal nutrition.");
             ctx.Assert(barley.ingestible != null, "Edible barley must have ingestible properties.");
             ctx.Assert(Math.Abs(ReadStatBase(ctx, barley, StatDefOf.Nutrition) - 0.05f) < 0.001f, "Edible barley nutrition should be 0.05.");
+            ctx.Assert(rawWheat.ingestible != null && rawWheat.ingestible.preferability == FoodPreferability.NeverForNutrition, "Unthreshed wheat must remain non-food.");
+            ctx.Assert(wheat.ingestible != null, "Threshed wheat grain must be edible.");
+            ctx.Assert(Math.Abs(ReadStatBase(ctx, wheat, StatDefOf.Nutrition) - 0.05f) < 0.001f, "Edible wheat nutrition should be 0.05.");
             }
             catch (Exception ex)
             {
@@ -198,6 +231,14 @@ namespace AncientMedievalJapanCore.E2E
                 new Dictionary<string, int> { { "AMJC_Barley", 1 } });
             AssertRecipe(ctx, "AMJC_HullBarleyBulk", 80f, "AMJC_BarleyInHull", 10f,
                 new Dictionary<string, int> { { "AMJC_Barley", 10 } });
+            AssertRecipe(ctx, "AMJC_ThreshWheat", 15f, "DankPyon_RawWheat", 1f,
+                new Dictionary<string, int> { { "AMJC_Wheat", 1 }, { "DankPyon_Straw", 1 } });
+            AssertRecipe(ctx, "AMJC_ThreshWheatBulk", 120f, "DankPyon_RawWheat", 10f,
+                new Dictionary<string, int> { { "AMJC_Wheat", 10 }, { "DankPyon_Straw", 10 } });
+
+            AssertMoFlourRecipe(ctx, "DankPyon_CraftFlour_Manual", 1);
+            AssertMoFlourRecipe(ctx, "DankPyon_CraftFlour", 1);
+            AssertMoFlourRecipe(ctx, "DankPyon_CraftFlourBulk", 10);
 
             List<string> spotRecipes = DefDatabase<RecipeDef>.AllDefs
                 .Where(x => x.recipeUsers != null && x.recipeUsers.Contains(spot) && x.defName.StartsWith("AMJC_"))
@@ -212,7 +253,7 @@ namespace AncientMedievalJapanCore.E2E
                 .ToList();
 
             ctx.Assert(spotRecipes.SequenceEqual(tableRecipes), "Both grain-processing stations should expose the same AMJ recipes.");
-            ctx.Assert(spotRecipes.Count == 12, "Both grain-processing stations should expose exactly twelve Stage A grain-processing bills.");
+            ctx.Assert(spotRecipes.Count == 14, "Both grain-processing stations should expose exactly fourteen Stage A grain-processing bills.");
         }
 
         [Then("stage A grain quantities are conserved through processing")]
@@ -260,6 +301,12 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(barleyInHullCount == 22, "Threshing one Barley harvest baseline should preserve 22 barley in hull.");
             ctx.Assert(barleyStraw == 22, "Threshing one Barley harvest baseline should yield 22 straw.");
             ctx.Assert(barleyEdible == 22, "Hulling one Barley harvest baseline should preserve 22 edible barley.");
+
+            RecipeDef wheatThresh = RequireRecipe(ctx, "AMJC_ThreshWheat");
+            int wheatGrain = 28 * ProductCount(ctx, wheatThresh, "AMJC_Wheat");
+            int wheatStraw = 28 * ProductCount(ctx, wheatThresh, "DankPyon_Straw");
+            ctx.Assert(wheatGrain == 28, "Threshing one MO wheat harvest baseline should preserve 28 edible wheat grain.");
+            ctx.Assert(wheatStraw == 28, "Threshing one MO wheat harvest baseline should yield 28 straw.");
         }
 
         [Then("edible AMJ grains are accepted by the vanilla simple meal ingredient filter")]
@@ -281,6 +328,8 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(simpleMeal.fixedIngredientFilter.Allows(buckwheat), "Edible AMJ buckwheat should be accepted by the vanilla simple meal ingredient filter.");
             ThingDef barley = RequireThingDef(ctx, "AMJC_Barley");
             ctx.Assert(simpleMeal.fixedIngredientFilter.Allows(barley), "Edible AMJ barley should be accepted by the vanilla simple meal ingredient filter.");
+            ThingDef wheat = RequireThingDef(ctx, "AMJC_Wheat");
+            ctx.Assert(simpleMeal.fixedIngredientFilter.Allows(wheat), "Edible AMJ wheat grain should be accepted by the vanilla simple meal ingredient filter.");
         }
 
         private static void AssertLoadedCrop(
@@ -350,6 +399,26 @@ namespace AncientMedievalJapanCore.E2E
             bool coldDormancy = Convert.ToBoolean(dormancyField.GetValue(extension));
             ctx.Assert(Math.Abs(coldDeathTemperature - expectedDeathTemperature) < 0.001f, defName + " CCTO cold-death temperature mismatch.");
             ctx.Assert(!coldDormancy, defName + " should use fixed cold death, not cold dormancy.");
+        }
+
+        private static void AssertMoFlourRecipe(PickleContext ctx, string defName, int expectedFlourCount)
+        {
+            RecipeDef recipe = RequireRecipe(ctx, defName);
+            ThingDef rawWheat = RequireThingDef(ctx, "DankPyon_RawWheat");
+            ThingDef wheat = RequireThingDef(ctx, "AMJC_Wheat");
+
+            if (recipe.fixedIngredientFilter == null)
+            {
+                throw new InvalidOperationException(defName + " has no fixed ingredient filter.");
+            }
+
+            ctx.Assert(!recipe.fixedIngredientFilter.Allows(rawWheat), defName + " must reject unthreshed wheat sheaves.");
+            ctx.Assert(recipe.fixedIngredientFilter.Allows(wheat), defName + " must accept threshed AMJ wheat grain.");
+            ctx.Assert(ProductCount(ctx, recipe, "DankPyon_Flour") == expectedFlourCount, defName + " flour output mismatch.");
+
+            bool hasHay = recipe.products != null
+                && recipe.products.Any(x => x.thingDef != null && x.thingDef.defName == "Hay");
+            ctx.Assert(!hasHay, defName + " must not produce Hay after AMJ moves straw to threshing.");
         }
 
         private static void AssertRecipe(
