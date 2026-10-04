@@ -48,7 +48,7 @@ Use the same structure as the accepted Environment/Core references:
 2. Second line: **Medieval**
 3. Third line: **Japan**
 4. A thin horizontal divider / very small neutral floral mark may sit below the title as part of the shared series ornament.
-5. The addon name sits below in smaller, widely tracked capitals.
+5. The addon name sits below in a smaller, widely tracked serif label using the approved title-case presentation (for example `Core`, `Environment`, `Fermentation`).
 
 Rules:
 - use a restrained editorial serif for the three-line series title;
@@ -197,9 +197,9 @@ For every new AMJ Workshop cover:
    - no people;
    - flat / low-saturation / limited-color rules are present.
 7. Generate only after the preflight passes.
-8. **Generate only variable motifs; composite the final cover deterministically.** Follow `Docs/GoldenPaths/FixedImageTemplates.md`: register a lossless common master and an approved editable mask, generate the right-side motifs separately, and render the addon name only in its editable region. Reference-image editing alone does not guarantee invariant pixels. Copy all protected RGBA pixels from the master and require zero pixel differences after final PNG decoding.
+8. **Generate only the variable right-side motifs; never generate the final whole cover.** Follow `Docs/GoldenPaths/WorkshopCoverPipeline.md`. Retrieve the canonical Library files `/AMJ/References/AMJ_WorkshopCover_CommonBase.png` and `/AMJ/References/AMJ_WorkshopCover_VariableMask.png`, then compose with `Scripts/build_workshop_cover.py`. The compositor renders the addon label in its fixed slot and forcibly restores every protected common pixel from the master.
 9. **Addon-specific instructions are allowed to modify the right side and addon name only.** They must not override or omit the common-left block.
-10. Inspect the generated image side-by-side against the approved reference image in this order:
+10. Inspect the deterministically composed final image side-by-side against the approved reference image in this order:
    1. common-left text and layout;
    2. addon name;
    3. right-side composition;
@@ -210,22 +210,25 @@ For every new AMJ Workshop cover:
 
 ### Cross-chat rule
 
-Do not rely on another chat remembering an accepted cover. A new chat must **retrieve and visually inspect an approved cover image before generation**, then read this document and the reference schematic. The canonical cross-chat visual reference is `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg` in the user's Library. If the actual approved image is unavailable, generation is blocked until it is made available. The text rules and schematic explain constraints; they do not replace visual inspection of the approved image.
-## 12. Prompt baseline
+Do not rely on another chat remembering an accepted cover. A new chat must **retrieve and visually inspect the approved reference before generation**, then retrieve the canonical common base and editable mask from the Library and read this document plus `Docs/GoldenPaths/WorkshopCoverPipeline.md`. Canonical Library paths are `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`, `/AMJ/References/AMJ_WorkshopCover_CommonBase.png`, and `/AMJ/References/AMJ_WorkshopCover_VariableMask.png`. If any required raster cannot be accessed, production is blocked; do not reconstruct it from memory, text, SVG, or ImageGen.
+## 12. Image-generation prompt baseline — variable artwork only
 
-Use this shared semantic baseline **verbatim in meaning** for every cover. Do not shorten it to only the addon-specific right side:
+The image model is **not** responsible for the final cover format. It creates only the addon-specific right-side artwork that will later be composited onto the fixed common raster.
 
-> Wide 16:9 Steam Workshop cover for the Ancient & Medieval Japan series. Warm pale parchment background with extremely subtle paper grain. The common-left series block is fixed and must not be redesigned: large editorial serif title on three lines reading exactly “Ancient &” / “Medieval” / “Japan”; the first two lines are dark muted green-charcoal or warm charcoal, and “Japan” alone is muted reddish-brown. Beneath the title is the same restrained thin divider / tiny neutral floral mark used by the series, followed by the addon name in smaller widely tracked capitals. Preserve the same left-side hierarchy, line breaks, approximate scale, position, and negative space as the accepted Environment/Core covers. Do not add “中世日本OH”, A/M/J initial highlighting, a dark left panel, Japan map, red brush badge, or new left-side decoration. The right side is a symbolic, highly simplified flat editorial illustration, not a scenic landscape. No people. No stereotypical Japanese decorative symbols. Low-saturation limited palette. Each motif uses about three colors: base, darker plane, lighter plane, with only a very light gradient if useful. Large clean silhouettes, minimal detail, no photorealism, no cinematic lighting, no painterly texture, readable at small Workshop thumbnail size.
+Use this semantic baseline:
 
-Then append only the addon-specific **right-side** approved motif/composition instructions and the addon name. Do not rewrite the common-left specification. When image-reference/edit mode is available, attach/use the approved cover and explicitly instruct the tool to preserve the shared background, title block, ornament, spacing, and overall left/right geometry while replacing only the addon name and right-side motifs.
+> Addon-specific symbolic illustration for the Ancient & Medieval Japan Workshop-cover series. Transparent background. No title, no letters, no addon name, no parchment background, no divider, no flower mark, and no left-side decoration. Highly simplified flat editorial illustration rather than a scenic landscape. No people. No stereotypical Japanese decorative symbols unless they are genuinely part of the addon subject. Low-saturation limited palette. Each motif uses about three colors: base, darker plane, lighter plane, with only a very light gradient if useful. Large clean silhouettes, minimal detail, no photorealism, no cinematic lighting, no painterly clutter. Design the motif group for the right side of a 16:9 cover and keep the far-left area empty.
+
+Append only the author-approved addon-specific motif/composition instructions. After generation, the artwork must be passed to `Scripts/build_workshop_cover.py`; never publish or approve the raw generated layer as the final cover.
+
 ## 13. Reference layout
 
 See:
 
 `Docs/References/AMJ_WorkshopCover_Template.svg`
 
-The SVG is the canonical cross-chat schematic for the invariant common-left layout and overall split, **but it is not sufficient by itself**. Before every generation, the actual author-approved visual reference in Library `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg` (or a later explicitly approved replacement) must also be opened and visually inspected. The approved image is the visual source of truth; the SVG documents geometry and structure. If those visual reference pixels are unavailable to the current work context, do not generate a new cover until the reference image is retrieved.
+Pixel-level registration is recorded in `Docs/References/AMJ_WorkshopCover_Template.json` and `Docs/References/AMJ_WorkshopCover_Manifest.md`. The SVG is only a human-readable schematic. The actual fixed format comes from the Library common-base PNG plus editable-mask PNG and the deterministic compositor documented in `Docs/GoldenPaths/WorkshopCoverPipeline.md`.
 
 ## Pixel-exact production gate
 
-`Docs/GoldenPaths/FixedImageTemplates.md` governs final production and supersedes any earlier suggestion that reference-based generation/editing or approximate geometry is sufficient to preserve common parts. The prompt above describes visual intent; it is not a request to regenerate the common title/background. Actual approved-reference inspection remains required.
+`Docs/GoldenPaths/FixedImageTemplates.md` provides the AMJ-wide rule; `Docs/GoldenPaths/WorkshopCoverPipeline.md` is the cover-specific implementation. Final production must use the registered Library master/mask and `Scripts/build_workshop_cover.py`, then pass `Scripts/validate_workshop_cover.py`. Direct whole-cover generation or reference-image editing is not a valid final-production path.
