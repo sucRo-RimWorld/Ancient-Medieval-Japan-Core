@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f3ead9"/>
+      <stop offset="100%" stop-color="#e9ddc8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#paper)"/>
+
+  <!-- Shared typography zone -->
+  <g transform="translate(70,120)">
+    <text x="0" y="0" font-family="serif" font-size="94" font-weight="700" fill="#252d2a">中世日本OH</text>
+    <text x="0" y="120" font-family="serif" font-size="60" font-weight="700" fill="#8c5a37">A</text>
+    <text x="43" y="120" font-family="serif" font-size="52" fill="#252d2a">ncient &amp; </text>
+    <text x="285" y="120" font-family="serif" font-size="60" font-weight="700" fill="#8c5a37">M</text>
+    <text x="337" y="120" font-family="serif" font-size="52" fill="#252d2a">edieval </text>
+    <text x="505" y="120" font-family="serif" font-size="60" font-weight="700" fill="#8c5a37">J</text>
+    <text x="535" y="120" font-family="serif" font-size="52" fill="#252d2a">apan</text>
+    <text x="0" y="205" font-family="sans-serif" font-size="30" letter-spacing="9" fill="#5c625c">ENVIRONMENT</text>
+  </g>
+
+  <!-- Symbolic addon area -->
+  <g transform="translate(620,90)">
+    <!-- Flat mountain bands -->
+    <path d="M0 260 L170 155 L330 250 L520 95 L760 245 L940 160 L980 310 L0 310 Z" fill="#8b9aa0"/>
+    <path d="M0 330 L150 235 L335 310 L565 205 L760 305 L980 250 L980 390 L0 390 Z" fill="#66787c"/>
+    <path d="M0 415 L180 325 L360 390 L540 315 L780 395 L980 345 L980 470 L0 470 Z" fill="#4e6260"/>
+
+    <!-- Thin river ribbon -->
+    <path d="M610 350 C560 405 650 445 585 500 C525 550 650 590 620 655 C605 690 665 735 720 770"
+          fill="none" stroke="#93aeb8" stroke-width="18" stroke-linecap="round"/>
+
+    <!-- Simplified tree silhouettes -->
+    <g transform="translate(80,430)">
+      <rect x="85" y="115" width="25" height="185" fill="#72634f"/>
+      <circle cx="100" cy="95" r="85" fill="#44564a"/>
+      <circle cx="45" cy="135" r="65" fill="#536352"/>
+      <circle cx="150" cy="140" r="60" fill="#394b42"/>
+    </g>
+
+    <g transform="translate(380,455)">
+      <rect x="90" y="95" width="24" height="210" fill="#8b7d64"/>
+      <circle cx="102" cy="85" r="82" fill="#9b9a6f"/>
+      <circle cx="50" cy="125" r="57" fill="#a8a77d"/>
+      <circle cx="150" cy="125" r="58" fill="#8e9069"/>
+    </g>
+
+    <g transform="translate(720,395)">
+      <rect x="92" y="125" width="24" height="245" fill="#6f6552"/>
+      <polygon points="104,0 20,170 188,170" fill="#33453e"/>
+      <polygon points="104,75 5,255 203,255" fill="#3c4e46"/>
+      <polygon points="104,155 28,330 180,330" fill="#2e4039"/>
+    </g>
+  </g>
+</svg>
