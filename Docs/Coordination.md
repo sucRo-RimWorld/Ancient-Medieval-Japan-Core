@@ -60,6 +60,21 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### AMJ-020 — More Mushrooms compatibility candidate recorded
+
+**Requested by:** author (2026-10-04 JST)  
+**Owner:** Content design / Compatibility  
+**Status:** DONE (design recording only; adoption and compatibility remain unverified)
+
+The author asked to record More Mushrooms (Workshop `3813323629`) as a possible substitute for AMJ-owned mushroom additions. Durable notes are now in `Docs/Design.md`: prior-mod audit, Hunting & Gathering scope/conclusion, and compatibility candidates.
+
+If MO + More Mushrooms provides the required mushrooms and works correctly, prefer optional compatibility patches over duplicating plants, ingredients, or artwork. Candidate adjustments include historically appropriate cultivation, disabling hydroponics, wild gathering where appropriate, and MO food/category integration. CCTO temperature support and Environment distribution are proposed responsibilities only; no counterpart repository implementation or adoption is claimed. The existing normal-AMJ coexistence policy and conditional-dependency audit still apply. This adds no Core Alpha/Stage requirement.
+
+**Next action:** when mushroom design resumes, audit current 1.6 source/packageId/DefNames and automate MO coexistence/load/harvest/ingredient checks before deciding adoption or patch ownership. No runtime PASS or supported-mod claim is established by this documentation change.
+
+**Result / references:** `Docs/Design.md` → More Mushrooms prior-mod audit / Hunting & Gathering / 評価待ちの互換候補.
+
+
 ### AMJ-005 — Shared millet post-harvest graphics
 
 **2026-10-04 author acceptance:** The latest in-game screenshot confirms the thicker-outline mature Awa and RawMillet sheaf render correctly. The author provisionally accepted this state ("一旦これでいいかな"). The requested texture-loading repair and outline refinement are complete; no further image edit or manual visual check is pending for this slice. This is human runtime/appearance confirmation, not a Pickle PASS.
