@@ -79,7 +79,9 @@ Each ThingDef now keeps its existing `Graphic_StackCount` behavior and points to
 
 **Naming decision:** harvested stalk+head grain states use the `～束` convention. `AMJC_RawMillet` is displayed as `雑穀束` / `millet sheaf`; `(生)` is not used for grain processing states. MO `DankPyon_RawWheat` receives the Japanese display override `小麦束` for the same reason. Internal DefNames are unchanged.
 
-**Next action:** replace only the current `AMJC_RawMillet` loose-grain texture with a stalk+head millet sheaf/bundle asset in the locked AMJ/MO style, then re-check it at the already accepted map scale. Keep the current hull and edible-millet textures unless a concrete problem appears.
+A dedicated millet-sheaf texture was then produced in the locked AMJ/MO style and accepted by the author on 2026-10-04 JST. It preserves the same warm yellow/olive palette family and simplified broad shapes as the accepted Awa art, but now correctly depicts harvested stalks + seed heads tied as a bundle. The accepted 256×256 palette PNG is wired to all three `Graphic_StackCount` slots for `AMJC_RawMillet` so the stack behavior remains unchanged while using one approved silhouette.
+
+**Next action:** pull latest `main`, restart RimWorld, and check only `雑穀束` at normal map/UI scale beside the already accepted `殻付き雑穀` and `雑穀`. If its size and readability are acceptable, mark AMJ-005 DONE.
 
 **Result / references:** shared processing implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; art-style baseline `2d4accb0c56bff6b81497a325877d5a5dc7d7710`; source artwork user-approved 2026-10-03.
 
