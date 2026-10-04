@@ -221,8 +221,10 @@ High-level rules:
 - target about three colors per motif (base / dark / light), with only a very light gradient where useful;
 - do not use stereotypical Japan decoration merely for atmosphere;
 - preserve strong readability at small Steam Workshop thumbnail size;
-- before generation, run the common-left preflight in `Docs/WorkshopCoverStyle.md`; reject any result whose left title wording, line breaks, hierarchy, or accent placement drifts.
-- before generation, retrieve and visually inspect the approved Core cover reference from Library `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`; do not generate from text rules or SVG alone.
+- before generation, retrieve and visually inspect the approved Core cover reference from Library `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`; do not generate from text rules or SVG alone;
+- do **not** ask ImageGen to create the complete Workshop cover. Generate only the addon-specific right-side artwork, preferably with transparency;
+- retrieve the canonical Library common base and variable mask, then compose with `Scripts/build_workshop_cover.py` following `Docs/GoldenPaths/WorkshopCoverPipeline.md`;
+- run `Scripts/validate_workshop_cover.py`; any protected-pixel difference is a hard failure.
 
 Do not use the older fixed dark-left common image or red brush-stroke addon badge for new covers.
 
