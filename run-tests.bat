@@ -19,7 +19,8 @@ echo.
 echo Validating AMJ Stage A XML against the installed Medieval Overhaul 1.6 source...
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0Scripts\Validate-StageA.ps1" ^
     -RepositoryRoot "%~dp0." ^
-    -MedievalOverhaulRoot "%MO_ROOT%"
+    -MedievalOverhaulRoot "%MO_ROOT%" ^
+    -RimWorldRoot "%RIMWORLD_DIR%"
 if errorlevel 1 exit /b 1
 
 echo.

@@ -26,15 +26,17 @@ $required = @(
     "Loaded AMJ crop CCTO compatibility data matches the cold tolerance design",
     "Loaded AMJ grain processing buildings and recipes match the design values",
     "Stage A grain quantities are conserved through processing",
-    "Edible AMJ grains are accepted by the vanilla simple meal ingredient filter"
+    "Edible AMJ grains are accepted by the vanilla simple meal ingredient filter",
+    "Loaded New Village scenario matches the start design",
+    "New Village starts with five villagers and the designed supplies"
 )
 
-if ([int]$summary.total -ne 5) {
-    Fail "AMJ Stage A integration suite scenario count is $($summary.total), expected 5."
+if ([int]$summary.total -ne 7) {
+    Fail "AMJ Stage A integration suite scenario count is $($summary.total), expected 7."
 }
 
-if ([int]$summary.passed -ne 5 -or [int]$summary.failed -ne 0 -or [int]$summary.skipped -ne 0) {
-    Fail "AMJ Stage A integration suite is not a clean 5/5 pass. passed=$($summary.passed), failed=$($summary.failed), skipped=$($summary.skipped)"
+if ([int]$summary.passed -ne 7 -or [int]$summary.failed -ne 0 -or [int]$summary.skipped -ne 0) {
+    Fail "AMJ Stage A integration suite is not a clean 7/7 pass. passed=$($summary.passed), failed=$($summary.failed), skipped=$($summary.skipped)"
 }
 
 $names = @($summary.scenarios | ForEach-Object { [string]$_.name })
@@ -44,5 +46,5 @@ foreach ($scenario in $required) {
     }
 }
 
-Write-Host "[OK] Fresh AMJ Pickle summary contains all 5 required passing scenarios." -ForegroundColor Green
+Write-Host "[OK] Fresh AMJ Pickle summary contains all 7 required passing scenarios." -ForegroundColor Green
 exit 0

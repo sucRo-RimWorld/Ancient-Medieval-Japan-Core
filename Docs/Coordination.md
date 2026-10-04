@@ -319,7 +319,16 @@ At the shared 0.50 integration point, Stage A intent is: Soba/Kibi/Awa/Hie/Barle
 
 **Requested by:** Core/design / Testing/tooling  
 **Owner:** Core/design / XML / Testing/tooling  
-**Status:** OPEN
+**Status:** IN PROGRESS
+
+**Implementation progress (2026-10-04 JST):** The author selected five starting pawns from eight candidates and a minimal life-foundation research set. The concrete Alpha contract is now in `Docs/Design.md`: `AMJC_NewVillage`, dedicated Medieval player faction `AMJC_PlayerVillage`, ordinary Human pawn kind `AMJC_Villager`, Standing arrival, exactly `DankPyon_Lumber` / `DankPyon_RusticFurniture` / `DankPyon_BasicCooking` completed through Scenario parts, and explicitly empty faction research/techprint tags. Backgrounds is not required. Vanilla/MO Scenario/Faction/PawnKind definitions are not patched.
+
+The first supply balance is 60 MO rations, 200 edible millet, 100 millet sheaf, herbal medicine 20, processed wood 200, raw wood 200, iron 30, cloth 80, silver 150, two short bows, two iron knives and one wooden club. No animals, scattered extras, buildings or components. Individual skill/trait/age selection remains normal. Research and supply details are implementation choices for the selected minimal-start direction; adjust after start-feel review if needed.
+
+Implemented XML, Japanese Scenario/Faction/PawnKind text, bilingual keyed start dialog, public descriptions/save limitations, and two Pickle regressions. The existing five-scenario suite becomes seven. The second new regression selects the actual production Scenario via `@quickstart:AmjNewVillageQuickstart`, with no initial-condition overrides, and checks map/pawn/faction/research/item/stuff state plus early processing access. Its MO references use the existing lightweight XML-fixture architecture; it is not a full MO Harmony integration test. Both build branches include `NewVillageSteps.cs`, all MO fixture Def XML is staged, the summary requires 7/7, and the isolated fail-on-any-ERROR gate remains mandatory.
+
+**Validation so far:** Python Stage A + New Village static validation PASS; supplied MO 1.6 and versioned RimWorld Core Def XML reference audit PASS; repository/localization XML parses; diff whitespace check PASS. Native Scenario/PawnKind structure and the `defaultFactionDef` field were checked against 1.6-format Defs and game-code structure (the former `defaultFactionType` is a load alias). Windows PowerShell execution, C# build, Pickle start generation and full runtime ERROR scan have not run in this environment because the RimWorld installation/managed assemblies are unavailable. No 7/7 runtime PASS is claimed.
+
 
 **Handoff (2026-10-04 JST):** Stage A dry-field agriculture data work is effectively complete for the six Alpha crops. Awa/Hie/Kibi/Soba/Barley and MO Wheat are implemented with primary processing, CCTO integration where owned by AMJC, fertility-role coverage, and the current five-scenario automated gate. AMJ-012 (MO wheat integration) and the Core↔Environment fertility contract were locally confirmed with 5/5 Pickle PASS + zero runtime ERROR. Remaining crop-specific graphics stay in the separate Art/graphics stream and do not block data-side work.
 
@@ -340,9 +349,9 @@ Pre-timeout investigation:
 - Do **not** copy MO start balance blindly: the sampled MO starts include large amounts of silver/iron/components and specialized faction/start assumptions that are not automatically appropriate for AMJ's ordinary-village premise.
 - Investigation timed out while checking the correct RimWorld/MO 1.6 player-faction choice and appropriate starting-material baseline; no ScenarioDef implementation was committed.
 
-**Next action:** continue the audit from the latest `main`. Confirm the actual RimWorld 1.6 / installed MO 1.6 ScenarioDef and faction Def structure, then write the Scenario's concrete pawn count, choice count, faction, starting research and starting items into `Docs/Design.md` before implementing XML. Keep the start self-sufficient for the Alpha crop/processing loop without pre-solving the early game. Add static + loaded/runtime automated coverage; manual testing should be limited to start feel/UI once reproducible checks are automated.
+**Next action:** pull latest `main` on the development PC and run the normal `run-tests.bat "D:\SteamLibrary\steamapps\common\RimWorld"` gate. It now audits installed Core/MO start references, compiles the new test steps, requires all seven Pickle scenarios and a clean isolated ERROR scan. If it fails, inspect the report/build error and fix the appropriate XML/test harness; keep this item IN PROGRESS until actual runtime success is confirmed. Manual follow-up is limited to Japanese start UI and start feel. Rice remains Stage E, not the next data task.
 
-**Result / references:** no Scenario implementation commit yet. Current handoff only records the investigated direction and prevents accidental jump to Stage E rice work.
+**Result / references:** authoritative start contract: `Docs/Design.md` → Core標準Scenario. Implementation: `Defs/Scenarios/Scenarios_NewVillage.xml`, `Defs/FactionDefs/Factions_PlayerVillage.xml`, `Defs/PawnKindDefs/PawnKinds_Villager.xml`. Static checks: `Tests/validate_new_village.py`, `Scripts/Validate-NewVillage.ps1`. Runtime start coverage: `Tests/E2E/NewVillageSteps.cs`, `AmjNewVillageQuickstart`, `stage-a.feature`. Runtime completion is pending; the pre-implementation handoff below is retained as history.
 
 Add new items using the following form.
 

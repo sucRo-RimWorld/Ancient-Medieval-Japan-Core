@@ -778,16 +778,63 @@ R⁴は既存作業台を使って武器・衣服のrepair / clean taint / recyc
 
 ### Core標準Scenario
 
-AMJ Coreには、AMJのテーマを最小構成でも体験できる**標準Scenarioを少なくとも1つ**含める。
+Core標準Scenarioは **「新しい村」 / New Village**（`AMJC_NewVillage`）とする。様々な事情で元の共同体を離れた一般の人々が、新しい土地で小さな村を興す。武将・大名・特権階級の開始にはしない。
 
-仮の基本設定:
-- 様々な事情で元の共同体を離れた人々が、新しい土地で小さな村を興す
-- 武将・大名・特権階級を主人公にせず、一般の人々が生活基盤を作り直す状況を中心にする
-- Scenario単体はAMJ Backgroundsなしでも成立させる
-- AMJ Backgrounds導入時は、可能な範囲でAMJ背景のみ／優先生成と連携する
-- 初期人数・物資・研究状態等の具体値はScenario詳細設計時に決める
+#### Alpha開始条件（2026-10-04）
 
-仮称は **「新しい村」** 程度の簡潔なものを候補とし、名称は実装時に確定する。
+| 項目 | 初期条件 | 意図 |
+|---|---|---|
+| 人数 | 候補8人から5人を選ぶ | 畑作・調理・建築を分担できる小共同体 |
+| 到着 | Standing（徒歩で到着した状態） | 通常の地上開始 |
+| プレイヤー派閥 | `AMJC_PlayerVillage`、Medieval | 中世研究を進められる村の技術水準 |
+| 基本PawnKind | `AMJC_Villager`、Human | 一般住民。技能・情熱・特性・年齢は固定しない |
+| 背景 | Vanilla/MOのTribalフィルタ | AMJ Backgroundsなしで生成できる暫定基盤 |
+| 衣服 | Neolithic / MOのDankPyon_Peasantタグ、Cloth素材 | 一般住民向けの通常生成。戦闘装備一式を与えない |
+| 技術由来Hediff | 自動付与確率0 | SFインプラントの自動付与を避ける |
+| 初期研究 | `DankPyon_Lumber`、`DankPyon_RusticFurniture`、`DankPyon_BasicCooking`の3件 | 基本木工・素朴な家具・初期料理を生活の土台とする |
+| 研究タグ / Techprintタグ | 空 | MO中世開始・部族開始タグ経由で研究を追加しない |
+| キャラバン採集係数 | 1.0 | 部族開始の採集倍率を追加しない |
+| 家畜・ペット | なし | 初期の飼育負担を増やさない |
+
+開始人数と「生活に必要な技術だけ」の方針は作者選択。研究3件と物資の具体値はAlpha実装の初期バランスとして下記に定め、開始の遊び心地を見て調整する。
+
+石切り・蝋燭・鞣し・ペミカン・植林・農業・醸造・鍛造等は初期完了にしない。既存派閥の `startingResearchTags` を引き継ぐ代わりに、Scenarioの `ScenPart_StartingResearch` で3件だけ指定する。基本農業未研究でもアワ・ヒエ・キビ・ソバを栽培し、木10で簡易穀物加工場を建てて脱穀・脱殻できる。大麦・小麦・本格加工台は `DankPyon_BasicAgriculture` 研究後に進む。
+
+#### 初期物資
+
+| DefName | 数量 | 用途 |
+|---|---:|---|
+| `DankPyon_MealRations` | 60 | 採集・狩猟・調理へ移るまでの携行食 |
+| `AMJC_Millet` | 200 | すぐ調理できる雑穀 |
+| `AMJC_RawMillet` | 100 | 簡易加工場で初期の脱穀・脱殻を体験する雑穀束 |
+| `MedicineHerbal` | 20 | 当面の治療 |
+| `WoodLog` | 200 | 加工済み木材。簡易加工場・住居等の立ち上げ |
+| `DankPyon_RawWood` | 200 | 燃料・木材加工に使う原木 |
+| `DankPyon_IronIngot` | 30 | 小量の金属備蓄。鍛造設備・武装を完成済みにしない |
+| `Cloth` | 80 | 少量の布備蓄 |
+| `Silver` | 150 | 小規模な交易の余地 |
+| `Bow_Short` | 2 | 採集以外の食料調達・自衛 |
+| `MeleeWeapon_Knife`（鉄インゴット製） | 2 | 簡単な近接武器 |
+| `MeleeWeapon_Club`（WoodLog製） | 1 | 簡単な近接武器 |
+
+物資は全て開始地点へ `ScenPart_StartingThing_Defined` で与え、追加の全域散布や隠れた初期物資は設けない。建築済み設備・コンポーネント・石材・追加鎧は与えない。持ち込んだ食料だけで初回収穫や冬越しが保証される量にはせず、早期の採集・狩猟・作付けを必要とする。寒冷地・冬開始など、どの環境でも成立することは保証しない。
+
+#### 責務と互換
+
+- Scenario・開始用プレイヤーFaction/PawnKindはCoreが所有する。NPC派閥群を追加するAMJ Factionsとは別責務。
+- Vanilla/MOの既存Scenario・Faction・研究タグ・PawnKindは書き換えない。AMJCのScenario以外の開始条件を変更しない。
+- AMJ Backgroundsなしで動作する。導入時のAMJ背景優先生成は将来の互換作業で扱い、Alphaでは実装済みとしない。
+- 日本風の衣装・固有背景・種族選択を強制しない。標準PawnKindは人間であり、HAR種族別開始の対応はこのScenarioの完了条件に含めない。
+- Scenarioの初期条件は新規開始に適用する。既存セーブの人数・物資・研究は変更しない。
+- このScenarioで作成したセーブはAMJC独自Faction/PawnKindを参照するため、Core削除の安全性は保証しない。
+
+#### 自動テスト
+
+静的検証は人数・到着方法・初期研究3件・研究タグの空集合・物資/素材・日本語表示と設計の一致を確認する。ローカル検証では実際のRimWorld 1.6/MO 1.6の参照Def・ScenarioBase・PlayerFactionBase・BasePlayerPawnKindも確認する。
+
+Pickleには読み込み後のScenario/Faction/PawnKind検証と、実Scenarioを選択する `AmjNewVillageQuickstart` による開始検証を追加する。後者は5人の生成・開始派閥・研究3件のみの完了・開始物資数量/素材・未研究で利用できる簡易加工経路を確認する。物資の定義数量は厳密一致、生成済みマップでは別途生成される品を許容して必要量以上の存在を確認する。既存5件と合わせた7件および隔離ログERRORゲートを使用する。MOは既存方針どおり軽量XML fixtureで参照を供給するため、これをMO全体の統合テスト成功とは扱わない。実ゲーム開始テストの成功が確認されるまでAMJ-015はIN PROGRESSを維持する。
+
+調査基盤は添付MO 1.6の `Defs/Scenarios`、`Defs/FactionDefs/Factions_Player.xml`、`Defs/PawnKindDefs_Humanlikes/PawnKinds_Player.xml` とRimWorld Dataの1.6形式（OdysseyのsurfaceLayerを含む）である。Quickstarts/Pickleの接続仕様は各開発元のソースで確認する。手動確認は日本語UIと開始の遊び心地に限定する。
 
 ### 最初の公開Alphaテーマ
 

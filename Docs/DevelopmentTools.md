@@ -17,7 +17,7 @@ AMJおよび関連Modでは、RimTest Redux・Pickleを積極的に用いた自�
 
 `.github/workflows/stage-a-validation.yml` runs `Tests/validate_stage_a.py` on pushes to `main` and pull requests.
 
-This checks repository-owned XML values and wiring, including the Awa crop values, millet storage stages, processing-station values, the four threshing/hulling recipes, and the 13-unit conservation path.
+This checks repository-owned XML values and wiring, including the six Stage A field crops, shared grain storage/processing, optional CCTO data, PNG integrity, and New Village start conditions. `Tests/validate_new_village.py` is called by the same CI entry point; no separate workflow is required.
 
 ## Local full gate
 
@@ -29,12 +29,12 @@ The gate:
 
 1. verifies the installed Medieval Overhaul 1.6 source exists;
 2. runs `Scripts/Validate-StageA.ps1` against repository XML and the installed MO source;
-3. generates three development-only test mods under `RimWorld\Mods`;
+3. generates four development-only test mods under `RimWorld\Mods`;
 4. compiles the Pickle and Quickstarts test assemblies;
 5. creates an isolated RimWorld save-data profile without changing the normal mod list;
 6. launches RimWorld automatically and redirects runtime output to an isolated `TestResults\Pickle\Player.log`;
-7. runs the four `stage-a.feature` scenarios;
-8. requires a fresh clean 4/4 Pickle summary;
+7. runs the seven `stage-a.feature` scenarios, including the production New Village start through `@quickstart:AmjNewVillageQuickstart`;
+8. requires a fresh clean 7/7 Pickle summary;
 9. scans the isolated runtime log and fails the full gate if AMJ Core / its staged E2E target emitted any ERROR-level entry;
 10. lets Pickle exit RimWorld automatically.
 
@@ -47,6 +47,7 @@ Generated test mods:
 - `AncientMedievalJapanCore.E2ETarget`
 - `AncientMedievalJapanCore.E2E`
 - `AncientMedievalJapanCore.MOFixture`
+- `AncientMedievalJapanCore.CCTOFixture`
 
 Remove them with:
 
@@ -56,14 +57,26 @@ Remove them with:
 
 The current local integration suite checks loaded RimWorld Defs for:
 
-- Awa growDays, fertility, temperature, sow skill, harvest target and yield;
-- raw millet / millet-in-hull / edible millet storage tiers;
+- all Stage A crop growth/fertility/temperature, sowing requirements and harvest targets, including the MO wheat patch;
+- loaded AMJC-owned optional CCTO crop data;
+- millet, buckwheat, barley and wheat storage tiers;
 - no accidental `DankPyon_Cereal` registration;
 - simple processing spot speed 0.5;
 - grain processing table speed 1.0 and Basic Agriculture requirement;
-- the same four Stage A bills on both stations;
+- the Stage A threshing/hulling bills on both stations;
 - single and x10 threshing/hulling inputs, products and work amounts;
 - `13 raw millet -> 13 millet in hull + 13 Straw -> 13 edible millet`;
-- final edible millet acceptance by the Vanilla simple-meal ingredient filter.
+- final edible grains accepted by the Vanilla simple-meal ingredient filter;
+- loaded New Village Scenario/Faction/PawnKind: five out of eight, Standing arrival, three explicit starting research projects, empty faction research/techprint tags, initial items/stuff and early processing access;
+- the production New Village Scenario actually generating a home map with five villagers, the correct player faction, only the three intended projects finished, required supplies present, iron knives/wooden club, and no initial field-crop research barrier.
 
 Manual checks should be reserved for appearance, Japanese UI readability, building footprint/interaction-cell usability, and whether processing speed feels appropriate during real play.
+
+
+## New Village source and runtime validation
+
+The normal local gate also calls `Scripts/Validate-NewVillage.ps1` with the installed game and MO roots. It checks source Def references, native Scenario part classes, inherited base definitions, initial item quantities/materials, and the design table. Direct callers that omit `RimWorldRoot` receive an explicit warning that the installed Core reference audit was skipped.
+
+The runtime suite uses lightweight MO XML and a CCTO XML-API fixture, with DLCs and AMJ Backgrounds absent. This covers the production AMJC Scenario against RimWorld's real start pipeline, not all MO Harmony/gameplay behavior. No custom pawn/item/research override is applied by `AmjNewVillageQuickstart`. Loaded supply definitions are checked exactly; the live map must contain at least the promised amounts because independent map generation can add other items.
+
+The New Village C# build and seven-scenario runtime gate remain pending on the development PC. Python static validation and source XML inspection are not a runtime PASS. Keep AMJ-015 IN PROGRESS until the clean 7/7 summary and isolated ERROR scan are confirmed. Manual work remains limited to start feel and UI/appearance.

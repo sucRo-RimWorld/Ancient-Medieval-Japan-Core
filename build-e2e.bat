@@ -115,7 +115,7 @@ if errorlevel 1 exit /b 1
 
 copy /Y "%ROOT%Tests\E2E\MOFixture\About\About.xml" "%MO_FIXTURE_DIR%\About\About.xml" >nul
 if errorlevel 1 exit /b 1
-copy /Y "%ROOT%Tests\E2E\MOFixture\Defs\AMJ_MO_Prereqs.xml" "%MO_FIXTURE_DIR%\Defs\AMJ_MO_Prereqs.xml" >nul
+xcopy "%ROOT%Tests\E2E\MOFixture\Defs" "%MO_FIXTURE_DIR%\Defs" /E /I /Y >nul
 if errorlevel 1 exit /b 1
 copy /Y "%ROOT%Textures\Things\Plants\FullGrown\AMJC_Awa\AMJC_Awa_Mature.png" "%MO_FIXTURE_DIR%\Textures\E2E\Placeholder.png" >nul
 if errorlevel 1 exit /b 1
@@ -166,14 +166,16 @@ if exist "%UNITY_CORE%" (
         /reference:"%UNITY_MATH%" ^
         /reference:"%NETSTANDARD%" ^
         /reference:"%PICKLE_DLL%" ^
-        "%ROOT%Tests\E2E\StageASteps.cs"
+        "%ROOT%Tests\E2E\StageASteps.cs" ^
+        "%ROOT%Tests\E2E\NewVillageSteps.cs"
 ) else (
     "%CSC%" /nologo /target:library /optimize+ /out:"%STEPS_OUTPUT%" ^
         /reference:"%ASSEMBLY_CSHARP%" ^
         /reference:"%UNITY_MATH%" ^
         /reference:"%NETSTANDARD%" ^
         /reference:"%PICKLE_DLL%" ^
-        "%ROOT%Tests\E2E\StageASteps.cs"
+        "%ROOT%Tests\E2E\StageASteps.cs" ^
+        "%ROOT%Tests\E2E\NewVillageSteps.cs"
 )
 if errorlevel 1 exit /b 1
 

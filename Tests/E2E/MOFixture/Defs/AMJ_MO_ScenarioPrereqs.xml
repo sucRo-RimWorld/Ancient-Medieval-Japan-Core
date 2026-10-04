@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Minimal XML references for starting-item spawning, not full MO behavior. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>DankPyon_RawWood</defName>
+    <label>AMJ test raw wood</label>
+    <description>Raw wood fixture for the New Village start.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/WoodLogs</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>0.8</MarketValue>
+      <Mass>1.2</Mass>
+    </statBases>
+    <stuffProps>
+      <stuffAdjective>wooden</stuffAdjective>
+      <categories><li>DankPyon_RawWood</li></categories>
+      <color>(133,97,67)</color>
+      <commonality>1</commonality>
+    </stuffProps>
+    <thingCategories><li>ResourcesRaw</li></thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="MealBaseIngredientless">
+    <defName>DankPyon_MealRations</defName>
+    <label>AMJ test rations</label>
+    <description>Rations fixture for the New Village start.</description>
+    <graphicData>
+      <texPath>E2E/Placeholder</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.9</Nutrition>
+      <MarketValue>24</MarketValue>
+      <Mass>0.3</Mass>
+    </statBases>
+    <ingestible><preferability>MealSimple</preferability></ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+      <li Class="CompProperties_Ingredients"><splitTransferableFoodKind>true</splitTransferableFoodKind></li>
+    </comps>
+    <rotatable>false</rotatable>
+  </ThingDef>
+
+  <ResearchProjectDef>
+    <defName>DankPyon_Lumber</defName>
+    <label>AMJ test basic woodworking</label>
+    <description>New Village research fixture.</description>
+    <baseCost>200</baseCost>
+    <techLevel>Neolithic</techLevel>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>DankPyon_RusticFurniture</defName>
+    <label>AMJ test rustic furniture</label>
+    <description>New Village research fixture.</description>
+    <baseCost>300</baseCost>
+    <techLevel>Medieval</techLevel>
+    <prerequisites><li>DankPyon_Lumber</li></prerequisites>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>DankPyon_BasicCooking</defName>
+    <label>AMJ test basic cooking</label>
+    <description>New Village research fixture.</description>
+    <baseCost>400</baseCost>
+    <techLevel>Neolithic</techLevel>
+  </ResearchProjectDef>
+</Defs>

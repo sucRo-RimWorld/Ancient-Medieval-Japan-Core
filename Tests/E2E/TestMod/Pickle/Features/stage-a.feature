@@ -14,3 +14,10 @@ Feature: AMJ Core Stage A agriculture
 
   Scenario: Edible AMJ grains are accepted by the vanilla simple meal ingredient filter
     Then edible AMJ grains are accepted by the vanilla simple meal ingredient filter
+
+  Scenario: Loaded New Village scenario matches the start design
+    Then loaded New Village scenario matches the start design
+
+  @quickstart:AmjNewVillageQuickstart
+  Scenario: New Village starts with five villagers and the designed supplies
+    Then New Village starts with five villagers and the designed supplies

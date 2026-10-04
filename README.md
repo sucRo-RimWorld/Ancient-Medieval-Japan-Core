@@ -6,6 +6,14 @@ Ancient & Medieval Japan Core (AMJC) extends Medieval Overhaul with agriculture,
 
 The current development slice focuses on field crops and the processing needed to make them useful in a small colony.
 
+## New Village scenario / 新しい村
+
+Choose five ordinary villagers from eight candidates and establish a small village on foot. Start with basic woodworking, rustic furniture, and basic cooking already researched, plus limited food, building materials, and simple weapons. Awa, Hie, Kibi, Soba, and simple grain processing are available before Basic Agriculture; barley, wheat, and the full processing table follow that research.
+
+AMJ Backgrounds is not required. The standard start uses human villagers with Vanilla/MO backgrounds and ordinary clothing; AMJ-specific backgrounds and race-specific starts are not implemented by this slice.
+
+The exact initial balance and automated coverage are recorded in [Core standard Scenario](Docs/Design.md#core標準scenario). The new runtime start tests are implemented; their local build/game run is still pending.
+
 ## Millet crop choices
 
 AMJC intentionally gives **Awa (foxtail millet), Hie (Japanese barnyard millet), and Kibi (proso millet)** different cultivation roles rather than making them interchangeable crops.
@@ -37,7 +45,7 @@ Optional:
 
 ## Save compatibility
 
-Adding to or removing from existing saves has not been verified. AMJC adds custom crops, items, processing content, and will add map/world systems during development. Safe removal is not guaranteed.
+Adding to or removing from existing saves has not been verified. AMJC adds custom crops, items, processing content, and the New Village start's own player faction and pawn kind. Existing saves do not receive the Scenario's initial pawns, items, or research. New Village saves refer to the custom faction/pawn kind, so safe removal is not guaranteed.
 
 ## Development documents
 
@@ -45,4 +53,3 @@ Adding to or removing from existing saves has not been verified. AMJC adds custo
 - [Millet cultivation balance](Docs/Balance/Crops/Millet_Cultivation_Balance.md)
 - [Art style](Docs/ArtStyle.md)
 - [Development tools and testing](Docs/DevelopmentTools.md)
-
