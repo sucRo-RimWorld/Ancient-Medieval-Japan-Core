@@ -67,7 +67,7 @@ if not defined QUICKSTARTS_DLL (
     exit /b 1
 )
 
-echo [1/5] Resetting generated AMJ E2E mods...
+echo [1/6] Resetting generated AMJ E2E mods...
 for %%D in ("%TARGET_MOD_DIR%" "%E2E_MOD_DIR%" "%MO_FIXTURE_DIR%" "%CCTO_FIXTURE_DIR%") do (
     if exist "%%~D" rmdir /S /Q "%%~D"
 )
@@ -83,7 +83,7 @@ mkdir "%MO_FIXTURE_DIR%\Defs" >nul
 mkdir "%CCTO_FIXTURE_DIR%\About" >nul
 mkdir "%CCTO_FIXTURE_DIR%\Assemblies" >nul
 
-echo [2/5] Staging AMJ runtime XML and lightweight Medieval Overhaul fixture...
+echo [2/6] Staging AMJ runtime XML and lightweight Medieval Overhaul + CCTO API fixtures...
 copy /Y "%ROOT%Tests\E2E\TargetMod\About\About.xml" "%TARGET_MOD_DIR%\About\About.xml" >nul
 if errorlevel 1 exit /b 1
 
