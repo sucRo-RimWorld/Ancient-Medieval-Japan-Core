@@ -362,7 +362,7 @@ Oil extraction is no longer part of the Core progression roadmap. Perilla and ot
 
 **Next action:** after the Stage A public-Alpha art gate, treat Azuki/Soybean as the bean stage, then design the hemp/ramie fiber stage before root crops or paddy work. Do not start an oil-processing stage unless a concrete downstream gameplay use justifies it.
 
-**Result / references:** source-of-truth update `b6466d9c9d0af32869271fe2c8e9373ec428ef8d` in `Docs/Design.md`.
+**Result / references:** oil/fiber priority update `b6466d9c9d0af32869271fe2c8e9373ec428ef8d`; formal Core Stage roadmap `29ad9ac7c82d8c1d240a933f7bec7f41f3474687` in `Docs/Design.md` (A=畑作穀物, B=豆類, C=繊維, D=根菜, E=水田・稲作).
 ### AMJ-018 — Public Alpha readiness gate
 
 **Requested by:** Core/design / Testing/release  \
