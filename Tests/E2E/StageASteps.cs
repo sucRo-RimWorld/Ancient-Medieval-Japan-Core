@@ -50,9 +50,11 @@ namespace AncientMedievalJapanCore.E2E
             ThingDef raw = RequireThingDef(ctx, "AMJC_RawMillet");
             ThingDef inHull = RequireThingDef(ctx, "AMJC_MilletInHull");
             ThingDef millet = RequireThingDef(ctx, "AMJC_Millet");
+                checkpoint = "millet texture runtime resolution";
             AssertMilletTextures(ctx, raw, "RawMillet");
             AssertMilletTextures(ctx, inHull, "MilletInHull");
             AssertMilletTextures(ctx, millet, "Millet");
+                checkpoint = "grain ThingDef lookup and storage";
             ThingDef rawBuckwheat = RequireThingDef(ctx, "AMJC_RawBuckwheat");
             ThingDef buckwheatInHull = RequireThingDef(ctx, "AMJC_BuckwheatInHull");
             ThingDef buckwheat = RequireThingDef(ctx, "AMJC_Buckwheat");
@@ -117,20 +119,43 @@ namespace AncientMedievalJapanCore.E2E
         private static void AssertMilletTextures(PickleContext ctx, ThingDef def, string stem)
         {
             string path = "Things/Item/Resource/AMJC_Millet/" + stem;
+
+            if (def.graphicData == null)
+            {
+                throw new InvalidOperationException(def.defName + " has no graphicData.");
+            }
+
             ctx.Assert(def.graphicData.texPath == path, def.defName + " texture directory must match.");
             ctx.Assert(def.graphicData.graphicClass == typeof(Graphic_StackCount), def.defName + " must retain stack graphics.");
+
             foreach (string suffix in new[] { "a", "b", "c" })
             {
                 UnityEngine.Texture2D texture = ContentFinder<UnityEngine.Texture2D>.Get(path + "/" + stem + "_" + suffix, false);
                 ctx.Require(texture != null && texture != BaseContent.BadTex, "Unity must load " + stem + "_" + suffix);
                 ctx.Assert(texture.width == 256 && texture.height == 256, "Loaded millet texture must be 256x256.");
             }
-            Thing item = ThingMaker.MakeThing(def);
+
+            Graphic_StackCount stackGraphic = def.graphicData.Graphic as Graphic_StackCount;
+            if (stackGraphic == null)
+            {
+                throw new InvalidOperationException(
+                    def.defName + " graphicData did not resolve to Graphic_StackCount at runtime.");
+            }
+
             foreach (int count in new[] { 1, 2, def.stackLimit })
             {
-                item.stackCount = count;
-                UnityEngine.Material material = item.Graphic.MatSingleFor(item);
-                ctx.Assert(material != null && material.mainTexture != null && material.mainTexture != BaseContent.BadTex,
+                Graphic subGraphic = stackGraphic.SubGraphicForStackCount(count, def);
+                if (subGraphic == null)
+                {
+                    throw new InvalidOperationException(
+                        def.defName + " resolved a null subGraphic at stackCount " + count + ".");
+                }
+
+                UnityEngine.Material material = subGraphic.MatSingle;
+                ctx.Assert(
+                    material != null
+                    && material.mainTexture != null
+                    && material.mainTexture != BaseContent.BadTex,
                     def.defName + " must resolve a real stack texture at count " + count);
             }
         }

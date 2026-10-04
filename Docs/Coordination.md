@@ -101,11 +101,11 @@ The first quantized 256×256 export rendered as a red question mark for `AMJC_Ra
 
 **Requested by:** Art/graphics / texture repair
 **Owner:** Testing/tooling
-**Status:** OPEN
+**Status:** IN PROGRESS
 
-The PNG integrity regressions pass in both static validators. E2E now stages AMJ textures and checks Unity decoding plus stack-material selection. The attempted full gate did not run scenarios because the local helper assembly could not resolve Quickstarts AbstractQuickstart. The test log also contains Steam initialization failure and pre-existing fixture graphic/translation errors. Human in-game confirmation of the accepted art is separate from automated test success.
+The PNG integrity regressions pass in both static validators. E2E now stages AMJ textures and checks Unity decoding plus stack-material selection. The 2026-10-04 16:16 JST rerun reaches all five current scenarios and the previous fixture/texture Vanilla ERROR entries are gone; only the first crop/grain scenario still fails with a bare NullReference. Inspection shows that scenario also performs the shared millet runtime texture test. That helper previously created a Thing and dereferenced `item.Graphic` only to reach `Graphic_StackCount`; the test now resolves `Graphic_StackCount` directly from `graphicData` and calls `SubGraphicForStackCount`, preserving the intended stack-selection assertion without the unrelated Thing/style path. Human in-game confirmation of the accepted art remains separate from automated test success.
 
-**Next action:** resolve the local helper-loading prerequisite, rerun the normal isolated gate and require both scenario success and the runtime ERROR gate. Do not expand or replace the accepted artwork as part of testing.
+**Next action:** rerun the latest `main`. Require 5/5 plus zero ERROR-level entries. If it still fails, the crop/grain scenario now reports a logical checkpoint and `source-state.txt` contains SHA-256 fingerprints for the exact local test/data files. Do not expand or replace the accepted artwork as part of testing.
 
 ### TEST-002 — AMJC cold-tolerance data regression
 
