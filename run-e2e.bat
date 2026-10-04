@@ -47,7 +47,7 @@ if not errorlevel 1 (
 ) else (
     >> "%SOURCE_STATE%" echo gitHead=unavailable-git-not-found
 )
-for /f "usebackq tokens=*" %%L in (`findstr /B /C:"  Scenario:" "%ROOT%Tests\E2E\TestMod\Pickle\Features\stage-a.feature"`) do >> "%SOURCE_STATE%" echo feature=%%L
+for /f "tokens=*" %%L in ('findstr /B /C:"  Scenario:" "%ROOT%Tests\E2E\TestMod\Pickle\Features\stage-a.feature"') do >> "%SOURCE_STATE%" echo feature=%%L
 
 echo.
 echo Running AMJ Stage A Pickle suite...
@@ -77,7 +77,7 @@ if "%RESULT%"=="0" (
 
 if "%RESULT%"=="0" (
     echo.
-    echo Checking AMJ Core runtime log for mod-origin ERROR entries...
+    echo Checking isolated AMJ runtime log for ERROR entries...
     powershell -NoProfile -ExecutionPolicy Bypass -File "%ROOT%Scripts\Validate-RuntimeLog.ps1" ^
         -LogPath "%RUNTIME_LOG%" ^
         -ModIdPrefixes "sucro.ancientmedievaljapan.core.e2etarget;sucro.ancientmedievaljapan.core;sucro.ancientmedievaljapan.core.mofixture;sucro.ancientmedievaljapan.core.cctofixture" ^
