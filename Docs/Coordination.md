@@ -668,3 +668,23 @@ Prevention now in place:
 
 **Next action:** for every future cover, proposal → author approval → preflight → generation → left-side-first inspection. Do not accept a right-side-successful image if the shared left block drifted.
 
+### DOC-011 — Workshop generation requires actual approved-image inspection
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art direction / Workshop covers  
+**Status:** DONE (workflow guard)
+
+The previous guard still allowed a new chat to rely on text rules + SVG. That was insufficient for the author's requirement that generation first inspect an existing accepted cover and hold the common portion fixed.
+
+The generation gate now requires:
+- retrieve and visually inspect the actual approved Core cover reference before every generation;
+- persistent cross-chat reference location: Library `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`;
+- if the visual reference cannot be accessed, generation is blocked;
+- use the approved image as the visual source of truth for shared background, title hierarchy, ornament, spacing and left/right geometry;
+- prefer reference-image edit mode so the common area is preserved and only the addon name + right-side illustration change;
+- compare the result side-by-side with the approved reference and reject any common-part drift.
+
+Durable rule commits: `81a1fe37df58dea63f7591d802fad9a3ca45cc42` (`Docs/WorkshopCoverStyle.md`), `07ba16b0f74f1f995f4794d8ec980250dbe092c2` (`Docs/ArtStyle.md`).
+
+**Next action:** every future cover must pass visual-reference retrieval → proposal → approval → preflight → reference-based generation/edit → side-by-side inspection.
+
