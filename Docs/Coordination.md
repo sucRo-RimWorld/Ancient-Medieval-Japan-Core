@@ -703,3 +703,36 @@ No image was generated or replaced. Existing masu has its accepted master but ne
 **Status:** DONE (policy)
 
 Future art work must identify reused components and automatically register each new family/master, document fixed/editable regions and production/validation commands, and integrate zero protected RGBA difference checks before subsequent derivatives. Canonical extension: `Docs/GoldenPaths/FixedImageTemplates.md`; mandatory entry: AGENTS. No images changed. Existing shared policy references in Environment inherit this extension.
+
+### ART-TEMPLATE-003 — Workshop cover v1 deterministic template registered
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art direction / Workshop covers / shared art tooling  
+**Status:** DONE
+
+The accepted Core cover has now been converted into a cross-chat deterministic cover format. This supersedes DOC-011's earlier suggestion that reference-image editing is sufficient for final production.
+
+Persistent Library rasters:
+- visual reference: `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`
+  - SHA-256 `ef662e1eb2e399c594adfb6a4d594f1e2727559a73e380f312638b1bc8585658`
+- fixed common base: `/AMJ/References/AMJ_WorkshopCover_CommonBase.png`
+  - SHA-256 `a738d175bf1997e95f02456843686f8d2d59571d47849e55d04a957707514362`
+- variable mask: `/AMJ/References/AMJ_WorkshopCover_VariableMask.png`
+  - SHA-256 `e2bbf3547587eebafabc404f0adf3fdad7ffc29df84b0018b871af31c8689622`
+
+The mask allows only the addon-name slot and the right-side illustration area (`x >= 330`). All other final pixels are forcibly restored from the common base.
+
+Durable repository registration / tooling:
+- `Docs/References/AMJ_WorkshopCover_Template.json`
+- `Docs/References/AMJ_WorkshopCover_Manifest.md`
+- `Docs/GoldenPaths/WorkshopCoverPipeline.md`
+- `Scripts/build_workshop_cover.py`
+- `Scripts/validate_workshop_cover.py`
+- `Tests/test_workshop_cover_template.py`
+
+The three Library rasters were re-listed, materialized into a fresh container directory, and SHA-256 checked against the manifest; all three matched exactly. The compositor was then run against the materialized base/mask and passed the protected-pixel validator. The regression test also passed with a deliberately hostile opaque full-canvas layer, demonstrating that generated content cannot overwrite locked pixels.
+
+**Production rule:** ImageGen creates only the addon-specific right-side transparent artwork. The final cover must be composed and validated by the deterministic tooling. Direct whole-cover generation and reference-image editing are not valid final-production paths.
+
+**Next action:** apply this v1 pipeline to every subsequent AMJ Workshop cover. If any canonical Library raster is unavailable or hash-mismatched, stop production rather than reconstructing it.
+
