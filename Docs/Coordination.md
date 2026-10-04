@@ -111,7 +111,7 @@ Implemented:
 
 **Requested by:** Agriculture/XML  \
 **Owner:** Agriculture/XML / Testing/tooling  \
-**Status:** IN PROGRESS
+**Status:** DONE
 
 Hie and Kibi are implemented from the already-approved Stage A balance and connected to the shared millet post-harvest chain. This item is data-side only; crop-specific graphics remain owned by the separate Art/graphics workstream.
 
@@ -119,13 +119,13 @@ Hie and Kibi are implemented from the already-approved Stage A balance and conne
 - Kibi `AMJC_Plant_ProsoMillet_Kibi`: growDays 5, yield 11, fertilityMin 0.5, sensitivity 0.3, growth 8–42°C, optimum 18–32°C, CCTO fixed death -3°C.
 - Both harvest `AMJC_RawMillet` and therefore use the existing shared threshing/hulling path.
 - Until dedicated graphics arrive, both temporarily reuse the accepted Awa mature/immature texture paths. No image asset is changed by this workstream.
-- Static and Pickle regression coverage now checks all three millet PlantDefs and all three AMJC-owned CCTO extension values.
+- Static and Pickle regression coverage checks all three millet PlantDefs and all three AMJC-owned CCTO extension values.
 
-**Validation:** GitHub static CI must pass on the corrected implementation. RimWorld/Pickle runtime PASS is not claimed until the development-PC `run-tests.bat` gate is rerun.
+**Validation:** GitHub Stage A validation passed on corrected commit `07d2b6faf8117c2cbf9b63c213bf21d6d478d0f1`. On 2026-10-04 JST, the development-PC `run-tests.bat` gate was reported passing with the existing **5/5 Pickle suite**. Because that runner only reports success after the repository-owned runtime ERROR scan also passes, the runtime ERROR gate was clean for this run.
 
-**Next action:** run `run-tests.bat`; if the existing five-scenario suite passes with a clean runtime ERROR gate, mark the data slice DONE. Art remains independent.
+**Next action:** none for the data slice. Dedicated Hie/Kibi graphics remain with Art/graphics and do not block the validated crop data.
 
-**Result / references:** implementation `03273bfb999fc70f6e97b9deb23d5e4e74f220ba`; test-wiring correction `fa8ee2d140ce865b28072906e799b3856d9f09c8`.
+**Result / references:** implementation `03273bfb999fc70f6e97b9deb23d5e4e74f220ba`; test-wiring correction `fa8ee2d140ce865b28072906e799b3856d9f09c8`; source-format fix and passing CI `07d2b6faf8117c2cbf9b63c213bf21d6d478d0f1`; local 5/5 automated gate confirmed 2026-10-04 JST.
 
 Add new items using the following form.
 
