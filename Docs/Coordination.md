@@ -350,6 +350,19 @@ At the shared 0.50 integration point, Stage A intent is: Soba/Kibi/Awa/Hie/Barle
 
 **Result / references:** Core design reconciliation `c841b66547f51af79743a72d3db20d38b7345816`; Core fertility regression coverage `201bbe90aa92a0d2d55ac9d1d16c92bdf6f28c11`; Environment coordination alignment `7a1d59288eca9b42c2dfd4573295d981177c9a7d`; Environment source of truth remains ENV-004 / `Docs/Design.md §10`; local 5/5 + zero-ERROR Core gate confirmed 2026-10-04 JST.
 
+### AMJ-019 — Post-Stage-A roadmap: fiber before oil
+
+**Requested by:** author / Core design  \
+**Owner:** Core/design  \
+**Status:** DONE
+
+After Stage A, prioritize **beans → fiber → root crops → paddy rice**. Hemp and ramie move ahead of oilseed work, including their shared bast-fiber category and connection to MO spinning/paper infrastructure.
+
+Oil extraction is no longer part of the Core progression roadmap. Perilla and other oil crops are not rejected permanently, but their Core inclusion is now **on hold**; do not add them merely to create an oil chain. If perilla later has a distinct seed-food role it may return as a Core crop, while pressing/oil production belongs with the feature that actually consumes the oil (food/preservation/fermentation/materials etc.).
+
+**Next action:** after the Stage A public-Alpha art gate, treat Azuki/Soybean as the bean stage, then design the hemp/ramie fiber stage before root crops or paddy work. Do not start an oil-processing stage unless a concrete downstream gameplay use justifies it.
+
+**Result / references:** source-of-truth update `b6466d9c9d0af32869271fe2c8e9373ec428ef8d` in `Docs/Design.md`.
 ### AMJ-018 — Public Alpha readiness gate
 
 **Requested by:** Core/design / Testing/release  \
