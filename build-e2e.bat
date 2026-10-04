@@ -74,12 +74,14 @@ for %%D in ("%TARGET_MOD_DIR%" "%E2E_MOD_DIR%" "%MO_FIXTURE_DIR%" "%CCTO_FIXTURE
 if errorlevel 1 exit /b 1
 
 mkdir "%TARGET_MOD_DIR%\About" >nul
+mkdir "%TARGET_MOD_DIR%\Patches" >nul
 mkdir "%E2E_MOD_DIR%\About" >nul
 mkdir "%E2E_MOD_DIR%\Assemblies" >nul
 mkdir "%E2E_MOD_DIR%\Pickle\Assemblies" >nul
 mkdir "%E2E_MOD_DIR%\Pickle\Features" >nul
 mkdir "%MO_FIXTURE_DIR%\About" >nul
 mkdir "%MO_FIXTURE_DIR%\Defs" >nul
+mkdir "%MO_FIXTURE_DIR%\Textures\E2E" >nul
 mkdir "%CCTO_FIXTURE_DIR%\About" >nul
 mkdir "%CCTO_FIXTURE_DIR%\Assemblies" >nul
 
@@ -103,9 +105,19 @@ if exist "%ROOT%Patches" (
     if errorlevel 1 exit /b 1
 )
 
+if exist "%ROOT%Textures" (
+    xcopy "%ROOT%Textures" "%TARGET_MOD_DIR%\Textures" /E /I /Y >nul
+    if errorlevel 1 exit /b 1
+)
+
+copy /Y "%ROOT%Tests\E2E\TargetMod\Patches\E2E_Graphics.xml" "%TARGET_MOD_DIR%\Patches\E2E_Graphics.xml" >nul
+if errorlevel 1 exit /b 1
+
 copy /Y "%ROOT%Tests\E2E\MOFixture\About\About.xml" "%MO_FIXTURE_DIR%\About\About.xml" >nul
 if errorlevel 1 exit /b 1
 copy /Y "%ROOT%Tests\E2E\MOFixture\Defs\AMJ_MO_Prereqs.xml" "%MO_FIXTURE_DIR%\Defs\AMJ_MO_Prereqs.xml" >nul
+if errorlevel 1 exit /b 1
+copy /Y "%ROOT%Textures\Things\Plants\FullGrown\AMJC_Awa\AMJC_Awa_Mature.png" "%MO_FIXTURE_DIR%\Textures\E2E\Placeholder.png" >nul
 if errorlevel 1 exit /b 1
 
 copy /Y "%ROOT%Tests\E2E\CCTOFixture\About\About.xml" "%CCTO_FIXTURE_DIR%\About\About.xml" >nul
@@ -171,7 +183,10 @@ if not exist "%QUICKSTART_OUTPUT%" exit /b 1
 if not exist "%STEPS_OUTPUT%" exit /b 1
 if not exist "%E2E_MOD_DIR%\Pickle\Features\stage-a.feature" exit /b 1
 if not exist "%TARGET_MOD_DIR%\Defs\RecipeDefs\Recipes_GrainProcessing.xml" exit /b 1
+if not exist "%TARGET_MOD_DIR%\Textures\Things\Plants\FullGrown\AMJC_Awa\AMJC_Awa_Mature.png" exit /b 1
+if not exist "%TARGET_MOD_DIR%\Patches\E2E_Graphics.xml" exit /b 1
 if not exist "%MO_FIXTURE_DIR%\Defs\AMJ_MO_Prereqs.xml" exit /b 1
+if not exist "%MO_FIXTURE_DIR%\Textures\E2E\Placeholder.png" exit /b 1
 
 echo.
 echo [OK] AMJ E2E test mods are ready:

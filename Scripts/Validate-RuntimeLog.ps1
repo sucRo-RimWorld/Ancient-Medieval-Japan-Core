@@ -3,7 +3,9 @@ param(
     [string]$LogPath,
 
     [Parameter(Mandatory = $true)]
-    [string]$ModIdPrefixes
+    [string]$ModIdPrefixes,
+
+    [switch]$FailOnAnyError
 )
 
 $ErrorActionPreference = "Stop"
@@ -29,6 +31,8 @@ if ($prefixes.Count -eq 0) {
 }
 
 $errors = New-Object System.Collections.Generic.List[string]
+
+# Structured RimLogging export blocks, when present.
 $blocks = [regex]::Matches(
     $text,
     '(?ms)^Timestamp:\s*.*?(?=^Timestamp:\s*|\z)'
@@ -37,6 +41,11 @@ $blocks = [regex]::Matches(
 foreach ($match in $blocks) {
     $block = $match.Value
     if ($block -notmatch '(?m)^Level:\s*ERROR\s*$') {
+        continue
+    }
+
+    if ($FailOnAnyError) {
+        $errors.Add($block.Trim())
         continue
     }
 
@@ -52,34 +61,66 @@ foreach ($match in $blocks) {
     }
 
     foreach ($candidate in $candidates) {
-        $owned = $false
         foreach ($prefix in $prefixes) {
             if ($candidate.StartsWith($prefix, [System.StringComparison]::OrdinalIgnoreCase)) {
-                $owned = $true
+                $errors.Add($block.Trim())
                 break
             }
         }
+    }
+}
 
-        if ($owned) {
-            $errors.Add($block.Trim())
+# The normal RimWorld -logFile output used by the E2E runner is line-oriented
+# and includes entries such as "[ERROR] [Vanilla]". Validate that format too.
+$coloredErrorLines = [regex]::Matches(
+    $text,
+    '(?mi)^.*\[ERROR\].*$'
+)
+
+foreach ($match in $coloredErrorLines) {
+    $line = $match.Value.Trim()
+    if ($FailOnAnyError) {
+        if (-not $errors.Contains($line)) {
+            $errors.Add($line)
+        }
+        continue
+    }
+
+    $lower = $line.ToLowerInvariant()
+    foreach ($prefix in $prefixes) {
+        if ($lower.Contains($prefix)) {
+            if (-not $errors.Contains($line)) {
+                $errors.Add($line)
+            }
             break
         }
     }
 }
 
 if ($errors.Count -gt 0) {
-    Write-Host "[FAIL] AMJ Core-origin runtime ERROR entries were found:" -ForegroundColor Red
-    $limit = [Math]::Min($errors.Count, 5)
+    if ($FailOnAnyError) {
+        Write-Host "[FAIL] ERROR-level entries were found in the isolated AMJ runtime log:" -ForegroundColor Red
+    }
+    else {
+        Write-Host "[FAIL] AMJ Core-origin runtime ERROR entries were found:" -ForegroundColor Red
+    }
+
+    $limit = [Math]::Min($errors.Count, 8)
     for ($i = 0; $i -lt $limit; $i++) {
         Write-Host ""
         Write-Host $errors[$i]
     }
     if ($errors.Count -gt $limit) {
         Write-Host ""
-        Write-Host "... plus $($errors.Count - $limit) more AMJ Core runtime ERROR entries."
+        Write-Host "... plus $($errors.Count - $limit) more runtime ERROR entries."
     }
     exit 1
 }
 
-Write-Host "[OK] No AMJ Core-origin runtime ERROR entries were found." -ForegroundColor Green
+if ($FailOnAnyError) {
+    Write-Host "[OK] No ERROR-level entries were found in the isolated AMJ runtime log." -ForegroundColor Green
+}
+else {
+    Write-Host "[OK] No AMJ Core-origin runtime ERROR entries were found." -ForegroundColor Green
+}
 exit 0

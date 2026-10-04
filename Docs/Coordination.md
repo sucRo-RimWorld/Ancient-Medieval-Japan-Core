@@ -151,7 +151,7 @@ Hie and Kibi are implemented from the already-approved Stage A balance and conne
 
 **Requested by:** Agriculture/XML  \
 **Owner:** Agriculture/XML / Testing/tooling  \
-**Status:** IN PROGRESS
+**Status:** DONE
 
 Implement the approved Stage A Soba role as the next data-side vertical slice.
 
@@ -163,11 +163,11 @@ Implement the approved Stage A Soba role as the next data-side vertical slice.
 - Existing grain-processing stations are reused. Initial work amounts match the established millet processing baseline.
 - No image asset is created or modified in this workstream; temporary paths reuse existing AMJ millet/Awa assets.
 
-**Validation:** GitHub Stage A static validation passed for implementation commit `4d5bad9a466507116c314584d3e7b20d0599c22d` and test-integration commit `c2a46a70430b7791a97a15690bc9de9b0e07788c`. Static coverage now checks the Soba PlantDef, CCTO -2°C extension, 120d/120d/60d storage chain, all four processing recipes, 1:1 quantity conservation, localization, and existing MO prerequisites. Runtime Pickle coverage is wired into the existing five-scenario suite but has not yet been rerun on the development PC.
+**Validation:** GitHub Stage A static validation passed for implementation commit `4d5bad9a466507116c314584d3e7b20d0599c22d` and test-integration commit `c2a46a70430b7791a97a15690bc9de9b0e07788c`. Static coverage checks the Soba PlantDef, CCTO -2°C extension, 120d/120d/60d storage chain, all four processing recipes, 1:1 quantity conservation, localization, and existing MO prerequisites. On 2026-10-04 JST, the development-PC `run-tests.bat` gate was reported passing with the existing **5/5 Pickle suite**. Because the runner only reports success after the runtime ERROR scan passes, the runtime ERROR gate was clean for this run.
 
-**Next action:** run the normal `run-tests.bat` gate on the development PC. If 5/5 and the runtime ERROR gate are clean, mark AMJ-008 DONE.
+**Next action:** none for the Soba data slice. Dedicated Soba graphics remain separately tracked in AMJ-009 and do not block the validated data implementation.
 
-**Result / references:** implementation `4d5bad9a466507116c314584d3e7b20d0599c22d`; automated-test integration `c2a46a70430b7791a97a15690bc9de9b0e07788c`; GitHub Actions run `37180980209` passed.
+**Result / references:** implementation `4d5bad9a466507116c314584d3e7b20d0599c22d`; automated-test integration `c2a46a70430b7791a97a15690bc9de9b0e07788c`; GitHub Actions run `37180980209` passed; local 5/5 automated gate confirmed 2026-10-04 JST.
 
 ### AMJ-009 — Soba crop/item graphics
 
@@ -180,6 +180,63 @@ The Soba data slice uses temporary existing AMJ graphics only. Dedicated art is 
 **Next action:** Art/graphics should pick this up after the currently active millet graphics work, following `Docs/ArtStyle.md`.
 
 **Result / references:** data DefNames are `AMJC_Plant_Buckwheat_Soba`, `AMJC_RawBuckwheat`, `AMJC_BuckwheatInHull`, `AMJC_Buckwheat`.
+
+### AMJ-010 — Barley cultivation and primary processing data slice
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Agriculture/XML / Testing/tooling  \
+**Status:** IN PROGRESS
+
+Medieval Overhaul 1.6 was checked before implementation and does not define a Barley crop, so AMJC owns the Stage A Barley PlantDef and processing states rather than duplicating an MO Def.
+
+- PlantDef: `AMJC_Plant_Barley`, growDays 10, yield 22, fertilityMin 0.5, sensitivity 0.6, growth 0–35°C, optimum 5–22°C, sowMinSkill 2.
+- Cultivation requires MO `DankPyon_BasicAgriculture`.
+- Optional CCTO compatibility: fixed death -8°C.
+- Processing path: `AMJC_RawBarley` (120d) → threshing → `AMJC_BarleyInHull` (120d) + MO straw → hulling → `AMJC_Barley` (90d).
+- Conversion is 1:1 through both stages, preserving the design baseline of 22 edible grain per harvest.
+- Straw is produced at threshing, not at harvest; the MO wheat `Plant_SecondaryDrop` behavior is intentionally not reused.
+- Barley flour is not added in Stage A because the current design only requires edible barley grain; later barley-specific uses can extend from `AMJC_Barley`.
+- No image asset is created or modified here. The plant temporarily uses MO wheat texture paths; processing items temporarily reuse existing AMJ grain texture paths.
+
+**Validation:** GitHub Stage A static validation passed for implementation commit `40d9914db9e1e0d9417f13a399465f61e1a3c2da` and test-integration commit `8c3da587185f8aeb868f12ca9a8d016e9364b2e9`. Coverage checks the Barley PlantDef, Basic Agriculture sow prerequisite, CCTO -8°C extension, 120d/120d/90d storage chain, four processing recipes, 22→22 quantity conservation, meal compatibility, and a local MO-source guard that fails if Medieval Overhaul later introduces a Barley-named Def. Runtime Pickle coverage is wired into the existing five-scenario suite but has not yet been rerun on the development PC.
+
+**Next action:** run the normal `run-tests.bat` gate on the development PC. If 5/5 and the runtime ERROR gate are clean, mark AMJ-010 DONE.
+
+**Result / references:** implementation `40d9914db9e1e0d9417f13a399465f61e1a3c2da`; automated-test integration `8c3da587185f8aeb868f12ca9a8d016e9364b2e9`; GitHub Actions run `37182531071` passed.
+
+### AMJ-011 — Barley crop/item graphics
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Art/graphics  \
+**Status:** OPEN
+
+The Barley data slice uses only temporary existing graphics. Dedicated Barley art can be produced independently after the currently active graphics work.
+
+**Next action:** Art/graphics should create Barley plant/item assets following `Docs/ArtStyle.md`; data validation does not wait for this item.
+
+**Result / references:** data DefNames are `AMJC_Plant_Barley`, `AMJC_RawBarley`, `AMJC_BarleyInHull`, and `AMJC_Barley`.
+
+### TEST-003 — Isolated E2E runtime-log hygiene and source attribution
+
+**Requested by:** Testing/tooling  \
+**Owner:** Testing/tooling  \
+**Status:** IN PROGRESS
+
+An uploaded Pickle report from 2026-10-04 showed 4/5 with a NullReference in the crop/Def scenario and also exposed seven ERROR-level entries generated by the lightweight E2E fixtures: missing fixture straw graphics and missing MO-only placeholder building textures. The report's scenario names also identify it as an older pre-Barley suite, so it is not valid evidence for AMJ-010.
+
+Harness corrections:
+- stage AMJC textures into the isolated target mod;
+- give the MO straw fixture an explicit developer-only placeholder texture;
+- apply an E2E-only patch replacing MO-only building and Barley placeholder graphics with staged AMJC textures;
+- validate the actual line-oriented Player.log format in addition to structured RimLogging blocks;
+- in the isolated profile, fail the automated gate on **any** ERROR-level runtime entry rather than only entries carrying an AMJC mod_id;
+- emit `TestResults/Pickle/source-state.txt` containing the local Git HEAD and scenario names so uploaded reports can be tied to the exact local test source.
+
+**Validation:** GitHub Stage A validation passed for harness cleanup `005442b2b12719cb77d4643479716f93866d444d`, explicit null-diagnostic hardening `b0ae057cc4beeea01b47c0060f4c1e3ffce2ab97`, and the Windows source-state syntax fix `962fb1cc7f741b8c6c4ee229724824b828a9f59a`. The uploaded 4/5 report is intentionally not counted as Barley validation because it contains the older "Loaded AMJ millet CCTO..." scenario name and therefore predates the current Barley suite. The next report must show the current "Loaded AMJ crop CCTO..." scenario name, 5/5, and zero ERROR-level entries.
+
+**Next action:** rerun the latest local main after this harness change; inspect `source-state.txt`, `summary.json`, and `Player.log` if it fails.
+
+**Result / references:** harness cleanup `005442b2b12719cb77d4643479716f93866d444d`; explicit failure diagnostics `b0ae057cc4beeea01b47c0060f4c1e3ffce2ab97`; batch source-state fix `962fb1cc7f741b8c6c4ee229724824b828a9f59a`.
 
 Add new items using the following form.
 

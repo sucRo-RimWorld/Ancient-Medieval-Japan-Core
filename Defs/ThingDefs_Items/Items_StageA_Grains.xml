@@ -165,4 +165,86 @@
     </comps>
   </ThingDef>
 
+
+  <!--
+    Barley processing states. Straw is produced at threshing rather than
+    harvest, matching the shared AMJ grain-processing model. Temporary graphics
+    reuse existing AMJ grain assets until Barley-specific art is available.
+  -->
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_RawBarley</defName>
+    <label>barley sheaf</label>
+    <description>Harvested barley stalks and heads before threshing. It stores well but is not yet suitable for eating.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/RawMillet</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.1</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_BarleyInHull</defName>
+    <label>barley in hull</label>
+    <description>Threshed barley grain with its hull still attached. The hull protects it during storage, but it is not yet suitable for eating.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/MilletInHull</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.1</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>AMJC_Barley</defName>
+    <label>barley</label>
+    <description>Edible barley grain with its hull removed. A durable staple grain that can be cooked directly and can support additional barley-based processing in later content.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/Millet</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <tasteThought>AteRawFood</tasteThought>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>90</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
 </Defs>

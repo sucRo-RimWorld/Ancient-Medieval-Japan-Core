@@ -128,11 +128,25 @@ Assert-Number (Node-Text $soba "plant/minOptimalGrowthTemperature" "Soba minOpti
 Assert-Number (Node-Text $soba "plant/maxOptimalGrowthTemperature" "Soba maxOptimalGrowthTemperature") 25 "Soba maxOptimalGrowthTemperature"
 Assert-Number (Node-Text $soba "plant/sowMinSkill" "Soba sowMinSkill") 1 "Soba sowMinSkill"
 
+$barley = Get-DefNode $plants "ThingDef" "AMJC_Plant_Barley"
+Assert-Text (Node-Text $barley "plant/harvestedThingDef" "Barley harvest target") "AMJC_RawBarley" "Barley harvest target"
+Assert-Number (Node-Text $barley "plant/harvestYield" "Barley harvestYield") 22 "Barley harvestYield"
+Assert-Number (Node-Text $barley "plant/growDays" "Barley growDays") 10 "Barley growDays"
+Assert-Number (Node-Text $barley "plant/fertilityMin" "Barley fertilityMin") 0.5 "Barley fertilityMin"
+Assert-Number (Node-Text $barley "plant/fertilitySensitivity" "Barley fertilitySensitivity") 0.6 "Barley fertilitySensitivity"
+Assert-Number (Node-Text $barley "plant/minGrowthTemperature" "Barley minGrowthTemperature") 0 "Barley minGrowthTemperature"
+Assert-Number (Node-Text $barley "plant/maxGrowthTemperature" "Barley maxGrowthTemperature") 35 "Barley maxGrowthTemperature"
+Assert-Number (Node-Text $barley "plant/minOptimalGrowthTemperature" "Barley minOptimalGrowthTemperature") 5 "Barley minOptimalGrowthTemperature"
+Assert-Number (Node-Text $barley "plant/maxOptimalGrowthTemperature" "Barley maxOptimalGrowthTemperature") 22 "Barley maxOptimalGrowthTemperature"
+Assert-Number (Node-Text $barley "plant/sowMinSkill" "Barley sowMinSkill") 2 "Barley sowMinSkill"
+Assert-Text (Node-Text $barley "plant/sowResearchPrerequisites/li" "Barley research prerequisite") "DankPyon_BasicAgriculture" "Barley research prerequisite"
+
 foreach ($case in @(
     @{ DefName = "AMJC_Plant_FoxtailMillet_Awa"; Death = -3 },
     @{ DefName = "AMJC_Plant_BarnyardMillet_Hie"; Death = -2 },
     @{ DefName = "AMJC_Plant_ProsoMillet_Kibi"; Death = -3 },
-    @{ DefName = "AMJC_Plant_Buckwheat_Soba"; Death = -2 }
+    @{ DefName = "AMJC_Plant_Buckwheat_Soba"; Death = -2 },
+    @{ DefName = "AMJC_Plant_Barley"; Death = -8 }
 )) {
     $xpathText = '/Defs/ThingDef[defName="' + $case.DefName + '"]'
     $op = $cctoPatch.SelectSingleNode("/Patch/Operation[@Class='PatchOperationFindMod'][mods/li='Crop Cold Tolerance Overhaul'][match/xpath='$xpathText']")
@@ -201,6 +215,14 @@ Assert-Number (Node-Text $buckwheatInHull "comps/li[@Class='CompProperties_Rotta
 Assert-Number (Node-Text $buckwheat "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Edible buckwheat rot days") 60 "Edible buckwheat rot days"
 Assert-Number (Node-Text $buckwheat "statBases/Nutrition" "Buckwheat nutrition") 0.05 "Buckwheat nutrition"
 
+$rawBarley = Get-DefNode $items "ThingDef" "AMJC_RawBarley"
+$barleyInHull = Get-DefNode $items "ThingDef" "AMJC_BarleyInHull"
+$barleyGrain = Get-DefNode $items "ThingDef" "AMJC_Barley"
+Assert-Number (Node-Text $rawBarley "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Raw barley rot days") 120 "Raw barley rot days"
+Assert-Number (Node-Text $barleyInHull "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Barley-in-hull rot days") 120 "Barley-in-hull rot days"
+Assert-Number (Node-Text $barleyGrain "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Edible barley rot days") 90 "Edible barley rot days"
+Assert-Number (Node-Text $barleyGrain "statBases/Nutrition" "Barley nutrition") 0.05 "Barley nutrition"
+
 if ($items.OuterXml -match "<li>DankPyon_Cereal</li>") { Fail "AMJ millet stages must not be registered to DankPyon_Cereal." }
 
 $spot = Get-DefNode $buildings "ThingDef" "AMJC_GrainProcessingSpot"
@@ -252,11 +274,20 @@ Assert-Recipe "AMJC_ThreshBuckwheat" 15 "AMJC_RawBuckwheat" 1 @{ AMJC_BuckwheatI
 Assert-Recipe "AMJC_ThreshBuckwheatBulk" 120 "AMJC_RawBuckwheat" 10 @{ AMJC_BuckwheatInHull = 10; DankPyon_Straw = 10 }
 Assert-Recipe "AMJC_HullBuckwheat" 10 "AMJC_BuckwheatInHull" 1 @{ AMJC_Buckwheat = 1 }
 Assert-Recipe "AMJC_HullBuckwheatBulk" 80 "AMJC_BuckwheatInHull" 10 @{ AMJC_Buckwheat = 10 }
+Assert-Recipe "AMJC_ThreshBarley" 15 "AMJC_RawBarley" 1 @{ AMJC_BarleyInHull = 1; DankPyon_Straw = 1 }
+Assert-Recipe "AMJC_ThreshBarleyBulk" 120 "AMJC_RawBarley" 10 @{ AMJC_BarleyInHull = 10; DankPyon_Straw = 10 }
+Assert-Recipe "AMJC_HullBarley" 10 "AMJC_BarleyInHull" 1 @{ AMJC_Barley = 1 }
+Assert-Recipe "AMJC_HullBarleyBulk" 80 "AMJC_BarleyInHull" 10 @{ AMJC_Barley = 10 }
 
 $moXmlFiles = @(Get-ChildItem -LiteralPath $MedievalOverhaulRoot -Recurse -File -Filter *.xml)
 foreach ($defName in @("DankPyon_Straw","DankPyon_IronIngot","DankPyon_BasicAgriculture","DankPyon_RawWood")) {
     $pattern = "<defName>$defName</defName>"
     if (-not (Select-String -Path $moXmlFiles.FullName -Pattern $pattern -SimpleMatch -Quiet)) { Fail "Installed Medieval Overhaul does not contain required Def '$defName'." }
+}
+
+$moBarleyDef = Select-String -Path $moXmlFiles.FullName -Pattern '<defName>[^<]*Barley[^<]*</defName>' -CaseSensitive:$false
+if ($null -ne $moBarleyDef) {
+    Fail "Installed Medieval Overhaul now contains a Barley-named Def. Re-audit AMJC Barley ownership before keeping the duplicate crop."
 }
 
 Write-Host "[OK] AMJ Stage A static validation passed." -ForegroundColor Green
