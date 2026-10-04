@@ -32,6 +32,145 @@
     </thingCategories>
   </ThingDef>
 
+  <ThingCategoryDef>
+    <defName>DankPyon_Cereal</defName>
+    <label>AMJ test cereal</label>
+  </ThingCategoryDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>DankPyon_Plant_Wheat</defName>
+    <label>AMJ test wheat plant</label>
+    <thingClass>MedievalOverhaul.Plant_SecondaryDrop</thingClass>
+    <graphicData>
+      <texPath>E2E/Placeholder</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <plant>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>DankPyon_RawWheat</harvestedThingDef>
+      <harvestYield>28</harvestYield>
+      <sowResearchPrerequisites>
+        <li>DankPyon_BasicAgriculture</li>
+      </sowResearchPrerequisites>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <growDays>12</growDays>
+      <fertilitySensitivity>0.9</fertilitySensitivity>
+      <purpose>Food</purpose>
+    </plant>
+    <modExtensions>
+      <li Class="MedievalOverhaul.SecondaryPlantDropExtension">
+        <secondaryDrop>Hay</secondaryDrop>
+        <secondaryDropAmountRange>40</secondaryDropAmountRange>
+        <secondaryDropChance>1</secondaryDropChance>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>DankPyon_RawWheat</defName>
+    <label>AMJ test raw wheat</label>
+    <graphicData>
+      <texPath>E2E/Placeholder</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.1</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>DankPyon_Cereal</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>DankPyon_Flour</defName>
+    <label>AMJ test flour</label>
+    <graphicData>
+      <texPath>E2E/Placeholder</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.5</MarketValue>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>90</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>DankPyon_CraftFlour_Manual</defName>
+    <label>AMJ test manual flour</label>
+    <workAmount>300</workAmount>
+    <ingredients>
+      <li>
+        <filter><categories><li>DankPyon_Cereal</li></categories></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter><categories><li>DankPyon_Cereal</li></categories></fixedIngredientFilter>
+    <products>
+      <DankPyon_Flour>1</DankPyon_Flour>
+      <Hay>1</Hay>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>DankPyon_CraftFlour</defName>
+    <label>AMJ test flour</label>
+    <workAmount>100</workAmount>
+    <ingredients>
+      <li>
+        <filter><categories><li>DankPyon_Cereal</li></categories></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter><categories><li>DankPyon_Cereal</li></categories></fixedIngredientFilter>
+    <products>
+      <DankPyon_Flour>1</DankPyon_Flour>
+      <Hay>1</Hay>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>DankPyon_CraftFlourBulk</defName>
+    <label>AMJ test flour bulk</label>
+    <workAmount>800</workAmount>
+    <ingredients>
+      <li>
+        <filter><categories><li>DankPyon_Cereal</li></categories></filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter><categories><li>DankPyon_Cereal</li></categories></fixedIngredientFilter>
+    <products>
+      <DankPyon_Flour>10</DankPyon_Flour>
+      <Hay>10</Hay>
+    </products>
+  </RecipeDef>
+
   <ResearchProjectDef>
     <defName>DankPyon_BasicAgriculture</defName>
     <label>AMJ test basic agriculture</label>
