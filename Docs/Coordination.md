@@ -143,11 +143,11 @@ Implement the approved Stage A Soba role as the next data-side vertical slice.
 - Existing grain-processing stations are reused. Initial work amounts match the established millet processing baseline.
 - No image asset is created or modified in this workstream; temporary paths reuse existing AMJ millet/Awa assets.
 
-**Validation:** extend static, local PowerShell, and Pickle coverage before marking DONE.
+**Validation:** GitHub Stage A static validation passed for implementation commit `4d5bad9a466507116c314584d3e7b20d0599c22d` and test-integration commit `c2a46a70430b7791a97a15690bc9de9b0e07788c`. Static coverage now checks the Soba PlantDef, CCTO -2°C extension, 120d/120d/60d storage chain, all four processing recipes, 1:1 quantity conservation, localization, and existing MO prerequisites. Runtime Pickle coverage is wired into the existing five-scenario suite but has not yet been rerun on the development PC.
 
-**Next action:** complete regression coverage and run the normal automated gate.
+**Next action:** run the normal `run-tests.bat` gate on the development PC. If 5/5 and the runtime ERROR gate are clean, mark AMJ-008 DONE.
 
-**Result / references:** implementation `4d5bad9a466507116c314584d3e7b20d0599c22d`; automated-test integration commit follows.
+**Result / references:** implementation `4d5bad9a466507116c314584d3e7b20d0599c22d`; automated-test integration `c2a46a70430b7791a97a15690bc9de9b0e07788c`; GitHub Actions run `37180980209` passed.
 
 ### AMJ-009 — Soba crop/item graphics
 
