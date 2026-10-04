@@ -117,3 +117,7 @@ Before any cover generation:
 - generate only addon-specific right-side artwork, not a complete cover;
 - compose with `Scripts/build_workshop_cover.py` and validate with `Scripts/validate_workshop_cover.py`;
 - if the required Library rasters are unavailable, do not reconstruct them from memory, prompts, or SVG; treat cover production as blocked.
+
+## Future shared-image families
+
+For every new image family with reused parts, automatically apply `Docs/GoldenPaths/FixedImageTemplates.md` without waiting for a separate author request. Before the next derivative, register the approved master/mask/hashed manifest, extend the family-owned specification and generation entry, and implement/run zero protected RGBA pixel-difference validation. Include recurring registered derivatives in automated integration/CI checks. This registration/documentation/validation is part of task completion, not an optional follow-up.

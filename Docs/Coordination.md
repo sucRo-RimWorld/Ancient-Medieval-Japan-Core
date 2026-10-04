@@ -697,3 +697,9 @@ Durable rule commits: `81a1fe37df58dea63f7591d802fad9a3ca45cc42` (`Docs/Workshop
 Author requested pixel-identical reused parts across AMJ image families. Canonical policy: `Docs/GoldenPaths/FixedImageTemplates.md`. AGENTS, ArtStyle, texture Golden Path and cover workflow now require a hashed lossless master, binary editable mask, deterministic compositing, and zero protected RGBA differences. `Scripts/Art/fixed_template.py` implements compositing/validation; its regression test is in CI. Visual-reference editing alone is no longer sufficient.
 
 No image was generated or replaced. Existing masu has its accepted master but needs a registered interior mask/manifest before the next derivative. Covers need a clean shared master/approved editable mask from the accepted visual reference before the next cover. Do not claim all existing assets are already pixel-locked. Species style references remain references rather than identical-species templates. Pending species proposals remain pending.
+
+### ART-TEMPLATE-002 — Automatically register future shared image families
+
+**Status:** DONE (policy)
+
+Future art work must identify reused components and automatically register each new family/master, document fixed/editable regions and production/validation commands, and integrate zero protected RGBA difference checks before subsequent derivatives. Canonical extension: `Docs/GoldenPaths/FixedImageTemplates.md`; mandatory entry: AGENTS. No images changed. Existing shared policy references in Environment inherit this extension.
