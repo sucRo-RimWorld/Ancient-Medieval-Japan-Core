@@ -134,17 +134,35 @@ For item/resource icons add:
 
 > Even flatter than the plant art. Use one base fill and at most one secondary plane per material. No per-piece highlights or deep contact shadows.
 
-### Canonical produce crate / masu-style container
+### Canonical boxed-resource icon: Japanese masu master
 
-For loose harvested produce, beans, grains, hulled grain, and similar resources that use the Medieval Overhaul / Vanilla shallow wooden-box presentation, **the container itself must not be regenerated per asset**.
+For loose harvested produce, beans, grains, hulled grain, and similar resources, AMJ uses the **Vanilla / Medieval Overhaul boxed-resource silhouette language** but replaces the generic crate surface treatment with a simplified Japanese **masu**.
 
-- The accepted `AMJC_BuckwheatInHull` shallow wooden box is the canonical container master.
-- Future AMJ container icons must reuse the **exact same box pixels** after the production texture is normalized to 256×256.
-- Box geometry, perspective, outline, rim thickness, wood colors, shading planes, and placement are fixed.
-- Only the contents above/inside the box may change.
-- Generate or draw the contents separately on transparency, then composite them into the canonical box with deterministic local image processing.
-- Do not ask the image generator to redraw the box for each resource; this rule exists specifically to prevent visual drift.
-- When a different container class is genuinely required, define a new canonical master for that class rather than mutating this one.
+The author-approved **empty square masu** is the canonical container master. The container is a reusable production component, not something to redraw for every resource.
+
+Fixed container properties:
+- square masu silhouette and the approved three-quarter viewing angle;
+- container scale and placement on the 256×256 canvas;
+- rim width and board thickness;
+- dark warm-brown outer contour;
+- corner joinery;
+- wood palette and shading planes;
+- transparent margin around the container.
+
+Only the **contents** may vary between resources. The final production icon must preserve the master container geometry and appearance; do not accept a generated variant just because it is "similar".
+
+Production rule:
+1. Start from the accepted empty-masu master.
+2. Generate/draw only the resource contents, using the master as the visual and geometric reference.
+3. Composite the contents into the master so that the container itself remains unchanged. Where useful, keep the rear/interior and front-rim portions as separate fixed layers so the contents sit naturally inside the masu.
+4. For stack-count variants, keep the same master and change only content amount/arrangement.
+5. If image generation alters the masu silhouette, perspective, rim, joinery, wood colors, or placement, reject that output rather than treating the changed container as a new base.
+6. If two consecutive attempts drift in the same way, stop regenerating the whole icon and switch to deterministic local compositing/editing.
+7. Normalize the finished production texture to the repository format and run `python Tests/validate_png_assets.py` before committing.
+
+When AMJ retextures compatible Vanilla / Medieval Overhaul boxed raw-resource icons, preserve their familiar **boxed-item reading at game scale**, but use this same canonical masu treatment for series consistency.
+
+This masu workflow is the default for boxed resource icons. A genuinely different container class requires an explicitly approved new master; do not mutate the masu master ad hoc.
 
 ## 7. Required iteration procedure
 

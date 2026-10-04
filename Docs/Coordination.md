@@ -199,7 +199,7 @@ The Soba data slice uses temporary Awa/millet graphics only. Under `Docs/Design.
 **Next action:** Art/graphics should produce Soba-specific plant and item assets following `Docs/ArtStyle.md`, then wire them without changing the validated gameplay data.
 
 **Result / references:** data DefNames are `AMJC_Plant_Buckwheat_Soba`, `AMJC_RawBuckwheat`, `AMJC_BuckwheatInHull`, `AMJC_Buckwheat`; current temporary paths reuse Awa/millet assets.
-**2026-10-04 container-art lock:** The accepted buckwheat-in-hull shallow wooden box establishes the canonical AMJ produce/grain container. Once normalized to the production 256×256 texture, future boxed resource icons must preserve the box pixels exactly and replace only the contents via local compositing. Do not regenerate the box per resource. This rule should also be applied when the existing millet hull/clean-grain icons are revised after Soba is complete.
+**2026-10-05 boxed-resource icon lock:** The author approved a dedicated empty **Japanese masu** as the canonical boxed-resource master. AMJ keeps the familiar Vanilla/MO boxed-item silhouette language, but all compatible AMJ/Vanilla/MO retextures should use the same masu treatment. The container geometry, viewing angle, rim, joinery, palette, shading and placement are fixed; only the contents change. Generate/draw contents separately and composite them into the fixed master. If whole-icon generation drifts twice, stop regenerating and use deterministic local compositing. Durable procedure: `Docs/GoldenPaths/TextureAssetPipeline.md`; visual source of truth: `Docs/ArtStyle.md`.
 
 
 ### AMJ-010 — Barley cultivation and primary processing data slice
