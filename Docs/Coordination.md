@@ -131,7 +131,7 @@ Hie and Kibi are implemented from the already-approved Stage A balance and conne
 
 **Requested by:** Agriculture/XML  \
 **Owner:** Agriculture/XML / Testing/tooling  \
-**Status:** IN PROGRESS
+**Status:** DONE
 
 Implement the approved Stage A Soba role as the next data-side vertical slice.
 
@@ -143,11 +143,11 @@ Implement the approved Stage A Soba role as the next data-side vertical slice.
 - Existing grain-processing stations are reused. Initial work amounts match the established millet processing baseline.
 - No image asset is created or modified in this workstream; temporary paths reuse existing AMJ millet/Awa assets.
 
-**Validation:** GitHub Stage A static validation passed for implementation commit `4d5bad9a466507116c314584d3e7b20d0599c22d` and test-integration commit `c2a46a70430b7791a97a15690bc9de9b0e07788c`. Static coverage now checks the Soba PlantDef, CCTO -2°C extension, 120d/120d/60d storage chain, all four processing recipes, 1:1 quantity conservation, localization, and existing MO prerequisites. Runtime Pickle coverage is wired into the existing five-scenario suite but has not yet been rerun on the development PC.
+**Validation:** GitHub Stage A static validation passed for implementation commit `4d5bad9a466507116c314584d3e7b20d0599c22d` and test-integration commit `c2a46a70430b7791a97a15690bc9de9b0e07788c`. Static coverage checks the Soba PlantDef, CCTO -2°C extension, 120d/120d/60d storage chain, all four processing recipes, 1:1 quantity conservation, localization, and existing MO prerequisites. On 2026-10-04 JST, the development-PC `run-tests.bat` gate was reported passing with the existing **5/5 Pickle suite**. Because the runner only reports success after the runtime ERROR scan passes, the runtime ERROR gate was clean for this run.
 
-**Next action:** run the normal `run-tests.bat` gate on the development PC. If 5/5 and the runtime ERROR gate are clean, mark AMJ-008 DONE.
+**Next action:** none for the Soba data slice. Dedicated Soba graphics remain separately tracked in AMJ-009 and do not block the validated data implementation.
 
-**Result / references:** implementation `4d5bad9a466507116c314584d3e7b20d0599c22d`; automated-test integration `c2a46a70430b7791a97a15690bc9de9b0e07788c`; GitHub Actions run `37180980209` passed.
+**Result / references:** implementation `4d5bad9a466507116c314584d3e7b20d0599c22d`; automated-test integration `c2a46a70430b7791a97a15690bc9de9b0e07788c`; GitHub Actions run `37180980209` passed; local 5/5 automated gate confirmed 2026-10-04 JST.
 
 ### AMJ-009 — Soba crop/item graphics
 
