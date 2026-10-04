@@ -106,3 +106,14 @@ After a non-trivial task succeeds, especially after debugging or failed attempts
 ## Pixel-exact shared image components
 
 Follow `Docs/GoldenPaths/FixedImageTemplates.md` for every reused component. Registered masters and binary editable masks are mandatory before producing derivatives. Generate variable material only, composite deterministically, and require zero decoded RGBA differences in protected pixels. Reference-image editing and visual similarity are insufficient. Existing style references do not imply identical silhouettes for different species.
+
+### Workshop cover fixed-template rule
+
+For AMJ Workshop covers, also follow `Docs/GoldenPaths/WorkshopCoverPipeline.md` and `Docs/WorkshopCoverStyle.md`.
+
+Before any cover generation:
+- retrieve and visually inspect Library `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`;
+- retrieve the canonical `AMJ_WorkshopCover_CommonBase.png` and `AMJ_WorkshopCover_VariableMask.png` from the same Library folder;
+- generate only addon-specific right-side artwork, not a complete cover;
+- compose with `Scripts/build_workshop_cover.py` and validate with `Scripts/validate_workshop_cover.py`;
+- if the required Library rasters are unavailable, do not reconstruct them from memory, prompts, or SVG; treat cover production as blocked.
