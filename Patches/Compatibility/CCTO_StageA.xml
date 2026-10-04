@@ -9,7 +9,7 @@
       <xpath>/Defs/ThingDef[defName="AMJC_Plant_FoxtailMillet_Awa"]</xpath>
       <value>
         <li Class="CropColdToleranceOverhaul.ColdToleranceExtension">
-          <coldDeathTemperature>-4</coldDeathTemperature>
+          <coldDeathTemperature>-3</coldDeathTemperature>
         </li>
       </value>
     </match>

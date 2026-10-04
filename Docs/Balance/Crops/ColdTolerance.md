@@ -10,7 +10,7 @@ AMJC固有作物の耐寒データは、**AMJCが所有・管理する**。CCTO�
 - CCTOが管理するVanilla/MO作物と、AMJC固有作物を区別する。MO小麦 `DankPyon_Plant_Wheat` の温度データはCCTO側のMO対応を利用する。
 - 将来AMJC作物を追加・調整する際も、数値・根拠・互換XML・検証はAMJC側で更新する。CCTOには汎用APIに関する変更だけを依頼する。
 
-本資料はCCTOの `Docs/Design.md` / `Docs/ImplementationTable.md` に置かれていたAMJC作物のデータを移管した正本であり、移管に伴う数値変更はない。Stage Aの栽培全体は [Docs/Design.md §4.2.1](../../Design.md) と整合させる。値は現実の耐寒性を参考にした**ゲーム内バランス値**であり、現実の測定値そのものではない。
+本資料はCCTOの `Docs/Design.md` / `Docs/ImplementationTable.md` に置かれていたAMJC作物のデータを移管した正本である。移管時点では数値変更を行わなかったが、その後の再監査でAMJC側の判断として値を改定する。Stage Aの栽培全体は [Docs/Design.md §4.2.1](../../Design.md) と整合させる。値は現実の耐寒性を参考にした**ゲーム内バランス値**であり、現実の測定値そのものではない。
 
 ## 確定した固定枯死・休眠値
 
@@ -21,10 +21,10 @@ AMJC固有作物の耐寒データは、**AMJCが所有・管理する**。CCTO�
 | Barley | 0°C | -8°C |
 | Daikon | 0°C | -5°C |
 | Buckwheat | 5°C | -2°C |
-| Barnyard millet | 5°C | -4°C |
+| Barnyard millet | 5°C | -2°C |
 | Hemp | 5°C | -6°C |
 | Kudzu | 5°C | cold dormancy |
-| Foxtail millet | 8°C | -4°C |
+| Foxtail millet | 8°C | -3°C |
 | Proso millet | 8°C | -3°C |
 | Adzuki bean | 8°C | -1°C |
 | Soybean | 8°C | -3°C |
@@ -34,7 +34,27 @@ AMJC固有作物の耐寒データは、**AMJCが所有・管理する**。CCTO�
 
 クズ（Kudzu）は低温で地上部が休眠し、根株が生存して回復できる作物として扱う。休眠は最低成長温度未満で始まり、固定枯死の判定は閾値未満（strict `<`）で行う。閾値ちょうどでは枯死しない。
 
-現時点でPlantDefとCCTO互換XMLが実装されているAMJC作物はアワ `AMJC_Plant_FoxtailMillet_Awa`。最低成長8℃は `Defs/ThingDefs_Plants/Plants_StageA.xml`、固定枯死-4℃は `Patches/Compatibility/CCTO_StageA.xml` が持つ。他の行は今後の作物実装で利用する設計値であり、対応済みの作物一覧ではない。未実装作物のDefNameを先行確定したり、存在しないDefを対象とするPatchを追加したりしない。
+現時点でPlantDefとCCTO互換XMLが実装されているAMJC作物はアワ `AMJC_Plant_FoxtailMillet_Awa`。最低成長8℃は `Defs/ThingDefs_Plants/Plants_StageA.xml`、固定枯死-3℃は `Patches/Compatibility/CCTO_StageA.xml` が持つ。他の行は今後の作物実装で利用する設計値であり、対応済みの作物一覧ではない。未実装作物のDefNameを先行確定したり、存在しないDefを対象とするPatchを追加したりしない。
+
+## 2026-10-04 アワ・ヒエ・キビの凍霜害再監査
+
+栽培可能な低温域と、凍結・霜で枯死する温度は別特性として扱う。
+
+| Crop | 採用値 | 判断 |
+|---|---:|---|
+| Proso millet / キビ | **-3°C** | 維持。レビューでは低温感受性が概ね +2～-3°C、品種別の霜感受性が -1.5～-4.1°C とされ、-3°Cは代表値として妥当。さらにアワより冷涼地に適応しやすいとの比較記述がある |
+| Foxtail millet / アワ | **-3°C** | -4°Cから改定。-4°C処理では6時間から生存率が低下し、10～12時間で生存率が16.4%→4.8%まで落ちる。CCTOの固定閾値では持続時間を表現できないため、-4°Cを安全に耐える設定を避けて-3°Cへ丸める |
+| Barnyard millet / ヒエ | **-2°C** | -4°Cから改定。低温条件での生育性は高い一方、Japanese milletは公的・普及資料でfrost-sensitive / winter-killedとされる。直接の致死温度実験値が不足するため、-2°Cはゲーム用の保守的な丸め値で、3種中もっとも確度が低い |
+
+このため、ヒエの個性は「凍結に強い」ではなく、**凍らない低温域でも成長しやすい**ことに置く。CCTO導入時には、5～15°C付近でアワ・キビより成長しやすい一方、氷点下へ入れば特別に強くないという性格になる。
+
+主な根拠:
+- Cavers & Kane (2016), *The Biology of Canadian Weeds: 155. Panicum miliaceum L.* — proso milletの低温・霜感受性（-1.5～-4.1°Cの品種差）とfoxtail milletより冷涼地へ適応しやすい旨。 https://doi.org/10.1139/cjps-2015-0152
+- Zhao et al. (2023), *Transcriptome Analysis Reveals Brassinolide Signaling Pathway Control of Foxtail Millet Seedling Starch and Sucrose Metabolism under Freezing Stress, with Implications for Growth and Development* — アワ苗を-4°Cで処理し、時間経過とともに生存率が大幅低下。 https://doi.org/10.3390/ijms241411590
+- Tasmanian Department of Primary Industries, *Millet - Japanese (Echinochloa utilis)* — Japanese milletを “not at all tolerant of frost” と整理。
+- Midwest Cover Crops Council, *Japanese Millet* — winter-killed / sensitive to frost と整理。
+
+**注意:** `coldDeathTemperature` は現実の単一の致死温度を再現する値ではない。品種、生育段階、低温への曝露時間、馴化状態による差を、RimWorld上の明確な閾値へ丸めたゲーム内値である。
 
 ## 保存する候補範囲（現在は未使用）
 
@@ -45,11 +65,11 @@ AMJC固有作物の耐寒データは、**AMJCが所有・管理する**。CCTO�
 | Barley | 0°C | -9 to -7°C |
 | Daikon | 0°C | -6 to -4°C |
 | Buckwheat | 5°C | -3 to -1°C |
-| Barnyard millet | 5°C | -5 to -3°C |
+| Barnyard millet | 5°C | -3 to -1°C |
 | Hemp | 5°C | -7 to -5°C |
 | Kudzu | 5°C | cold dormancy |
 | Foxtail millet | 8°C | -4 to -3°C |
-| Proso millet | 8°C | -3 to -2°C |
+| Proso millet | 8°C | -4 to -2°C |
 | Adzuki bean | 8°C | -2 to 0°C |
 | Soybean | 8°C | -4 to -2°C |
 | Perilla | 8°C | -2 to 0°C |
