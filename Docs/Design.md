@@ -438,7 +438,9 @@ AMJの各Addon・姉妹Modは、詳細設計へ入る前に**同一目的・部�
   - Coastal Gathering詳細設計では一般的な釣りを再実装せず、日本側の独自価値を沿岸採集・貝・海藻・貝塚・淡水/汽水/海水差・保存連携等へ置く。
 - **Food Drying**（https://steamcommunity.com/sharedfiles/filedetails/?id=3664822476）
   - 汎用乾燥は既存Modを優先し、AMJ Coreで重複実装しない既存方針を維持する。
-  - **初期から優先度Aの任意互換対象**とし、Core追加食材をFood Drying側で乾燥可能にする互換Patchを早期に用意する。
+  - **優先度Aの任意互換対象**とするが、互換Patchは「AMJ食材だから一律に追加」せず、Food Drying側に意味の合う乾燥先がある食材だけを接続する。
+  - Stage Aの雑穀・大麦・小麦・ソバは、可食化後の時点で乾燥穀粒として60～90日の保存性を持つ。Food Drying 1.6の既存乾燥品（Dried Rice / Corn / Potatoes / Fruit / Fungus等）へ置換すると作物同一性や再水和先を壊すため、**最初の公開Alphaではこれら穀類にFood Drying Patchを追加しない**。
+  - 山菜・きのこ・果実・根菜等、乾燥によって新しい保存判断が生じるAMJ食材を実装した段階で、対象食材ごとに互換を追加する。
 - **Salted Meat**（https://steamcommunity.com/sharedfiles/filedetails/?id=2606419180）
   - 塩蔵の先行例だが、独自塩・干し魚・ソーセージ等まで含む。AMJではMO `DankPyon_Salt` を正本とするため、そのままの前提候補ではなく、Salt Preservation詳細設計時の比較・実装参考とする。
 - **Sake Brewery / Simple Sake / T's Samurai Faction**
@@ -1331,10 +1333,12 @@ Food Dryingは**必須依存にしない**。
 ### Core側
 
 - 乾燥システムを重複実装しない
-- Core追加食材をFood Drying側で乾燥可能にする互換パッチを用意
+- Food Dryingは `paseri.FoodDrying` の任意互換対象として扱い、存在確認付きPatchだけを使う
+- 互換は**意味の合う乾燥先が存在する食材単位**で追加し、別作物の乾燥品へ便宜的に変換しない
+- Stage Aの雑穀・大麦・小麦・ソバは、脱穀・殻取り後の穀粒自体が乾燥保存食であり、現行Food DryingのDried Rice等へ変換する利益より食材同一性の破壊が大きいため、公開Alphaでは互換対象外とする
 - Food Dryingを導入しなくてもCore + MOの農業は成立する
 
-将来、山菜・きのこ等を追加した段階で互換価値が大きくなる。
+Food Drying 1.6はProcessor Frameworkを利用し、米・ジャガイモ・トウモロコシ・果物・きのこ等に専用の乾燥品を持ち、乾燥品から元食材へ戻す再水和経路も持つ。このため互換では入出力の意味を一致させることを必須条件とする。将来、山菜・きのこ・果実・根菜等を追加した段階で互換価値が大きくなる。
 
 ---
 
