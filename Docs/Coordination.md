@@ -315,6 +315,35 @@ At the shared 0.50 integration point, Stage A intent is: Soba/Kibi/Awa/Hie/Barle
 
 **Result / references:** Core design reconciliation `c841b66547f51af79743a72d3db20d38b7345816`; Core fertility regression coverage `201bbe90aa92a0d2d55ac9d1d16c92bdf6f28c11`; Environment coordination alignment `7a1d59288eca9b42c2dfd4573295d981177c9a7d`; Environment source of truth remains ENV-004 / `Docs/Design.md §10`; local 5/5 + zero-ERROR Core gate confirmed 2026-10-04 JST.
 
+### AMJ-015 — Core standard Scenario: 新しい村
+
+**Requested by:** Core/design / Testing/tooling  
+**Owner:** Core/design / XML / Testing/tooling  
+**Status:** OPEN
+
+**Handoff (2026-10-04 JST):** Stage A dry-field agriculture data work is effectively complete for the six Alpha crops. Awa/Hie/Kibi/Soba/Barley and MO Wheat are implemented with primary processing, CCTO integration where owned by AMJC, fertility-role coverage, and the current five-scenario automated gate. AMJ-012 (MO wheat integration) and the Core↔Environment fertility contract were locally confirmed with 5/5 Pickle PASS + zero runtime ERROR. Remaining crop-specific graphics stay in the separate Art/graphics stream and do not block data-side work.
+
+The initial public Alpha remains scoped to **dry-field / millet agriculture**. Paddy-rice work belongs to later Stage E design and should not be started as the next data slice.
+
+The next non-art Alpha requirement identified in `Docs/Design.md` is the **Core standard Scenario**. The current design only defines the concept:
+- at least one Core Scenario;
+- ordinary people leave their former community and establish a small new village;
+- not a warlord / daimyo / privileged-class start;
+- must work without AMJ Backgrounds;
+- may integrate with AMJ Backgrounds later;
+- working title: **「新しい村」**;
+- starting pawn count, starting materials and research state are still intentionally undecided.
+
+Pre-timeout investigation:
+- Medieval Overhaul ScenarioDefs provide usable XML structure examples such as `DankPyon_TavernOwnerStart`, `DankPyon_MercenaryStart` and `DankPyon_LoneWolfStart`.
+- MO examples use `ScenPart_ConfigPage_ConfigureStartingPawns`, `ScenPart_PlayerPawnsArriveMethod`, `ScenPart_StartingThing_Defined`, optional starting animals/scatter parts, and a start dialog.
+- Do **not** copy MO start balance blindly: the sampled MO starts include large amounts of silver/iron/components and specialized faction/start assumptions that are not automatically appropriate for AMJ's ordinary-village premise.
+- Investigation timed out while checking the correct RimWorld/MO 1.6 player-faction choice and appropriate starting-material baseline; no ScenarioDef implementation was committed.
+
+**Next action:** continue the audit from the latest `main`. Confirm the actual RimWorld 1.6 / installed MO 1.6 ScenarioDef and faction Def structure, then write the Scenario's concrete pawn count, choice count, faction, starting research and starting items into `Docs/Design.md` before implementing XML. Keep the start self-sufficient for the Alpha crop/processing loop without pre-solving the early game. Add static + loaded/runtime automated coverage; manual testing should be limited to start feel/UI once reproducible checks are automated.
+
+**Result / references:** no Scenario implementation commit yet. Current handoff only records the investigated direction and prevents accidental jump to Stage E rice work.
+
 Add new items using the following form.
 
 ### AMJ-XXX — Short title
