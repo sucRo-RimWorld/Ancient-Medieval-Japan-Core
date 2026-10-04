@@ -34,7 +34,8 @@ $trackedFiles = @(
     "Defs\ThingDefs_Plants\Plants_StageA.xml",
     "Defs\ThingDefs_Items\Items_StageA_Grains.xml",
     "Defs\RecipeDefs\Recipes_GrainProcessing.xml",
-    "Patches\Compatibility\CCTO_StageA.xml"
+    "Patches\Compatibility\CCTO_StageA.xml",
+    "Patches\MedievalOverhaul_StageA_Wheat.xml"
 )
 
 foreach ($relativePath in $trackedFiles) {
