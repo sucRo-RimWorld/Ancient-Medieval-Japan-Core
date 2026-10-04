@@ -179,11 +179,11 @@ Implement the approved Stage A Soba role as the next data-side vertical slice.
 **Owner:** Art/graphics  \
 **Status:** OPEN
 
-The Soba data slice uses temporary existing AMJ graphics only. Dedicated art is needed for the Soba plant and, if visually useful, its post-harvest states. Do not block data validation on this item.
+The Soba data slice uses temporary Awa/millet graphics only. Under `Docs/Design.md §12.1.2`, Soba is a separate PlantDef and its three post-harvest ThingDefs are not shared with another crop, so the **immature plant, mature plant, sheaf, in-hull grain and edible grain all require Soba-specific production art before the public Alpha**. This does not block the already validated data slice, but it does block visual completion of the Soba vertical slice.
 
-**Next action:** Art/graphics should pick this up after the currently active millet graphics work, following `Docs/ArtStyle.md`.
+**Next action:** Art/graphics should produce Soba-specific plant and item assets following `Docs/ArtStyle.md`, then wire them without changing the validated gameplay data.
 
-**Result / references:** data DefNames are `AMJC_Plant_Buckwheat_Soba`, `AMJC_RawBuckwheat`, `AMJC_BuckwheatInHull`, `AMJC_Buckwheat`.
+**Result / references:** data DefNames are `AMJC_Plant_Buckwheat_Soba`, `AMJC_RawBuckwheat`, `AMJC_BuckwheatInHull`, `AMJC_Buckwheat`; current temporary paths reuse Awa/millet assets.
 
 ### AMJ-010 — Barley cultivation and primary processing data slice
 
@@ -214,11 +214,46 @@ Medieval Overhaul 1.6 was checked before implementation and does not define a Ba
 **Owner:** Art/graphics  \
 **Status:** OPEN
 
-The Barley data slice uses only temporary existing graphics. Dedicated Barley art can be produced independently after the currently active graphics work.
+The Barley data slice uses temporary MO wheat plant graphics and AMJ millet item graphics. Under `Docs/Design.md §12.1.2`, Barley is a separate PlantDef and its three post-harvest ThingDefs are not shared with another crop, so the **immature plant, mature plant, sheaf, in-hull grain and edible grain all require Barley-specific production art before the public Alpha**. This does not block the already validated data slice, but it does block visual completion of the Barley vertical slice.
 
-**Next action:** Art/graphics should create Barley plant/item assets following `Docs/ArtStyle.md`; data validation does not wait for this item.
+**Next action:** Art/graphics should create Barley-specific plant and item assets following `Docs/ArtStyle.md`, then wire them without changing the validated gameplay data.
 
-**Result / references:** data DefNames are `AMJC_Plant_Barley`, `AMJC_RawBarley`, `AMJC_BarleyInHull`, and `AMJC_Barley`.
+**Result / references:** data DefNames are `AMJC_Plant_Barley`, `AMJC_RawBarley`, `AMJC_BarleyInHull`, and `AMJC_Barley`; current temporary paths use MO wheat / AMJ millet assets.
+
+### AMJ-016 — Hie and Kibi crop graphics
+
+**Requested by:** Alpha visual-completion audit  \
+**Owner:** Art/graphics  \
+**Status:** OPEN
+
+Hie and Kibi have validated crop data, but both PlantDefs still reuse the accepted Awa mature and immature texture paths. Their post-harvest chain intentionally converges on the shared millet ThingDefs, so **only the growing-plant states need crop-specific art**; the shared millet sheaf / in-hull / edible-grain assets must not be duplicated.
+
+Required before public Alpha:
+- Hie immature + mature plant art;
+- Kibi immature + mature plant art;
+- MO/AMJ style and small-scale readability per `Docs/ArtStyle.md`;
+- wire only the texture paths; do not change crop balance or the shared post-harvest Defs.
+
+**Next action:** Art/graphics should complete Hie first, then Kibi, using Awa only as the style anchor rather than as the final texture.
+
+**Result / references:** `AMJC_Plant_BarnyardMillet_Hie` and `AMJC_Plant_ProsoMillet_Kibi` currently point to `Things/Plants/FullGrown/AMJC_Awa` and `Things/Plants/Immature/AMJC_Awa`.
+
+### AMJ-017 — Grain-processing station graphics
+
+**Requested by:** Alpha visual-completion audit  \
+**Owner:** Art/graphics  \
+**Status:** OPEN
+
+The AMJ-specific `AMJC_GrainProcessingSpot` and `AMJC_GrainProcessingTable` are functionally validated but still use Medieval Overhaul StonecuttingSpot / Millstone graphics as development placeholders. Because these are AMJ-owned BuildingDefs normally visible during Stage A play, `Docs/Design.md §12.1.2` requires production graphics before the public Alpha.
+
+The two buildings should remain visually related but clearly communicate the existing gameplay distinction:
+- simple spot: improvised/manual, 1x1, slow;
+- processing table: purpose-built, 1x1, normal speed;
+- no gameplay/XML balance changes are part of the art task.
+
+**Next action:** Art/graphics should create production textures for both grain-processing buildings after the crop-art backlog, then perform the normal in-game size/readability check.
+
+**Result / references:** `Defs/ThingDefs_Buildings/Buildings_GrainProcessing.xml`; current temporary paths are `Things/Building/Production/StonecuttingSpot` and `Things/Building/Production/Millstone`.
 
 ### TEST-004 — Isolated E2E runtime-log hygiene and source attribution
 
