@@ -62,14 +62,18 @@ Use whichever label best fits the task:
 
 ### AMJ-005 — Shared millet post-harvest graphics
 
+**2026-10-04 author acceptance:** The latest in-game screenshot confirms the thicker-outline mature Awa and RawMillet sheaf render correctly. The author provisionally accepted this state ("一旦これでいいかな"). The requested texture-loading repair and outline refinement are complete; no further image edit or manual visual check is pending for this slice. This is human runtime/appearance confirmation, not a Pickle PASS.
+
+**2026-10-04 runtime confirmation / outline refinement:** The author's screenshot confirmed the recovered sheaf renders correctly in game, resolving the question-mark defect. The author subsequently requested thicker outlines for mature Awa and RawMillet to match MO wheat. Local image-edit replacements now update the mature PNG and all three RawMillet stack slots; immature Awa, hull/edible textures, XML paths and gameplay data are unchanged. Both Stage A static validators PASS. No new Pickle runtime PASS is claimed. The later screenshot confirmed and provisionally accepted this outline weight.
+
 **Requested by:** Agriculture/XML  \
 **Owner:** Art/graphics  \
-**Status:** IN PROGRESS
+**Status:** DONE
 
 Awa, Hie, and Kibi intentionally merge after harvest into the shared chain:
 `AMJC_RawMillet` → `AMJC_MilletInHull` → `AMJC_Millet`.
 
-These three ThingDefs still use temporary MO item graphics. Because they are shared by all three millet crops, their final art should be produced once as part of the shared millet chain rather than separately for each crop.
+These three ThingDefs now use AMJ-owned item graphics. Because they are shared by all three millet crops, their final art should be produced once as part of the shared millet chain rather than separately for each crop.
 
 The same locked AMJ art rules apply, with item icons flatter than plant art and with fewer/shallow shadows than the accepted plant asset.
 
@@ -83,9 +87,25 @@ A dedicated millet-sheaf texture was then produced in the locked AMJ/MO style an
 
 The first quantized 256×256 export rendered as a red question mark for `AMJC_RawMillet` while the unchanged hull and edible-millet textures still rendered normally. To isolate the image asset itself without changing Def wiring, all three `Graphic_StackCount` slots have now been replaced with the same accepted 256×256 RGBA source export, leaving paths and stack behavior unchanged.
 
-**Next action:** pull latest `main`, restart RimWorld, and verify only whether `雑穀束` now renders instead of a question mark. If it renders, judge size/readability; if it still does not, inspect the runtime missing-texture/Unity import error rather than making another blind image-format change.
+**2026-10-04 local diagnosis / Art request:** All three RawMillet PNGs before this repair were byte-identical and corrupt. Their IDAT chunk declares 44,080 bytes, but each entire file is only 14,485 bytes. Pillow fails to decode them; the IDAT boundary/CRC and zlib stream are invalid. Hull/edible millet and both Awa PNGs decode correctly. The sheaf export in `d848a75` also fails decoding; the older `53a6b05` asset decodes but depicts the rejected loose-grain artwork and must not be restored. XML directory paths, case, extension omission, `Graphic_StackCount`, and a/b/c naming agree with the working millet states; repository patches do not overwrite this wiring.
+
+**2026-10-04 recovered asset:** The author supplied the intact accepted sheaf PNG (1254x1254 RGBA, transparent). All three RawMillet slots are now losslessly encoded RGBA PNGs after uniform full-canvas downsampling to the established 256x256 size. No redraw, crop, palette change, XML path change, or GraphicClass change. Exported pixels match the resized supplied source exactly in all three slots. Export SHA256: 905e72d9939ab6a46aab75b86733f2903c3b0614aebc6bfd433c6d772ef606c4.
+
+**Validation:** Python Stage A and PowerShell Stage A validators PASS; git diff whitespace check PASS. E2E now stages repository Textures and checks Unity loading of all nine millet slots plus real stack materials at counts 1, 2, and stackLimit. The normal run-tests gate was attempted, but no scenarios ran: Quickstarts AbstractQuickstart failed type resolution during mod assembly loading. The isolated runtime log also reports SteamAPI.Init failure and fixture missing-graphic/translation errors. The stalled test process was terminated (runner exit -1). No Pickle/runtime ERROR-gate PASS is claimed.
+
+**Next action:** none for the accepted art/texture repair. Automated runtime follow-up is tracked separately as TEST-003.
 
 **Result / references:** shared processing implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; art-style baseline `2d4accb0c56bff6b81497a325877d5a5dc7d7710`; source artwork user-approved 2026-10-03.
+
+### TEST-003 — Texture integration runtime follow-up
+
+**Requested by:** Art/graphics / texture repair
+**Owner:** Testing/tooling
+**Status:** OPEN
+
+The PNG integrity regressions pass in both static validators. E2E now stages AMJ textures and checks Unity decoding plus stack-material selection. The attempted full gate did not run scenarios because the local helper assembly could not resolve Quickstarts AbstractQuickstart. The test log also contains Steam initialization failure and pre-existing fixture graphic/translation errors. Human in-game confirmation of the accepted art is separate from automated test success.
+
+**Next action:** resolve the local helper-loading prerequisite, rerun the normal isolated gate and require both scenario success and the runtime ERROR gate. Do not expand or replace the accepted artwork as part of testing.
 
 ### TEST-002 — AMJC cold-tolerance data regression
 
@@ -178,6 +198,8 @@ Context, constraints, and exact question/request.
 ## Completed handoffs
 
 ### AMJ-004 — Awa plant graphics
+
+**2026-10-04 author-requested replacement:** The author supplied a recovered sheet containing immature (left) and mature (right) Awa and approved removal of surrounding semitransparent haze. ImageGen extracted the two plants onto transparent backgrounds; the resulting assets were downsampled to 256x256 RGBA and replaced the existing immature/mature PNGs. These are image-edit outputs, not byte/pixel-identical crops of the supplied sheet. Existing Graphic_Random directory paths and plant XML remain unchanged. Hie, Kibi and temporary Soba graphics also reference these Awa paths, so they receive the replacement as well. Python and PowerShell Stage A validation PASS. The author subsequently confirmed the in-game plant rendering by screenshot and provisionally accepted the current mature outline. Automated runtime coverage is tracked separately as TEST-003.
 
 **Requested by:** Agriculture/XML  \
 **Owner:** Art/graphics  \

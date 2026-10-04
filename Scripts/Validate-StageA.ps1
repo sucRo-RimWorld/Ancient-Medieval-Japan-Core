@@ -41,6 +41,40 @@ function Get-DefNode($Xml, [string]$TypeName, [string]$DefName) {
 }
 
 $RepositoryRoot = (Resolve-Path -LiteralPath $RepositoryRoot).Path
+# Decode actual image bytes; signature/dimensions alone miss truncated IDAT exports.
+Add-Type -AssemblyName System.Drawing
+foreach ($texture in Get-ChildItem -LiteralPath (Join-Path $RepositoryRoot "Textures") -Filter *.png -Recurse -File) {
+    # GDI+ may tolerate truncated data; enforce complete chunk boundaries first.
+    $bytes = [System.IO.File]::ReadAllBytes($texture.FullName)
+    $offset = 8L
+    $ended = $false
+    while ($offset -lt $bytes.Length) {
+        if ($offset + 12 -gt $bytes.Length) { Fail "Truncated PNG chunk header: $($texture.FullName)" }
+        $length = ([long]$bytes[$offset] * 16777216) + ([long]$bytes[$offset + 1] * 65536) + ([long]$bytes[$offset + 2] * 256) + $bytes[$offset + 3]
+        $end = $offset + 12 + $length
+        if ($end -gt $bytes.Length) { Fail "Truncated PNG chunk ($length declared bytes): $($texture.FullName)" }
+        $kind = [System.Text.Encoding]::ASCII.GetString($bytes, [int]($offset + 4), 4)
+        if ($kind -eq "IEND") {
+            if ($length -ne 0 -or $end -ne $bytes.Length) { Fail "Invalid PNG end: $($texture.FullName)" }
+            $ended = $true
+        }
+        $offset = $end
+    }
+    if (-not $ended) { Fail "Missing PNG end: $($texture.FullName)" }
+    $stream = [System.IO.File]::OpenRead($texture.FullName)
+    $image = $null
+    try {
+        $image = [System.Drawing.Image]::FromStream($stream, $false, $true)
+        $bitmap = New-Object System.Drawing.Bitmap($image)
+        try { $null = $bitmap.GetPixel(0, 0) }
+        finally { $bitmap.Dispose() }
+    }
+    catch { Fail "PNG decode failed: $($texture.FullName): $($_.Exception.Message)" }
+    finally {
+        if ($null -ne $image) { $image.Dispose() }
+        $stream.Dispose()
+    }
+}
 $about = Load-Xml (Join-Path $RepositoryRoot "About\About.xml")
 $plants = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Plants\Plants_StageA.xml")
 $items = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Items\Items_StageA_Grains.xml")

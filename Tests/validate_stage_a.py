@@ -1,7 +1,44 @@
 from pathlib import Path
 import xml.etree.ElementTree as ET
+import struct
+import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
+
+def validate_png(path):
+    """Reject truncated/corrupted exports even when their IHDR looks valid."""
+    png = path.read_bytes()
+    assert png[:8] == b"\x89PNG\r\n\x1a\n", f"invalid PNG signature: {path}"
+    offset = 8
+    compressed = bytearray()
+    ended = False
+    while offset < len(png):
+        assert offset + 12 <= len(png), f"truncated PNG chunk header: {path}"
+        length = int.from_bytes(png[offset:offset + 4], "big")
+        end = offset + 12 + length
+        assert end <= len(png), f"truncated PNG chunk: {path} ({length} declared bytes)"
+        kind = png[offset + 4:offset + 8]
+        data = png[offset + 8:end - 4]
+        crc = int.from_bytes(png[end - 4:end], "big")
+        assert zlib.crc32(kind + data) == crc, f"invalid PNG CRC: {path} {kind!r}"
+        if kind == b"IDAT":
+            compressed.extend(data)
+        if kind == b"IEND":
+            assert length == 0 and end == len(png), f"invalid PNG end: {path}"
+            ended = True
+        offset = end
+    assert ended and compressed, f"missing PNG image/end: {path}"
+    width, height, depth, color, compression, filtering, interlace = struct.unpack(">IIBBBBB", png[16:29])
+    assert depth == 8 and color in (3, 6) and (compression, filtering, interlace) == (0, 0, 0), f"unexpected AMJ PNG encoding: {path}"
+    decoder = zlib.decompressobj()
+    pixels = decoder.decompress(compressed) + decoder.flush()
+    assert decoder.eof and not decoder.unused_data, f"incomplete PNG compressed stream: {path}"
+    stride = width * (4 if color == 6 else 1) + 1
+    assert len(pixels) == height * stride, f"invalid PNG scanline size: {path}"
+    assert all(pixels[y * stride] <= 4 for y in range(height)), f"invalid PNG filter: {path}"
+
+for texture in sorted((ROOT / "Textures").rglob("*.png")):
+    validate_png(texture)
 
 def load(rel):
     return ET.parse(ROOT / rel).getroot()

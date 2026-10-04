@@ -27,11 +27,13 @@ The canonical repository textures for this first accepted plant asset are:
 - `Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png`
 - `Textures/Things/Plants/Immature/AMJC_Awa/AMJC_Awa_Immature.png`
 
-The mature Awa production candidate preserves the accepted silhouette, is reduced to roughly 90% of the previous on-canvas size, and uses a warmer yellow-brown/ochre outline to sit closer to MO wheat. The immature asset uses the same outline/palette family at a clearly smaller silhouette.
+On 2026-10-04 the author replaced both production plant images with cutouts from the recovered immature/mature Awa sheet. The author approved removal of the surrounding semitransparent haze. ImageGen extraction preserves the requested two-green-head immature / three-gold-head mature composition and warm brown outline family, but is not a pixel-identical crop. Each separate transparent square output is downsampled to a 256×256 RGBA PNG without further palette changes. These replace the earlier 90%-mature / enlarged-immature exports; their map rendering and current outline weight were subsequently confirmed by the author. The existing Graphic_Random directory wiring is retained.
 
 Use it together with the MO reference textures when calibrating future AMJ plant art.
 
 ## 2. Palette and shading budget
+
+2026-10-04 author refinement: mature Awa and the shared RawMillet sheaf use stronger warm-brown contours calibrated against the installed MO mature wheat sprite. The local replacement thickens the contour with image editing, keeping the three-head composition, palette family and transparent 256×256 exports. Immature Awa and millet-in-hull are unchanged. This supersedes the previous thin-contour candidates. The author confirmed the in-game result by screenshot and provisionally accepted the current outline weight on 2026-10-04; no further art adjustment is requested for this slice.
 
 Treat these as upper limits, not targets to fill.
 

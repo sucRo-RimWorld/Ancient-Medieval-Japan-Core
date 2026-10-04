@@ -90,6 +90,9 @@ if errorlevel 1 exit /b 1
 xcopy "%ROOT%Defs" "%TARGET_MOD_DIR%\Defs" /E /I /Y >nul
 if errorlevel 1 exit /b 1
 
+xcopy "%ROOT%Textures" "%TARGET_MOD_DIR%\Textures" /E /I /Y >nul
+if errorlevel 1 exit /b 1
+
 if exist "%ROOT%Languages" (
     xcopy "%ROOT%Languages" "%TARGET_MOD_DIR%\Languages" /E /I /Y >nul
     if errorlevel 1 exit /b 1
