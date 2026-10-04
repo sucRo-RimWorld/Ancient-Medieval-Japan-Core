@@ -77,6 +77,7 @@ deps = [n.findtext("packageId") for n in about.findall("./modDependencies/li")]
 assert "DankPyon.Medieval.Overhaul" in deps
 
 ccto_patch = load("Patches/Compatibility/CCTO_StageA.xml")
+wheat_patch = load("Patches/MedievalOverhaul_StageA_Wheat.xml")
 plants = load("Defs/ThingDefs_Plants/Plants_StageA.xml")
 items = load("Defs/ThingDefs_Items/Items_StageA_Grains.xml")
 buildings = load("Defs/ThingDefs_Buildings/Buildings_GrainProcessing.xml")
@@ -146,6 +147,13 @@ for design_name, crop, death in (
     assert float(row[4]) == num(crop, "plant/fertilitySensitivity")
     assert row[7] == death
 
+wheat_design = markdown_row("Docs/Design.md", "### 4.2.1 Stage A畑作6作物の確定バランス", "小麦（MO）")
+assert float(wheat_design[1]) == 12
+assert float(wheat_design[2]) == 28
+assert float(wheat_design[3]) == 0.7
+assert float(wheat_design[4]) == 0.9
+assert wheat_design[7] == "-6℃"
+
 for cold_name, min_temp, death in (
     ("Foxtail millet", "8°C", "-3°C"),
     ("Barnyard millet", "5°C", "-2°C"),
@@ -156,6 +164,50 @@ for cold_name, min_temp, death in (
     row = markdown_row("Docs/Balance/Crops/ColdTolerance.md", "## 確定した固定枯死・休眠値", cold_name)
     assert row[1] == min_temp
     assert row[2] == death
+
+def top_wheat_patch(class_name, xpath):
+    matches = [
+        op for op in wheat_patch.findall("Operation")
+        if op.attrib.get("Class") == class_name and op.findtext("xpath") == xpath
+    ]
+    assert len(matches) == 1, f"expected one {class_name} operation for {xpath}"
+    return matches[0]
+
+fertility_op = top_wheat_patch(
+    "PatchOperationConditional",
+    '/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/plant/fertilityMin',
+)
+assert num(fertility_op, "match/value/fertilityMin") == 0.7
+assert num(fertility_op, "nomatch/value/fertilityMin") == 0.7
+
+thing_class_op = top_wheat_patch(
+    "PatchOperationReplace",
+    '/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/thingClass',
+)
+assert text(thing_class_op, "value/thingClass") == "Plant"
+
+top_wheat_patch(
+    "PatchOperationRemove",
+    '/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/modExtensions/li[@Class="MedievalOverhaul.SecondaryPlantDropExtension"]',
+)
+
+raw_wheat_category_op = top_wheat_patch(
+    "PatchOperationReplace",
+    '/Defs/ThingDef[defName="DankPyon_RawWheat"]/thingCategories',
+)
+assert text(raw_wheat_category_op, "value/thingCategories/li") == "Foods"
+
+flour_rot_op = top_wheat_patch(
+    "PatchOperationReplace",
+    '/Defs/ThingDef[defName="DankPyon_Flour"]/comps/li[@Class="CompProperties_Rottable"]/daysToRotStart',
+)
+assert num(flour_rot_op, "value/daysToRotStart") == 60
+
+for recipe_name in ("DankPyon_CraftFlour_Manual", "DankPyon_CraftFlour", "DankPyon_CraftFlourBulk"):
+    top_wheat_patch(
+        "PatchOperationRemove",
+        f'/Defs/RecipeDef[defName="{recipe_name}"]/products/Hay',
+    )
 
 jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_StageA.xml")
 assert text(jp, "AMJC_Plant_FoxtailMillet_Awa.label") == "アワ"
@@ -170,6 +222,7 @@ assert text(jp, "AMJC_Buckwheat.label") == "ソバ穀粒"
 assert text(jp, "AMJC_RawBarley.label") == "大麦束"
 assert text(jp, "AMJC_BarleyInHull.label") == "殻付き大麦"
 assert text(jp, "AMJC_Barley.label") == "大麦穀粒"
+assert text(jp, "AMJC_Wheat.label") == "小麦穀粒"
 mo_jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_MO_Overrides.xml")
 assert text(mo_jp, "DankPyon_RawWheat.label") == "小麦束"
 assert text(awa, "graphicData/graphicClass") == "Graphic_Random"
@@ -197,6 +250,7 @@ buckwheat = find_def(items, "ThingDef", "AMJC_Buckwheat")
 raw_barley = find_def(items, "ThingDef", "AMJC_RawBarley")
 barley_in_hull = find_def(items, "ThingDef", "AMJC_BarleyInHull")
 barley_grain = find_def(items, "ThingDef", "AMJC_Barley")
+wheat_grain = find_def(items, "ThingDef", "AMJC_Wheat")
 
 def assert_stack_graphic(node, tex_path, rel_dir, stem):
     assert text(node, "graphicData/graphicClass") == "Graphic_StackCount"
@@ -243,13 +297,18 @@ assert rot_days(buckwheat) == 60
 assert rot_days(raw_barley) == 120
 assert rot_days(barley_in_hull) == 120
 assert rot_days(barley_grain) == 90
+assert rot_days(wheat_grain) == 90
 assert num(millet, "statBases/Nutrition") == 0.05
 assert num(buckwheat, "statBases/Nutrition") == 0.05
 assert num(barley_grain, "statBases/Nutrition") == 0.05
+assert num(wheat_grain, "statBases/Nutrition") == 0.05
 
 for node in (raw, in_hull, millet, raw_buckwheat, buckwheat_in_hull, buckwheat, raw_barley, barley_in_hull, barley_grain):
     cats = [li.text for li in node.findall("./thingCategories/li")]
     assert "DankPyon_Cereal" not in cats
+
+wheat_categories = [li.text for li in wheat_grain.findall("./thingCategories/li")]
+assert "DankPyon_Cereal" in wheat_categories
 
 spot = find_def(buildings, "ThingDef", "AMJC_GrainProcessingSpot")
 table = find_def(buildings, "ThingDef", "AMJC_GrainProcessingTable")
@@ -299,6 +358,8 @@ cases = {
     "AMJC_ThreshBarleyBulk": (120, "AMJC_RawBarley", 10, {"AMJC_BarleyInHull": 10, "DankPyon_Straw": 10}),
     "AMJC_HullBarley": (10, "AMJC_BarleyInHull", 1, {"AMJC_Barley": 1}),
     "AMJC_HullBarleyBulk": (80, "AMJC_BarleyInHull", 10, {"AMJC_Barley": 10}),
+    "AMJC_ThreshWheat": (15, "DankPyon_RawWheat", 1, {"AMJC_Wheat": 1, "DankPyon_Straw": 1}),
+    "AMJC_ThreshWheatBulk": (120, "DankPyon_RawWheat", 10, {"AMJC_Wheat": 10, "DankPyon_Straw": 10}),
 }
 
 for name, (work, input_def, input_count, products) in cases.items():
@@ -341,6 +402,11 @@ assert product_count(barley_thresh, "AMJC_BarleyInHull") == 1
 assert product_count(barley_thresh, "DankPyon_Straw") == 1
 assert product_count(barley_hull, "AMJC_Barley") == 1
 assert 22 * product_count(barley_thresh, "AMJC_BarleyInHull") * product_count(barley_hull, "AMJC_Barley") == 22
+
+wheat_thresh = recipe("AMJC_ThreshWheat")
+assert product_count(wheat_thresh, "AMJC_Wheat") == 1
+assert product_count(wheat_thresh, "DankPyon_Straw") == 1
+assert 28 * product_count(wheat_thresh, "AMJC_Wheat") == 28
 
 fixture = load("Tests/E2E/MOFixture/Defs/AMJ_MO_Prereqs.xml")
 fixture_names = {n.findtext("defName") for n in fixture}
