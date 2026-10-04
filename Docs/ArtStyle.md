@@ -179,6 +179,29 @@ Before committing any PNG asset to GitHub, run `python Tests/validate_png_assets
 
 When binary textures are written through automation or Git/GitHub APIs, validate the bytes that will actually be committed. If a binary replacement is recovered from repository history, prefer an exact previously validated blob over re-encoding or regenerating accepted art.
 
+
+### Workshop cover generation workflow
+
+For AMJ Workshop cover / thumbnail images, do not generate immediately from a one-line subject request.
+
+Use this sequence:
+
+1. First propose the **composition and visual design in words**.
+2. Include the main motif(s), layout, symbolic simplification, and how the image differs from other AMJ covers.
+3. Wait for the author to accept or revise that proposal.
+4. Only after the composition/design direction is accepted, generate the image.
+5. If the author changes the visual direction after generation, return to a short verbal composition/design proposal before regenerating when the change is substantial.
+
+Current shared cover rules:
+- reuse the fixed AMJ common-left template rather than regenerating it;
+- keep all cover art **human-free**;
+- make the addon-specific right side symbolic and strongly simplified rather than a scenic landscape;
+- use a low-saturation, limited palette;
+- aim for roughly three colors per visual element, with only a very light gradient where useful;
+- preserve strong small-thumbnail readability;
+- avoid stereotypical Japanese symbols unless they are genuinely part of the feature being depicted.
+
+
 ## 8. Rejection criteria
 
 Reject and regenerate when any of the following is true:
