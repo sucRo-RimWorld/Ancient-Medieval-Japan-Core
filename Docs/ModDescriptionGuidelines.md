@@ -9,6 +9,8 @@
 
 **READMEとWorkshopの役割は分ける。** READMEは根拠、詳細仕様、全数値、開発・検証情報まで保持する詳細資料とし、WorkshopはREADMEの短縮コピーにはしない。Workshopでは、導入判断に必要な「何を変えるModか」「特徴・設計方針」「主要な対応範囲」「依存関係」「セーブ互換性」など重要事項だけを選び、詳細はREADMEへ誘導する。
 
+**Workshopの本文は日本語を先に書く。** README・設計書を事実関係の正本として参照しながら、まず日本語として自然に読めるWorkshop説明を完成させ、その確定した日本語版を英訳する。英語版で独自に説明を追加・削除せず、両言語で実質的な内容を一致させる。
+
 基準資料:
 - [CCTO README（公開内容の正本）](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/README.md)
 - [CCTO Workshop説明](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/WorkshopDescription.md)
@@ -51,7 +53,7 @@
 ## 正本・同期・確認
 
 - 各ModのREADMEを公開内容の正本とする。未整備の開発版は設計書・本ガイドラインを基に公開準備時に整える。
-- README → Workshop説明 → 貼り付け用の英語・日本語BBCodeの順で、Workshop掲載対象の情報を同期する。READMEの版番号・検証記録まで全文転記しない。About.xmlの概要・依存関係・互換情報も整合させる。
+- README・設計書で事実関係を確認 → 日本語Workshop説明を自然な日本語で作成 → その確定版を英訳、の順で同期する。READMEの版番号・検証記録まで全文転記しない。About.xmlの概要・依存関係・互換情報も整合させる。
 - Workshopは対応するBBCodeを使い、表タグや長いコードブロックを避ける。数値の詳細はREADMEへ誘導する。
 - 英語・日本語それぞれの説明をUTF-8で8,000バイト以内に収める。
 - 対応するRimWorldバージョン・対象数・掲載機能を揃える。版番号・検証記録は管理先で正確に維持し、既存の検証結果を別の試験の証拠に転用しない。
