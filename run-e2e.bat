@@ -35,19 +35,10 @@ if errorlevel 1 exit /b 1
 if not exist "%REPORT_DIR%" mkdir "%REPORT_DIR%"
 
 set "SOURCE_STATE=%REPORT_DIR%\source-state.txt"
-> "%SOURCE_STATE%" echo sourceRoot=%ROOT%
->> "%SOURCE_STATE%" echo generatedAt=%DATE% %TIME%
-where git >nul 2>&1
-if not errorlevel 1 (
-    if exist "%ROOT%.git" (
-        for /f %%H in ('git -C "%ROOT%" rev-parse HEAD 2^>nul') do >> "%SOURCE_STATE%" echo gitHead=%%H
-    ) else (
-        >> "%SOURCE_STATE%" echo gitHead=unavailable-not-a-git-checkout
-    )
-) else (
-    >> "%SOURCE_STATE%" echo gitHead=unavailable-git-not-found
-)
-for /f "tokens=*" %%L in ('findstr /B /C:"  Scenario:" "%ROOT%Tests\E2E\TestMod\Pickle\Features\stage-a.feature"') do >> "%SOURCE_STATE%" echo feature=%%L
+powershell -NoProfile -ExecutionPolicy Bypass -File "%ROOT%Scripts\Write-TestSourceState.ps1" ^
+    -RepositoryRoot "%ROOT%." ^
+    -OutputPath "%SOURCE_STATE%"
+if errorlevel 1 exit /b 1
 
 echo.
 echo Running AMJ Stage A Pickle suite...

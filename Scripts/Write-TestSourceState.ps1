@@ -1,0 +1,70 @@
+param(
+    [Parameter(Mandatory = $true)]
+    [string]$RepositoryRoot,
+
+    [Parameter(Mandatory = $true)]
+    [string]$OutputPath
+)
+
+$ErrorActionPreference = "Stop"
+$RepositoryRoot = (Resolve-Path -LiteralPath $RepositoryRoot).Path
+
+$lines = New-Object System.Collections.Generic.List[string]
+$lines.Add("sourceRoot=$RepositoryRoot")
+$lines.Add("generatedAt=$([DateTimeOffset]::Now.ToString('o'))")
+
+$gitHead = $null
+try {
+    $gitOutput = & git -C $RepositoryRoot rev-parse HEAD 2>$null
+    if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace([string]$gitOutput)) {
+        $gitHead = ([string]$gitOutput).Trim()
+    }
+}
+catch {
+    $gitHead = $null
+}
+if ([string]::IsNullOrWhiteSpace($gitHead)) {
+    $gitHead = "unavailable"
+}
+$lines.Add("gitHead=$gitHead")
+
+$trackedFiles = @(
+    "Tests\E2E\StageASteps.cs",
+    "Tests\E2E\TestMod\Pickle\Features\stage-a.feature",
+    "Defs\ThingDefs_Plants\Plants_StageA.xml",
+    "Defs\ThingDefs_Items\Items_StageA_Grains.xml",
+    "Defs\RecipeDefs\Recipes_GrainProcessing.xml",
+    "Patches\Compatibility\CCTO_StageA.xml"
+)
+
+foreach ($relativePath in $trackedFiles) {
+    $fullPath = Join-Path $RepositoryRoot $relativePath
+    if (-not (Test-Path -LiteralPath $fullPath)) {
+        throw "Required source-state file was not found: $fullPath"
+    }
+    $hash = (Get-FileHash -LiteralPath $fullPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    $key = ($relativePath -replace '\\','/')
+    $lines.Add("sha256[$key]=$hash")
+}
+
+$featurePath = Join-Path $RepositoryRoot "Tests\E2E\TestMod\Pickle\Features\stage-a.feature"
+foreach ($line in Get-Content -LiteralPath $featurePath -Encoding UTF8) {
+    if ($line -match '^\s*Scenario:\s*(.+)$') {
+        $lines.Add("feature=$($Matches[1].Trim())")
+    }
+}
+
+$parent = Split-Path -Parent $OutputPath
+if (-not [string]::IsNullOrWhiteSpace($parent)) {
+    New-Item -ItemType Directory -Force -Path $parent | Out-Null
+}
+
+[System.IO.File]::WriteAllLines(
+    $OutputPath,
+    $lines,
+    (New-Object System.Text.UTF8Encoding($false))
+)
+
+Write-Host "[OK] Wrote AMJ E2E source-state metadata:"
+Write-Host "     $OutputPath"
+exit 0

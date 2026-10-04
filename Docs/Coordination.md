@@ -101,11 +101,11 @@ The first quantized 256×256 export rendered as a red question mark for `AMJC_Ra
 
 **Requested by:** Art/graphics / texture repair
 **Owner:** Testing/tooling
-**Status:** OPEN
+**Status:** IN PROGRESS
 
-The PNG integrity regressions pass in both static validators. E2E now stages AMJ textures and checks Unity decoding plus stack-material selection. The attempted full gate did not run scenarios because the local helper assembly could not resolve Quickstarts AbstractQuickstart. The test log also contains Steam initialization failure and pre-existing fixture graphic/translation errors. Human in-game confirmation of the accepted art is separate from automated test success.
+The PNG integrity regressions pass in both static validators. E2E now stages AMJ textures and checks Unity decoding plus stack-material selection. The 2026-10-04 16:16 JST rerun reaches all five current scenarios and the previous fixture/texture Vanilla ERROR entries are gone; only the first crop/grain scenario still fails with a bare NullReference. Inspection shows that scenario also performs the shared millet runtime texture test. That helper previously created a Thing and dereferenced `item.Graphic` only to reach `Graphic_StackCount`; the test now resolves `Graphic_StackCount` directly from `graphicData` and calls `SubGraphicForStackCount`, preserving the intended stack-selection assertion without the unrelated Thing/style path. Human in-game confirmation of the accepted art remains separate from automated test success.
 
-**Next action:** resolve the local helper-loading prerequisite, rerun the normal isolated gate and require both scenario success and the runtime ERROR gate. Do not expand or replace the accepted artwork as part of testing.
+**Next action:** rerun the latest `main`. Require 5/5 plus zero ERROR-level entries. If it still fails, the crop/grain scenario now reports a logical checkpoint and `source-state.txt` contains SHA-256 fingerprints for the exact local test/data files. Do not expand or replace the accepted artwork as part of testing.
 
 ### TEST-002 — AMJC cold-tolerance data regression
 
@@ -232,9 +232,9 @@ Harness corrections:
 - in the isolated profile, fail the automated gate on **any** ERROR-level runtime entry rather than only entries carrying an AMJC mod_id;
 - emit `TestResults/Pickle/source-state.txt` containing the local Git HEAD and scenario names so uploaded reports can be tied to the exact local test source.
 
-**Validation:** GitHub Stage A validation passed for harness cleanup `005442b2b12719cb77d4643479716f93866d444d`, explicit null-diagnostic hardening `b0ae057cc4beeea01b47c0060f4c1e3ffce2ab97`, and the Windows source-state syntax fix `962fb1cc7f741b8c6c4ee229724824b828a9f59a`. The uploaded 4/5 report is intentionally not counted as Barley validation because it contains the older "Loaded AMJ millet CCTO..." scenario name and therefore predates the current Barley suite. The next report must show the current "Loaded AMJ crop CCTO..." scenario name, 5/5, and zero ERROR-level entries.
+**Validation:** GitHub Stage A validation passed for harness cleanup `005442b2b12719cb77d4643479716f93866d444d`, explicit null-diagnostic hardening `b0ae057cc4beeea01b47c0060f4c1e3ffce2ab97`, and the Windows source-state syntax fix `962fb1cc7f741b8c6c4ee229724824b828a9f59a`. The uploaded 4/5 report is intentionally not counted as Barley validation because it contains the older "Loaded AMJ millet CCTO..." scenario name and therefore predates the current Barley suite. The 16:16 JST rerun now shows the current "Loaded AMJ crop CCTO..." scenario name and confirms the previous fixture/texture Vanilla ERROR entries are gone. It still fails 1/5 in the first crop/grain scenario with a bare NullReference from the local step assembly. Diagnostic hardening is therefore extended with explicit logical checkpoints and SHA-256 source fingerprints; the next report must show 5/5 and no ERROR-level entries other than none.
 
-**Next action:** rerun the latest local main after this harness change; inspect `source-state.txt`, `summary.json`, and `Player.log` if it fails.
+**Next action:** rerun the latest local main after the checkpoint/source-fingerprint change. If the first scenario still fails, its message must identify the exact checkpoint; compare the SHA-256 entries in `source-state.txt` with `main` before changing data.
 
 **Result / references:** harness cleanup `005442b2b12719cb77d4643479716f93866d444d`; explicit failure diagnostics `b0ae057cc4beeea01b47c0060f4c1e3ffce2ab97`; batch source-state fix `962fb1cc7f741b8c6c4ee229724824b828a9f59a`.
 
