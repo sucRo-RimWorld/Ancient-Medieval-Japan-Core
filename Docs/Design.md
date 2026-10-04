@@ -263,6 +263,7 @@ AMJ側のPlantDef・ThingDef・C#等が技術的にMOのDefを直接参照しな
 - 最初のStage A栽培スライス: `AMJC_Plant_FoxtailMillet_Awa`
 - アワ・ヒエ・キビ共通の未脱穀収穫物: `AMJC_RawMillet`
 - CCTOは任意依存のままとし、導入時のみAMJ側互換PatchからCCTOのDefModExtensionを付与する
+- AMJC固有作物の耐寒数値・設計表・候補範囲・Def対応・互換XMLはAMJCが所有し、CCTO側には置かない。CCTOはフレームワークとして利用する
 
 #### MOをプラットフォームとして使う
 
@@ -841,6 +842,8 @@ Coreの初回公開時には、独立姉妹Mod **Japanese Iron Resources / 地�
 冬越し・低温成長・霜耐性は別要素として扱う。
 
 最初の公開AlphaではXMLだけで表現可能な範囲を優先する。低温枯死についてはCore独自のC#実装を重複して持たず、独立姉妹Mod **Crop Cold Tolerance Overhaul（CCTO）** が導入されている場合に、AMJ側の互換PatchからCCTOのXML-facing extensionを付与して固定枯死温度を設定する。CCTO未導入時も、AMJ PlantDef自身の成長速度・肥沃度・最低成長温度・加工等のCore仕様は成立させる。
+
+AMJC固有作物の耐寒値と保存候補範囲の正本は [AMJC作物の耐寒データ](Balance/Crops/ColdTolerance.md) に置く。最低成長温度はAMJCのPlantDef、固定枯死・休眠はAMJC側の条件付き互換XMLが持ち、CCTOの実装予定表から参照・転載する運用は行わない。
 
 ### 4.2.1 Stage A畑作6作物の確定バランス
 

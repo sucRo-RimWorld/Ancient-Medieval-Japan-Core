@@ -31,7 +31,9 @@ Required:
 - Medieval Overhaul
 
 Optional:
-- Crop Cold Tolerance Overhaul (CCTO), used for explicit cold-death behavior when installed.
+- Crop Cold Tolerance Overhaul (CCTO), used as the framework for explicit cold-death/dormancy behavior when installed. AMJC owns its custom crops' temperature data and optional compatibility XML.
+
+[AMJC crop cold-tolerance values and data ownership](Docs/Balance/Crops/ColdTolerance.md)
 
 ## Save compatibility
 
@@ -43,3 +45,4 @@ Adding to or removing from existing saves has not been verified. AMJC adds custo
 - [Millet cultivation balance](Docs/Balance/Crops/Millet_Cultivation_Balance.md)
 - [Art style](Docs/ArtStyle.md)
 - [Development tools and testing](Docs/DevelopmentTools.md)
+
