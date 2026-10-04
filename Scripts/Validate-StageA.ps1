@@ -352,10 +352,25 @@ $moActiveXmlFiles = @(Get-ChildItem -LiteralPath $moActiveRoot -Recurse -File -F
 
 function Get-MoDef([string]$TypeName,[string]$DefName) {
     $pattern = "<defName>$DefName</defName>"
-    $files = @($moActiveXmlFiles | Where-Object { Select-String -LiteralPath $_.FullName -Pattern $pattern -SimpleMatch -Quiet })
-    if ($files.Count -ne 1) { Fail "Expected exactly one active MO $TypeName '$DefName', found $($files.Count)." }
-    $xml = Load-Xml $files[0].FullName
-    return Get-DefNode $xml $TypeName $DefName
+    $matches = New-Object System.Collections.Generic.List[System.Xml.XmlNode]
+
+    foreach ($file in $moActiveXmlFiles) {
+        if (-not (Select-String -LiteralPath $file.FullName -Pattern $pattern -SimpleMatch -Quiet)) {
+            continue
+        }
+
+        $xml = Load-Xml $file.FullName
+        $node = $xml.SelectSingleNode("/Defs/$TypeName[defName='$DefName']")
+        if ($null -ne $node) {
+            $matches.Add($node)
+        }
+    }
+
+    if ($matches.Count -ne 1) {
+        Fail "Expected exactly one active MO $TypeName '$DefName', found $($matches.Count)."
+    }
+
+    return $matches[0]
 }
 
 $moWheatPlant = Get-MoDef "ThingDef" "DankPyon_Plant_Wheat"
