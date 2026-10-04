@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Crop Cold Tolerance Overhaul</name>
+  <author>AMJ Core test fixture</author>
+  <packageId>sucro.ancientmedievaljapan.core.cctofixture</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+
+  <description>Developer-only CCTO XML API fixture used to validate AMJC-owned compatibility data. It does not test CCTO runtime behavior and must not be published.</description>
+</ModMetaData>

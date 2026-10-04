@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using RimWorks.Pickle;
 using RimWorld;
 using Verse;
@@ -43,6 +44,37 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(inHull.ingestible != null && inHull.ingestible.preferability == FoodPreferability.NeverForNutrition, "Millet in hull must be non-food for normal nutrition.");
             ctx.Assert(millet.ingestible != null, "Edible millet must have ingestible properties.");
             ctx.Assert(Math.Abs(ReadStatBase(ctx, millet, StatDefOf.Nutrition) - 0.05f) < 0.001f, "Edible millet nutrition should be 0.05.");
+        }
+
+        [Then("loaded Awa CCTO compatibility data matches the AMJC cold tolerance design")]
+        public void AssertLoadedAwaCctoCompatibility(PickleContext ctx)
+        {
+            ThingDef awa = RequireThingDef(ctx, "AMJC_Plant_FoxtailMillet_Awa");
+            List<DefModExtension> extensions = awa.modExtensions == null
+                ? new List<DefModExtension>()
+                : awa.modExtensions
+                    .Where(x => x != null && x.GetType().FullName == "CropColdToleranceOverhaul.ColdToleranceExtension")
+                    .ToList();
+
+            ctx.Assert(extensions.Count == 1, "Awa must load exactly one CCTO ColdToleranceExtension.");
+            if (extensions.Count != 1)
+            {
+                return;
+            }
+
+            object extension = extensions[0];
+            Type extensionType = extension.GetType();
+            FieldInfo deathField = extensionType.GetField("coldDeathTemperature", BindingFlags.Instance | BindingFlags.Public);
+            FieldInfo dormancyField = extensionType.GetField("coldDormancy", BindingFlags.Instance | BindingFlags.Public);
+
+            ctx.Require(deathField != null, "CCTO fixture extension is missing coldDeathTemperature.");
+            ctx.Require(dormancyField != null, "CCTO fixture extension is missing coldDormancy.");
+
+            float coldDeathTemperature = Convert.ToSingle(deathField.GetValue(extension));
+            bool coldDormancy = Convert.ToBoolean(dormancyField.GetValue(extension));
+
+            ctx.Assert(Math.Abs(coldDeathTemperature - (-3f)) < 0.001f, "Awa CCTO cold-death temperature should be -3 C.");
+            ctx.Assert(!coldDormancy, "Awa should use fixed cold death, not cold dormancy.");
         }
 
         [Then("loaded AMJ grain processing buildings and recipes match the design values")]

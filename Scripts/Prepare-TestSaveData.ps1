@@ -26,6 +26,7 @@ $required = @(
     "brrainz.harmony",
     "ludeon.rimworld",
     "sucro.ancientmedievaljapan.core.mofixture",
+    "sucro.ancientmedievaljapan.core.cctofixture",
     "sucro.ancientmedievaljapan.core.e2etarget",
     "rimworks.rimlogging",
     "rimworks.pickle",

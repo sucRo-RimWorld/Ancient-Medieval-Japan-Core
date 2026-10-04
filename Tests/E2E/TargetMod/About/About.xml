@@ -16,6 +16,7 @@
 
   <loadAfter>
     <li>sucro.ancientmedievaljapan.core.mofixture</li>
+    <li>sucro.ancientmedievaljapan.core.cctofixture</li>
   </loadAfter>
 
   <description>Developer-only staged copy of AMJ Core runtime XML for isolated E2E testing. Do not publish.</description>
