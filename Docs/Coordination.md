@@ -270,11 +270,11 @@ AMJ integration:
 - change MO flour storage from 90 to the AMJ flour baseline of 60 days;
 - leave MO/CCTO wheat temperature values owned by CCTO rather than duplicating them in AMJC compatibility XML.
 
-**Validation:** extend static validation, installed-MO source audit, and the existing five-scenario Pickle gate before marking DONE.
+**Validation:** implementation and all repository-side regression coverage are now in place. Python static validation checks the canonical wheat row, AMJ wheat Patch structure, `AMJC_Wheat`, wheat threshing recipes and 28→28 quantity preservation. Local PowerShell validation additionally audits the installed MO 1.6 source assumptions before running. The isolated Pickle fixture reproduces MO's pre-patch wheat state and the existing five-scenario suite checks the final loaded crop, threshing, flour storage, milling filter/Hay behavior, quantity preservation and meal compatibility. GitHub Actions is green through `201bbe90aa92a0d2d55ac9d1d16c92bdf6f28c11`.
 
-**Next action:** add regression coverage and run the normal automated gate.
+**Next action:** run the normal development-PC `run-tests.bat` gate on the latest `main`. Mark AMJ-012 DONE only after 5/5 Pickle PASS + zero runtime ERROR entries.
 
-**Result / references:** implementation commit follows.
+**Result / references:** implementation `91141565150bdf696bac1b5915257122bcd0958e`; Python/static coverage `f0e0cc04ed9ecca58f440a40650527a51ea4cb17`; installed-MO source audit `a97d9e84fad476a13632f2c81fc160d0007aa3e2`; E2E fixture `d772e9ceb6cd1f30953ab85a3a95f11977b4f898`; loaded-Def/Pickle coverage `bc8aea41e460986209893ead9881812d6b7fe0c0`; source fingerprints `2a55d4b72efbeb9fea9b7f3165c1c20a27025f3d`.
 
 ### AMJ-013 — Wheat grain graphics
 
@@ -305,11 +305,11 @@ Reconciled ownership:
 
 At the shared 0.50 integration point, Stage A intent is: Soba/Kibi/Awa/Hie/Barley sowable, MO Wheat not sowable; growth-factor ordering Soba 87.5% > Kibi 85% > Awa 80% > Hie 75% > Barley 70%.
 
-**Validation:** add static and loaded-Def regression coverage for the 0.50 fertility integration point. Environment's own terrain placement/runtime validation remains owned by ENV-004 and is not duplicated here.
+**Validation:** Core design ownership is reconciled and automated coverage is added. Python/static, PowerShell and loaded-Def Pickle tests now lock fertility 0.50 as the cross-repository integration point: Soba/Kibi/Awa/Hie/Barley are sowable, MO Wheat is not, and the growth-factor order is Soba 87.5% > Kibi 85% > Awa 80% > Hie 75% > Barley 70%. GitHub Actions passed for both design reconciliation `c841b66547f51af79743a72d3db20d38b7345816` and regression coverage `201bbe90aa92a0d2d55ac9d1d16c92bdf6f28c11`. Environment's own terrain placement/runtime validation remains owned by ENV-004 and is not duplicated here.
 
 **Next action:** run the normal Core `run-tests.bat` after the fertility assertions are added. AMJ-014 becomes DONE after the existing five-scenario Pickle suite and zero-ERROR gate pass.
 
-**Result / references:** Core design reconciliation commit follows; Environment source of truth is ENV-004 / `Docs/Design.md §10`.
+**Result / references:** Core design reconciliation `c841b66547f51af79743a72d3db20d38b7345816`; Core fertility regression coverage `201bbe90aa92a0d2d55ac9d1d16c92bdf6f28c11`; Environment coordination alignment `7a1d59288eca9b42c2dfd4573295d981177c9a7d`; Environment source of truth remains ENV-004 / `Docs/Design.md §10`.
 
 Add new items using the following form.
 
