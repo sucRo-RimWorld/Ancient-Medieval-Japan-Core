@@ -75,6 +75,14 @@ Any new RimWorld runtime-test harness added to this repository must include this
 Use the CCTO-based shared [mod description guidelines](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Core/blob/main/Docs/ModDescriptionGuidelines.md) when writing or updating public descriptions. Include save compatibility in every mod description, stating addition/removal conditions accurately for the mod's implementation. Keep README, Workshop English/Japanese BBCode, and About.xml consistent; refine the shared baseline as presentation improves.
 
 
+## Historical description audit (AMJ common)
+
+Use `Docs/HistoricalDescriptionGuidelines.md` whenever AMJ adopts, patches, retextures, selects, or localizes Vanilla / Medieval Overhaul items, plants, animals, or comparable content.
+
+Audit inherited Vanilla/MO prose for historical fit with ancient/medieval Japan and rewrite unsuitable text. AMJ-authored descriptions should include supported historical facts and, where supportable, a meaningful difference from modern Japan, modern use, or modern distribution. Do not invent a medieval counterpart for historically unsuitable content; record it for a separate keep/replace/remove design decision.
+
+Historical description text is Japanese-first: research and draft Japanese, obtain author approval, then translate only the approved Japanese text into English. Keep source/rationale notes in durable design/localization documentation rather than only in Coordination.
+
 ## CCTO framework and crop-data ownership
 
 AMJC owns its custom crops' temperature values, design/balance tables (including archived candidate ranges), Def mappings, optional CCTO compatibility XML, and validation. Maintain these here, not in CCTO. Use `Docs/Balance/Crops/ColdTolerance.md` together with the cultivation design and implemented XML as the local source of truth. CCTO remains an optional framework; its own Vanilla/MO support data remains owned by CCTO.
