@@ -81,6 +81,7 @@ $items = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Items\Items_StageA_
 $buildings = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Buildings\Buildings_GrainProcessing.xml")
 $recipes = Load-Xml (Join-Path $RepositoryRoot "Defs\RecipeDefs\Recipes_GrainProcessing.xml")
 $cctoPatch = Load-Xml (Join-Path $RepositoryRoot "Patches\Compatibility\CCTO_StageA.xml")
+$wheatPatch = Load-Xml (Join-Path $RepositoryRoot "Patches\MedievalOverhaul_StageA_Wheat.xml")
 
 Assert-Text (Node-Text $about "/ModMetaData/packageId" "About.xml packageId") "sucro.ancientmedievaljapan.core" "About.xml packageId"
 if ($null -eq $about.SelectSingleNode("/ModMetaData/modDependencies/li[packageId='DankPyon.Medieval.Overhaul']")) { Fail "About.xml must require Medieval Overhaul." }
@@ -223,7 +224,43 @@ Assert-Number (Node-Text $barleyInHull "comps/li[@Class='CompProperties_Rottable
 Assert-Number (Node-Text $barleyGrain "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Edible barley rot days") 90 "Edible barley rot days"
 Assert-Number (Node-Text $barleyGrain "statBases/Nutrition" "Barley nutrition") 0.05 "Barley nutrition"
 
-if ($items.OuterXml -match "<li>DankPyon_Cereal</li>") { Fail "AMJ millet stages must not be registered to DankPyon_Cereal." }
+$wheatGrain = Get-DefNode $items "ThingDef" "AMJC_Wheat"
+Assert-Number (Node-Text $wheatGrain "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "Wheat grain rot days") 90 "Wheat grain rot days"
+Assert-Number (Node-Text $wheatGrain "statBases/Nutrition" "Wheat grain nutrition") 0.05 "Wheat grain nutrition"
+Assert-Text (Node-Text $wheatGrain "thingCategories/li" "Wheat grain cereal category") "DankPyon_Cereal" "Wheat grain cereal category"
+
+foreach ($node in @($raw,$inHull,$millet,$rawBuckwheat,$buckwheatInHull,$buckwheat,$rawBarley,$barleyInHull,$barleyGrain)) {
+    if ($null -ne $node.SelectSingleNode("thingCategories/li[text()='DankPyon_Cereal']")) {
+        Fail "$($node.defName) must not be registered to DankPyon_Cereal."
+    }
+}
+
+$fertilityPatch = $wheatPatch.SelectSingleNode('/Patch/Operation[@Class="PatchOperationConditional"][xpath=''/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/plant/fertilityMin'']')
+if ($null -eq $fertilityPatch) { Fail "Wheat patch is missing fertilityMin conditional." }
+Assert-Number (Node-Text $fertilityPatch "match/value/fertilityMin" "Wheat patch match fertilityMin") 0.7 "Wheat patch match fertilityMin"
+Assert-Number (Node-Text $fertilityPatch "nomatch/value/fertilityMin" "Wheat patch nomatch fertilityMin") 0.7 "Wheat patch nomatch fertilityMin"
+
+$thingClassPatch = $wheatPatch.SelectSingleNode('/Patch/Operation[@Class="PatchOperationReplace"][xpath=''/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/thingClass'']')
+if ($null -eq $thingClassPatch) { Fail "Wheat patch is missing thingClass replacement." }
+Assert-Text (Node-Text $thingClassPatch "value/thingClass" "Wheat patch thingClass") "Plant" "Wheat patch thingClass"
+
+$secondaryDropPatch = $wheatPatch.SelectSingleNode('/Patch/Operation[@Class="PatchOperationRemove"][xpath=''/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/modExtensions/li[@Class="MedievalOverhaul.SecondaryPlantDropExtension"]'']')
+if ($null -eq $secondaryDropPatch) { Fail "Wheat patch must remove MO harvest-time secondary drop." }
+
+$rawWheatCategoryPatch = $wheatPatch.SelectSingleNode('/Patch/Operation[@Class="PatchOperationReplace"][xpath=''/Defs/ThingDef[defName="DankPyon_RawWheat"]/thingCategories'']')
+if ($null -eq $rawWheatCategoryPatch) { Fail "Wheat patch is missing RawWheat category replacement." }
+Assert-Text (Node-Text $rawWheatCategoryPatch "value/thingCategories/li" "Raw wheat patched category") "Foods" "Raw wheat patched category"
+
+$flourRotPatch = $wheatPatch.SelectSingleNode('/Patch/Operation[@Class="PatchOperationReplace"][xpath=''/Defs/ThingDef[defName="DankPyon_Flour"]/comps/li[@Class="CompProperties_Rottable"]/daysToRotStart'']')
+if ($null -eq $flourRotPatch) { Fail "Wheat patch is missing flour rot replacement." }
+Assert-Number (Node-Text $flourRotPatch "value/daysToRotStart" "Patched flour rot days") 60 "Patched flour rot days"
+
+foreach ($recipeName in @("DankPyon_CraftFlour_Manual","DankPyon_CraftFlour","DankPyon_CraftFlourBulk")) {
+    $removeCount = @($wheatPatch.SelectNodes('/Patch/Operation[@Class="PatchOperationRemove"]') | Where-Object {
+        $_.xpath.InnerText -eq ('/Defs/RecipeDef[defName="' + $recipeName + '"]/products/Hay')
+    }).Count
+    if ($removeCount -ne 1) { Fail "Wheat patch must remove Hay exactly once from $recipeName." }
+}
 
 $spot = Get-DefNode $buildings "ThingDef" "AMJC_GrainProcessingSpot"
 $table = Get-DefNode $buildings "ThingDef" "AMJC_GrainProcessingTable"
@@ -278,6 +315,51 @@ Assert-Recipe "AMJC_ThreshBarley" 15 "AMJC_RawBarley" 1 @{ AMJC_BarleyInHull = 1
 Assert-Recipe "AMJC_ThreshBarleyBulk" 120 "AMJC_RawBarley" 10 @{ AMJC_BarleyInHull = 10; DankPyon_Straw = 10 }
 Assert-Recipe "AMJC_HullBarley" 10 "AMJC_BarleyInHull" 1 @{ AMJC_Barley = 1 }
 Assert-Recipe "AMJC_HullBarleyBulk" 80 "AMJC_BarleyInHull" 10 @{ AMJC_Barley = 10 }
+Assert-Recipe "AMJC_ThreshWheat" 15 "DankPyon_RawWheat" 1 @{ AMJC_Wheat = 1; DankPyon_Straw = 1 }
+Assert-Recipe "AMJC_ThreshWheatBulk" 120 "DankPyon_RawWheat" 10 @{ AMJC_Wheat = 10; DankPyon_Straw = 10 }
+
+$moActiveRoot = $MedievalOverhaulRoot
+$mo16Candidate = Join-Path $MedievalOverhaulRoot "1.6"
+if (Test-Path -LiteralPath $mo16Candidate) { $moActiveRoot = $mo16Candidate }
+$moActiveXmlFiles = @(Get-ChildItem -LiteralPath $moActiveRoot -Recurse -File -Filter *.xml)
+
+function Get-MoDef([string]$TypeName,[string]$DefName) {
+    $pattern = "<defName>$DefName</defName>"
+    $files = @($moActiveXmlFiles | Where-Object { Select-String -LiteralPath $_.FullName -Pattern $pattern -SimpleMatch -Quiet })
+    if ($files.Count -ne 1) { Fail "Expected exactly one active MO $TypeName '$DefName', found $($files.Count)." }
+    $xml = Load-Xml $files[0].FullName
+    return Get-DefNode $xml $TypeName $DefName
+}
+
+$moWheatPlant = Get-MoDef "ThingDef" "DankPyon_Plant_Wheat"
+Assert-Number (Node-Text $moWheatPlant "plant/growDays" "MO wheat growDays") 12 "MO wheat growDays"
+Assert-Number (Node-Text $moWheatPlant "plant/harvestYield" "MO wheat harvestYield") 28 "MO wheat harvestYield"
+Assert-Number (Node-Text $moWheatPlant "plant/fertilitySensitivity" "MO wheat fertilitySensitivity") 0.9 "MO wheat fertilitySensitivity"
+Assert-Text (Node-Text $moWheatPlant "plant/harvestedThingDef" "MO wheat harvestedThingDef") "DankPyon_RawWheat" "MO wheat harvestedThingDef"
+Assert-Text (Node-Text $moWheatPlant "plant/sowResearchPrerequisites/li" "MO wheat research prerequisite") "DankPyon_BasicAgriculture" "MO wheat research prerequisite"
+Assert-Text (Node-Text $moWheatPlant "thingClass" "MO wheat thingClass") "MedievalOverhaul.Plant_SecondaryDrop" "MO wheat thingClass"
+$moSecondaryDrop = $moWheatPlant.SelectSingleNode("modExtensions/li[@Class='MedievalOverhaul.SecondaryPlantDropExtension']")
+if ($null -eq $moSecondaryDrop) { Fail "Installed MO wheat no longer has the expected SecondaryPlantDropExtension; re-audit AMJ wheat patch." }
+Assert-Text (Node-Text $moSecondaryDrop "secondaryDrop" "MO wheat secondary drop") "Hay" "MO wheat secondary drop"
+Assert-Number (Node-Text $moSecondaryDrop "secondaryDropAmountRange" "MO wheat secondary drop amount") 40 "MO wheat secondary drop amount"
+
+$moRawWheat = Get-MoDef "ThingDef" "DankPyon_RawWheat"
+Assert-Number (Node-Text $moRawWheat "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "MO raw wheat rot days") 120 "MO raw wheat rot days"
+Assert-Text (Node-Text $moRawWheat "thingCategories/li" "MO raw wheat cereal category") "DankPyon_Cereal" "MO raw wheat cereal category"
+
+$moFlour = Get-MoDef "ThingDef" "DankPyon_Flour"
+Assert-Number (Node-Text $moFlour "comps/li[@Class='CompProperties_Rottable']/daysToRotStart" "MO flour source rot days") 90 "MO flour source rot days"
+
+foreach ($case in @(
+    @{ DefName = "DankPyon_CraftFlour_Manual"; Flour = 1; Hay = 1 },
+    @{ DefName = "DankPyon_CraftFlour"; Flour = 1; Hay = 1 },
+    @{ DefName = "DankPyon_CraftFlourBulk"; Flour = 10; Hay = 10 }
+)) {
+    $moRecipe = Get-MoDef "RecipeDef" $case.DefName
+    Assert-Number (Node-Text $moRecipe "products/DankPyon_Flour" "$($case.DefName) source flour product") ([double]$case.Flour) "$($case.DefName) source flour product"
+    Assert-Number (Node-Text $moRecipe "products/Hay" "$($case.DefName) source Hay product") ([double]$case.Hay) "$($case.DefName) source Hay product"
+    Assert-Text (Node-Text $moRecipe "ingredients/li/filter/categories/li" "$($case.DefName) source cereal input") "DankPyon_Cereal" "$($case.DefName) source cereal input"
+}
 
 $moXmlFiles = @(Get-ChildItem -LiteralPath $MedievalOverhaulRoot -Recurse -File -Filter *.xml)
 foreach ($defName in @("DankPyon_Straw","DankPyon_IronIngot","DankPyon_BasicAgriculture","DankPyon_RawWood")) {
