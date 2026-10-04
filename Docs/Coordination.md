@@ -321,9 +321,9 @@ AMJ integration:
 **Owner:** Art/graphics  \
 **Status:** OPEN
 
-`AMJC_Wheat` is a new processed grain state introduced by AMJ-012. The data slice temporarily reuses the accepted AMJ edible-millet stack texture and does not modify image assets.
+`AMJC_Wheat` is a new processed grain state introduced by AMJ-012. The data slice temporarily reuses the accepted AMJ edible-millet stack texture. Because `AMJC_Wheat` is a distinct player-visible ThingDef rather than a deliberately shared post-harvest state, `Docs/Design.md §12.1.2` requires a dedicated production texture before the public Alpha. This does not block the already validated wheat data slice.
 
-**Next action:** Art/graphics may provide a dedicated wheat-grain texture after the currently active graphics work. Do not block wheat data validation on this item.
+**Next action:** Art/graphics should provide a dedicated wheat-grain texture before the public Alpha and wire only the graphic path; do not change the validated wheat processing/balance.
 
 **Result / references:** target DefName is `AMJC_Wheat`; harvested `DankPyon_RawWheat` remains the MO wheat-sheaf asset/display override.
 
@@ -350,6 +350,28 @@ At the shared 0.50 integration point, Stage A intent is: Soba/Kibi/Awa/Hie/Barle
 
 **Result / references:** Core design reconciliation `c841b66547f51af79743a72d3db20d38b7345816`; Core fertility regression coverage `201bbe90aa92a0d2d55ac9d1d16c92bdf6f28c11`; Environment coordination alignment `7a1d59288eca9b42c2dfd4573295d981177c9a7d`; Environment source of truth remains ENV-004 / `Docs/Design.md §10`; local 5/5 + zero-ERROR Core gate confirmed 2026-10-04 JST.
 
+### AMJ-018 — Public Alpha readiness gate
+
+**Requested by:** Core/design / Testing/release  \
+**Owner:** Testing/release / Art/graphics  \
+**Status:** BLOCKED
+
+The Stage A functional slice is now substantially complete: six dry-field crops and their primary processing are implemented, MO wheat is integrated, the New Village Scenario is implemented, and the current isolated automated gate has been confirmed at **7/7 Pickle PASS + zero runtime ERROR entries**.
+
+A 2026-10-04 audit also resolved the planned Food Drying step for the current scope. Food Drying remains priority-A optional compatibility, but Stage A grains are already dry-storage staples and the current Food Drying 1.6 outputs are crop-specific dried foods with rehydration paths. No compatibility Patch is added merely to convert AMJ grains into a different crop's dried item. `Docs/Design.md` now requires food-by-food semantic compatibility and defers actual Patch additions until suitable fresh AMJ foods such as wild greens, mushrooms, fruit or root vegetables exist.
+
+The public Alpha is therefore blocked primarily by **production-art completion**, not by missing Stage A gameplay:
+- AMJ-016: Hie and Kibi plant graphics;
+- AMJ-009: Soba plant + three post-harvest item states;
+- AMJ-011: Barley plant + three post-harvest item states;
+- AMJ-013: dedicated wheat-grain texture;
+- AMJ-017: simple grain-processing spot + grain-processing table graphics.
+
+After those assets are wired and visually checked, run the normal static/CI + isolated runtime gate again, then do only the minimum manual release checks that automation cannot cover: normal-zoom appearance/readability, Japanese public text, and starting feel.
+
+**Next action:** complete the production-art backlog in the order AMJ-016 → AMJ-009 → AMJ-011 → AMJ-013 → AMJ-017, rerunning automated regression after each wiring change where practical.
+
+**Result / references:** current runtime baseline: local 7/7 + zero ERROR confirmed 2026-10-04 JST; Food Drying scope clarification `3e66838f5cf6cd2851aa11c11a7d723603057572`; Alpha-art backlog tracking `5c64ac39cc517ead52cacca88a3f9f661420ca49`.
 ### AMJ-015 — Core standard Scenario: 新しい村
 
 **Requested by:** Core/design / Testing/tooling  
