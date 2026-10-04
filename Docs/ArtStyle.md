@@ -222,6 +222,7 @@ High-level rules:
 - do not use stereotypical Japan decoration merely for atmosphere;
 - preserve strong readability at small Steam Workshop thumbnail size;
 - before generation, run the common-left preflight in `Docs/WorkshopCoverStyle.md`; reject any result whose left title wording, line breaks, hierarchy, or accent placement drifts.
+- before generation, retrieve and visually inspect the approved Core cover reference from Library `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`; do not generate from text rules or SVG alone.
 
 Do not use the older fixed dark-left common image or red brush-stroke addon badge for new covers.
 
