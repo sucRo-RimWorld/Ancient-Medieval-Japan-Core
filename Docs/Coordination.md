@@ -109,8 +109,8 @@ Implemented:
 
 ### AMJ-007 — Hie and Kibi cultivation data slice
 
-**Requested by:** Agriculture/XML  \\
-**Owner:** Agriculture/XML / Testing/tooling  \\
+**Requested by:** Agriculture/XML  \
+**Owner:** Agriculture/XML / Testing/tooling  \
 **Status:** IN PROGRESS
 
 Hie and Kibi are implemented from the already-approved Stage A balance and connected to the shared millet post-harvest chain. This item is data-side only; crop-specific graphics remain owned by the separate Art/graphics workstream.
@@ -125,7 +125,7 @@ Hie and Kibi are implemented from the already-approved Stage A balance and conne
 
 **Next action:** run `run-tests.bat`; if the existing five-scenario suite passes with a clean runtime ERROR gate, mark the data slice DONE. Art remains independent.
 
-**Result / references:** implementation `03273bfb999fc70f6e97b9deb23d5e4e74f220ba`; corrective test wiring commit follows.
+**Result / references:** implementation `03273bfb999fc70f6e97b9deb23d5e4e74f220ba`; test-wiring correction `fa8ee2d140ce865b28072906e799b3856d9f09c8`.
 
 Add new items using the following form.
 

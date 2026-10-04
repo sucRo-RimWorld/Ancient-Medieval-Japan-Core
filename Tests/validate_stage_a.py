@@ -111,7 +111,10 @@ for cold_name, min_temp, death in (
     assert row[2] == death
 
 jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_StageA.xml")
-assert text(jp, "AMJC_Plant_FoxtailMillet_Awa.label") == "アワ"\nassert text(jp, "AMJC_Plant_BarnyardMillet_Hie.label") == "ヒエ"\nassert text(jp, "AMJC_Plant_ProsoMillet_Kibi.label") == "キビ"\nassert text(jp, "AMJC_RawMillet.label") == "雑穀束"
+assert text(jp, "AMJC_Plant_FoxtailMillet_Awa.label") == "アワ"
+assert text(jp, "AMJC_Plant_BarnyardMillet_Hie.label") == "ヒエ"
+assert text(jp, "AMJC_Plant_ProsoMillet_Kibi.label") == "キビ"
+assert text(jp, "AMJC_RawMillet.label") == "雑穀束"
 mo_jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_MO_Overrides.xml")
 assert text(mo_jp, "DankPyon_RawWheat.label") == "小麦束"
 assert text(awa, "graphicData/graphicClass") == "Graphic_Random"
