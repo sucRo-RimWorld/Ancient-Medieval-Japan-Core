@@ -82,4 +82,87 @@
     </comps>
   </ThingDef>
 
+
+  <!--
+    Buckwheat processing states. They intentionally remain outside
+    DankPyon_Cereal so MO generic processing cannot bypass AMJ threshing/hulling.
+    Graphics temporarily reuse the shared millet item paths until Soba-specific
+    art is supplied by Art/graphics.
+  -->
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_RawBuckwheat</defName>
+    <label>buckwheat sheaf</label>
+    <description>Harvested buckwheat stems and seed clusters before threshing. It stores well but is not yet suitable for eating.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/RawMillet</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_BuckwheatInHull</defName>
+    <label>buckwheat in hull</label>
+    <description>Threshed buckwheat grain with its hull still attached. The hull protects it in storage, but it is not yet suitable for eating.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/MilletInHull</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>AMJC_Buckwheat</defName>
+    <label>buckwheat</label>
+    <description>Edible buckwheat grain with its hull removed. It is a short-lived staple grain suited to direct cooking; flour is introduced only when a concrete flour-based use is implemented.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/Millet</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <tasteThought>AteRawFood</tasteThought>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>60</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
 </Defs>

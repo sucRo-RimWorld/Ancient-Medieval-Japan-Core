@@ -10,6 +10,19 @@
   <AMJC_Plant_ProsoMillet_Kibi.label>キビ</AMJC_Plant_ProsoMillet_Kibi.label>
   <AMJC_Plant_ProsoMillet_Kibi.description>古くから栽培されてきた雑穀の一種。3種の雑穀の中で最も早く成熟し、肥沃度の低下による生育速度への影響も小さい。一度の収穫量はアワやヒエより少ない。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_ProsoMillet_Kibi.description>
 
+
+  <AMJC_Plant_Buckwheat_Soba.label>ソバ</AMJC_Plant_Buckwheat_Soba.label>
+  <AMJC_Plant_Buckwheat_Soba.description>短い期間で収穫でき、痩せた土地でも生育速度が落ちにくい穀物。残りの生育期間が短い場合や低肥沃度の畑に向くが、霜には弱い。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_Buckwheat_Soba.description>
+
+  <AMJC_RawBuckwheat.label>ソバ束</AMJC_RawBuckwheat.label>
+  <AMJC_RawBuckwheat.description>茎と実が付いたまま刈り取った未脱穀のソバ束。保存性は高いが、このままでは食べられない。</AMJC_RawBuckwheat.description>
+
+  <AMJC_BuckwheatInHull.label>殻付きソバ</AMJC_BuckwheatInHull.label>
+  <AMJC_BuckwheatInHull.description>脱穀後も殻が残っているソバ。保存性は高いが、このままでは食べられない。</AMJC_BuckwheatInHull.description>
+
+  <AMJC_Buckwheat.label>ソバ穀粒</AMJC_Buckwheat.label>
+  <AMJC_Buckwheat.description>殻を取り除いて食べられる状態にしたソバの穀粒。保存期間は雑穀より短い。</AMJC_Buckwheat.description>
+
   <AMJC_RawMillet.label>雑穀束</AMJC_RawMillet.label>
   <AMJC_RawMillet.description>茎と穂が付いたまま刈り取った未脱穀の雑穀束。保存性は高いが、このままでは食べられない。脱穀と殻取りを経て食用の雑穀になる。</AMJC_RawMillet.description>
 

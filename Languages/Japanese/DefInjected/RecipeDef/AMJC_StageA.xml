@@ -17,4 +17,21 @@
   <AMJC_HullMilletBulk.description>殻付き雑穀10個をまとめて加工し、食べられる雑穀にする。</AMJC_HullMilletBulk.description>
   <AMJC_HullMilletBulk.jobString>雑穀の殻をまとめて取っている。</AMJC_HullMilletBulk.jobString>
 
+
+  <AMJC_ThreshBuckwheat.label>ソバを脱穀する</AMJC_ThreshBuckwheat.label>
+  <AMJC_ThreshBuckwheat.description>ソバ束を脱穀し、藁と殻付きソバに分ける。</AMJC_ThreshBuckwheat.description>
+  <AMJC_ThreshBuckwheat.jobString>ソバを脱穀している。</AMJC_ThreshBuckwheat.jobString>
+
+  <AMJC_ThreshBuckwheatBulk.label>ソバを脱穀する x10</AMJC_ThreshBuckwheatBulk.label>
+  <AMJC_ThreshBuckwheatBulk.description>ソバ束10個をまとめて脱穀し、藁と殻付きソバに分ける。</AMJC_ThreshBuckwheatBulk.description>
+  <AMJC_ThreshBuckwheatBulk.jobString>ソバをまとめて脱穀している。</AMJC_ThreshBuckwheatBulk.jobString>
+
+  <AMJC_HullBuckwheat.label>ソバの殻を取る</AMJC_HullBuckwheat.label>
+  <AMJC_HullBuckwheat.description>殻付きソバから殻を取り除き、食べられるソバ穀粒にする。</AMJC_HullBuckwheat.description>
+  <AMJC_HullBuckwheat.jobString>ソバの殻を取っている。</AMJC_HullBuckwheat.jobString>
+
+  <AMJC_HullBuckwheatBulk.label>ソバの殻を取る x10</AMJC_HullBuckwheatBulk.label>
+  <AMJC_HullBuckwheatBulk.description>殻付きソバ10個をまとめて加工し、食べられるソバ穀粒にする。</AMJC_HullBuckwheatBulk.description>
+  <AMJC_HullBuckwheatBulk.jobString>ソバの殻をまとめて取っている。</AMJC_HullBuckwheatBulk.jobString>
+
 </LanguageData>

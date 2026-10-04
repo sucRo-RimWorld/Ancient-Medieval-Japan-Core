@@ -129,4 +129,49 @@
     </plant>
   </ThingDef>
 
+
+  <ThingDef ParentName="PlantBase">
+    <defName>AMJC_Plant_Buckwheat_Soba</defName>
+    <label>buckwheat plant</label>
+    <description>Buckwheat (soba), a very fast-growing grain crop suited to poor soils and short growing seasons. It performs well where richer-soil cereals are inefficient, but it is relatively vulnerable to frost.</description>
+    <descriptionHyperlinks>
+      <ThingDef>AMJC_RawBuckwheat</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <!-- TEMP: reuse accepted Awa plant art until the Art/graphics workstream supplies Soba-specific textures. -->
+      <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.4</fertilityMin>
+      <fertilitySensitivity>0.25</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <maxMeshCount>4</maxMeshCount>
+      <harvestedThingDef>AMJC_RawBuckwheat</harvestedThingDef>
+      <harvestYield>8</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <topWindExposure>0.20</topWindExposure>
+      <growDays>4</growDays>
+      <minGrowthTemperature>5</minGrowthTemperature>
+      <maxGrowthTemperature>35</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>12</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>25</maxOptimalGrowthTemperature>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Awa</immatureGraphicPath>
+      <wildOrder>5</wildOrder>
+      <purpose>Food</purpose>
+      <sowMinSkill>1</sowMinSkill>
+    </plant>
+  </ThingDef>
+
 </Defs>

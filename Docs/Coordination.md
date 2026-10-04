@@ -127,6 +127,40 @@ Hie and Kibi are implemented from the already-approved Stage A balance and conne
 
 **Result / references:** implementation `03273bfb999fc70f6e97b9deb23d5e4e74f220ba`; test-wiring correction `fa8ee2d140ce865b28072906e799b3856d9f09c8`; source-format fix and passing CI `07d2b6faf8117c2cbf9b63c213bf21d6d478d0f1`; local 5/5 automated gate confirmed 2026-10-04 JST.
 
+### AMJ-008 — Soba cultivation and primary processing data slice
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Agriculture/XML / Testing/tooling  \
+**Status:** IN PROGRESS
+
+Implement the approved Stage A Soba role as the next data-side vertical slice.
+
+- PlantDef: `AMJC_Plant_Buckwheat_Soba`, growDays 4, yield 8, fertilityMin 0.4, sensitivity 0.25, growth 5–35°C, optimum 12–25°C, sowMinSkill 1.
+- Optional CCTO compatibility: fixed death -2°C.
+- Processing path: `AMJC_RawBuckwheat` (120d) → threshing → `AMJC_BuckwheatInHull` (120d) + MO straw → hulling → `AMJC_Buckwheat` (60d).
+- Conversion is 1:1 through both processing stages so the design baseline of 8 edible grain per harvest is preserved.
+- Buckwheat flour is intentionally not added yet; the design requires a concrete flour-based use before creating that ThingDef.
+- Existing grain-processing stations are reused. Initial work amounts match the established millet processing baseline.
+- No image asset is created or modified in this workstream; temporary paths reuse existing AMJ millet/Awa assets.
+
+**Validation:** extend static, local PowerShell, and Pickle coverage before marking DONE.
+
+**Next action:** complete regression coverage and run the normal automated gate.
+
+**Result / references:** implementation commit follows.
+
+### AMJ-009 — Soba crop/item graphics
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Art/graphics  \
+**Status:** OPEN
+
+The Soba data slice uses temporary existing AMJ graphics only. Dedicated art is needed for the Soba plant and, if visually useful, its post-harvest states. Do not block data validation on this item.
+
+**Next action:** Art/graphics should pick this up after the currently active millet graphics work, following `Docs/ArtStyle.md`.
+
+**Result / references:** data DefNames are `AMJC_Plant_Buckwheat_Soba`, `AMJC_RawBuckwheat`, `AMJC_BuckwheatInHull`, `AMJC_Buckwheat`.
+
 Add new items using the following form.
 
 ### AMJ-XXX — Short title

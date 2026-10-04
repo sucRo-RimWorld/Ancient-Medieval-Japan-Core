@@ -37,4 +37,17 @@
     </match>
   </Operation>
 
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Crop Cold Tolerance Overhaul</li></mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="AMJC_Plant_Buckwheat_Soba"]</xpath>
+      <value>
+        <li Class="CropColdToleranceOverhaul.ColdToleranceExtension">
+          <coldDeathTemperature>-2</coldDeathTemperature>
+        </li>
+      </value>
+    </match>
+  </Operation>
+
 </Patch>
