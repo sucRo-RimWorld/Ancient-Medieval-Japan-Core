@@ -101,11 +101,15 @@ The first quantized 256×256 export rendered as a red question mark for `AMJC_Ra
 
 **Requested by:** Art/graphics / texture repair
 **Owner:** Testing/tooling
-**Status:** IN PROGRESS
+**Status:** DONE
 
 The PNG integrity regressions pass in both static validators. E2E now stages AMJ textures and checks Unity decoding plus stack-material selection. The 2026-10-04 16:16 JST rerun reaches all five current scenarios and the previous fixture/texture Vanilla ERROR entries are gone; only the first crop/grain scenario still fails with a bare NullReference. Inspection shows that scenario also performs the shared millet runtime texture test. That helper previously created a Thing and dereferenced `item.Graphic` only to reach `Graphic_StackCount`; the test now resolves `Graphic_StackCount` directly from `graphicData` and calls `SubGraphicForStackCount`, preserving the intended stack-selection assertion without the unrelated Thing/style path. Human in-game confirmation of the accepted art remains separate from automated test success.
 
-**Next action:** rerun the latest `main`. Require 5/5 plus zero ERROR-level entries. If it still fails, the crop/grain scenario now reports a logical checkpoint and `source-state.txt` contains SHA-256 fingerprints for the exact local test/data files. Do not expand or replace the accepted artwork as part of testing.
+**Validation:** On 2026-10-04 JST, the author reported the latest `run-tests.bat` gate passing after the stack-graphic helper was rewritten to resolve `Graphic_StackCount` directly. Because the isolated gate now fails on any ERROR-level runtime entry, this confirms **5/5 Pickle PASS + zero runtime ERROR entries** for this follow-up. No image asset was changed by the fix.
+
+**Next action:** none. Keep the runtime texture checks in the regular Stage A regression gate; do not expand or replace the accepted artwork as part of testing.
+
+**Result / references:** runtime texture helper fix `2ce5ecc08ed3334c70020b0f9fcf57b7140e0288`; local 5/5 + zero-ERROR gate confirmed 2026-10-04 JST.
 
 ### TEST-002 — AMJC cold-tolerance data regression
 
@@ -185,7 +189,7 @@ The Soba data slice uses temporary existing AMJ graphics only. Dedicated art is 
 
 **Requested by:** Agriculture/XML  \
 **Owner:** Agriculture/XML / Testing/tooling  \
-**Status:** IN PROGRESS
+**Status:** DONE
 
 Medieval Overhaul 1.6 was checked before implementation and does not define a Barley crop, so AMJC owns the Stage A Barley PlantDef and processing states rather than duplicating an MO Def.
 
@@ -198,11 +202,11 @@ Medieval Overhaul 1.6 was checked before implementation and does not define a Ba
 - Barley flour is not added in Stage A because the current design only requires edible barley grain; later barley-specific uses can extend from `AMJC_Barley`.
 - No image asset is created or modified here. The plant temporarily uses MO wheat texture paths; processing items temporarily reuse existing AMJ grain texture paths.
 
-**Validation:** GitHub Stage A static validation passed for implementation commit `40d9914db9e1e0d9417f13a399465f61e1a3c2da` and test-integration commit `8c3da587185f8aeb868f12ca9a8d016e9364b2e9`. Coverage checks the Barley PlantDef, Basic Agriculture sow prerequisite, CCTO -8°C extension, 120d/120d/90d storage chain, four processing recipes, 22→22 quantity conservation, meal compatibility, and a local MO-source guard that fails if Medieval Overhaul later introduces a Barley-named Def. Runtime Pickle coverage is wired into the existing five-scenario suite but has not yet been rerun on the development PC.
+**Validation:** GitHub Stage A static validation passed for implementation commit `40d9914db9e1e0d9417f13a399465f61e1a3c2da` and test-integration commit `8c3da587185f8aeb868f12ca9a8d016e9364b2e9`. Coverage checks the Barley PlantDef, Basic Agriculture sow prerequisite, CCTO -8°C extension, 120d/120d/90d storage chain, four processing recipes, 22→22 quantity conservation, meal compatibility, and a local MO-source guard that fails if Medieval Overhaul later introduces a Barley-named Def. On 2026-10-04 JST, the author reported the latest development-PC `run-tests.bat` gate passing. Because the isolated gate now fails on any ERROR-level runtime entry, this confirms **5/5 Pickle PASS + zero runtime ERROR entries** with Barley included.
 
-**Next action:** run the normal `run-tests.bat` gate on the development PC. If 5/5 and the runtime ERROR gate are clean, mark AMJ-010 DONE.
+**Next action:** none for the Barley data slice. Dedicated Barley graphics remain independently tracked in AMJ-011.
 
-**Result / references:** implementation `40d9914db9e1e0d9417f13a399465f61e1a3c2da`; automated-test integration `8c3da587185f8aeb868f12ca9a8d016e9364b2e9`; GitHub Actions run `37182531071` passed.
+**Result / references:** implementation `40d9914db9e1e0d9417f13a399465f61e1a3c2da`; automated-test integration `8c3da587185f8aeb868f12ca9a8d016e9364b2e9`; runtime harness/stack fix `2ce5ecc08ed3334c70020b0f9fcf57b7140e0288`; local 5/5 + zero-ERROR gate confirmed 2026-10-04 JST.
 
 ### AMJ-011 — Barley crop/item graphics
 
@@ -216,11 +220,11 @@ The Barley data slice uses only temporary existing graphics. Dedicated Barley ar
 
 **Result / references:** data DefNames are `AMJC_Plant_Barley`, `AMJC_RawBarley`, `AMJC_BarleyInHull`, and `AMJC_Barley`.
 
-### TEST-003 — Isolated E2E runtime-log hygiene and source attribution
+### TEST-004 — Isolated E2E runtime-log hygiene and source attribution
 
 **Requested by:** Testing/tooling  \
 **Owner:** Testing/tooling  \
-**Status:** IN PROGRESS
+**Status:** DONE
 
 An uploaded Pickle report from 2026-10-04 showed 4/5 with a NullReference in the crop/Def scenario and also exposed seven ERROR-level entries generated by the lightweight E2E fixtures: missing fixture straw graphics and missing MO-only placeholder building textures. The report's scenario names also identify it as an older pre-Barley suite, so it is not valid evidence for AMJ-010.
 
@@ -234,9 +238,11 @@ Harness corrections:
 
 **Validation:** GitHub Stage A validation passed for harness cleanup `005442b2b12719cb77d4643479716f93866d444d`, explicit null-diagnostic hardening `b0ae057cc4beeea01b47c0060f4c1e3ffce2ab97`, and the Windows source-state syntax fix `962fb1cc7f741b8c6c4ee229724824b828a9f59a`. The uploaded 4/5 report is intentionally not counted as Barley validation because it contains the older "Loaded AMJ millet CCTO..." scenario name and therefore predates the current Barley suite. The 16:16 JST rerun now shows the current "Loaded AMJ crop CCTO..." scenario name and confirms the previous fixture/texture Vanilla ERROR entries are gone. It still fails 1/5 in the first crop/grain scenario with a bare NullReference from the local step assembly. Diagnostic hardening is therefore extended with explicit logical checkpoints and SHA-256 source fingerprints; the next report must show 5/5 and no ERROR-level entries other than none.
 
-**Next action:** rerun the latest local main after the checkpoint/source-fingerprint change. If the first scenario still fails, its message must identify the exact checkpoint; compare the SHA-256 entries in `source-state.txt` with `main` before changing data.
+**Validation:** After the final stack-graphic test fix, the author reported the latest `run-tests.bat` gate passing on 2026-10-04 JST. The isolated runtime gate is configured to fail on **any** ERROR-level entry, so this result confirms the current five-scenario suite passed 5/5 with zero runtime ERROR entries. The earlier fixture graphics errors and bare NullReference are therefore resolved. Source attribution remains part of the harness through `source-state.txt` / SHA-256 fingerprints for future reports.
 
-**Result / references:** harness cleanup `005442b2b12719cb77d4643479716f93866d444d`; explicit failure diagnostics `b0ae057cc4beeea01b47c0060f4c1e3ffce2ab97`; batch source-state fix `962fb1cc7f741b8c6c4ee229724824b828a9f59a`.
+**Next action:** none. Keep the zero-ERROR isolated gate and source attribution as permanent regression infrastructure.
+
+**Result / references:** harness cleanup `005442b2b12719cb77d4643479716f93866d444d`; explicit failure diagnostics `b0ae057cc4beeea01b47c0060f4c1e3ffce2ab97`; source-state additions `87ef581842d0a5d215aea80601a588c2c2614979`; stack-graphic runtime fix `2ce5ecc08ed3334c70020b0f9fcf57b7140e0288`; local 5/5 + zero-ERROR gate confirmed 2026-10-04 JST.
 
 Add new items using the following form.
 
