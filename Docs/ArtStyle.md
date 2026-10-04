@@ -210,14 +210,16 @@ The 2026-10-05 author-approved Environment-style direction supersedes the earlie
 High-level rules:
 - first propose the composition and design in words, then generate only after author approval;
 - use a warm pale parchment field rather than a dark common-left panel;
-- keep the left side as a consistent typography zone for `中世日本OH`, `Ancient & Medieval Japan`, and the addon name;
-- emphasize A / M / J in the English series title;
+- treat the left side as an **invariant shared series block**: three lines reading `Ancient &` / `Medieval` / `Japan`, with `Japan` alone in muted reddish-brown, followed by the addon name in the fixed tracked position;
+- do not reintroduce the superseded `中世日本OH` heading, A/M/J-initial emphasis, dark panel, Japan map, or red brush badge;
+- addon-specific generation instructions may change the right-side motifs and addon name only, not the common-left composition;
 - make the right side a symbolic, highly simplified flat editorial illustration rather than a scenic landscape;
 - no people on any AMJ Workshop cover;
 - use low saturation and a limited palette;
 - target about three colors per motif (base / dark / light), with only a very light gradient where useful;
 - do not use stereotypical Japan decoration merely for atmosphere;
-- preserve strong readability at small Steam Workshop thumbnail size.
+- preserve strong readability at small Steam Workshop thumbnail size;
+- before generation, run the common-left preflight in `Docs/WorkshopCoverStyle.md`; reject any result whose left title wording, line breaks, hierarchy, or accent placement drifts.
 
 Do not use the older fixed dark-left common image or red brush-stroke addon badge for new covers.
 
