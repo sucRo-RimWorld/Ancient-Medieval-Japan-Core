@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    AMJ keeps MO's wheat PlantDef, growth time, yield, fertility sensitivity,
+    research prerequisite and harvested ThingDef. Only the Stage A integration
+    points below are changed.
+  -->
+
+  <!-- Wheat is the fertile-soil, high-yield grain in the Stage A crop set. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/plant/fertilityMin</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/plant/fertilityMin</xpath>
+      <value>
+        <fertilityMin>0.7</fertilityMin>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/plant</xpath>
+      <value>
+        <fertilityMin>0.7</fertilityMin>
+      </value>
+    </nomatch>
+  </Operation>
+
+  <!-- Straw belongs to threshing, not harvest. Restore the normal Plant class. -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/thingClass</xpath>
+    <value>
+      <thingClass>Plant</thingClass>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationRemove">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/modExtensions/li[@Class="MedievalOverhaul.SecondaryPlantDropExtension"]</xpath>
+  </Operation>
+
+  <!-- The harvested MO item is an unthreshed wheat sheaf in AMJ, not cereal input. -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_RawWheat"]/thingCategories</xpath>
+    <value>
+      <thingCategories>
+        <li>Foods</li>
+      </thingCategories>
+    </value>
+  </Operation>
+
+  <!-- AMJ's flour storage baseline is 60 days. -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Flour"]/comps/li[@Class="CompProperties_Rottable"]/daysToRotStart</xpath>
+    <value>
+      <daysToRotStart>60</daysToRotStart>
+    </value>
+  </Operation>
+
+  <!-- Straw has already been separated during threshing, so milling yields flour only. -->
+  <Operation Class="PatchOperationRemove">
+    <xpath>/Defs/RecipeDef[defName="DankPyon_CraftFlour_Manual"]/products/Hay</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <xpath>/Defs/RecipeDef[defName="DankPyon_CraftFlour"]/products/Hay</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <xpath>/Defs/RecipeDef[defName="DankPyon_CraftFlourBulk"]/products/Hay</xpath>
+  </Operation>
+
+</Patch>

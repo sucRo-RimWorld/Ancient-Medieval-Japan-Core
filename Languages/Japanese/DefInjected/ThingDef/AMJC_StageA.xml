@@ -36,6 +36,10 @@
   <AMJC_Barley.label>大麦穀粒</AMJC_Barley.label>
   <AMJC_Barley.description>殻を取り除いて食べられる状態にした大麦の穀粒。日常の主食として利用でき、将来の麦味噌や麦茶などの加工にもつながる。</AMJC_Barley.description>
 
+
+  <AMJC_Wheat.label>小麦穀粒</AMJC_Wheat.label>
+  <AMJC_Wheat.description>小麦束を脱穀して茎や藁から分けた、食用の小麦穀粒。粒のまま食事に使えるほか、Medieval Overhaulの製粉・醸造など穀類加工の材料になる。</AMJC_Wheat.description>
+
   <AMJC_RawMillet.label>雑穀束</AMJC_RawMillet.label>
   <AMJC_RawMillet.description>茎と穂が付いたまま刈り取った未脱穀の雑穀束。保存性は高いが、このままでは食べられない。脱穀と殻取りを経て食用の雑穀になる。</AMJC_RawMillet.description>
 

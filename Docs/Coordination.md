@@ -244,6 +244,50 @@ Harness corrections:
 
 **Result / references:** harness cleanup `005442b2b12719cb77d4643479716f93866d444d`; explicit failure diagnostics `b0ae057cc4beeea01b47c0060f4c1e3ffce2ab97`; source-state additions `87ef581842d0a5d215aea80601a588c2c2614979`; stack-graphic runtime fix `2ce5ecc08ed3334c70020b0f9fcf57b7140e0288`; local 5/5 + zero-ERROR gate confirmed 2026-10-04 JST.
 
+### AMJ-012 — MO wheat Stage A integration
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Agriculture/XML / Testing/tooling  \
+**Status:** IN PROGRESS
+
+Audit and integrate Medieval Overhaul 1.6 wheat without creating a duplicate wheat PlantDef.
+
+The installed MO 1.6 source confirms:
+- `DankPyon_Plant_Wheat`: growDays 12, harvestYield 28, fertilitySensitivity 0.9, Basic Agriculture prerequisite, no active fertilityMin;
+- the plant uses `MedievalOverhaul.Plant_SecondaryDrop` to yield Hay at harvest;
+- `DankPyon_RawWheat` is a 120-day `DankPyon_Cereal` item and therefore goes directly into MO flour/ale recipes;
+- all three MO flour recipes also yield Hay;
+- `DankPyon_Flour` stores for 90 days.
+
+AMJ integration:
+- keep MO's PlantDef, growth/yield/sensitivity/research and harvested `DankPyon_RawWheat`;
+- set wheat fertilityMin to 0.7;
+- treat `DankPyon_RawWheat` as the unthreshed wheat sheaf and remove it from `DankPyon_Cereal`;
+- remove the MO harvest-time secondary Hay drop;
+- add `AMJC_Wheat` as the 90-day edible grain and the only AMJ wheat state connected to `DankPyon_Cereal`;
+- add 1x / 10x wheat threshing at the AMJ grain-processing stations, producing 1:1 grain + `DankPyon_Straw`;
+- remove Hay from MO flour recipes because straw was already separated at threshing;
+- change MO flour storage from 90 to the AMJ flour baseline of 60 days;
+- leave MO/CCTO wheat temperature values owned by CCTO rather than duplicating them in AMJC compatibility XML.
+
+**Validation:** extend static validation, installed-MO source audit, and the existing five-scenario Pickle gate before marking DONE.
+
+**Next action:** add regression coverage and run the normal automated gate.
+
+**Result / references:** implementation commit follows.
+
+### AMJ-013 — Wheat grain graphics
+
+**Requested by:** Agriculture/XML  \
+**Owner:** Art/graphics  \
+**Status:** OPEN
+
+`AMJC_Wheat` is a new processed grain state introduced by AMJ-012. The data slice temporarily reuses the accepted AMJ edible-millet stack texture and does not modify image assets.
+
+**Next action:** Art/graphics may provide a dedicated wheat-grain texture after the currently active graphics work. Do not block wheat data validation on this item.
+
+**Result / references:** target DefName is `AMJC_Wheat`; harvested `DankPyon_RawWheat` remains the MO wheat-sheaf asset/display override.
+
 Add new items using the following form.
 
 ### AMJ-XXX — Short title

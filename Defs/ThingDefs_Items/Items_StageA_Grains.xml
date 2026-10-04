@@ -247,4 +247,38 @@
     </comps>
   </ThingDef>
 
+
+  <!--
+    Processed MO wheat grain. DankPyon_RawWheat remains the harvested sheaf;
+    this edible state is the only Stage A wheat item placed in DankPyon_Cereal,
+    so MO milling/brewing routes cannot bypass threshing.
+    TEMP graphic: shared AMJ edible-grain art until Art/graphics supplies wheat grain.
+  -->
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>AMJC_Wheat</defName>
+    <label>wheat grain</label>
+    <description>Edible wheat grain separated from the harvested stalks by threshing. It can be cooked directly or used by Medieval Overhaul cereal-processing recipes such as milling.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/Millet</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <tasteThought>AteRawFood</tasteThought>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>90</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>DankPyon_Cereal</li>
+    </thingCategories>
+  </ThingDef>
+
 </Defs>
