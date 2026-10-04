@@ -609,3 +609,21 @@ Canonical shared policy: `Docs/DevelopmentGoldenPathGuidelines.md` in Core, comm
 
 Environment and CCTO agent instructions have also been bound to the shared rule. Repository-specific Golden Paths remain owned by each repository.
 
+### TEST-004 — Stage A CI loop from corrupted plant PNGs
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Testing/tooling / Art integration  
+**Status:** DONE
+
+Stage A validation runs #120–#128 repeatedly failed even when later commits only changed documentation. The failures were not caused by those documentation edits: the Python Stage A validator scans every production PNG on each run, and the Stage A millet art sequence had left invalid binary assets in `main`. The latest failure (#128) stopped at `Textures/Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png` with a truncated PNG chunk. Audit of the six Awa/Hie/Kibi mature/immature production textures found current Awa mature and Hie mature structurally valid, while Kibi mature plus all three immature textures required replacement.
+
+The repair restored only the four broken PNG blobs from the earlier same-workstream revision where those exact files had valid PNG structure/CRC, leaving the valid current Awa mature and Hie mature assets untouched. XML, crop balance, Def wiring, localization and gameplay data were not changed.
+
+**Validation:** repair commit `0262092fa06c4578450af15c5b936fdd80156113`; GitHub Actions Stage A validation run #129 completed successfully, including both `validate-stage-a` and `validate-windows-powershell`.
+
+**Golden Path follow-up:** `Docs/ArtStyle.md` now requires `python Tests/validate_stage_a.py` before committing PNG assets and explicitly treats header/dimension checks or viewer-open success as insufficient. Existing CI continues to scan all production textures for chunk, CRC, compressed-stream and scanline integrity.
+
+**Next action:** none. Continue using the existing validator before art commits; if the PNG checks are later split into a dedicated script, keep that script in the normal pre-commit/CI path.
+
+**Result / references:** repair `0262092fa06c4578450af15c5b936fdd80156113`; successful workflow run #129 (`37216328943`).
+

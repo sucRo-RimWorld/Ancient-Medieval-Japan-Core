@@ -175,6 +175,10 @@ For genuinely new AMJ art, use this loop:
 
 Do not treat a generated comparison sheet as the final game texture. The final texture must be a clean isolated asset.
 
+Before committing any PNG asset to GitHub, run `python Tests/validate_stage_a.py` and do not commit until it passes. The validator checks every `Textures/**/*.png` for complete chunk boundaries, CRCs, a complete compressed image stream, supported 8-bit indexed/RGBA encoding, and valid scanlines. A file opening in an image viewer, having a PNG signature, or reporting 256×256 in IHDR is not sufficient evidence of a valid production asset.
+
+When binary textures are written through automation or Git/GitHub APIs, validate the bytes that will actually be committed. If a binary replacement is recovered from repository history, prefer an exact previously validated blob over re-encoding or regenerating accepted art.
+
 ## 8. Rejection criteria
 
 Reject and regenerate when any of the following is true:
