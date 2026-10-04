@@ -239,21 +239,24 @@ The Barley data slice uses temporary MO wheat plant graphics and AMJ millet item
 
 **Requested by:** Alpha visual-completion audit  \
 **Owner:** Art/graphics  \
-**Status:** IN PROGRESS
+**Status:** DONE
 
-Hie and Kibi have validated crop data, but both PlantDefs still reuse the accepted Awa mature and immature texture paths. Their post-harvest chain intentionally converges on the shared millet ThingDefs, so **only the growing-plant states need crop-specific art**; the shared millet sheaf / in-hull / edible-grain assets must not be duplicated.
+Awa, Hie, and Kibi now have author-approved crop-specific mature and immature plant textures. The three crops retain the shared post-harvest millet chain; only their growing-plant graphics differ.
 
-Required before public Alpha:
-- Hie immature + mature plant art;
-- Kibi immature + mature plant art;
-- MO/AMJ style and small-scale readability per `Docs/ArtStyle.md`;
-- wire only the texture paths; do not change crop balance or the shared post-harvest Defs.
+The accepted cereal baseline is now the six 256×256 transparent textures under:
+- `Textures/Things/Plants/FullGrown/AMJC_Awa/` and `Textures/Things/Plants/Immature/AMJC_Awa/`;
+- `Textures/Things/Plants/FullGrown/AMJC_Hie/` and `Textures/Things/Plants/Immature/AMJC_Hie/`;
+- `Textures/Things/Plants/FullGrown/AMJC_Kibi/` and `Textures/Things/Plants/Immature/AMJC_Kibi/`.
 
-**2026-10-04 visual-direction lock:** The author accepted the latest Awa/Hie comparison as the common Stage A crop-art baseline. Use the same warm medium-dark brown outline for all crop-plant contours; do not split outline hue by grain head vs foliage. Match Awa/Hie at the same simplified information density, expressing species primarily through silhouette. The newly simplified Awa replaces the previous fixed Awa production look. Per-asset in-game comparison is intentionally deferred; after the crop-art backlog is complete, the author will line up all final crops in game and perform one combined normal-zoom visual check.
+Awa uses dense foxtail heads, Hie uses compact branched/drooping heads, and Kibi uses a more open branched panicle. All three use the common warm medium-dark brown outline, low information density, and simplified broad-leaf treatment recorded in `Docs/ArtStyle.md`. The final Hie immature candidate was accepted without further posture adjustment. These three crops are also the visual baseline for subsequent cereal art.
 
-**Next action:** export clean isolated transparent production candidates for the new Awa and Hie from this locked direction, then continue to Kibi. Do not change crop balance or shared post-harvest Defs.
+The PlantDefs point to their dedicated mature/immature paths. No crop balance or shared post-harvest Def was changed.
 
-**Result / references:** `AMJC_Plant_BarnyardMillet_Hie` and `AMJC_Plant_ProsoMillet_Kibi` currently point to `Things/Plants/FullGrown/AMJC_Awa` and `Things/Plants/Immature/AMJC_Awa`.
+**Validation:** static validators cover the dedicated texture paths, PNG signatures, and 256×256 dimensions. No new Pickle/runtime PASS is claimed for this art replacement. Final normal-zoom comparison is intentionally deferred until the remaining Stage A crop art is complete, when the author will line up all crops in game for one combined visual check.
+
+**Next action:** none for AMJ-016. Continue the Alpha art backlog with AMJ-009 (Soba).
+
+**Result / references:** `Defs/ThingDefs_Plants/Plants_StageA.xml`; `Docs/ArtStyle.md`; accepted production textures above.
 
 ### AMJ-017 — Grain-processing station graphics
 
@@ -391,7 +394,6 @@ The Stage A functional slice is now substantially complete: six dry-field crops 
 A 2026-10-04 audit also resolved the planned Food Drying step for the current scope. Food Drying remains priority-A optional compatibility, but Stage A grains are already dry-storage staples and the current Food Drying 1.6 outputs are crop-specific dried foods with rehydration paths. No compatibility Patch is added merely to convert AMJ grains into a different crop's dried item. `Docs/Design.md` now requires food-by-food semantic compatibility and defers actual Patch additions until suitable fresh AMJ foods such as wild greens, mushrooms, fruit or root vegetables exist.
 
 The public Alpha is therefore blocked primarily by **production-art completion**, not by missing Stage A gameplay:
-- AMJ-016: Hie and Kibi plant graphics;
 - AMJ-009: Soba plant + three post-harvest item states;
 - AMJ-011: Barley plant + three post-harvest item states;
 - AMJ-013: dedicated wheat-grain texture;
@@ -399,7 +401,7 @@ The public Alpha is therefore blocked primarily by **production-art completion**
 
 After those assets are wired and visually checked, run the normal static/CI + isolated runtime gate again, then do only the minimum manual release checks that automation cannot cover: normal-zoom appearance/readability, Japanese public text, and starting feel.
 
-**Next action:** complete the production-art backlog in the order AMJ-016 → AMJ-009 → AMJ-011 → AMJ-013 → AMJ-017, rerunning automated regression after each wiring change where practical.
+**Next action:** complete the remaining production-art backlog in the order AMJ-009 → AMJ-011 → AMJ-013 → AMJ-017, rerunning automated regression after each wiring change where practical.
 
 **Result / references:** current runtime baseline: local 7/7 + zero ERROR confirmed 2026-10-04 JST; Food Drying scope clarification `3e66838f5cf6cd2851aa11c11a7d723603057572`; Alpha-art backlog tracking `5c64ac39cc517ead52cacca88a3f9f661420ca49`.
 ### AMJ-015 — Core standard Scenario: 新しい村
