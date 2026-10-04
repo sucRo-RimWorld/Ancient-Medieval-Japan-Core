@@ -200,25 +200,26 @@ When binary textures are written through automation or Git/GitHub APIs, validate
 
 ### Workshop cover generation workflow
 
-For AMJ Workshop cover / thumbnail images, do not generate immediately from a one-line subject request.
+The Workshop-cover visual system is maintained separately from in-game Thing/Plant texture rules.
 
-Use this sequence:
+**Source of truth:** `Docs/WorkshopCoverStyle.md`  
+**Layout schematic:** `Docs/References/AMJ_WorkshopCover_Template.svg`
 
-1. First propose the **composition and visual design in words**.
-2. Include the main motif(s), layout, symbolic simplification, and how the image differs from other AMJ covers.
-3. Wait for the author to accept or revise that proposal.
-4. Only after the composition/design direction is accepted, generate the image.
-5. If the author changes the visual direction after generation, return to a short verbal composition/design proposal before regenerating when the change is substantial.
+The 2026-10-05 author-approved Environment-style direction supersedes the earlier dark-left-panel / Japan-map / scenic-landscape cover template.
 
-Current shared cover rules:
-- reuse the fixed AMJ common-left template rather than regenerating it;
-- keep all cover art **human-free**;
-- make the addon-specific right side symbolic and strongly simplified rather than a scenic landscape;
-- use a low-saturation, limited palette;
-- aim for roughly three colors per visual element, with only a very light gradient where useful;
-- preserve strong small-thumbnail readability;
-- avoid stereotypical Japanese symbols unless they are genuinely part of the feature being depicted.
+High-level rules:
+- first propose the composition and design in words, then generate only after author approval;
+- use a warm pale parchment field rather than a dark common-left panel;
+- keep the left side as a consistent typography zone for `中世日本OH`, `Ancient & Medieval Japan`, and the addon name;
+- emphasize A / M / J in the English series title;
+- make the right side a symbolic, highly simplified flat editorial illustration rather than a scenic landscape;
+- no people on any AMJ Workshop cover;
+- use low saturation and a limited palette;
+- target about three colors per motif (base / dark / light), with only a very light gradient where useful;
+- do not use stereotypical Japan decoration merely for atmosphere;
+- preserve strong readability at small Steam Workshop thumbnail size.
 
+Do not use the older fixed dark-left common image or red brush-stroke addon badge for new covers.
 
 ## 8. Rejection criteria
 
