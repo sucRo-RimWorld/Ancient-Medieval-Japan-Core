@@ -178,11 +178,11 @@ Medieval Overhaul 1.6 was checked before implementation and does not define a Ba
 - Barley flour is not added in Stage A because the current design only requires edible barley grain; later barley-specific uses can extend from `AMJC_Barley`.
 - No image asset is created or modified here. The plant temporarily uses MO wheat texture paths; processing items temporarily reuse existing AMJ grain texture paths.
 
-**Validation:** extend static, local PowerShell, and existing five-scenario Pickle coverage before marking DONE.
+**Validation:** GitHub Stage A static validation passed for implementation commit `40d9914db9e1e0d9417f13a399465f61e1a3c2da` and test-integration commit `8c3da587185f8aeb868f12ca9a8d016e9364b2e9`. Coverage checks the Barley PlantDef, Basic Agriculture sow prerequisite, CCTO -8°C extension, 120d/120d/90d storage chain, four processing recipes, 22→22 quantity conservation, meal compatibility, and a local MO-source guard that fails if Medieval Overhaul later introduces a Barley-named Def. Runtime Pickle coverage is wired into the existing five-scenario suite but has not yet been rerun on the development PC.
 
-**Next action:** complete regression coverage and run the normal automated gate.
+**Next action:** run the normal `run-tests.bat` gate on the development PC. If 5/5 and the runtime ERROR gate are clean, mark AMJ-010 DONE.
 
-**Result / references:** implementation `40d9914db9e1e0d9417f13a399465f61e1a3c2da`; automated-test integration commit follows.
+**Result / references:** implementation `40d9914db9e1e0d9417f13a399465f61e1a3c2da`; automated-test integration `8c3da587185f8aeb868f12ca9a8d016e9364b2e9`; GitHub Actions run `37182531071` passed.
 
 ### AMJ-011 — Barley crop/item graphics
 
