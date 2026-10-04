@@ -281,8 +281,10 @@ if ($null -eq $flourRotPatch) { Fail "Wheat patch is missing flour rot replaceme
 Assert-Number (Node-Text $flourRotPatch "value/daysToRotStart" "Patched flour rot days") 60 "Patched flour rot days"
 
 foreach ($recipeName in @("DankPyon_CraftFlour_Manual","DankPyon_CraftFlour","DankPyon_CraftFlourBulk")) {
+    $expectedXpath = '/Defs/RecipeDef[defName="' + $recipeName + '"]/products/Hay'
     $removeCount = @($wheatPatch.SelectNodes('/Patch/Operation[@Class="PatchOperationRemove"]') | Where-Object {
-        $_.xpath.InnerText -eq ('/Defs/RecipeDef[defName="' + $recipeName + '"]/products/Hay')
+        $xpathNode = $_.SelectSingleNode("xpath")
+        $null -ne $xpathNode -and $xpathNode.InnerText.Trim() -eq $expectedXpath
     }).Count
     if ($removeCount -ne 1) { Fail "Wheat patch must remove Hay exactly once from $recipeName." }
 }
