@@ -14,3 +14,23 @@ jobs:
 
       - name: Validate Stage A crop and grain processing XML
         run: python Tests/validate_stage_a.py
+
+  validate-windows-powershell:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Parse scripts with Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          $ErrorActionPreference = "Stop"
+          foreach ($script in Get-ChildItem -Recurse -File -Filter *.ps1) {
+            $tokens = $null
+            $parseErrors = $null
+            $null = [System.Management.Automation.Language.Parser]::ParseFile($script.FullName, [ref]$tokens, [ref]$parseErrors)
+            if ($parseErrors.Count -gt 0) {
+              throw "$($script.FullName): $($parseErrors -join [Environment]::NewLine)"
+            }
+          }
+          Write-Host "Windows PowerShell script parsing: PASS"

@@ -19,6 +19,8 @@ AMJおよび関連Modでは、RimTest Redux・Pickleを積極的に用いた自�
 
 This checks repository-owned XML values and wiring, including the six Stage A field crops, shared grain storage/processing, optional CCTO data, PNG integrity, and New Village start conditions. `Tests/validate_new_village.py` is called by the same CI entry point; no separate workflow is required.
 
+PowerShell scripts containing non-ASCII characters must be saved as UTF-8 **with BOM**, because the local runner uses Windows PowerShell 5.1, which otherwise reads script source using the Windows ANSI code page. ASCII-only scripts may omit the BOM. The Python validator checks this rule for every `.ps1`, and a Windows CI job parses all scripts with Windows PowerShell 5.1 before runtime testing on the development PC.
+
 ## Local full gate
 
 From the repository root:

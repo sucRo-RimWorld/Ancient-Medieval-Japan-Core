@@ -5,6 +5,17 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 
+def validate_powershell_encoding(path):
+    """Windows PowerShell 5.1 reads BOM-less scripts using the ANSI code page."""
+    raw = path.read_bytes()
+    source = raw.decode("utf-8-sig")
+    assert source.isascii() or raw.startswith(b"\xef\xbb\xbf"), (
+        f"non-ASCII PowerShell script must use UTF-8 with BOM for Windows PowerShell 5.1: {path}"
+    )
+
+for script in sorted(ROOT.rglob("*.ps1")):
+    validate_powershell_encoding(script)
+
 def validate_png(path):
     """Reject truncated/corrupted exports even when their IHDR looks valid."""
     png = path.read_bytes()

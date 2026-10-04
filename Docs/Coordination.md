@@ -329,6 +329,8 @@ Implemented XML, Japanese Scenario/Faction/PawnKind text, bilingual keyed start 
 
 **Validation so far:** Python Stage A + New Village static validation PASS; supplied MO 1.6 and versioned RimWorld Core Def XML reference audit PASS; repository/localization XML parses; diff whitespace check PASS. Native Scenario/PawnKind structure and the `defaultFactionDef` field were checked against 1.6-format Defs and game-code structure (the former `defaultFactionType` is a load alias). Windows PowerShell execution, C# build, Pickle start generation and full runtime ERROR scan have not run in this environment because the RimWorld installation/managed assemblies are unavailable. No 7/7 runtime PASS is claimed.
 
+**2026-10-04 local parser failure:** The first author run stopped before validation/game launch with mojibake and cascading parser errors at `Validate-NewVillage.ps1:99`. The new script contained Japanese literals in UTF-8 without BOM; Windows PowerShell 5.1 interpreted those bytes through the ANSI code page. It is now saved with a UTF-8 BOM. Other repository PowerShell scripts were audited and are ASCII-only. Stage A CI now rejects non-ASCII `.ps1` files without a BOM and includes a Windows PowerShell 5.1 parser job for all scripts. Source-encoding policy is documented in `Docs/DevelopmentTools.md`. The full local seven-scenario runtime gate remains pending; this fix does not establish a runtime PASS.
+
 
 **Handoff (2026-10-04 JST):** Stage A dry-field agriculture data work is effectively complete for the six Alpha crops. Awa/Hie/Kibi/Soba/Barley and MO Wheat are implemented with primary processing, CCTO integration where owned by AMJC, fertility-role coverage, and the current five-scenario automated gate. AMJ-012 (MO wheat integration) and the Core↔Environment fertility contract were locally confirmed with 5/5 Pickle PASS + zero runtime ERROR. Remaining crop-specific graphics stay in the separate Art/graphics stream and do not block data-side work.
 
@@ -406,123 +408,7 @@ That 1.2× replacement then rendered as a red question mark in game even though 
 
 The replacement was rebuilt directly from the exact previously working blob `533818ce40a03f98d473821ddc2113b47531da88`: only the visible sprite was enlarged to 120% with nearest-neighbor scaling on the same 256×256 palette canvas, preserving the original palette/transparency structure. The resulting exact blob `d9a0c7425bf327c25016ef86157b8f0eabfeac54` rendered correctly in game, resolving the red-question-mark regression.
 
-The rendered 1.2× immature Awa was still visibly too small beside surrounding vegetation and the mature stage. It has therefore been enlarged by a further 120% from the known-good rendered asset, giving roughly 1.44× the original visible size while keeping the same 256×256 palette canvas and nearest-neighbor treatment. The new exact blob is `c3b9d1c98796c684fabadadc75de27e081907861`.
-
-The final ~1.44× immature texture rendered correctly in game and its size/readability was accepted at normal zoom on 2026-10-04 JST. Mature and immature Awa plant graphics are therefore complete for this slice.
-
-**Next action:** none for AMJ-004; move to AMJ-005 post-harvest graphics.
-
-**Result / references:** Stage A cultivation `47ddb201ab167ac47c4af9da21d038b3096b3847`; shared millet processing completion `5fb1b15d3091d306bc59f8a5605e5496d4251afd`; mature Awa art `d515cb304531ae01debf1c6cd2ab859f9675fdf9`; texture-loading correction `b7813c846f5d3bb2c4ede99a53ca001336f77409`; final mature in-game visual comparison accepted on 2026-10-03; final immature texture commit `7f69d28a26af14ecd7311ac263bdf9dcd1ce3bb7`, accepted in game on 2026-10-04 JST.
-
-### AMJ-003 — Shared millet threshing and hulling
-
-**Requested by:** Agriculture/XML  \
-**Owner:** Agriculture/XML  \
-**Status:** DONE
-
-Implemented and validated the shared post-harvest path used by Awa, Hie, and Kibi:
-- `AMJC_MilletInHull` and edible `AMJC_Millet`;
-- simple grain processing spot and full grain processing table;
-- single and x10 threshing recipes;
-- single and x10 hulling recipes;
-- threshing outputs MO `DankPyon_Straw`; hulling preserves grain count 1:1;
-- 120d raw millet → 120d millet in hull → 90d edible millet;
-- raw/intermediate/final millet remain outside `DankPyon_Cereal`;
-- Japanese localization for buildings, items, and recipes;
-- raw millet market value corrected from the initial zero-value prototype to 1.1.
-
-Automated validation now covers the repetitive numeric and Def-wiring checks:
-- GitHub Actions runs the Stage A validator on pushes/PRs;
-- local `run-tests.bat` validates repository XML against the installed MO 1.6 source, builds isolated developer-only test mods, launches RimWorld with Pickle/Quickstarts, requires a fresh clean 4/4 summary, and exits automatically;
-- the validators correctly resolve RecipeDef inheritance for recipe users rather than requiring duplicate child XML.
-
-The corrected GitHub Actions validator passes, and the development-PC local gate completed with all 4 Pickle scenarios passing. Numeric/Def-wiring smoke for this slice is therefore complete. Remaining manual checks are limited to final graphics/UI readability and processing-speed feel during normal play.
-
-**Next action:** proceed to the next vertical slice; when the grain-processing graphics are finalized, perform only the visual/play-feel smoke rather than repeating numeric checks.
-
-**Result / references:** implementation `1429ad30c2e1de6f931a2b25a730a3e65fb60228`; authoritative processing values `8fcc9df4851378a48bb31cef2d9852f999e38afd`; local automated runner `a2f28dc868f172e2d770ddf10239ef7ac36d899a`; inherited-recipe validator fixes `7684c45afe8b9844544320252e2e62e3ce043d57` and `a63fc75869597e3bd327340c625109a26e875c70`; batch argument fixes `708ea9e39b21765504002afe8d673b5434822ce4` and `f0961acc5c317577f4d5b3f64976ef405bc93cfb`; passing GitHub Actions run `37116278412`; local Pickle result 4/4 pass.
-
-### AMJ-002 — Stage A Awa cultivation vertical slice
-
-**Requested by:** Core/design  \
-**Owner:** Agriculture/XML  \
-**Status:** DONE
-
-The first executable AMJ Core slice covers the Awa / foxtail millet cultivation-and-harvest path.
-
-Implemented on `main`:
-- initial `About/About.xml` with packageId `sucro.ancientmedievaljapan.core` and required Medieval Overhaul dependency;
-- `AMJC_Plant_FoxtailMillet_Awa` with Stage A values;
-- shared unthreshed harvest `AMJC_RawMillet`, inedible and 120-day storage, deliberately excluded from `DankPyon_Cereal`;
-- optional CCTO extension for fixed cold death at -4 C;
-- Japanese DefInjected labels/descriptions;
-- temporary MO wheat/raw-wheat graphics pending the final-art step.
-
-Runtime smoke was completed in game. The Awa Info Card showed growDays 6, fertilityMin 50%, fertility sensitivity 40%, growth range 8–42 C, harvest yield 13, and CCTO cold-death temperature -4 C. Harvest produced `雑穀(生) x13`; the item Info Card showed `AMJC_RawMillet`, AMJ Core as the source, and the expected rottable behavior. This validates the cultivation/harvest slice and confirms that the CCTO extension is loaded through the AMJ compatibility patch. CCTO's underlying fixed-threshold runtime semantics were already validated in the CCTO project and are not duplicated in AMJ.
-
-**Next action:** implement the shared grain primary-processing slice (threshing + hulling) before adding Hie/Kibi, so the three millet PlantDefs can converge on the same complete post-harvest path.
-
-**Result / references:** implementation commit `47ddb201ab167ac47c4af9da21d038b3096b3847`; identifier/source-of-truth update `c909843999ec5d9e2e850404a709a354d56610a4`.
-
-### AMJ-001 — Stage A crop balance baseline recovery
-
-**Requested by:** Core/design  \
-**Owner:** Agriculture/XML  \
-**Status:** DONE
-
-Recovered the previously confirmed Stage A balance values for the six first-Alpha field crops (Awa, Hie, Kibi, barley, MO wheat, buckwheat) from repository history and reconciled them with the current MO-required / standalone-CCTO architecture.
-
-The restored authoritative design now includes:
-- growDays;
-- final edible-grain yield baselines;
-- fertilityMin / fertilitySensitivity;
-- growth-temperature design values;
-- sowMinSkill and research unlocks;
-- grain processing/storage tiers;
-- CCTO-compatible fixed cold-death temperatures, using CCTO only when installed rather than duplicating its C# framework in Core.
-
-Historical design references used for recovery include `9b6807b48cf43da50a70caf1a99a5989391473ca` (growDays), `768665413e70ad7451b6b2255c67eb349ea32099` (yield/fertility/temperature), `33430521c97e22e2a52fe1ca661deeb6faf5c025` (skill/storage), and `36f271de4d82162fb002922bbb295ae5f68f31ae` (later grain-processing/storage structure). At recovery time the AMJC values were sourced from CCTO `Docs/ImplementationTable.md`. Ownership was subsequently corrected in AMJ-006: the current source is AMJC `Docs/Balance/Crops/ColdTolerance.md`, aligned with the cultivation design and AMJC compatibility XML. Do not use CCTO as the AMJC plant-data source.
-
-**Result / references:** `Docs/Design.md` commit `f8190ecdaf5ca2d2313e54496b928f8eb66b5685`.
-
-### TEST-001 — AMJ-wide runtime ERROR gate
-
-**Requested by:** project-wide automated-test policy  
-**Owner:** testing/tooling  
-**Status:** DONE
-
-AMJ automated tests that launch RimWorld must treat repository-owned ERROR-level runtime log entries as test failures even when the scenario count itself passes.
-
-AMJ Core E2E now:
-- redirects RimWorld/Unity runtime output to isolated `TestResults\Pickle\Player.log`;
-- validates the normal 4/4 Pickle summary;
-- then scans the isolated log for ERROR entries attributed to AMJ Core / the staged E2E target;
-- fails the overall gate when such an ERROR exists.
-
-Implementation: `9bb1038691147f0ea1046aa206332374217ec3f9`, `dbccb4f92053c14869a11bcf4079b3954a0e41a3`, `c6eed6b1f862e2def624db8998a2884f7c38318e`, `0ed52c49a1bb4cf5542a0f97b99d62964dae0538`.
-Project-rule commits: `7e8e3229bf3d05e3a747a3a94b4e6d160b69ece7`, `990d329456126ceb1291a5c2d76a04c327d0d03e`.
-
-
-### DOC-001 — Shared public-description format and save compatibility
-
-**Requested by:** author / public-description policy (2026-10-04 JST)  
-**Owner:** Documentation/release  
-**Status:** DONE (repository documentation)
-
-All AMJ-related mod descriptions must include save compatibility. CCTO is the evolving format baseline. Durable shared policy: [Docs/ModDescriptionGuidelines.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Core/blob/main/Docs/ModDescriptionGuidelines.md). Addition/removal safety must reflect each mod's actual implementation; custom content and world-generation mods do not inherit CCTO's safe-removal claim.
-
-About.xml now states the development build's save-compatibility limits; AGENTS.md points to the shared policy for future README/Workshop preparation.
-
-**Next action:** Use the shared CCTO-based format when preparing the public description; verify save addition/removal before making stronger claims.
-
-
-### DOC-002 — Workshop descriptions omit detailed versions and test results
-
-**Requested by:** author (2026-10-04 JST)  
-**Owner:** Documentation/release  
-**Status:** DONE (repository documentation)
-
-The shared public-description policy now omits detailed mod version numbers, Version sections, and test counts/results from Workshop descriptions. Keep the supported RimWorld version and Alpha/Beta stage, features, dependencies, supported content, and save compatibility. Detailed release numbers and validation evidence belong in README/development/release records; changes belong in Workshop changelogs and GitHub releases.
+The rendered 1.2× immature Awa was still visibly too small beside surrounding vegetation and the mature stage. It has therefore…2229 tokens truncated… save compatibility. Detailed release numbers and validation evidence belong in README/development/release records; changes belong in Workshop changelogs and GitHub releases.
 
 Durable source updated: Docs/ModDescriptionGuidelines.md. All related repositories already refer to this shared guide through AGENTS.md.
 
