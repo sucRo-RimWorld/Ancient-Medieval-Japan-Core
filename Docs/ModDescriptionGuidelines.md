@@ -7,6 +7,8 @@
 
 基本フォーマットはCCTOの説明に合わせ、公開・利用時のフィードバックを受けて継続的にブラッシュアップする。見出しや順序は基準を共有し、各Mod固有の長い説明まで機械的に複製しない。
 
+**READMEとWorkshopの役割は分ける。** READMEは根拠、詳細仕様、全数値、開発・検証情報まで保持する詳細資料とし、WorkshopはREADMEの短縮コピーにはしない。Workshopでは、導入判断に必要な「何を変えるModか」「特徴・設計方針」「主要な対応範囲」「依存関係」「セーブ互換性」など重要事項だけを選び、詳細はREADMEへ誘導する。
+
 基準資料:
 - [CCTO README（公開内容の正本）](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/README.md)
 - [CCTO Workshop説明](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/WorkshopDescription.md)
