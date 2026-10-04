@@ -154,6 +154,32 @@ assert float(wheat_design[3]) == 0.7
 assert float(wheat_design[4]) == 0.9
 assert wheat_design[7] == "-6℃"
 
+def fertility_growth_factor(crop, fertility):
+    sensitivity = num(crop, "plant/fertilitySensitivity")
+    return fertility * sensitivity + (1.0 - sensitivity)
+
+thin_soil_fertility = 0.50
+for crop in (soba, kibi, awa, hie, barley):
+    assert num(crop, "plant/fertilityMin") <= thin_soil_fertility
+
+assert float(wheat_design[3]) > thin_soil_fertility
+
+expected_thin_soil_factors = (
+    (soba, 0.875),
+    (kibi, 0.85),
+    (awa, 0.80),
+    (hie, 0.75),
+    (barley, 0.70),
+)
+for crop, expected in expected_thin_soil_factors:
+    assert abs(fertility_growth_factor(crop, thin_soil_fertility) - expected) < 0.0001
+
+actual_order = [
+    fertility_growth_factor(crop, thin_soil_fertility)
+    for crop in (soba, kibi, awa, hie, barley)
+]
+assert actual_order == sorted(actual_order, reverse=True)
+
 for cold_name, min_temp, death in (
     ("Foxtail millet", "8°C", "-3°C"),
     ("Barnyard millet", "5°C", "-2°C"),

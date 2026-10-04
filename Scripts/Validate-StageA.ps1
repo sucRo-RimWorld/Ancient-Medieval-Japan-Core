@@ -240,6 +240,31 @@ if ($null -eq $fertilityPatch) { Fail "Wheat patch is missing fertilityMin condi
 Assert-Number (Node-Text $fertilityPatch "match/value/fertilityMin" "Wheat patch match fertilityMin") 0.7 "Wheat patch match fertilityMin"
 Assert-Number (Node-Text $fertilityPatch "nomatch/value/fertilityMin" "Wheat patch nomatch fertilityMin") 0.7 "Wheat patch nomatch fertilityMin"
 
+$thinSoilFertility = 0.50
+foreach ($cropCase in @(
+    @{ Name = "Soba"; Node = $soba; Expected = 0.875 },
+    @{ Name = "Kibi"; Node = $kibi; Expected = 0.85 },
+    @{ Name = "Awa"; Node = $awa; Expected = 0.80 },
+    @{ Name = "Hie"; Node = $hie; Expected = 0.75 },
+    @{ Name = "Barley"; Node = $barley; Expected = 0.70 }
+)) {
+    $fertilityMin = [double](Node-Text $cropCase.Node "plant/fertilityMin" "$($cropCase.Name) fertilityMin")
+    if ($fertilityMin -gt $thinSoilFertility + 0.0001) {
+        Fail "$($cropCase.Name) must remain sowable at fertility 0.50."
+    }
+
+    $sensitivity = [double](Node-Text $cropCase.Node "plant/fertilitySensitivity" "$($cropCase.Name) fertilitySensitivity")
+    $factor = $thinSoilFertility * $sensitivity + (1.0 - $sensitivity)
+    if ([math]::Abs($factor - [double]$cropCase.Expected) -gt 0.0001) {
+        Fail "$($cropCase.Name) fertility 0.50 growth factor expected $($cropCase.Expected), got $factor."
+    }
+}
+
+$wheatFertilityMin = [double](Node-Text $fertilityPatch "match/value/fertilityMin" "Wheat patched fertilityMin")
+if ($wheatFertilityMin -le $thinSoilFertility + 0.0001) {
+    Fail "MO wheat must remain unsowable at fertility 0.50."
+}
+
 $thingClassPatch = $wheatPatch.SelectSingleNode('/Patch/Operation[@Class="PatchOperationReplace"][xpath=''/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/thingClass'']')
 if ($null -eq $thingClassPatch) { Fail "Wheat patch is missing thingClass replacement." }
 Assert-Text (Node-Text $thingClassPatch "value/thingClass" "Wheat patch thingClass") "Plant" "Wheat patch thingClass"

@@ -86,6 +86,9 @@ namespace AncientMedievalJapanCore.E2E
                 || !wheatPlant.modExtensions.Any(x => x != null && x.GetType().FullName == "MedievalOverhaul.SecondaryPlantDropExtension"),
                 "AMJ wheat must not retain the MO harvest-time secondary-drop extension.");
 
+                checkpoint = "fertility 0.50 crop roles";
+            AssertThinSoilCropRoles(ctx);
+
                 checkpoint = "grain ThingDef lookup and storage";
             AssertRotDays(ctx, raw, 120f);
             AssertRotDays(ctx, inHull, 120f);
@@ -399,6 +402,76 @@ namespace AncientMedievalJapanCore.E2E
             bool coldDormancy = Convert.ToBoolean(dormancyField.GetValue(extension));
             ctx.Assert(Math.Abs(coldDeathTemperature - expectedDeathTemperature) < 0.001f, defName + " CCTO cold-death temperature mismatch.");
             ctx.Assert(!coldDormancy, defName + " should use fixed cold death, not cold dormancy.");
+        }
+
+        private static void AssertThinSoilCropRoles(PickleContext ctx)
+        {
+            const float fertility = 0.50f;
+
+            ThingDef soba = RequireThingDef(ctx, "AMJC_Plant_Buckwheat_Soba");
+            ThingDef kibi = RequireThingDef(ctx, "AMJC_Plant_ProsoMillet_Kibi");
+            ThingDef awa = RequireThingDef(ctx, "AMJC_Plant_FoxtailMillet_Awa");
+            ThingDef hie = RequireThingDef(ctx, "AMJC_Plant_BarnyardMillet_Hie");
+            ThingDef barley = RequireThingDef(ctx, "AMJC_Plant_Barley");
+            ThingDef wheat = RequireThingDef(ctx, "DankPyon_Plant_Wheat");
+
+            ThingDef[] sowable = { soba, kibi, awa, hie, barley };
+            for (int i = 0; i < sowable.Length; i++)
+            {
+                ThingDef crop = sowable[i];
+                ctx.Assert(
+                    crop.plant != null && crop.plant.fertilityMin <= fertility + 0.0001f,
+                    crop.defName + " must remain sowable at fertility 0.50.");
+            }
+
+            ctx.Assert(
+                wheat.plant != null && wheat.plant.fertilityMin > fertility + 0.0001f,
+                "MO wheat must remain unsowable at fertility 0.50.");
+
+            AssertFertilityFactor(ctx, soba, fertility, 0.875f);
+            AssertFertilityFactor(ctx, kibi, fertility, 0.85f);
+            AssertFertilityFactor(ctx, awa, fertility, 0.80f);
+            AssertFertilityFactor(ctx, hie, fertility, 0.75f);
+            AssertFertilityFactor(ctx, barley, fertility, 0.70f);
+
+            float[] factors =
+            {
+                FertilityFactor(soba, fertility),
+                FertilityFactor(kibi, fertility),
+                FertilityFactor(awa, fertility),
+                FertilityFactor(hie, fertility),
+                FertilityFactor(barley, fertility)
+            };
+
+            for (int i = 1; i < factors.Length; i++)
+            {
+                ctx.Assert(
+                    factors[i - 1] > factors[i],
+                    "Fertility 0.50 growth ordering must remain Soba > Kibi > Awa > Hie > Barley.");
+            }
+        }
+
+        private static void AssertFertilityFactor(
+            PickleContext ctx,
+            ThingDef crop,
+            float fertility,
+            float expected)
+        {
+            float actual = FertilityFactor(crop, fertility);
+            ctx.Assert(
+                Math.Abs(actual - expected) < 0.0001f,
+                crop.defName + " fertility growth factor mismatch at " + fertility + ".");
+        }
+
+        private static float FertilityFactor(ThingDef crop, float fertility)
+        {
+            if (crop == null || crop.plant == null)
+            {
+                throw new InvalidOperationException("Fertility factor requires a loaded plant ThingDef.");
+            }
+
+            float sensitivity = crop.plant.fertilitySensitivity;
+            return fertility * sensitivity + (1f - sensitivity);
         }
 
         private static void AssertMoFlourRecipe(PickleContext ctx, string defName, int expectedFlourCount)
