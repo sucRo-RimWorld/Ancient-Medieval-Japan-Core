@@ -1017,39 +1017,34 @@ The author corrected the workstream intent: the current image exercise is a **pi
 
 All local dehulled-Soba candidates and associated recolor experiments are discarded. Future validation output must show whether the registered pipeline reproduces the approved in-hull exemplar itself. A different resource/material must not be introduced until this identity validation passes through the intended reusable layer structure.
 
-### WORK-001 — Desktop Work: non-interactive runtime tests + retexture implementation audit
+### WORK-001 — Retexture implementation precedent audit
 
 **Requested by:** author (2026-10-05 JST)  
-**Owner:** Desktop Work / Testing + art compatibility audit  
-**Status:** OPEN
+**Owner:** Art compatibility / architecture  
+**Status:** DONE — prior-art audit and shared implementation rule recorded
 
-Desktop Workで、AMJの目視不要ランタイムテストを可視RimWorldウィンドウなしで実行できるようにし、あわせて既存RimWorldリテクスチャModの実装方式を横断監査する。
+The earlier handoff incorrectly bundled already-completed runtime-test work into this item. The author clarified that the runtime testing is finished; this item is therefore closed on the remaining retexture audit only.
 
-Testing scope:
-- Core `run-e2e.bat` の8-scenario Pickle gateを非対話・非表示実行へ移行する。
-- Environment `run-runtime-tests.bat` の固定バイオーム / Core+Environment統合 / BadTex・rendering-dependent checksを非対話化する。
-- rendering-dependent testではrenderingを無効化せず、仮想・オフスクリーン・hidden display等で実描画経路を維持する。
-- normal automated runnerとvisual/interactive/debug runnerを分離する。
-- isolated save-data、timeout/watchdog、owned ERROR gate、report freshness検証を維持する。
-- 実行後、Core 8/8 と Environment runtime/Core-integrationの実PASSを取得する。静的PASSだけで完了扱いしない。
+Audited representative approaches:
+- Vanilla Textures Expanded;
+- Vanilla Textures Expanded - Variations;
+- ReGrowth 2 current 1.6 source;
+- Medieval Overhaul current distributed 1.6.2.2 payload;
+- Clean Textures;
+- representative Van's Retextures;
+- Misc. Training Medieval Retexture;
+- Primitive Storage Retexture / Adaptive Primitive Storage;
+- [CF] Better Looking Plants;
+- Plants and Mushrooms Retexture.
 
-Retexture audit scope:
-- ローカルWorkshopに存在するretexture系Modをまず列挙し、少なくとも以下の代表例を実ファイルから監査する:
-  - Vanilla Textures Expanded (2016436324)
-  - Vanilla Textures Expanded - Variations (2493234474)
-  - Clean Textures (2865361569)
-  - Van's Retextures collection / installed members (collection 2848959199; examples: Melee Weapons 2922441211, Mechanitor 2943977908, Quarry 3145950235, Camping Tents 3670840512, Deep Storage Meathook/Hampers 2887359457, Organ Jars 3541295970)
-  - Misc. Training Medieval Retexture (3271602770)
-  - Primitive Storage Retexture if locally present
-  - Medieval Overhaul (3219596926) itself, because it retextures Vanilla assets and documents override/load-order behavior
-  - other current 1.6 retexture Mods found locally that represent a different implementation pattern.
-- For each, inspect `About/About.xml`, `loadFolders.xml`, `Patches/`, `Defs/`, `Textures/`, assemblies if any, package/load-order declarations, dependency handling, and license/readme where present.
-- Classify implementation: same-path asset shadow/override, XML texPath/graphicData patch, Def inheritance/base override, Framework/Comp-driven variation, runtime C# graphic substitution, or mixed.
-- Record how each handles optional parent Mods, loadAfter/loadBefore, missing dependency, DLC/version folders, UI icons, directional/leafless/immature/snow/stack variants, texture resolution, DDS, and compatibility with other retexture packs.
-- Do not copy third-party art. The audit is for implementation and compatibility precedent; AMJ-owned art remains AMJ-owned.
-- Compare findings with AMJ's current per-Mod ownership rule and recommend the simplest robust pattern for Core-owned Vanilla/MO retextures. Do not change the ownership policy merely because another Mod uses a different packaging model.
-- Durable conclusions go into the appropriate Design/Golden Path docs; Coordination records status only.
+Durable result:
+- AMJ-owned prerequisite assets use **AMJ-owned unique texPaths + explicit Def/XML patching** by default.
+- same-name texture shadowing/load-order-only replacement is not the canonical AMJ mechanism;
+- retexture ownership is per complete loaded graphic-state family, not per one mature/base PNG;
+- optional parent mods are guarded; static retextures do not require C#;
+- known Mods that explicitly patch the same Def field (not merely the same original texture file) require narrow load-order/compatibility handling and final-loaded-path regression;
+- pure retexture patches remain visual-only.
 
-Shared policy source: `Docs/DevelopmentGoldenPathGuidelines.md` Non-interactive runtime-test rule and `Docs/Design.md §8.5.1`.
+Shared source of truth: `Docs/RetextureImplementationGuidelines.md`, introduced at commit `e61a6379886d0f8a5ada8edb75a94943572f23ea`; linked from Core Design at `65b0dd95236c801c27c0c52aa4170b5996a32e03`.
 
-**Completion:** non-interactive runtime gates actually pass on the local RimWorld installation; retexture implementation survey is documented with a recommended AMJ pattern and identified compatibility/load-order risks.
+**Next action:** when the first Core-owned prerequisite retexture is integrated, add its target/state manifest and regression coverage required by the shared guideline. No runtime-test rerun is part of this audit item.
