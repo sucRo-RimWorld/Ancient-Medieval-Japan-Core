@@ -28,6 +28,24 @@ A success that depends on remembered chat context, one-off manual commands, hand
 
 ## Automation expectations
 
+### Non-interactive runtime-test rule
+
+For AMJ and related Mods, **an automated test that does not require human visual judgment must not normally open a visible RimWorld window on the user's desktop**.
+
+Use the following project-wide rule:
+
+- static/XML/build/data tests run without launching the game UI;
+- automated RimWorld runtime tests (Pickle, RimTest Redux, Quickstarts, integration/regression checks, runtime-ERROR gates, generated-map sampling, climate/soil/Def assertions) run non-interactively and must not steal focus or obstruct normal desktop work;
+- when a test must exercise Unity/RimWorld rendering, texture-atlas creation, `Graphic.Draw`, BadTex detection, or another graphics path, **do not disable rendering merely to hide the window**. Run the normal graphics path against a virtual/off-screen/hidden display target or equivalent platform-appropriate isolated desktop so rendering fidelity is preserved while no visible game window appears to the user;
+- do not use `-nographics` or an equivalent rendering bypass for a test whose purpose depends on graphics/rendering behavior;
+- visible RimWorld execution is reserved for tests that genuinely require human judgment, such as final texture appearance, normal-zoom readability, UI presentation, interaction feel, or gameplay feel;
+- visible/manual runners must be clearly separated from ordinary automated runners (for example, an explicit visual/interactive/debug entry point). The default automated test command should remain non-interactive;
+- automated results are taken from structured reports, assertions, screenshots captured for machine analysis where applicable, and isolated logs rather than from watching the window;
+- if a test cannot be made non-interactive without changing the behavior being tested, document the exception in the owning repository and keep the visible scope as small as possible. A convenience limitation is not by itself a reason to require visible execution;
+- existing runtime harnesses that still display RimWorld are migration targets. When that harness is next materially changed, or before it becomes part of a regular project-wide regression gate, add a non-interactive execution path unless a documented fidelity blocker exists.
+
+This rule is about **visibility and user interruption**, not about skipping real runtime behavior. A hidden/virtual-display test must still launch the same required game/runtime path, capture the normal error log, and exercise the real rendering path when that path is part of the contract.
+
 Prefer automation for:
 - syntax and structural validation;
 - file/asset integrity checks;
