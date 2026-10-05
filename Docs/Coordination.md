@@ -1084,3 +1084,16 @@ The previously approved Soba sheaf source has not been wired in this commit beca
 
 
 **AMJ-009 Soba plant CI follow-up (2026-10-05 JST):** The first integration CI run (#205) correctly failed Stage A because the Soba immature path was still the Awa placeholder. The write script had scoped the XML block by the first literal `</ThingDef>`, which accidentally matched the nested `descriptionHyperlinks/ThingDef` element before the plant section. The correction now scopes the replacement directly from the Soba defName through its immatureGraphicPath; no image bytes changed.
+
+
+### ART-TEMPLATE-016 — replace_rgba scaffold and occupancy hardening
+
+**Requested by:** author / follow-up to boxed-resource identity validation (2026-10-05 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** IMPLEMENTED; CI pending
+
+The zero-diff identity gate exposed a second reusable-contract issue before any new resource was attempted: under `replace_rgba`, the input cannot be a transparent object-only contents layer. It must be a complete rendered editable-cavity patch. Otherwise transparent pixels selected by the editable mask erase the empty-master cavity and reproduce the earlier broken-rim/layer-paste failure.
+
+`fixed_template.py` now provides a `scaffold` mode that copies the registered master RGBA inside the editable mask and leaves everything outside transparent. New resource art must be added to this scaffold. Validation rejects transparent holes where the registered master is opaque.
+
+Required-fill validation is also corrected for `replace_rgba`: alpha coverage is no longer meaningful because the scaffold itself is opaque. Occupancy is now measured by RGBA differences from the registered empty master within the required-fill guide. An untouched scaffold therefore fails closed, while the registered buckwheat-in-hull identity patch remains required to pass.

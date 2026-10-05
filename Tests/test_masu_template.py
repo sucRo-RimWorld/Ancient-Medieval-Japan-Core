@@ -51,6 +51,28 @@ class MasuTemplateTest(unittest.TestCase):
 
         module.validate_variable_layer(MANIFEST, variable, allowed)
 
+        # A new replace_rgba resource starts from an exact editable-cavity
+        # scaffold copied from the empty master, never from a transparent canvas.
+        with tempfile.TemporaryDirectory() as scaffold_tmp:
+            scaffold_path = Path(scaffold_tmp) / "scaffold.png"
+            module.scaffold(MANIFEST, scaffold_path)
+            with Image.open(scaffold_path) as image:
+                scaffold = image.convert("RGBA")
+
+            for patch_px, master_px, editable in zip(
+                scaffold.get_flattened_data(),
+                master.get_flattened_data(),
+                allowed.get_flattened_data(),
+            ):
+                if editable == 255:
+                    self.assertEqual(patch_px, master_px)
+                else:
+                    self.assertEqual(patch_px[3], 0)
+
+            # Empty scaffold contains no resource; occupancy must fail closed.
+            with self.assertRaisesRegex(ValueError, "under-fills"):
+                module.validate_variable_layer(MANIFEST, scaffold, allowed)
+
         with tempfile.TemporaryDirectory() as tmp:
             output = Path(tmp) / "identity.png"
             module.compose(MANIFEST, var_path, output)
@@ -77,11 +99,13 @@ class MasuTemplateTest(unittest.TestCase):
         )
         self.assertEqual(protected_diffs, 0)
 
+        # Transparent object-only layers are invalid for replace_rgba because
+        # they would erase the cavity wherever the editable mask selects them.
         tiny = Image.new("RGBA", master.size, (0, 0, 0, 0))
         for y in range(100, 130):
             for x in range(105, 150):
                 tiny.putpixel((x, y), (100, 60, 40, 255))
-        with self.assertRaisesRegex(ValueError, "required"):
+        with self.assertRaisesRegex(ValueError, "transparent holes"):
             module.validate_variable_layer(MANIFEST, tiny, allowed)
 
 

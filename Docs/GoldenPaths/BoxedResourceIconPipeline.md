@@ -98,6 +98,20 @@ Do not use the broad editable mask or a hand-drawn/interior polygon as the produ
 When the family later creates a genuinely new resource, use the highest authoritative source available and downsample once at export. However, the **current validation phase does not recolor or redesign Soba**: it must first reproduce the registered buckwheat-in-hull exemplar exactly through the reusable template/layer structure.
 
 
+## Variable-patch scaffold contract
+
+For a `replace_rgba` family, the variable input is a **complete rendered patch of the editable cavity**, not a transparent object-only contents layer. Starting from transparency would erase the empty-master cavity/rim-adjacent pixels selected by the editable mask and recreates the exact failure mode seen during the Soba validation loop.
+
+Every genuinely new resource must therefore start with:
+
+`python Scripts/Art/fixed_template.py scaffold <manifest> --output <variable-patch.png>`
+
+The scaffold copies the registered empty-master RGBA exactly inside the editable mask and is transparent outside it. Draw or composite the new resource **onto this scaffold** without changing its canvas size. Do not clear unchanged cavity pixels to transparency.
+
+For `replace_rgba`, required-fill occupancy is measured by **RGBA differences from the registered empty master inside the required-fill guide**, not by alpha coverage. The scaffold by itself must fail the required-fill gate; a transparent object-only layer must fail the editable-patch completeness gate.
+
+The finished variable patch is then passed to `compose`. This ensures that unchanged cavity pixels remain identical to the registered master while actual resource pixels replace only the permitted region.
+
 ## Contents contract
 
 For the normal/full boxed-resource presentation:
@@ -179,7 +193,11 @@ The representative final has zero RGBA differences from the master outside the e
 
 After v2 is active, boxed-resource derivatives must pass the family manifest through:
 
-`python Scripts/Art/fixed_template.py compose <manifest> <contents-layer.png> --output <final.png>`
+`python Scripts/Art/fixed_template.py scaffold <manifest> --output <variable-patch.png>`
+
+Edit the scaffold to add the resource, then:
+
+`python Scripts/Art/fixed_template.py compose <manifest> <variable-patch.png> --output <final.png>`
 
 `python Scripts/Art/fixed_template.py validate <manifest> <final.png>`
 

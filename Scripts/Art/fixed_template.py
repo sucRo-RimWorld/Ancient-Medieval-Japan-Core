@@ -49,18 +49,41 @@ def validate(master, mask, candidate):
 def validate_variable_layer(manifest_path, layer, mask=None):
     path = Path(manifest_path)
     spec = json.loads(path.read_text(encoding='utf-8'))
+    master, registered_mask = load_template(path)
     if mask is None:
-        _, mask = load_template(path)
+        mask = registered_mask
     layer = layer.convert('RGBA')
     if layer.size != tuple(spec['size']):
         raise ValueError('Variable layer must match template canvas')
     alpha = layer.getchannel('A')
+    master_alpha = master.getchannel('A')
     threshold = int(spec.get('required_fill', {}).get('alpha_threshold', 1))
     req = spec.get('required_fill')
+    mode = spec.get('compose_mode', 'alpha_over')
+
     if spec.get('enforce_variable_within_editable', bool(req)):
-        outside = sum(a >= threshold and m == 0 for a, m in zip(alpha.get_flattened_data(), mask.get_flattened_data()))
+        outside = sum(
+            a >= threshold and m == 0
+            for a, m in zip(alpha.get_flattened_data(), mask.get_flattened_data())
+        )
         if outside:
             raise ValueError(f'Variable layer has {outside} nontransparent pixels outside allowed fill region')
+
+    # replace_rgba patches are complete rendered cavity states, not transparent
+    # object-only overlays.  Every normally opaque master pixel inside the
+    # editable region must therefore remain defined in the patch.
+    if mode == 'replace_rgba':
+        holes = sum(
+            m == 255 and ma >= threshold and la < threshold
+            for la, ma, m in zip(
+                alpha.get_flattened_data(),
+                master_alpha.get_flattened_data(),
+                mask.get_flattened_data(),
+            )
+        )
+        if holes:
+            raise ValueError(f'Variable patch has {holes} transparent holes inside editable region')
+
     if req:
         req_path = path.parent / req['path']
         if hashlib.sha256(req_path.read_bytes()).hexdigest() != req['sha256']:
@@ -75,16 +98,46 @@ def validate_variable_layer(manifest_path, layer, mask=None):
         required_pixels = [i for i, v in enumerate(required.get_flattened_data()) if v == 255]
         if not required_pixels:
             raise ValueError('Required-fill guide is empty')
-        alpha_values = list(alpha.get_flattened_data())
-        covered = sum(alpha_values[i] >= threshold for i in required_pixels) / len(required_pixels)
+
         minimum = float(req.get('min_alpha_coverage', 0.0))
+        if mode == 'replace_rgba':
+            # A complete patch includes the empty cavity/background too, so
+            # alpha coverage would always look full.  Measure actual resource
+            # occupancy by RGBA change from the registered empty master.
+            layer_pixels = list(layer.get_flattened_data())
+            master_pixels = list(master.get_flattened_data())
+            changed = [a != b for a, b in zip(layer_pixels, master_pixels)]
+            covered = sum(changed[i] for i in required_pixels) / len(required_pixels)
+            changed_mask = Image.new('L', layer.size, 0)
+            changed_mask.putdata([255 if c else 0 for c in changed])
+            bbox = changed_mask.getbbox()
+        else:
+            alpha_values = list(alpha.get_flattened_data())
+            covered = sum(alpha_values[i] >= threshold for i in required_pixels) / len(required_pixels)
+            bbox = alpha.point(lambda v: 255 if v >= threshold else 0).getbbox()
+
         if covered < minimum:
             raise ValueError(f'Variable layer under-fills required region: {covered:.3f} < {minimum:.3f}')
-        bbox = alpha.point(lambda v: 255 if v >= threshold else 0).getbbox()
         req_bbox = required.getbbox()
         if bbox is None or bbox[0] > req_bbox[0] or bbox[1] > req_bbox[1] or bbox[2] < req_bbox[2] or bbox[3] < req_bbox[3]:
             raise ValueError('Variable layer does not span required fill bbox')
     return layer
+
+
+def scaffold(manifest, output):
+    master, mask = load_template(manifest)
+    transparent = Image.new('RGBA', master.size, (0, 0, 0, 0))
+    patch = Image.composite(master, transparent, mask)
+
+    output = Path(output)
+    if output.suffix.lower() != '.png':
+        raise ValueError('Lossless PNG output required')
+    output.parent.mkdir(parents=True, exist_ok=True)
+    patch.save(output, format='PNG')
+
+    # Scaffold is intentionally NOT a valid finished variable patch yet:
+    # until resource art is added it must fail the required-fill occupancy gate.
+    print(f'PASS: editable RGBA scaffold created from registered master; {output}')
 
 
 def compose(manifest, variable, output):
@@ -129,16 +182,26 @@ def compose(manifest, variable, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('mode', choices=['compose', 'validate'])
+    parser.add_argument('mode', choices=['scaffold', 'compose', 'validate'])
     parser.add_argument('manifest')
-    parser.add_argument('image', help='Variable layer for compose; final PNG for validate')
+    parser.add_argument('image', nargs='?', help='Variable patch for compose; final PNG for validate')
     parser.add_argument('--output')
     args = parser.parse_args()
-    if args.mode == 'compose':
+    if args.mode == 'scaffold':
+        if args.image:
+            parser.error('scaffold does not take an image argument')
+        if not args.output:
+            parser.error('scaffold requires --output')
+        scaffold(args.manifest, args.output)
+    elif args.mode == 'compose':
+        if not args.image:
+            parser.error('compose requires a variable patch image')
         if not args.output:
             parser.error('compose requires --output')
         compose(args.manifest, args.image, args.output)
     else:
+        if not args.image:
+            parser.error('validate requires a final PNG')
         master, mask = load_template(args.manifest)
         with Image.open(args.image) as image:
             image.load()
