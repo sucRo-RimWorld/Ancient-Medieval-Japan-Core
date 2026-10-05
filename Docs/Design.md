@@ -1514,6 +1514,8 @@ AMJ側は一般的な釣りではなく、**日本の沿岸・河川生活で不
 
 ### 8.5.1 AMJ共通リテクスチャ方針
 
+技術実装・既存リテクスチャMod監査・競合規則の共通正本は [`Docs/RetextureImplementationGuidelines.md`](RetextureImplementationGuidelines.md) とする。**AMJが所有する前提Mod資産は、AMJ固有texPathへ明示的にPatchする方式を標準とし、同名texture pathのロード順上書きだけには依存しない。** 対象は1枚のPNGではなく、実際にロードされたDefが使用するgraphic state一式として監査する。
+
 AMJでいう**リテクスチャ**は、AMJ独自Defの画像制作だけを指さない。**各AMJ Modが、自分の責務範囲で使用・再利用するVanilla / Medieval Overhaul等の前提Mod資産についても、AMJ追加資産と並べた際に画風・輪郭・色数・陰影・情報密度・解像感が統一されるよう、必要なテクスチャをAMJ側から差し替えること**を含む。
 
 目的は「前提Modを日本風に全面変換すること」ではなく、**各Modを導入したとき、そのModが担当するゲーム領域の見た目が一つのアートセットとして成立すること**である。
