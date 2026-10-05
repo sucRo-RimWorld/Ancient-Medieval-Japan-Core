@@ -1100,3 +1100,22 @@ Required-fill validation is also corrected for `replace_rgba`: alpha coverage is
 
 
 **ART-TEMPLATE-016 CI correction (2026-10-05 JST):** The first scaffold-hardening CI run (#207) failed the masu regression because an exact zero-hole rule was too strict for the already approved identity exemplar: its antialiased rear-edge region legitimately contains a small number of low-alpha pixels inside the historical editable mask. The contract is therefore expressed as a measurable coverage threshold instead of a per-pixel opacity prohibition. `replace_patch_min_defined_coverage` is registered at 0.98; the approved exemplar remains above that threshold, while a transparent object-only input fails closed. Required-fill occupancy remains difference-from-master based.
+
+
+### AMJ-009-ART-SOBA-SHEAF — Dedicated Soba sheaf texture
+
+**Requested by:** author / continuation of AMJ-009 art integration (2026-10-05 JST)  
+**Owner:** AMJ Core art  
+**Status:** IMPLEMENTED; CI pending
+
+Recovered the last Soba-sheaf iteration from the persistent Library sequence before the workstream moved on to boxed-resource art. It matches the accepted Soba-sheaf design: a compact tied bundle with tan/yellow/reddish stalks, large dark triangular buckwheat fruits, three broad leaves and a few pale flowers. No ImageGen was used in this integration step.
+
+The source was deterministically normalized to a 256×256 transparent production PNG and wired as `Graphic_StackCount` under:
+
+- `Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat/RawBuckwheat_a.png`
+- `.../RawBuckwheat_b.png`
+- `.../RawBuckwheat_c.png`
+
+All three stack slots intentionally reuse the same approved silhouette for now, matching the current buckwheat-in-hull handling. `AMJC_RawBuckwheat` no longer reuses the millet sheaf path. Stage A validation now locks the dedicated texPath plus all three 256×256 PNG slots.
+
+The edible `AMJC_Buckwheat` grain remains on its temporary millet-grain path; this commit does not create or infer that separate asset.

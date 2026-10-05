@@ -368,6 +368,13 @@ assert_stack_graphic(
 )
 
 assert_stack_graphic(
+    raw_buckwheat,
+    "Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat",
+    "Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat",
+    "RawBuckwheat",
+)
+
+assert_stack_graphic(
     buckwheat_in_hull,
     "Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull",
     "Textures/Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull",

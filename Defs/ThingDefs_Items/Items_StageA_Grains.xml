@@ -87,14 +87,14 @@
     Buckwheat processing states. They intentionally remain outside
     DankPyon_Cereal so MO generic processing cannot bypass AMJ threshing/hulling.
     Soba-specific production art is wired per state as it is approved. The
-    sheaf and edible grain may temporarily reuse millet paths until replaced.
+    the edible grain may temporarily reuse the millet grain path until replaced.
   -->
   <ThingDef ParentName="RoughPlantBase">
     <defName>AMJC_RawBuckwheat</defName>
     <label>buckwheat sheaf</label>
     <description>Harvested buckwheat stems and seed clusters before threshing. It stores well but is not yet suitable for eating.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/AMJC_Millet/RawMillet</texPath>
+      <texPath>Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
