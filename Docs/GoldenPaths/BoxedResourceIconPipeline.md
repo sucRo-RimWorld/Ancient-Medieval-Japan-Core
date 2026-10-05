@@ -52,6 +52,19 @@ A template remains blocked/inactive until all of these are true:
 
 An empty master by itself cannot activate a family.
 
+## Identity round-trip gate
+
+Before changing material/color/contents, prove that the template decomposition itself is correct.
+
+1. Load the registered empty master and registered filled exemplar.
+2. Compute an **exact variable-pixel mask** from pixels whose RGBA differs between those two authoritative images.
+3. Extract the exemplar's pixels only at that exact mask.
+4. Recompose those pixels onto the empty master.
+5. Require the recomposed image to be pixel-identical to the exemplar: **0 differing pixels**.
+6. Only after this passes may a new material variant be derived.
+
+Do not use the broad editable mask or a hand-drawn/interior polygon as the production content mask for this identity test. Those masks are permission/coverage guides, not a proof of correct layer decomposition. If exact round-trip fails, stop and repair the template decomposition instead of tuning color.
+
 ## High-resolution contents-source rule
 
 The final 256×256 game icon is an output format, not an editing source.

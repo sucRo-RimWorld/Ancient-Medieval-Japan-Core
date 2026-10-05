@@ -960,3 +960,16 @@ Investigation stopped the v1–v7 patch-by-patch approach and compared the actua
 The failed method recolored/thresholded the **already-downsampled 256px final raster**. Small antialias/gradient differences were therefore classified independently and appeared as grainy light/shadow patches. Median/quantization reduced some speckle but retained threshold contours; Gaussian/spatial smoothing reduced speckle by blending across multiple grains, causing the faded oval/center patch. The broad interior mask was spatial, not semantic, so it also could not distinguish grain faces/outlines/gaps/rim robustly.
 
 Conclusion: this is a pipeline defect, not a palette-tuning problem. All v1–v7 dehulled-Soba candidates are invalid. New work must start from the authoritative 1254px source, create semantic high-resolution variable-content layers, apply flat face/region palette changes there, downsample once, and only then composite into the fixed 256px masu. No more iterative 256px recolor/blur fixes.
+
+
+### ART-TEMPLATE-014 — Exact variable-mask identity gate
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** DONE (structural gate); dehulled Soba variant reset
+
+Repeated Soba failures showed that color work was continuing before the layer decomposition itself had been proven. The broad editable/interior masks allowed visually plausible but structurally wrong composites, including broken rim occlusion and simple layer-over effects.
+
+The process is reset to a structural identity gate. Using the registered 256px empty master (SHA-256 `a48875944834130676a32f8545e3b9eaae077dec773b7107643f1e65bf3f3fd3`) and registered filled exemplar (SHA-256 `0f81aa92460154d2b1ae50de14d7360be5e44ff46f8c81bdd113b6e19143d752`), an exact RGBA-difference mask was derived. Extracting only those exemplar pixels and recomposing them onto the empty master reproduces the exemplar with **0 differing pixels**. Exact variable bbox: `[35, 44, 223, 169]`.
+
+This exact variable mask, not the broad editable mask or guessed pile polygon, is the structural basis for future boxed-resource material variants. The prior dehulled-Soba color candidates are invalid and were deleted. Color/material work must not resume until the high-resolution variable source is mapped to this exact 256px identity mask without altering fixed rim pixels.
