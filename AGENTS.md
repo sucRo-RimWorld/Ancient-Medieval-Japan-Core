@@ -109,6 +109,15 @@ After a non-trivial task succeeds, especially after debugging or failed attempts
 
 `Docs/Coordination.md` remains status/handoff only; the procedure itself must live in durable repository documentation/scripts.
 
+## AMJ image wording / generation permission
+
+In AMJ art work, Japanese wording is operationally significant:
+
+- 「作成」「制作」「続けて」 means **execute the established production pipeline** using authoritative masters, local editing, deterministic compositing, and validation. It does **not** grant permission to invoke ImageGen.
+- 「生成」 explicitly permits image generation when the active Golden Path allows it.
+- For fixed-template families, even an explicit 「生成」 applies only to the variable material. Never regenerate the registered shared part or whole final image.
+- If deterministic/local creation cannot proceed without new generated source material and the author did not ask for 「生成」, stop and report the specific missing source/blocked step instead of silently invoking ImageGen.
+
 ## Pixel-exact shared image components
 
 Follow `Docs/GoldenPaths/FixedImageTemplates.md` for every reused component. Registered masters and binary editable masks are mandatory before producing derivatives. Generate variable material only, composite deterministically, and require zero decoded RGBA differences in protected pixels. Reference-image editing and visual similarity are insufficient. Existing style references do not imply identical silhouettes for different species.

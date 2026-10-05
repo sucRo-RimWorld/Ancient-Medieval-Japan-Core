@@ -1,3 +1,12 @@
+## Wording and ImageGen permission
+
+For AMJ production art, distinguish **作成/制作** from **生成**.
+
+- 「作成」「制作」「続けて」: use the established pipeline only — reuse accepted sources, local transforms, deterministic compositing, masks, and validation. Do not invoke ImageGen merely because the task is an image task.
+- 「生成」: ImageGen may be used only where this pipeline explicitly allows new source artwork.
+- Shared/fixed parts are never regenerated. If generation is allowed, generate only the variable component and then composite it through the registered template.
+- If no valid local/deterministic route exists and generation was not explicitly requested, fail closed and report the missing source instead of substituting generation.
+
 # Texture Asset Pipeline — Golden Path
 
 This document records the reusable production path for AMJ texture work after the successful boxed-resource / masu iteration.

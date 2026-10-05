@@ -2,6 +2,14 @@
 
 This document is the production contract for AMJ resource icons that share a box/masu/container while changing only the contents.
 
+## Command semantics for this family
+
+For boxed-resource icons, 「作成」「制作」「続けて」 always means **template-based local creation**, not whole-image generation and not automatic ImageGen use. Use the registered reference/master/masks and deterministic tooling.
+
+Only an explicit author request containing 「生成」 permits ImageGen, and then only for the **contents layer**. The masu, registered reference, and final whole icon must not be generated.
+
+If a new contents layer cannot be derived locally and no generation was requested, stop as BLOCKED rather than invoking ImageGen.
+
 ## Why fixed pixels are not enough
 
 A deterministic template can preserve every container pixel and still produce a bad icon. The shared part may be registered at the wrong scale on the canvas, or the contents may be too small, too low, too sparse, or layered unnaturally. Therefore boxed-resource production has two independent gates:

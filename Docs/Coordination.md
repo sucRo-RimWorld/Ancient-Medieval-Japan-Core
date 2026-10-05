@@ -874,3 +874,19 @@ Durable rule added: when an image-processing path is discovered to be contaminat
 The authoritative master/reference/manifest are kept; work restarts from the last verified authoritative source. If a failure image must be kept for diagnostics, it must be isolated and unmistakably marked as invalid/non-source so production tooling and review scripts cannot use it as a reference.
 
 Formal rules: `AGENTS.md`, `Docs/GoldenPaths/BoxedResourceIconPipeline.md`, and `Docs/GoldenPaths/FixedImageTemplates.md`.
+
+
+### ART-TEMPLATE-012 — 作成/生成の実行意味を分離
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling  
+**Status:** DONE
+
+Author clarified that 「画像作成」 must not be interpreted as permission to invoke ImageGen. Durable rule now distinguishes command semantics:
+
+- 「作成」「制作」「続けて」 = continue the registered production pipeline using authoritative assets, local editing, deterministic compositing, and validation.
+- 「生成」 = explicit permission to use ImageGen only where the active Golden Path allows it.
+- Fixed-template families may generate only variable material; shared parts and whole final images remain non-generative.
+- If a valid local path is unavailable and generation was not explicitly requested, stop as BLOCKED rather than silently switching to ImageGen.
+
+Formal rules are recorded in `AGENTS.md`, `Docs/GoldenPaths/TextureAssetPipeline.md`, `Docs/GoldenPaths/BoxedResourceIconPipeline.md`, and `Docs/GoldenPaths/FixedImageTemplates.md`.
