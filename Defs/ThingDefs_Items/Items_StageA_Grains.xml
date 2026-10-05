@@ -86,8 +86,8 @@
   <!--
     Buckwheat processing states. They intentionally remain outside
     DankPyon_Cereal so MO generic processing cannot bypass AMJ threshing/hulling.
-    Graphics temporarily reuse the shared millet item paths until Soba-specific
-    art is supplied by Art/graphics.
+    Soba-specific production art is wired per state as it is approved. The
+    sheaf and edible grain may temporarily reuse millet paths until replaced.
   -->
   <ThingDef ParentName="RoughPlantBase">
     <defName>AMJC_RawBuckwheat</defName>
@@ -120,7 +120,7 @@
     <label>buckwheat in hull</label>
     <description>Threshed buckwheat grain with its hull still attached. The hull protects it in storage, but it is not yet suitable for eating.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/AMJC_Millet/MilletInHull</texPath>
+      <texPath>Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
