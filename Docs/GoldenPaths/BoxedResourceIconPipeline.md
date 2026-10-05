@@ -38,6 +38,20 @@ The agent owns objective cleanup. Before showing a candidate as ready, and again
 
 Do **not** defer a known technical defect to the author with "acceptable?" or "妥協範囲?" when it can be corrected deterministically. Only request author judgment for a real design choice or tradeoff. A candidate with a known fixable defect is not registration-ready.
 
+## Identity-exemplar validation before new resources
+
+Before using a boxed-resource family for a *different* material/resource, validate the pipeline against its approved filled exemplar.
+
+For the current masu family, the expected output is the registered **buckwheat-in-hull** exemplar itself. The validation run must:
+
+1. use the registered empty masu/master and the intended reusable content/occlusion layer structure;
+2. recompose the approved buckwheat-in-hull icon without changing its color/material;
+3. preserve all protected/common pixels exactly;
+4. require **0 RGBA pixel differences** against the registered representative final for the identity exemplar;
+5. fail closed if the result needs manual recolor, blur, local patching, or another ad-hoc correction to match the reference.
+
+A diagnostic exact-delta round trip may prove that the reference/master pair is internally consistent, but it does not by itself prove that the reusable production layer structure is correct. The production layer structure must pass the same zero-difference exemplar reconstruction before any other resource is attempted.
+
 ## Registration gate
 
 A template remains blocked/inactive until all of these are true:
@@ -67,17 +81,8 @@ Do not use the broad editable mask or a hand-drawn/interior polygon as the produ
 
 ## High-resolution contents-source rule
 
-The final 256×256 game icon is an output format, not an editing source.
+When the family later creates a genuinely new resource, use the highest authoritative source available and downsample once at export. However, the **current validation phase does not recolor or redesign Soba**: it must first reproduce the registered buckwheat-in-hull exemplar exactly through the reusable template/layer structure.
 
-Root-cause audit on the Soba dehulled-grain attempts confirmed that the registered 256px exemplar is an exact Lanczos downsample of the accepted 1254×1254 reference. Recoloring that already-downsampled raster pixel-by-pixel turns the source's smooth gradients and antialiasing into noisy threshold/banding artifacts. Spatial blur can hide those artifacts only by smearing several grains together, which creates the observed faded/oval correction patches.
-
-Therefore:
-- do not derive a new material/palette by per-pixel recoloring of the final 256px icon;
-- retrieve the authoritative high-resolution variable-content source/reference and perform cleanup/material transformation there;
-- use semantic content layers/masks (grain bodies/faces, outlines/gaps, foreground rim), not one broad spatial "interior" correction mask;
-- apply discrete palette changes per coherent face/region, with dithering disabled; do not use Gaussian blur across multiple objects as an artifact fix;
-- downsample exactly once to 256px after the variable contents are complete, then composite into the registered 256px masu and restore all protected pixels;
-- if a clean high-resolution variable source or semantic mask does not yet exist, the task is BLOCKED until it is created from authoritative material. Do not fall back to iterative 256px patching.
 
 ## Contents contract
 

@@ -949,19 +949,25 @@ Shared durable source: `Docs/DevelopmentGoldenPathGuidelines.md`, commit `a81c03
 **Next action:** desktop Work/local Windows toolingでCore runtime harnessを非対話実行へ移行し、8-scenario E2Eが可視ウィンドウなしで同一ERROR gateを保って通ることを確認する。
 
 
-### ART-TEMPLATE-013 — Root cause of Soba recolor roughness
+### ART-TEMPLATE-013 — Boxed-resource validation target corrected
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** ROOT CAUSE CONFIRMED; old recolor path INVALID
+**Status:** ACTIVE — validation reset
 
-Investigation stopped the v1–v7 patch-by-patch approach and compared the actual authoritative assets. The registered 256px Soba exemplar is byte-for-pixel equivalent to a Lanczos resize of the accepted 1254×1254 Library reference. The high-resolution reference contains smooth per-face gradients/antialiasing; the 256px derivative already contains thousands of distinct RGB values.
+The author clarified that the current work was never intended to produce a dehulled-Soba asset. The purpose of the exercise is to validate the boxed-resource pipeline itself by asking whether the approved **buckwheat-in-hull** exemplar can be reconstructed correctly from the registered masu/template workflow.
 
-The failed method recolored/thresholded the **already-downsampled 256px final raster**. Small antialias/gradient differences were therefore classified independently and appeared as grainy light/shadow patches. Median/quantization reduced some speckle but retained threshold contours; Gaussian/spatial smoothing reduced speckle by blending across multiple grains, causing the faded oval/center patch. The broad interior mask was spatial, not semantic, so it also could not distinguish grain faces/outlines/gaps/rim robustly.
+All dehulled-Soba recolor branches are therefore out of scope and invalid as validation evidence. They must not be used to judge the pipeline.
 
-Conclusion: this is a pipeline defect, not a palette-tuning problem. All v1–v7 dehulled-Soba candidates are invalid. New work must start from the authoritative 1254px source, create semantic high-resolution variable-content layers, apply flat face/region palette changes there, downsample once, and only then composite into the fixed 256px masu. No more iterative 256px recolor/blur fixes.
+The validation target is now:
 
+1. start from the registered empty masu/master and authoritative approved buckwheat-in-hull reference;
+2. derive/register the reusable variable-content layer and foreground occlusion structure needed by the template;
+3. deterministically recompose the **same buckwheat-in-hull icon**;
+4. require zero protected-pixel drift and, for the identity exemplar test, zero final RGBA difference from the registered approved reference;
+5. only after this identity reconstruction passes may the same template be used for a different resource.
 
+The test is about reproducing the approved in-hull reference faithfully, not changing its material or color.
 ### ART-TEMPLATE-014 — Exact variable-mask identity gate
 
 **Requested by:** author (2026-10-05 JST)  
@@ -999,3 +1005,14 @@ repositories to exercise the newer suites; human visual acceptance stays separat
 
 **Procedure:** Core Docs/IntegratedRuntimeTesting.md and
 Scripts/IntegratedRuntimeDesktop/Run-AMJ-IsolatedDesktop.ps1.
+
+
+### ART-TEMPLATE-015 — Validation intent correction
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** DONE
+
+The author corrected the workstream intent: the current image exercise is a **pipeline validation using the approved buckwheat-in-hull image as both source reference and expected output**. It is not a request to design a dehulled-buckwheat icon.
+
+All local dehulled-Soba candidates and associated recolor experiments are discarded. Future validation output must show whether the registered pipeline reproduces the approved in-hull exemplar itself. A different resource/material must not be introduced until this identity validation passes through the intended reusable layer structure.
