@@ -1,28 +1,31 @@
 {
   "version": 1,
   "family": "amj-boxed-resource-masu",
-  "template_revision": "v1",
-  "approval": "author-approved empty square masu; AMJ boxed-resource shared component",
+  "template_revision": "v2",
+  "production_status": "active",
+  "approval": "visual design anchored to author-approved buckwheat-in-hull exemplar; v2 technical cleanup preserves approved composition and removes known resize artifacts",
   "size": [
     256,
     256
   ],
   "master": {
     "path": "../../Textures/Shared/Containers/AMJ_Masu_Empty_Master.png",
-    "sha256": "d10d44008698a692c9ad2369deb548f2af13f93d0621f7454cd84697e2a92d7b"
+    "sha256": "a48875944834130676a32f8545e3b9eaae077dec773b7107643f1e65bf3f3fd3"
   },
   "editable_mask": {
     "path": "AMJ_Masu_EditableMask.png",
-    "sha256": "e1ef4ef8144e7029d908c91397e2491f17a232fef6a5f6c7a6258c81414d7af5"
+    "sha256": "3a336865efd88ae81474cee0dee3a105166b1c8214930755afd49aaac1741a23"
   },
-  "editable_region": "masu interior cavity only; all rim/exterior/outline/joinery/wood shading/placement/transparent-margin pixels are protected",
-  "fixed_layer_order": [
-    "canonical master",
-    "variable contents inside editable mask",
-    "restore all protected master RGBA pixels"
-  ],
-  "production_status": "blocked_visual_mismatch",
-  "blocked_reason": "Accepted filled exemplar is substantially larger on the 256x256 canvas and establishes a fuller content profile; v1 must not be used for production derivatives.",
+  "required_fill": {
+    "path": "AMJ_Masu_RequiredFill.png",
+    "sha256": "eac8f749871ea2f511faf69afede8dd89466b92fc0b7cd0a755ad9fca3a5fcc0",
+    "min_alpha_coverage": 0.65,
+    "alpha_threshold": 8
+  },
+  "representative_final": {
+    "path": "AMJ_BuckwheatInHull_Ideal_256.png",
+    "sha256": "0f81aa92460154d2b1ae50de14d7360be5e44ff46f8c81bdd113b6e19143d752"
+  },
   "visual_reference": {
     "library_path": "/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png",
     "sha256": "cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6",
@@ -42,15 +45,32 @@
     ]
   },
   "master_alpha_bbox": [
-    34,
-    42,
-    232,
-    213
+    17,
+    28,
+    239,
+    235
   ],
-  "activation_requirements": [
-    "author-approved v2 empty master aligned to the accepted filled exemplar frame occupancy",
-    "registered required-fill and allowed-fill guides for contents",
-    "representative filled composite accepted at 256px and game-like small size",
-    "zero protected RGBA differences and PNG integrity validation"
+  "editable_bbox": [
+    35,
+    44,
+    223,
+    169
+  ],
+  "required_fill_bbox": [
+    52,
+    54,
+    208,
+    157
+  ],
+  "editable_region": "contents may vary only inside the registered allowed/editable fill region; all other RGBA pixels are protected",
+  "fixed_layer_order": [
+    "registered v2 master",
+    "variable contents inside allowed/editable region",
+    "restore all protected master RGBA pixels"
+  ],
+  "self_qc": [
+    "inspect at 256px and about 64px",
+    "fix objective technical artifacts before presentation/registration",
+    "do not request acceptance for a known deterministically fixable defect"
   ]
 }

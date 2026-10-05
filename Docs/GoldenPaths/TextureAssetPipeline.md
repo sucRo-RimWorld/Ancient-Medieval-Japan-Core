@@ -29,9 +29,9 @@ If the same failure mode appears in two consecutive generation attempts, stop re
 
 AMJ keeps the familiar Vanilla / Medieval Overhaul boxed-resource silhouette language so raw resources remain immediately readable, but the shared container is a simplified Japanese **masu**.
 
-The author-approved **empty square masu** is the canonical container master.
+The registered **masu v2 empty master** is the canonical container master. It is a technical derivation of the author-approved filled exemplar and high-resolution empty source; known resampling artifacts were cleaned before registration.
 
-The family also requires an accepted **filled exemplar**. For the current masu family the visual reference is `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png` (SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`). The current v1 empty master is blocked because its canvas occupancy is smaller than the accepted exemplar. Do not use v1 for new boxed-resource production.
+The family also requires an accepted **filled exemplar**. For the current masu family the visual reference is `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png` (SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`). Masu v2 is active and matches the exemplar's `[17, 28, 239, 235]` frame occupancy.
 
 Detailed activation, fill-profile, layering, and acceptance rules are in `Docs/GoldenPaths/BoxedResourceIconPipeline.md`.
 
@@ -56,7 +56,7 @@ Only the contents change.
 
 ### Production sequence
 
-1. Start from the accepted empty-masu master.
+1. Start from the registered v2 empty-masu master. Before presenting or registering a result, self-QC both 256 px and ~64 px views and automatically repair objective artifacts that preserve the approved design.
 2. Create the new contents separately. Generation may be used for the contents, but it must not define a new container.
 3. Fit the contents to the master interior.
 4. Composite them into the master. Prefer fixed rear/interior and front-rim layers so the contents are naturally occluded by the front wall.

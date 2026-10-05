@@ -45,6 +45,47 @@ def validate(master, mask, candidate):
     return candidate
 
 
+
+def validate_variable_layer(manifest_path, layer, mask=None):
+    path = Path(manifest_path)
+    spec = json.loads(path.read_text(encoding='utf-8'))
+    if mask is None:
+        _, mask = load_template(path)
+    layer = layer.convert('RGBA')
+    if layer.size != tuple(spec['size']):
+        raise ValueError('Variable layer must match template canvas')
+    alpha = layer.getchannel('A')
+    threshold = int(spec.get('required_fill', {}).get('alpha_threshold', 1))
+    outside = sum(a >= threshold and m == 0 for a, m in zip(alpha.get_flattened_data(), mask.get_flattened_data()))
+    if outside:
+        raise ValueError(f'Variable layer has {outside} nontransparent pixels outside allowed fill region')
+    req = spec.get('required_fill')
+    if req:
+        req_path = path.parent / req['path']
+        if hashlib.sha256(req_path.read_bytes()).hexdigest() != req['sha256']:
+            raise ValueError('required_fill: SHA-256 mismatch')
+        with Image.open(req_path) as image:
+            image.load()
+            if image.mode != 'L':
+                raise ValueError('Required-fill guide must be an 8-bit grayscale PNG')
+            required = image.copy()
+        if required.size != layer.size or not set(required.get_flattened_data()) <= {0, 255}:
+            raise ValueError('Invalid required-fill guide')
+        required_pixels = [i for i, v in enumerate(required.get_flattened_data()) if v == 255]
+        if not required_pixels:
+            raise ValueError('Required-fill guide is empty')
+        alpha_values = list(alpha.get_flattened_data())
+        covered = sum(alpha_values[i] >= threshold for i in required_pixels) / len(required_pixels)
+        minimum = float(req.get('min_alpha_coverage', 0.0))
+        if covered < minimum:
+            raise ValueError(f'Variable layer under-fills required region: {covered:.3f} < {minimum:.3f}')
+        bbox = alpha.point(lambda v: 255 if v >= threshold else 0).getbbox()
+        req_bbox = required.getbbox()
+        if bbox is None or bbox[0] > req_bbox[0] or bbox[1] > req_bbox[1] or bbox[2] < req_bbox[2] or bbox[3] < req_bbox[3]:
+            raise ValueError('Variable layer does not span required fill bbox')
+    return layer
+
+
 def compose(manifest, variable, output):
     master, mask = load_template(manifest)
     with Image.open(variable) as image:
@@ -52,6 +93,7 @@ def compose(manifest, variable, output):
         layer = image.convert('RGBA')
     if layer.size != master.size:
         raise ValueError('Variable layer must already match the template canvas')
+    validate_variable_layer(manifest, layer, mask)
     # Composite only inside the approved editable region, then restore all fixed pixels.
     merged = Image.alpha_composite(master, layer)
     result = Image.composite(merged, master, mask)

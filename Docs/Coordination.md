@@ -777,7 +777,7 @@ The durable rule is `Docs/GoldenPaths/BoxedResourceIconPipeline.md`: boxed-resou
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** AWAITING AUTHOR VISUAL APPROVAL
+**Status:** DONE — v2 ACTIVE
 
 The blocked v1 master was not reused unchanged. A v2 candidate was derived by aligning the empty masu to the accepted filled buckwheat reference's 256×256 frame occupancy, then composing the accepted filling profile into a broader contents envelope rather than clipping contents to the old interior-only diamond.
 
@@ -786,4 +786,17 @@ Persistent review assets:
 - representative buckwheat-in-hull candidate: `/AMJ/References/AMJ_BuckwheatInHull_v2_Candidate.png`
 - side-by-side 256px + small-size review: `/AMJ/References/AMJ_Masu_v2_Review.png`
 
-The candidate now matches the accepted exemplar's overall alpha envelope `[17, 28, 239, 235]` and restores the fuller mound/occupancy that the previous derivative lost. It is **not yet the active master**. Do not replace the blocked v1 manifest or generate downstream resources until the author visually approves this v2 candidate. After approval, register the v2 master plus allowed-fill/required-fill guides, hashes, and representative-composite regression test before producing the next boxed resource.
+The initial v2 review candidate matched the accepted exemplar's overall alpha envelope `[17, 28, 239, 235]` and restored the fuller mound/occupancy, but self-QC found visible roughness from upscaling the 256px empty master. That known defect was corrected proactively rather than being registered. The active v2 master now keeps the accepted exemplar's protected exterior/rim pixels exactly and rebuilds only the editable cavity from the high-resolution empty source. Registered assets are `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`, `Docs/References/AMJ_Masu_EditableMask.png`, `Docs/References/AMJ_Masu_RequiredFill.png`, `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`, and `Docs/References/AMJ_Masu_Template.json`.
+
+
+### ART-TEMPLATE-007 — Proactive art self-QC before registration
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling  
+**Status:** DONE
+
+A review exposed that the agent had identified visible roughness in a candidate yet was still prepared to wait for author acceptance before correcting it. This is now forbidden. Before presenting a candidate as registration-ready, the agent must inspect the full-size and game-size views and automatically repair objective defects that preserve the already approved design: resize jaggies, resampling roughness, halos, clipping, seams, stray/leftover layer pixels, incorrect frame occupancy, and other deterministic cleanup issues.
+
+The author should only be asked about genuine design/aesthetic tradeoffs. Known fixable defects must not be delegated back as a "妥協できるか" decision.
+
+Applied immediately to masu v2: the upscaled 256px candidate was discarded as master material; v2 was rebuilt from high-resolution sources and the author-approved filled exemplar, then registered with allowed/required fill guides and a normalized representative regression asset.

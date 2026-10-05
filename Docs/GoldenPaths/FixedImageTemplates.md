@@ -23,6 +23,8 @@
 
 新規系統/マスター変更は承認を記録して新しい版にする。既存の承認済み提案・マスターは毎回再承認を求めず使用する。マスター・マスクを派生ごとに変更しない。
 
+登録前の客観的な品質不良（拡縮ジャギー、補間荒れ、ハロー、継ぎ目、切れ、別レイヤーの残骸、誤った占有率など）はエージェント側で検出・修正する。既に承認された構図・形状・色方針を変えない技術的クリーンアップは再承認待ちにせず実施し、既知の修正可能な欠陥を残したまま「妥協可能か」を作者に判断させない。新しい意匠・形状・構図へ変える場合のみ通常の承認手順へ戻る。
+
 ## 制作と検査
 
 1. 対象のAGENTSとmain Coordination、系統の正式仕様、本書を読む。
@@ -64,7 +66,7 @@ variable.pngは登録寸法に配置済みの透明レイヤー。ツールは�
 
 ## 現在の移行状態と新規チャット
 
-- 枡：**v1は構造検証済みだが production BLOCKED。** マスター `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`、マスク `Docs/References/AMJ_Masu_EditableMask.png`、登録簿 `Docs/References/AMJ_Masu_Template.json`。承認済み完成例 `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png` と比べてv1のキャンバス占有率が小さく、内容物充填ガイドも未登録のため量産に使用しない。v2は完成例との外形/占有率整合、required/allowed fill guide、代表完成派生の作者承認を満たしてからactive化する。
+- 枡：**v2固定テンプレート ACTIVE。** マスター `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`、許可/変更マスク `Docs/References/AMJ_Masu_EditableMask.png`、required-fill guide `Docs/References/AMJ_Masu_RequiredFill.png`、完成例 `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`、登録簿 `Docs/References/AMJ_Masu_Template.json`。v2は承認済み完成例の保護領域をそのまま固定し、内部だけを高解像度の空枡素材から再構成して拡縮荒れを除去した。派生は共通部のRGBA差分0に加え、required-fill/allowed-fill検査を通す。
 - 表紙：**v1固定テンプレート登録済み。** 視覚参照 `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`、空の共通PNGマスター `/AMJ/References/AMJ_WorkshopCover_CommonBase.png`、Addon名/右図案マスク `/AMJ/References/AMJ_WorkshopCover_VariableMask.png` をpersistent Libraryに固定し、登録簿は `Docs/References/AMJ_WorkshopCover_Template.json`、制作手順は `Docs/GoldenPaths/WorkshopCoverPipeline.md` とする。最終表紙をImageGenで直接生成せず、右図案のみ生成して決定的に合成・検査する。SVGは参考図であり画素マスターではない。
 - 樹木：現行Sudajii/ブナは画風の参照。別樹種は別形状。共用する幹等を宣言する状態差分にはそのパーツの固定テンプレートを登録する。
 

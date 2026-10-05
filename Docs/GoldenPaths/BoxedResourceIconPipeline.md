@@ -24,6 +24,12 @@ Before a boxed-resource family is production-active, register all of the followi
 
 The empty master should be derived from, or explicitly aligned against, the accepted filled exemplar. Do not independently generate an empty container and then declare it canonical because it looks similar.
 
+## Agent self-QC before review or registration
+
+The agent owns objective cleanup. Before showing a candidate as ready, and again before registering a master, inspect the 256 px image and a game-like ~64 px reduction. Automatically correct any known fixable defect that does not alter the accepted visual direction, including jaggies from upscaling, resampling artifacts, halos, clipped edges, layer seams, leftover pixels from the exemplar, incorrect frame occupancy, or an obviously under-filled/over-filled container.
+
+Do **not** defer a known technical defect to the author with "acceptable?" or "妥協範囲?" when it can be corrected deterministically. Only request author judgment for a real design choice or tradeoff. A candidate with a known fixable defect is not registration-ready.
+
 ## Registration gate
 
 A template remains blocked/inactive until all of these are true:
@@ -33,7 +39,7 @@ A template remains blocked/inactive until all of these are true:
 3. The required-fill and allowed-fill guides are registered.
 4. A representative contents layer is composed through the deterministic tool.
 5. The representative final icon is compared to the accepted exemplar at 256 px and at game-like small size (about 64 px).
-6. The author accepts the representative composite.
+6. The representative composite is already author-approved or is compared against an author-approved exemplar. Technical cleanup that preserves that approved design is performed proactively before registration; a new approval is needed only for a substantive visual change.
 7. Protected RGBA differences are exactly zero and PNG integrity checks pass.
 
 An empty master by itself cannot activate a family.
@@ -71,18 +77,21 @@ A mechanically valid result that visibly diverges from the accepted filled exemp
 ## Current masu status
 
 Accepted filled reference:
-- Library: `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png`
-- SHA-256: `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`
-- source: 1254×1254 PNG
-- normalized 256×256 alpha envelope: `[17, 28, 239, 235]`
+- Library source: `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png`
+- source SHA-256: `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`
+- normalized repository exemplar: `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`
+- normalized alpha envelope: `[17, 28, 239, 235]`
 
-Current v1 empty master:
-- `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`
-- alpha envelope: `[34, 42, 232, 213]`
+**Masu v2 is ACTIVE.** The previous upscaled v2 candidate was not registered because self-QC found visible resampling roughness. The active v2 master was rebuilt from high-resolution sources: the author-approved filled exemplar supplies the protected exterior/rim pixels, while only the editable cavity is replaced with the clean empty interior. This removes the scaling artifacts while keeping the approved outer appearance exact.
 
-The v1 master is therefore visibly underscaled and is **BLOCKED for production derivatives**. Its manifest remains in the repository so tooling fails closed and records why it cannot be used.
+Registered v2:
+- master: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`
+- allowed/editable fill mask: `Docs/References/AMJ_Masu_EditableMask.png`
+- required-fill guide: `Docs/References/AMJ_Masu_RequiredFill.png`
+- manifest: `Docs/References/AMJ_Masu_Template.json`
+- representative final: `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`
 
-Masu v2 activation requires a corrected empty master aligned to the accepted filled reference plus required/allowed fill guides and an author-approved representative filled composite.
+The representative final has zero RGBA differences from the master outside the editable mask. The required-fill guide is a strict subset of the allowed/editable mask, and the compositor rejects variable layers that do not span/cover the registered required-fill region.
 
 ## Validation commands
 

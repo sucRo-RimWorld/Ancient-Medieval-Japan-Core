@@ -99,6 +99,8 @@ Follow the AMJ shared Golden Path policy in Ancient-Medieval-Japan-Core `Docs/De
 
 For production texture work, also follow `Docs/GoldenPaths/TextureAssetPipeline.md`. Boxed-resource icons must additionally follow `Docs/GoldenPaths/BoxedResourceIconPipeline.md`. A shared container template is not production-ready merely because its protected pixels are stable: the registered filled visual reference, frame occupancy, content-fill profile, and representative final composite must also pass. If the family manifest is marked blocked/inactive, do not generate or compose a production derivative from it.
 
+Before presenting any art candidate as ready for approval or registration, perform a self-QC pass and automatically fix objective defects that do not change the approved design: jagged/rough edges caused by resizing, halos, clipping, seams, stray pixels, wrong canvas occupancy, accidental leftovers from another layer, or visibly inconsistent common-part geometry. Do not ask the author to accept a defect you already know how to fix. Ask only when the correction would change the approved design or requires a genuine aesthetic tradeoff.
+
 After a non-trivial task succeeds, especially after debugging or failed attempts, do not move on with only the working implementation. Record the successful reusable procedure in the owning repository, automate deterministic/repetitive steps, and add regression guards for failure modes discovered during the work. For recurring work, completion includes the reusable documented/automated path, not only the one successful result.
 
 `Docs/Coordination.md` remains status/handoff only; the procedure itself must live in durable repository documentation/scripts.
