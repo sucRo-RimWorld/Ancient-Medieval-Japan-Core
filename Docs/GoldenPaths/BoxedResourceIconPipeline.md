@@ -68,6 +68,24 @@ Use deterministic compositing:
 
 Never resize, rotate, recolor, blur, quantize, or regenerate the shared container after registration. Do not resize the completed icon after composition; work on the final canvas from the start.
 
+## Candidate lifecycle and contamination disposal
+
+Candidate assets are disposable working material, not reference material.
+
+If any step reveals that a candidate chain used the wrong registered reference, wrong common-part pixels, a broken/obsolete mask, an unintended whole-image regeneration, contaminated color/edge data, or another invalid production path, then **the entire derivative chain from that point is invalid**.
+
+Required response:
+
+1. Stop using every descendant candidate immediately.
+2. Delete persistent Library copies of those candidates/reviews/previews.
+3. Delete local working copies and generated comparison sheets derived from them.
+4. Remove durable documentation that presents discarded candidates as reusable assets.
+5. Keep the authoritative master/reference/manifest only.
+6. Record the invalidation in `Docs/Coordination.md`.
+7. Restart from the last verified authoritative source; do not "repair" a contaminated candidate unless the repair is a deterministic reconstruction from authoritative sources with no contaminated pixels retained.
+
+Do not retain invalid candidates merely because they might be useful for visual comparison. If a diagnostic example must be preserved, it must be clearly segregated as non-source diagnostic material with an unambiguous `INVALID_`/failure label and must never be accepted by production tooling as a reference.
+
 ## Reference-integrity rule
 
 Every comparison sheet and palette judgment must use the exact manifest-registered `representative_final`. Do not use an ad-hoc local alias, a prior candidate, a regenerated image, or a visually similar copy as the "reference".

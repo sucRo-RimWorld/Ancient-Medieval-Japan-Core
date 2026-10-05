@@ -861,3 +861,16 @@ No contaminated dehulled-Soba candidate was committed to the repository. The onl
 - normalized repository copy: `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`
 
 Future work must restart the dehulled-Soba image from the registered reference/template path; discarded candidates must not be recovered or reused.
+
+
+### ART-TEMPLATE-011 — Contaminated candidate auto-disposal rule
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling  
+**Status:** DONE
+
+Durable rule added: when an image-processing path is discovered to be contaminated, all descendants from that point are invalidated immediately and removed from both persistent Library and local working storage. Invalid candidates are not retained merely for possible comparison because they can later be mistaken for authoritative sources.
+
+The authoritative master/reference/manifest are kept; work restarts from the last verified authoritative source. If a failure image must be kept for diagnostics, it must be isolated and unmistakably marked as invalid/non-source so production tooling and review scripts cannot use it as a reference.
+
+Formal rules: `AGENTS.md`, `Docs/GoldenPaths/BoxedResourceIconPipeline.md`, and `Docs/GoldenPaths/FixedImageTemplates.md`.
