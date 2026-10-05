@@ -9,6 +9,9 @@ Feature: AMJ Core Stage A agriculture
   Scenario: Loaded AMJ grain processing buildings and recipes match the design values
     Then loaded AMJ grain processing buildings and recipes match the design values
 
+  Scenario: Stage A crops preserve distinct gameplay roles
+    Then stage A crops preserve distinct gameplay roles
+
   Scenario: Stage A grain quantities are conserved through processing
     Then stage A grain quantities are conserved through processing
 
