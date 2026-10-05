@@ -111,11 +111,11 @@ def validate(mo_root=None, core_defs=None):
 
     feature = (ROOT / "Tests/E2E/TestMod/Pickle/Features/stage-a.feature").read_text()
     names = re.findall(r"^  Scenario: (.+)$", feature, re.M)
-    assert len(names) == 7 and len(set(names)) == 7
+    assert len(names) == 8 and len(set(names)) == 8
     assert "@quickstart:AmjNewVillageQuickstart\n  Scenario: New Village starts" in feature
     summary = (ROOT / "Scripts/Validate-PickleSummary.ps1").read_text()
     assert all(f'"{name}"' in summary for name in names)
-    assert "$summary.total -ne 7" in summary and "$summary.passed -ne 7" in summary
+    assert "$summary.total -ne 8" in summary and "$summary.passed -ne 8" in summary
     quickstart = (ROOT / "Tests/E2E/AmjStageAQuickstart.cs").read_text()
     assert "sealed class AmjNewVillageQuickstart" in quickstart
     assert 'DefDatabase<ScenarioDef>.GetNamed("AMJC_NewVillage")' in quickstart
