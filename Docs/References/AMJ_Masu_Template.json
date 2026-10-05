@@ -20,5 +20,37 @@
     "canonical master",
     "variable contents inside editable mask",
     "restore all protected master RGBA pixels"
+  ],
+  "production_status": "blocked_visual_mismatch",
+  "blocked_reason": "Accepted filled exemplar is substantially larger on the 256x256 canvas and establishes a fuller content profile; v1 must not be used for production derivatives.",
+  "visual_reference": {
+    "library_path": "/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png",
+    "sha256": "cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6",
+    "source_size": [
+      1254,
+      1254
+    ],
+    "normalized_size": [
+      256,
+      256
+    ],
+    "normalized_alpha_bbox": [
+      17,
+      28,
+      239,
+      235
+    ]
+  },
+  "master_alpha_bbox": [
+    34,
+    42,
+    232,
+    213
+  ],
+  "activation_requirements": [
+    "author-approved v2 empty master aligned to the accepted filled exemplar frame occupancy",
+    "registered required-fill and allowed-fill guides for contents",
+    "representative filled composite accepted at 256px and game-like small size",
+    "zero protected RGBA differences and PNG integrity validation"
   ]
 }

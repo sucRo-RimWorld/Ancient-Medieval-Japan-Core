@@ -13,6 +13,8 @@
 - 承認済み固定マスター（可逆PNG）。元画像がJPEGなら一度だけデコードしてPNG化し、そのRGBAを基準とする。JPEGを繰り返し保存しない。
 - 同寸法の8-bitグレースケールPNGマスク。0=保護、255=変更可能。中間値は禁止。輪郭のアンチエイリアスも保護画素に含める。
 - JSONマニフェスト：系統ID・版・承認根拠・元画像の所在/コミット・寸法・マスターとマスクの相対パスおよびSHA-256・変更範囲の意味・固定レイヤー順。
+- **可変内容物を持つ系統では承認済み完成例（filled exemplar）も必須。** 共通パーツの画素が固定されていても、キャンバス上の大きさ・余白・内容物の充填量・高さ・前後関係が承認例から外れていればテンプレートは未完成とする。完成例の所在・SHA-256・基準寸法・外接bbox等をマニフェストへ記録する。
+- テンプレートを `active` にする前に、少なくとも1つの代表的な完成派生を実際に合成し、固定画素検査に加えて256pxとゲーム相当の縮小表示で作者承認を得る。空マスター単体の承認だけでは量産開始しない。
 - 必要な前景/後景の固定レイヤー、共通フォント・文字配置等の設定、派生画像の所在。
 
 マスクは単なる左右の矩形分割とは限らない。枡の変更可能範囲は内部と承認済みの内容物領域だけとし、前面・縁・輪郭・木の陰影を保護する。表紙は右の図案領域とAddon名の文字領域だけ変更可能とし、共通タイトル・装飾・それ以外の背景を保護する。マスクを広げて差分検査を通す行為は禁止。
@@ -62,7 +64,7 @@ variable.pngは登録寸法に配置済みの透明レイヤー。ツールは�
 
 ## 現在の移行状態と新規チャット
 
-- 枡：**v1固定テンプレート登録済み。** マスター `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`、変更可能マスク `Docs/References/AMJ_Masu_EditableMask.png`、登録簿 `Docs/References/AMJ_Masu_Template.json`。変更可能なのは内部領域のみで、外縁・前面・輪郭・木組み・木の陰影・配置・透明余白は保護する。派生は `Scripts/Art/fixed_template.py` で合成/検証し、保護RGBA差分0画素を必須とする。
+- 枡：**v1は構造検証済みだが production BLOCKED。** マスター `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`、マスク `Docs/References/AMJ_Masu_EditableMask.png`、登録簿 `Docs/References/AMJ_Masu_Template.json`。承認済み完成例 `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png` と比べてv1のキャンバス占有率が小さく、内容物充填ガイドも未登録のため量産に使用しない。v2は完成例との外形/占有率整合、required/allowed fill guide、代表完成派生の作者承認を満たしてからactive化する。
 - 表紙：**v1固定テンプレート登録済み。** 視覚参照 `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`、空の共通PNGマスター `/AMJ/References/AMJ_WorkshopCover_CommonBase.png`、Addon名/右図案マスク `/AMJ/References/AMJ_WorkshopCover_VariableMask.png` をpersistent Libraryに固定し、登録簿は `Docs/References/AMJ_WorkshopCover_Template.json`、制作手順は `Docs/GoldenPaths/WorkshopCoverPipeline.md` とする。最終表紙をImageGenで直接生成せず、右図案のみ生成して決定的に合成・検査する。SVGは参考図であり画素マスターではない。
 - 樹木：現行Sudajii/ブナは画風の参照。別樹種は別形状。共用する幹等を宣言する状態差分にはそのパーツの固定テンプレートを登録する。
 

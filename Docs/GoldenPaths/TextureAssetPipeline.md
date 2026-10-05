@@ -31,6 +31,10 @@ AMJ keeps the familiar Vanilla / Medieval Overhaul boxed-resource silhouette lan
 
 The author-approved **empty square masu** is the canonical container master.
 
+The family also requires an accepted **filled exemplar**. For the current masu family the visual reference is `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png` (SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`). The current v1 empty master is blocked because its canvas occupancy is smaller than the accepted exemplar. Do not use v1 for new boxed-resource production.
+
+Detailed activation, fill-profile, layering, and acceptance rules are in `Docs/GoldenPaths/BoxedResourceIconPipeline.md`.
+
 Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
 
 Registered fixed-template manifest: `Docs/References/AMJ_Masu_Template.json`; editable mask: `Docs/References/AMJ_Masu_EditableMask.png`. New chats/agents must fetch the manifest, master, and mask from `main`, then use `Scripts/Art/fixed_template.py`; do not regenerate the container from prose.

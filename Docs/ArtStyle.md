@@ -140,6 +140,12 @@ For loose harvested produce, beans, grains, hulled grain, and similar resources,
 
 The author-approved **empty square masu** is the canonical container master. The container is a reusable production component, not something to redraw for every resource.
 
+The author-approved **filled buckwheat-in-hull image** is also a required composition reference for this family. Pixel-stable container reuse is necessary but not sufficient: the container scale on the canvas and the apparent amount/height of contents must match the accepted visual family.
+
+Persistent accepted visual reference: `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png` (1254×1254 PNG, SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`). At 256×256 normalization its non-transparent visual envelope is approximately `[17, 28, 239, 235]`. The current v1 empty master envelope is `[34, 42, 232, 213]`, so v1 is visibly underscaled relative to the accepted icon and is **blocked for production derivatives**.
+
+Do not reactivate the masu family until a v2 empty master is aligned to the accepted filled reference, a content fill guide is registered, and one representative filled composite is visually accepted at both 256 px and game-like small size. See `Docs/GoldenPaths/BoxedResourceIconPipeline.md`.
+
 Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
 
 Deterministic template registration: `Docs/References/AMJ_Masu_Template.json` with editable mask `Docs/References/AMJ_Masu_EditableMask.png`. The editable region is the masu interior only; rim, exterior faces, outline, joinery, wood shading, placement, and transparent margins are protected and must have zero RGBA pixel differences.

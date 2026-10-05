@@ -6,11 +6,14 @@ from pathlib import Path
 from PIL import Image
 
 
-def load_template(manifest_path):
+def load_template(manifest_path, allow_inactive=False):
     path = Path(manifest_path)
     spec = json.loads(path.read_text(encoding='utf-8'))
     if spec['version'] != 1:
         raise ValueError('Unsupported manifest version')
+    status = spec.get('production_status', 'active')
+    if status != 'active' and not allow_inactive:
+        raise ValueError(f'Template is not active for production: {status}')
     images = []
     for key in ('master', 'editable_mask'):
         entry = spec[key]

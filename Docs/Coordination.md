@@ -200,7 +200,7 @@ The Soba data slice uses temporary Awa/millet graphics only. Under `Docs/Design.
 
 **Result / references:** data DefNames are `AMJC_Plant_Buckwheat_Soba`, `AMJC_RawBuckwheat`, `AMJC_BuckwheatInHull`, `AMJC_Buckwheat`; current temporary paths reuse Awa/millet assets.
 **2026-10-05 boxed-resource icon lock:** The author approved a dedicated empty **Japanese masu** as the canonical boxed-resource master. AMJ keeps the familiar Vanilla/MO boxed-item silhouette language, but all compatible AMJ/Vanilla/MO retextures should use the same masu treatment. The container geometry, viewing angle, rim, joinery, palette, shading and placement are fixed; only the contents change. Generate/draw contents separately and composite them into the fixed master. If whole-icon generation drifts twice, stop regenerating and use deterministic local compositing. Durable procedure: `Docs/GoldenPaths/TextureAssetPipeline.md`; visual source of truth: `Docs/ArtStyle.md`.
-Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`. New chats/workstreams must fetch and reuse this file instead of recreating the masu from prose. Fixed-template registration: `Docs/References/AMJ_Masu_Template.json`; editable mask: `Docs/References/AMJ_Masu_EditableMask.png`.
+Current v1 structural master: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`; manifest `Docs/References/AMJ_Masu_Template.json`; mask `Docs/References/AMJ_Masu_EditableMask.png`. **Production status is BLOCKED** after comparison with the accepted filled reference because v1 is underscaled and does not encode the required content-fill profile. Do not use it for new derivatives until v2 is registered and accepted.
 
 
 ### AMJ-010 — Barley cultivation and primary processing data slice
@@ -756,3 +756,18 @@ Registered v1:
 The editable region is limited to the masu interior cavity. Rim, exterior faces, outline, joinery, wood shading, placement and transparent margins remain protected. `Tests/test_masu_template.py` loads the real manifest and verifies deterministic composition with zero protected RGBA differences; CI runs it before Stage A validation.
 
 **Next action:** all boxed-resource derivatives, beginning with Soba, must create only the contents layer and compose/validate it through the registered v1 template.
+
+
+### ART-TEMPLATE-005 — Boxed-resource composition contract and masu v1 block
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** DONE (rule); BLOCKED (masu v2 activation)
+
+Direct comparison of the accepted buckwheat-in-hull icon with the first deterministic masu derivative exposed a gap in the fixed-part rule. Protected RGBA pixels were stable, but the result was still visually wrong: the container/contents composition occupied too little of the canvas and the contents read as a small pile placed in an oversized empty box.
+
+Accepted visual reference is now persistent at `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png`, SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`. Source size is 1254×1254. When normalized to 256×256, its non-transparent envelope is approximately `[17, 28, 239, 235]`; current v1 empty master is `[34, 42, 232, 213]`. Therefore the existing v1 template is not a valid production master despite passing protected-pixel checks.
+
+The durable rule is `Docs/GoldenPaths/BoxedResourceIconPipeline.md`: boxed-resource families require both a fixed structural master and an accepted filled exemplar; frame occupancy and content fill/height are part of the contract; an empty master cannot become active until a representative filled composite is accepted. The current v1 manifest is marked blocked so automation fails closed.
+
+**Next action:** build and author-approve masu v2 from the accepted filled exemplar, register required/allowed content-fill guides, then produce the Soba in-hull derivative. Do not continue from v1.

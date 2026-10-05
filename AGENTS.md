@@ -97,7 +97,7 @@ AMJC owns its custom crops' temperature values, design/balance tables (including
 
 Follow the AMJ shared Golden Path policy in Ancient-Medieval-Japan-Core `Docs/DevelopmentGoldenPathGuidelines.md`.
 
-For production texture work, also follow `Docs/GoldenPaths/TextureAssetPipeline.md`. Boxed-resource icons use the canonical empty-masu workflow defined there and in `Docs/ArtStyle.md`; do not regenerate the container per resource.
+For production texture work, also follow `Docs/GoldenPaths/TextureAssetPipeline.md`. Boxed-resource icons must additionally follow `Docs/GoldenPaths/BoxedResourceIconPipeline.md`. A shared container template is not production-ready merely because its protected pixels are stable: the registered filled visual reference, frame occupancy, content-fill profile, and representative final composite must also pass. If the family manifest is marked blocked/inactive, do not generate or compose a production derivative from it.
 
 After a non-trivial task succeeds, especially after debugging or failed attempts, do not move on with only the working implementation. Record the successful reusable procedure in the owning repository, automate deterministic/repetitive steps, and add regression guards for failure modes discovered during the work. For recurring work, completion includes the reusable documented/automated path, not only the one successful result.
 
