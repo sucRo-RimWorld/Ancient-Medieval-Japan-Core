@@ -890,3 +890,22 @@ Author clarified that 「画像作成」 must not be interpreted as permission t
 - If a valid local path is unavailable and generation was not explicitly requested, stop as BLOCKED rather than silently switching to ImageGen.
 
 Formal rules are recorded in `AGENTS.md`, `Docs/GoldenPaths/TextureAssetPipeline.md`, `Docs/GoldenPaths/BoxedResourceIconPipeline.md`, and `Docs/GoldenPaths/FixedImageTemplates.md`.
+
+### DESIGN-017 — AMJ各Modのリテクスチャ所有方針
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Cross-mod art / architecture ownership  
+**Status:** DONE — durable design updated
+
+AMJにおけるリテクスチャの意味と所有を再精査し、各Modが自分の責務範囲の前提Mod資産まで画風統一を担当する方針に確定した。
+
+- Vanilla / MO等の既存Defも、AMJ追加資産と並べた際の統一感が不足する場合は担当Modが独自テクスチャへ差し替える。
+- 同一Def / 同一前提資産を複数AMJ Modが競合上書きしない。1資産1所有Modを原則とする。
+- 所有先は主要な機能・景観責務で決め、ロード順では決めない。
+- 専用Retexture Modへの集約は標準方針にしない。自然な1所有Modを決められない横断案件等が生じた場合だけ再検討する。
+- Japan Onlyはリテクスチャを担当しない。
+- Coreの旧記述「MO小麦等のテクスチャを維持する」は撤回し、DefName/参照は維持しつつ必要なテクスチャはCoreが差し替えられるよう修正した。
+
+Durable design source: `Docs/Design.md §8.5.1 AMJ共通リテクスチャ方針`, commit `633dbc04e1f89e423b77f970603362d6dc2421e7`.
+
+**Next action:** 各機能のアート作業では、対象資産のAMJ内ownerを先に確認してから前提資産をリテクスチャする。
