@@ -815,3 +815,16 @@ Applied immediately to masu v2: the upscaled 256px candidate was discarded as ma
 **Status:** DONE
 
 The author reviewed the v2 comparison, including the 256px and game-like small-size views, and confirmed that it looks acceptable ("問題なさそう"). This closes the remaining visual-approval gate for the active masu v2 family. Continue subsequent boxed-resource icons from the registered v2 master/fill guides; do not regenerate the masu.
+
+
+### ART-TEMPLATE-009 — Registered-reference comparison enforcement
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** DONE
+
+Audit confirmed that the user's uploaded approved exemplar is exactly the registered Library visual reference: SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`. The repository's normalized representative remains `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`, SHA-256 `0f81aa92460154d2b1ae50de14d7360be5e44ff46f8c81bdd113b6e19143d752`.
+
+The failure was procedural: a manual comparison path mixed locally named intermediate images and, in a later attempt, whole-image generation was used instead of the registered reference/template path. This allowed an incorrect image/color to be presented as the comparison basis even though the registered reference itself was correct.
+
+Permanent fix: `Scripts/Art/boxed_resource_review.py` now builds comparisons only from the manifest's `representative_final` after SHA-256 verification. `Tests/test_boxed_resource_review.py` regression-tests the fail-closed hash check, and CI runs it. Ad-hoc local aliases or regenerated images must never be presented as the registered reference.

@@ -68,6 +68,16 @@ Use deterministic compositing:
 
 Never resize, rotate, recolor, blur, quantize, or regenerate the shared container after registration. Do not resize the completed icon after composition; work on the final canvas from the start.
 
+## Reference-integrity rule
+
+Every comparison sheet and palette judgment must use the exact manifest-registered `representative_final`. Do not use an ad-hoc local alias, a prior candidate, a regenerated image, or a visually similar copy as the "reference".
+
+Run:
+
+`python Scripts/Art/boxed_resource_review.py Docs/References/AMJ_Masu_Template.json <candidate.png> --output <review.png>`
+
+The script verifies the registered reference SHA-256 before rendering the 256px and ~64px comparison. Hash mismatch or missing reference is a hard failure. A reference presented to the author without this verification is invalid.
+
 ## Visual-reference rule
 
 For every derivative, inspect the actual accepted filled exemplar before creating the contents. Text instructions and the empty master alone are insufficient. If the reference cannot be retrieved or its SHA-256 does not match the registered value, stop rather than approximating from memory.

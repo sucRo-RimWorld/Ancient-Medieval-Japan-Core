@@ -21,6 +21,9 @@ jobs:
       - name: Validate registered masu template
         run: python Tests/test_masu_template.py
 
+      - name: Regression-test boxed reference integrity
+        run: python Tests/test_boxed_resource_review.py
+
       - name: Regression-test PNG validator
         run: python Tests/test_validate_png_assets.py
 
