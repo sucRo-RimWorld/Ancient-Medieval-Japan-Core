@@ -56,10 +56,11 @@ def validate_variable_layer(manifest_path, layer, mask=None):
         raise ValueError('Variable layer must match template canvas')
     alpha = layer.getchannel('A')
     threshold = int(spec.get('required_fill', {}).get('alpha_threshold', 1))
-    outside = sum(a >= threshold and m == 0 for a, m in zip(alpha.get_flattened_data(), mask.get_flattened_data()))
-    if outside:
-        raise ValueError(f'Variable layer has {outside} nontransparent pixels outside allowed fill region')
     req = spec.get('required_fill')
+    if spec.get('enforce_variable_within_editable', bool(req)):
+        outside = sum(a >= threshold and m == 0 for a, m in zip(alpha.get_flattened_data(), mask.get_flattened_data()))
+        if outside:
+            raise ValueError(f'Variable layer has {outside} nontransparent pixels outside allowed fill region')
     if req:
         req_path = path.parent / req['path']
         if hashlib.sha256(req_path.read_bytes()).hexdigest() != req['sha256']:

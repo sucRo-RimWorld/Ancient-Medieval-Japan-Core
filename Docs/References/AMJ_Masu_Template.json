@@ -72,5 +72,6 @@
     "inspect at 256px and about 64px",
     "fix objective technical artifacts before presentation/registration",
     "do not request acceptance for a known deterministically fixable defect"
-  ]
+  ],
+  "enforce_variable_within_editable": true
 }
