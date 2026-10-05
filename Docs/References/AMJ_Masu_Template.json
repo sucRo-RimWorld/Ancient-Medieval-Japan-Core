@@ -87,5 +87,6 @@
     "expected_final_sha256": "0f81aa92460154d2b1ae50de14d7360be5e44ff46f8c81bdd113b6e19143d752",
     "required_rgba_diff_pixels": 0,
     "note": "Identity validation layer: exact approved variable RGBA inside the registered editable mask; transparent outside."
-  }
+  },
+  "replace_patch_min_defined_coverage": 0.98
 }

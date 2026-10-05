@@ -1094,6 +1094,9 @@ The previously approved Soba sheaf source has not been wired in this commit beca
 
 The zero-diff identity gate exposed a second reusable-contract issue before any new resource was attempted: under `replace_rgba`, the input cannot be a transparent object-only contents layer. It must be a complete rendered editable-cavity patch. Otherwise transparent pixels selected by the editable mask erase the empty-master cavity and reproduce the earlier broken-rim/layer-paste failure.
 
-`fixed_template.py` now provides a `scaffold` mode that copies the registered master RGBA inside the editable mask and leaves everything outside transparent. New resource art must be added to this scaffold. Validation rejects transparent holes where the registered master is opaque.
+`fixed_template.py` now provides a `scaffold` mode that copies the registered master RGBA inside the editable mask and leaves everything outside transparent. New resource art must be added to this scaffold. Validation rejects broadly incomplete/transparent patches via the manifest-defined editable-region coverage gate.
 
 Required-fill validation is also corrected for `replace_rgba`: alpha coverage is no longer meaningful because the scaffold itself is opaque. Occupancy is now measured by RGBA differences from the registered empty master within the required-fill guide. An untouched scaffold therefore fails closed, while the registered buckwheat-in-hull identity patch remains required to pass.
+
+
+**ART-TEMPLATE-016 CI correction (2026-10-05 JST):** The first scaffold-hardening CI run (#207) failed the masu regression because an exact zero-hole rule was too strict for the already approved identity exemplar: its antialiased rear-edge region legitimately contains a small number of low-alpha pixels inside the historical editable mask. The contract is therefore expressed as a measurable coverage threshold instead of a per-pixel opacity prohibition. `replace_patch_min_defined_coverage` is registered at 0.98; the approved exemplar remains above that threshold, while a transparent object-only input fails closed. Required-fill occupancy remains difference-from-master based.

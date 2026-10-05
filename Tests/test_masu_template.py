@@ -23,6 +23,7 @@ class MasuTemplateTest(unittest.TestCase):
         self.assertEqual(data["template_revision"], "v2")
         self.assertEqual(data["production_status"], "active")
         self.assertEqual(data["compose_mode"], "replace_rgba")
+        self.assertGreaterEqual(data["replace_patch_min_defined_coverage"], 0.98)
 
         master, allowed = module.load_template(MANIFEST)
         self.assertEqual(master.size, (256, 256))
@@ -105,7 +106,7 @@ class MasuTemplateTest(unittest.TestCase):
         for y in range(100, 130):
             for x in range(105, 150):
                 tiny.putpixel((x, y), (100, 60, 40, 255))
-        with self.assertRaisesRegex(ValueError, "transparent holes"):
+        with self.assertRaisesRegex(ValueError, "incomplete"):
             module.validate_variable_layer(MANIFEST, tiny, allowed)
 
 

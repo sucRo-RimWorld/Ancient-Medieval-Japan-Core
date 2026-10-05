@@ -106,9 +106,9 @@ Every genuinely new resource must therefore start with:
 
 `python Scripts/Art/fixed_template.py scaffold <manifest> --output <variable-patch.png>`
 
-The scaffold copies the registered empty-master RGBA exactly inside the editable mask and is transparent outside it. Draw or composite the new resource **onto this scaffold** without changing its canvas size. Do not clear unchanged cavity pixels to transparency.
+The scaffold copies the registered empty-master RGBA exactly inside the editable mask and is transparent outside it. Draw or composite the new resource **onto this scaffold** without changing its canvas size. Do not clear broad unchanged cavity areas to transparency. Because the approved exemplar itself contains a small amount of antialiased low-alpha edge data, `replace_rgba` validation uses the manifest's `replace_patch_min_defined_coverage` (currently 0.98) rather than requiring every editable pixel to be opaque.
 
-For `replace_rgba`, required-fill occupancy is measured by **RGBA differences from the registered empty master inside the required-fill guide**, not by alpha coverage. The scaffold by itself must fail the required-fill gate; a transparent object-only layer must fail the editable-patch completeness gate.
+For `replace_rgba`, required-fill occupancy is measured by **RGBA differences from the registered empty master inside the required-fill guide**, not by alpha coverage. The scaffold by itself must fail the required-fill gate; a transparent object-only layer must fail the editable-patch defined-coverage gate.
 
 The finished variable patch is then passed to `compose`. This ensures that unchanged cavity pixels remain identical to the registered master while actual resource pixels replace only the permitted region.
 

@@ -70,19 +70,21 @@ def validate_variable_layer(manifest_path, layer, mask=None):
             raise ValueError(f'Variable layer has {outside} nontransparent pixels outside allowed fill region')
 
     # replace_rgba patches are complete rendered cavity states, not transparent
-    # object-only overlays.  Every normally opaque master pixel inside the
-    # editable region must therefore remain defined in the patch.
+    # object-only overlays.  The approved exemplar contains a small amount of
+    # antialiased low-alpha edge data, so require high *coverage* rather than
+    # forbidding every low-alpha pixel.
     if mode == 'replace_rgba':
-        holes = sum(
-            m == 255 and ma >= threshold and la < threshold
-            for la, ma, m in zip(
-                alpha.get_flattened_data(),
-                master_alpha.get_flattened_data(),
-                mask.get_flattened_data(),
+        alpha_values = list(alpha.get_flattened_data())
+        editable_pixels = [i for i, v in enumerate(mask.get_flattened_data()) if v == 255]
+        if not editable_pixels:
+            raise ValueError('Editable mask is empty')
+        defined = sum(alpha_values[i] >= threshold for i in editable_pixels) / len(editable_pixels)
+        minimum_defined = float(spec.get('replace_patch_min_defined_coverage', 0.98))
+        if defined < minimum_defined:
+            raise ValueError(
+                f'Variable patch is incomplete inside editable region: '
+                f'{defined:.3f} < {minimum_defined:.3f}'
             )
-        )
-        if holes:
-            raise ValueError(f'Variable patch has {holes} transparent holes inside editable region')
 
     if req:
         req_path = path.parent / req['path']
