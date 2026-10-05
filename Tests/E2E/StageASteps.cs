@@ -259,6 +259,93 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(spotRecipes.Count == 14, "Both grain-processing stations should expose exactly fourteen Stage A grain-processing bills.");
         }
 
+        [Then("stage A crops preserve distinct gameplay roles")]
+        public void AssertDistinctCropRoles(PickleContext ctx)
+        {
+            ThingDef awa = RequireThingDef(ctx, "AMJC_Plant_FoxtailMillet_Awa");
+            ThingDef hie = RequireThingDef(ctx, "AMJC_Plant_BarnyardMillet_Hie");
+            ThingDef kibi = RequireThingDef(ctx, "AMJC_Plant_ProsoMillet_Kibi");
+            ThingDef soba = RequireThingDef(ctx, "AMJC_Plant_Buckwheat_Soba");
+            ThingDef barley = RequireThingDef(ctx, "AMJC_Plant_Barley");
+            ThingDef wheat = RequireThingDef(ctx, "DankPyon_Plant_Wheat");
+
+            ThingDef[] earlyCrops = { awa, hie, kibi, soba };
+            for (int i = 0; i < earlyCrops.Length; i++)
+            {
+                ThingDef crop = earlyCrops[i];
+                ctx.Assert(
+                    crop.plant.sowResearchPrerequisites == null
+                    || crop.plant.sowResearchPrerequisites.Count == 0,
+                    crop.defName + " must remain available before Basic Agriculture.");
+            }
+
+            ctx.Assert(
+                HasSowResearch(barley, "DankPyon_BasicAgriculture"),
+                "Barley must remain a post-Basic-Agriculture crop.");
+            ctx.Assert(
+                HasSowResearch(wheat, "DankPyon_BasicAgriculture"),
+                "Wheat must remain a post-Basic-Agriculture crop.");
+
+            ctx.Assert(
+                soba.plant.growDays < kibi.plant.growDays
+                && kibi.plant.growDays < awa.plant.growDays
+                && Math.Abs(awa.plant.growDays - hie.plant.growDays) < 0.001f
+                && awa.plant.growDays < barley.plant.growDays
+                && barley.plant.growDays < wheat.plant.growDays,
+                "Stage A growth times must preserve the Soba < Kibi < Awa/Hie < Barley < Wheat progression.");
+
+            ctx.Assert(
+                soba.plant.harvestYield < kibi.plant.harvestYield
+                && kibi.plant.harvestYield < hie.plant.harvestYield
+                && hie.plant.harvestYield < awa.plant.harvestYield
+                && awa.plant.harvestYield < barley.plant.harvestYield
+                && barley.plant.harvestYield < wheat.plant.harvestYield,
+                "Shorter Stage A crops must retain lower per-harvest output than the longer grain crops.");
+
+            ctx.Assert(
+                barley.plant.minGrowthTemperature < soba.plant.minGrowthTemperature
+                && Math.Abs(soba.plant.minGrowthTemperature - hie.plant.minGrowthTemperature) < 0.001f
+                && soba.plant.minGrowthTemperature < awa.plant.minGrowthTemperature
+                && Math.Abs(awa.plant.minGrowthTemperature - kibi.plant.minGrowthTemperature) < 0.001f,
+                "Cold-growth roles must remain Barley < Soba/Hie < Awa/Kibi.");
+
+            ctx.Assert(
+                soba.plant.fertilitySensitivity < kibi.plant.fertilitySensitivity
+                && kibi.plant.fertilitySensitivity < awa.plant.fertilitySensitivity
+                && awa.plant.fertilitySensitivity < hie.plant.fertilitySensitivity
+                && hie.plant.fertilitySensitivity < barley.plant.fertilitySensitivity
+                && barley.plant.fertilitySensitivity < wheat.plant.fertilitySensitivity,
+                "Fertility sensitivity must preserve Soba < Kibi < Awa < Hie < Barley < Wheat.");
+
+            AssertThinSoilCropRoles(ctx);
+
+            ctx.Assert(
+                soba.plant.growDays < awa.plant.growDays
+                && soba.plant.harvestYield < awa.plant.harvestYield,
+                "Soba's short-season advantage must retain a lower per-harvest yield tradeoff.");
+            ctx.Assert(
+                hie.plant.minGrowthTemperature < awa.plant.minGrowthTemperature
+                && hie.plant.harvestYield < awa.plant.harvestYield
+                && hie.plant.fertilitySensitivity > awa.plant.fertilitySensitivity,
+                "Hie's cooler growth threshold must retain yield/fertility tradeoffs versus Awa.");
+            ctx.Assert(
+                kibi.plant.growDays < awa.plant.growDays
+                && kibi.plant.harvestYield < awa.plant.harvestYield
+                && kibi.plant.fertilitySensitivity < awa.plant.fertilitySensitivity,
+                "Kibi must retain its shorter/lower-yield/low-fertility-sensitivity tradeoff versus Awa.");
+            ctx.Assert(
+                barley.plant.minGrowthTemperature < soba.plant.minGrowthTemperature
+                && barley.plant.growDays > soba.plant.growDays
+                && HasSowResearch(barley, "DankPyon_BasicAgriculture"),
+                "Barley's cold-growth advantage must retain a longer season and research gate.");
+            ctx.Assert(
+                wheat.plant.harvestYield > barley.plant.harvestYield
+                && wheat.plant.growDays > barley.plant.growDays
+                && wheat.plant.fertilityMin > barley.plant.fertilityMin
+                && wheat.plant.fertilitySensitivity > barley.plant.fertilitySensitivity,
+                "Wheat's high harvest output must retain longer growth and stronger fertility demands.");
+        }
+
         [Then("stage A grain quantities are conserved through processing")]
         public void AssertThirteenUnitConservation(PickleContext ctx)
         {
@@ -472,6 +559,15 @@ namespace AncientMedievalJapanCore.E2E
 
             float sensitivity = crop.plant.fertilitySensitivity;
             return fertility * sensitivity + (1f - sensitivity);
+        }
+
+        private static bool HasSowResearch(ThingDef crop, string researchDefName)
+        {
+            return crop != null
+                && crop.plant != null
+                && crop.plant.sowResearchPrerequisites != null
+                && crop.plant.sowResearchPrerequisites.Any(
+                    x => x != null && x.defName == researchDefName);
         }
 
         private static void AssertMoFlourRecipe(PickleContext ctx, string defName, int expectedFlourCount)
