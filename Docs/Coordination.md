@@ -929,3 +929,21 @@ Durable design source: `Docs/Design.md §8.5.1 AMJ共通リテクスチャ方針
 Durable design source: `Docs/Design.md` section **Core + Environment 自動ゲームプレイ評価方針**, commit `9eace339ba63e7e23d60d4a13c46727229d2be41`.
 
 **Next action:** ローカルRimWorldでCore `run-e2e.bat` の新8/8ゲートと、Environment `run-runtime-tests.bat` のCore+Environment統合プロファイルを実行し、実行時PASS/ERRORゼロを確定する。合格後は数値条件の手動再確認を要求しない。
+
+### TEST-POLICY-003 — Non-interactive runtime tests
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Testing/tooling  
+**Status:** DONE — project-wide policy recorded; existing visible runners remain migration work
+
+AMJ共通方針として、人間の目視を必要としない自動テストはユーザーのデスクトップへ可視RimWorldウィンドウを出さず、非対話実行を標準とする。
+
+- Pickle / RimTest Redux / Quickstarts / integration / runtime ERROR gate等は非表示・非対話が既定。
+- 描画経路を検証する場合はrenderingを無効化せず、virtual/off-screen/hidden display相当で実描画経路を維持する。
+- 可視実行はvisual/UI/操作感/遊び心地等の人間判断に限定。
+- default automated runnerとvisual/debug runnerを分離する。
+- 既存の可視runnerは移行対象であり、この記録は非表示化完了を意味しない。
+
+Shared durable source: `Docs/DevelopmentGoldenPathGuidelines.md`, commit `a81c0389fb1834a098a462291b3f4814abcffef3`. Repository instruction: `AGENTS.md`, commit `2ac00e423a814708d70113e10b1edbeebfd7c353`.
+
+**Next action:** desktop Work/local Windows toolingでCore runtime harnessを非対話実行へ移行し、8-scenario E2Eが可視ウィンドウなしで同一ERROR gateを保って通ることを確認する。
