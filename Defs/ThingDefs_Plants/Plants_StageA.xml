@@ -142,8 +142,7 @@
       <Nutrition>0.2</Nutrition>
     </statBases>
     <graphicData>
-      <!-- TEMP: reuse accepted Awa plant art until the Art/graphics workstream supplies Soba-specific textures. -->
-      <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
+      <texPath>Things/Plants/FullGrown/AMJC_Soba</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>

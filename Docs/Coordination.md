@@ -1065,3 +1065,19 @@ Implementation:
 - `Tests/test_masu_template.py` invokes the real compositor and requires 0 final RGBA differences versus `AMJ_BuckwheatInHull_Ideal_256.png`, while also requiring 0 protected/common-pixel differences versus the empty master.
 
 This is the first valid proof that the boxed-resource production path itself can reproduce the approved in-hull Soba reference. It is not a dehulled-Soba result and does not change the approved icon.
+
+
+### AMJ-009-ART-SOBA-PLANT — Dedicated Soba plant textures
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** AMJ Core art  
+**Status:** IMPLEMENTED; automated validation pending CI
+
+Recovered the previously approved Soba mature and immature source art from the persistent Library rather than regenerating it. Both were deterministically normalized to 256×256 transparent PNGs and wired into the Soba PlantDef:
+
+- mature: `Textures/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
+- immature: `Textures/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
+
+The former temporary Awa paths are removed from `AMJC_Plant_Buckwheat_Soba`. Stage A validation now asserts both dedicated Soba texture paths, PNG signatures, and 256×256 dimensions.
+
+The previously approved Soba sheaf source has not been wired in this commit because the persistent Library contains several adjacent sheaf iterations and the exact author-approved one cannot be proven from the retained metadata alone. Do not guess between those variants; resolve the authoritative sheaf source separately before replacing the current RawMillet placeholder. No new ImageGen was used.
