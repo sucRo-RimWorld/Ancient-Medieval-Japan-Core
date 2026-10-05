@@ -2,6 +2,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import tempfile
 import unittest
 
 from PIL import Image
@@ -17,10 +18,11 @@ spec.loader.exec_module(module)
 
 
 class MasuTemplateTest(unittest.TestCase):
-    def test_v2_is_active_and_matches_approved_exemplar(self):
+    def test_v2_identity_exemplar_round_trips_at_zero_rgba_diff(self):
         data = json.loads(MANIFEST.read_text(encoding="utf-8"))
         self.assertEqual(data["template_revision"], "v2")
         self.assertEqual(data["production_status"], "active")
+        self.assertEqual(data["compose_mode"], "replace_rgba")
 
         master, allowed = module.load_template(MANIFEST)
         self.assertEqual(master.size, (256, 256))
@@ -29,8 +31,11 @@ class MasuTemplateTest(unittest.TestCase):
 
         req_path = MANIFEST.parent / data["required_fill"]["path"]
         rep_path = MANIFEST.parent / data["representative_final"]["path"]
+        var_path = MANIFEST.parent / data["identity_exemplar"]["variable_layer_path"]
+
         self.assertEqual(hashlib.sha256(req_path.read_bytes()).hexdigest(), data["required_fill"]["sha256"])
         self.assertEqual(hashlib.sha256(rep_path.read_bytes()).hexdigest(), data["representative_final"]["sha256"])
+        self.assertEqual(hashlib.sha256(var_path.read_bytes()).hexdigest(), data["identity_exemplar"]["variable_layer_sha256"])
 
         with Image.open(req_path) as image:
             required = image.convert("L")
@@ -41,21 +46,36 @@ class MasuTemplateTest(unittest.TestCase):
 
         with Image.open(rep_path) as image:
             representative = image.convert("RGBA")
-        self.assertEqual(representative.getchannel("A").getbbox(), tuple(data["visual_reference"]["normalized_alpha_bbox"]))
+        with Image.open(var_path) as image:
+            variable = image.convert("RGBA")
 
+        module.validate_variable_layer(MANIFEST, variable, allowed)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "identity.png"
+            module.compose(MANIFEST, var_path, output)
+            with Image.open(output) as image:
+                recomposed = image.convert("RGBA")
+
+        differing_pixels = sum(
+            a != b
+            for a, b in zip(
+                recomposed.get_flattened_data(),
+                representative.get_flattened_data(),
+            )
+        )
+        self.assertEqual(differing_pixels, data["identity_exemplar"]["required_rgba_diff_pixels"])
+
+        # Protected/common pixels remain exact copies of the empty master.
         protected_diffs = sum(
             m == 0 and a != b
             for a, b, m in zip(
                 master.get_flattened_data(),
-                representative.get_flattened_data(),
+                recomposed.get_flattened_data(),
                 allowed.get_flattened_data(),
             )
         )
         self.assertEqual(protected_diffs, 0)
-
-        transparent = Image.new("RGBA", master.size, (0, 0, 0, 0))
-        reference_variable = Image.composite(representative, transparent, allowed)
-        module.validate_variable_layer(MANIFEST, reference_variable, allowed)
 
         tiny = Image.new("RGBA", master.size, (0, 0, 0, 0))
         for y in range(100, 130):

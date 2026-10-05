@@ -1048,3 +1048,20 @@ Durable result:
 Shared source of truth: `Docs/RetextureImplementationGuidelines.md`, introduced at commit `e61a6379886d0f8a5ada8edb75a94943572f23ea`; linked from Core Design at `65b0dd95236c801c27c0c52aa4170b5996a32e03`.
 
 **Next action:** when the first Core-owned prerequisite retexture is integrated, add its target/state manifest and regression coverage required by the shared guideline. No runtime-test rerun is part of this audit item.
+
+
+### ART-TEMPLATE-016 — Buckwheat-in-hull production identity PASS
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** DONE
+
+The corrected validation target is now complete. The approved buckwheat-in-hull exemplar is reconstructed through the actual registered reusable template path with **0 differing RGBA pixels**.
+
+Implementation:
+- `Docs/References/AMJ_BuckwheatInHull_IdentityVariable.png` stores the approved variable RGBA inside the editable mask and is transparent outside it.
+- `Docs/References/AMJ_Masu_Template.json` registers `compose_mode: replace_rgba`.
+- `Scripts/Art/fixed_template.py` supports that mode by replacing RGBA only inside the registered editable mask instead of alpha-blending it over the empty master.
+- `Tests/test_masu_template.py` invokes the real compositor and requires 0 final RGBA differences versus `AMJ_BuckwheatInHull_Ideal_256.png`, while also requiring 0 protected/common-pixel differences versus the empty master.
+
+This is the first valid proof that the boxed-resource production path itself can reproduce the approved in-hull Soba reference. It is not a dehulled-Soba result and does not change the approved icon.

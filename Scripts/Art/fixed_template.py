@@ -95,9 +95,20 @@ def compose(manifest, variable, output):
     if layer.size != master.size:
         raise ValueError('Variable layer must already match the template canvas')
     validate_variable_layer(manifest, layer, mask)
-    # Composite only inside the approved editable region, then restore all fixed pixels.
-    merged = Image.alpha_composite(master, layer)
-    result = Image.composite(merged, master, mask)
+    # Compose according to the registered family contract.
+    # replace_rgba is required when the variable layer already contains the exact
+    # antialiased/occluded RGBA for the editable cavity; alpha-over would blend
+    # those pixels with the empty master a second time and cannot reconstruct the
+    # approved exemplar exactly.
+    spec = json.loads(Path(manifest).read_text(encoding='utf-8'))
+    mode = spec.get('compose_mode', 'alpha_over')
+    if mode == 'replace_rgba':
+        result = Image.composite(layer, master, mask)
+    elif mode == 'alpha_over':
+        merged = Image.alpha_composite(master, layer)
+        result = Image.composite(merged, master, mask)
+    else:
+        raise ValueError(f'Unsupported compose_mode: {mode}')
     validate(master, mask, result)
     output = Path(output)
     if output.suffix.lower() != '.png':

@@ -65,8 +65,8 @@
   "editable_region": "contents may vary only inside the registered allowed/editable fill region; all other RGBA pixels are protected",
   "fixed_layer_order": [
     "registered v2 master",
-    "variable contents inside allowed/editable region",
-    "restore all protected master RGBA pixels"
+    "replace editable-mask RGBA with variable layer",
+    "protected pixels remain byte-identical to master"
   ],
   "self_qc": [
     "inspect at 256px and about 64px",
@@ -78,5 +78,14 @@
     "date": "2026-10-05",
     "status": "approved",
     "note": "Author reviewed the v2 comparison at full and game-like small size and confirmed it looked acceptable."
+  },
+  "compose_mode": "replace_rgba",
+  "identity_exemplar": {
+    "variable_layer_path": "AMJ_BuckwheatInHull_IdentityVariable.png",
+    "variable_layer_sha256": "860c0cba443f1fb2a0bf2ba3f839750b2a4e764cf2041091a87f743f0b33d28e",
+    "expected_final_path": "AMJ_BuckwheatInHull_Ideal_256.png",
+    "expected_final_sha256": "0f81aa92460154d2b1ae50de14d7360be5e44ff46f8c81bdd113b6e19143d752",
+    "required_rgba_diff_pixels": 0,
+    "note": "Identity validation layer: exact approved variable RGBA inside the registered editable mask; transparent outside."
   }
 }

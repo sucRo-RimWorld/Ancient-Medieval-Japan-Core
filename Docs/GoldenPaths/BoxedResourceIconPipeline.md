@@ -52,6 +52,20 @@ For the current masu family, the expected output is the registered **buckwheat-i
 
 A diagnostic exact-delta round trip may prove that the reference/master pair is internally consistent, but it does not by itself prove that the reusable production layer structure is correct. The production layer structure must pass the same zero-difference exemplar reconstruction before any other resource is attempted.
 
+### Current identity result: PASS
+
+The current masu v2 family now passes the intended identity validation through the **actual reusable production compositor**, not a diagnostic delta shortcut.
+
+- registered compose mode: `replace_rgba`
+- identity variable layer: `Docs/References/AMJ_BuckwheatInHull_IdentityVariable.png`
+- expected final: `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`
+- result: **0 RGBA pixel differences**
+- protected/common pixels: **0 RGBA differences from the empty master**
+
+Why replacement is required: the approved variable RGBA already contains its own antialiasing/occlusion against the cavity. Alpha-compositing it over the empty master a second time changes those pixels. The reusable contract therefore replaces RGBA only inside the editable mask while leaving every protected pixel from the master untouched.
+
+This passes the validation target requested by the author: the approved **buckwheat-in-hull** exemplar can be reconstructed exactly through the standard registered template path. New resources may now use this same structural contract, but must provide their own clean variable RGBA layer.
+
 ## Registration gate
 
 A template remains blocked/inactive until all of these are true:
