@@ -653,6 +653,26 @@ Durable design source: `Docs/Design.md` section **AMJ容器（甕）— 既存Mo
 
 **Next action:** 実装時は機能ごとに判断する。CoreのStorage甕は既存Storageとの差が残る場合だけ追加し、Fermentation側は専用Processor甕を設計する。共通甕状態機械の技術プロトタイプは不要。
 
+
+### DESIGN-016 — Japan Only責務の修正
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Japan Only / cross-mod design  
+**Status:** DONE — durable design corrected
+
+Japan Onlyの責務について、「MOを日本風へ置換・リテクスチャする日本化レイヤー」という旧表現を撤回した。
+
+確定方針:
+- Japan Onlyは**Medieval Overhaul由来の西洋要素を除去・非表示化する限定レイヤー**。
+- 日本風Defへの置換、日本風リテクスチャ、日本側コンテンツの追加は担当しない。
+- 代替が必要な場合はCore、各Addon、専用互換/外観Mod、外部和風Mod等の所有責務とする。
+- Japan Onlyは外部Modの植物・Faction・衣服等を選別・除去する汎用フィルタにもならない。対象はMO由来要素に限定する。
+- MO要素の除去で進行や互換を壊さないことはJapan Only側で監査するが、代替資産の提供は行わない。
+
+Durable design source: `Docs/Design.md`, commit `973c14a2d4555b1e3e880fb91ac342b061f4e8e6`.
+
+**Next action:** 今後のJapan Only作業では、除去対象の選定・非表示/無効化・MO互換維持だけを扱う。リテクスチャ案件は適切な所有Modへ分離する。
+
 ### DOC-010 — Workshop cover common-left drift prevention
 
 **Requested by:** author (2026-10-05 JST)  
