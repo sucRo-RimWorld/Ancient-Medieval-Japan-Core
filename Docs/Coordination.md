@@ -802,3 +802,12 @@ A review exposed that the agent had identified visible roughness in a candidate 
 The author should only be asked about genuine design/aesthetic tradeoffs. Known fixable defects must not be delegated back as a "妥協できるか" decision.
 
 Applied immediately to masu v2: the upscaled 256px candidate was discarded as master material; v2 was rebuilt from high-resolution sources and the author-approved filled exemplar, then registered with allowed/required fill guides and a normalized representative regression asset.
+
+
+### ART-TEMPLATE-008 — Masu v2 author visual confirmation
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** DONE
+
+The author reviewed the v2 comparison, including the 256px and game-like small-size views, and confirmed that it looks acceptable ("問題なさそう"). This closes the remaining visual-approval gate for the active masu v2 family. Continue subsequent boxed-resource icons from the registered v2 master/fill guides; do not regenerate the masu.
