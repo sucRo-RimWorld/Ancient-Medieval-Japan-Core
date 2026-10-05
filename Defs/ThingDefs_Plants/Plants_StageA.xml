@@ -166,7 +166,7 @@
       <minOptimalGrowthTemperature>12</minOptimalGrowthTemperature>
       <maxOptimalGrowthTemperature>25</maxOptimalGrowthTemperature>
       <visualSizeRange>0.5~1.0</visualSizeRange>
-      <immatureGraphicPath>Things/Plants/Immature/AMJC_Awa</immatureGraphicPath>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Soba</immatureGraphicPath>
       <wildOrder>5</wildOrder>
       <purpose>Food</purpose>
       <sowMinSkill>1</sowMinSkill>

@@ -1071,7 +1071,7 @@ This is the first valid proof that the boxed-resource production path itself can
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** AMJ Core art  
-**Status:** IMPLEMENTED; automated validation pending CI
+**Status:** IMPLEMENTED; first CI exposed immature-path edit bug, fix pushed
 
 Recovered the previously approved Soba mature and immature source art from the persistent Library rather than regenerating it. Both were deterministically normalized to 256×256 transparent PNGs and wired into the Soba PlantDef:
 
@@ -1081,3 +1081,6 @@ Recovered the previously approved Soba mature and immature source art from the p
 The former temporary Awa paths are removed from `AMJC_Plant_Buckwheat_Soba`. Stage A validation now asserts both dedicated Soba texture paths, PNG signatures, and 256×256 dimensions.
 
 The previously approved Soba sheaf source has not been wired in this commit because the persistent Library contains several adjacent sheaf iterations and the exact author-approved one cannot be proven from the retained metadata alone. Do not guess between those variants; resolve the authoritative sheaf source separately before replacing the current RawMillet placeholder. No new ImageGen was used.
+
+
+**AMJ-009 Soba plant CI follow-up (2026-10-05 JST):** The first integration CI run (#205) correctly failed Stage A because the Soba immature path was still the Awa placeholder. The write script had scoped the XML block by the first literal `</ThingDef>`, which accidentally matched the nested `descriptionHyperlinks/ThingDef` element before the plant section. The correction now scopes the replacement directly from the Soba defName through its immatureGraphicPath; no image bytes changed.
