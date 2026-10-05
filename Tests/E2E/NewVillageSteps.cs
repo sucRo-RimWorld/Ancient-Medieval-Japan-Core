@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using RimWorks.Pickle;
 using RimWorld;
 using Verse;
@@ -74,7 +75,12 @@ namespace AncientMedievalJapanCore.E2E
         }
 
         [Then("New Village starts with five villagers and the designed supplies")]
-        public void AssertStartedVillage(PickleContext ctx)
+        public Task AssertStartedVillage(PickleContext ctx)
+        {
+            return RuntimeThread.Run(delegate { AssertStartedVillageOnMainThread(ctx); });
+        }
+
+        private void AssertStartedVillageOnMainThread(PickleContext ctx)
         {
             AssertLoadedScenario(ctx);
             Map map = Find.CurrentMap;

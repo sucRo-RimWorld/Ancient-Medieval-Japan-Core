@@ -2,17 +2,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using RimWorks.Pickle;
 using RimWorld;
 using Verse;
 
 namespace AncientMedievalJapanCore.E2E
 {
+    // Pickle can resume its scenario pipeline on a worker thread. Unity textures
+    // and live Verse map collections must always be accessed in the driver Update.
+    internal static class RuntimeThread
+    {
+        public static Task Run(Action assertion)
+        {
+            var completion = new TaskCompletionSource<bool>();
+            RimWorks.Pickle.Runtime.PickleDriver.Post(delegate
+            {
+                try
+                {
+                    if (!UnityData.IsInMainThread)
+                        throw new InvalidOperationException("AMJ runtime assertion must run on the Unity main thread.");
+                    assertion();
+                    completion.SetResult(true);
+                }
+                catch (Exception error) { completion.SetException(error); }
+            });
+            return completion.Task;
+        }
+    }
+
     [PickleSteps]
     public sealed class StageASteps
     {
         [Then("loaded AMJ Stage A crop and grain Defs match the design values")]
-        public void AssertLoadedCropAndGrainDefs(PickleContext ctx)
+        public Task AssertLoadedCropAndGrainDefs(PickleContext ctx)
+        {
+            return RuntimeThread.Run(delegate { AssertLoadedCropAndGrainDefsOnMainThread(ctx); });
+        }
+
+        private void AssertLoadedCropAndGrainDefsOnMainThread(PickleContext ctx)
         {
             string checkpoint = "Awa crop";
             try

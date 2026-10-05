@@ -100,7 +100,7 @@ def validate(mo_root=None, core_defs=None):
         for field in fields:
             assert jp.findtext(f"{name}.{field}"), f"Missing Japanese {name}.{field}"
 
-    design = (ROOT / "Docs/Design.md").read_text()
+    design = (ROOT / "Docs/Design.md").read_text(encoding="utf-8")
     section = design.split("### Core標準Scenario", 1)[1].split("\n### ", 1)[0]
     for name, (count, _) in SUPPLIES.items():
         assert re.search(r"\| `" + re.escape(name) + r"`[^|]*\| " + str(count) + r" \|", section), f"Design supplies differ: {name}"
@@ -109,20 +109,20 @@ def validate(mo_root=None, core_defs=None):
     assert "候補8人から5人" in section
     assert "研究タグ / Techprintタグ | 空" in section
 
-    feature = (ROOT / "Tests/E2E/TestMod/Pickle/Features/stage-a.feature").read_text()
+    feature = (ROOT / "Tests/E2E/TestMod/Pickle/Features/stage-a.feature").read_text(encoding="utf-8")
     names = re.findall(r"^  Scenario: (.+)$", feature, re.M)
     assert len(names) == 8 and len(set(names)) == 8
     assert "@quickstart:AmjNewVillageQuickstart\n  Scenario: New Village starts" in feature
-    summary = (ROOT / "Scripts/Validate-PickleSummary.ps1").read_text()
+    summary = (ROOT / "Scripts/Validate-PickleSummary.ps1").read_text(encoding="utf-8")
     assert all(f'"{name}"' in summary for name in names)
     assert "$summary.total -ne 8" in summary and "$summary.passed -ne 8" in summary
-    quickstart = (ROOT / "Tests/E2E/AmjStageAQuickstart.cs").read_text()
+    quickstart = (ROOT / "Tests/E2E/AmjStageAQuickstart.cs").read_text(encoding="utf-8")
     assert "sealed class AmjNewVillageQuickstart" in quickstart
     assert 'DefDatabase<ScenarioDef>.GetNamed("AMJC_NewVillage")' in quickstart
-    batch = (ROOT / "build-e2e.bat").read_text()
+    batch = (ROOT / "build-e2e.bat").read_text(encoding="utf-8")
     assert batch.count('"%ROOT%Tests\\E2E\\NewVillageSteps.cs"') == 2
     assert 'MOFixture\\Defs" "%MO_FIXTURE_DIR%\\Defs" /E /I /Y' in batch
-    runtime = (ROOT / "run-e2e.bat").read_text()
+    runtime = (ROOT / "run-e2e.bat").read_text(encoding="utf-8")
     assert "-FailOnAnyError" in runtime
 
     fixture = definitions(ROOT / "Tests/E2E/MOFixture/Defs")

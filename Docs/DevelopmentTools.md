@@ -82,3 +82,12 @@ The normal local gate also calls `Scripts/Validate-NewVillage.ps1` with the inst
 The runtime suite uses lightweight MO XML and a CCTO XML-API fixture, with DLCs and AMJ Backgrounds absent. This covers the production AMJC Scenario against RimWorld's real start pipeline, not all MO Harmony/gameplay behavior. No custom pawn/item/research override is applied by `AmjNewVillageQuickstart`. Loaded supply definitions are checked exactly; the live map must contain at least the promised amounts because independent map generation can add other items.
 
 The New Village C# build and seven-scenario runtime gate remain pending on the development PC. Python static validation and source XML inspection are not a runtime PASS. Keep AMJ-015 IN PROGRESS until the clean 7/7 summary and isolated ERROR scan are confirmed. Manual work remains limited to start feel and UI/appearance.
+
+## Isolated rendered desktop launcher
+
+See [IntegratedRuntimeTesting.md](IntegratedRuntimeTesting.md) and
+`Scripts/IntegratedRuntimeDesktop/Run-AMJ-IsolatedDesktop.ps1`. Historical
+local verification passed 7/7 plus zero ERRORs before the current eight-scenario
+extension. Two texture/live-map test entry points now dispatch through
+PickleDriver.Post and enforce Unity main-thread execution. This publication
+preserves the newer suite; it does not claim a fresh eight-scenario runtime PASS.

@@ -973,3 +973,29 @@ Repeated Soba failures showed that color work was continuing before the layer de
 The process is reset to a structural identity gate. Using the registered 256px empty master (SHA-256 `a48875944834130676a32f8545e3b9eaae077dec773b7107643f1e65bf3f3fd3`) and registered filled exemplar (SHA-256 `0f81aa92460154d2b1ae50de14d7360be5e44ff46f8c81bdd113b6e19143d752`), an exact RGBA-difference mask was derived. Extracting only those exemplar pixels and recomposing them onto the empty master reproduces the exemplar with **0 differing pixels**. Exact variable bbox: `[35, 44, 223, 169]`.
 
 This exact variable mask, not the broad editable mask or guessed pile polygon, is the structural basis for future boxed-resource material variants. The prior dehulled-Soba color candidates are invalid and were deleted. Color/material work must not resume until the high-resolution variable source is mapped to this exact 256px identity mask without altering fixed rim pixels.
+
+### TEST-RENDERED-PUBLISH — Isolated rendered runtime tooling (2026-10-05 JST)
+
+**Owner:** Testing/tooling
+**Status:** DONE (tooling publication); latest-main runtime regression pending
+
+The earlier local snapshot passed Core 7/7, Environment six base Quickstarts
+(58/57/54/52/3/3 assertions) and CCTO 70/70, with eight clean runtime logs
+and combined exit 0. Game windows were enumerated on an independent non-visible
+WinSta0 desktop while Direct3D rendering stayed enabled. The first hidden run
+exposed worker-thread texture/map assertions; Core now posts those two steps
+through PickleDriver and checks Unity main-thread execution. New Village Python
+text reads explicitly use UTF-8. The saved launcher rerun passed after a separate
+Haimatsu-review game released its DLL lock. No unrelated process was terminated.
+
+Only this task's tooling/docs are published. Original working folders and other
+local art/Def/review changes are preserved. These changes were transplanted onto
+latest GitHub main, retaining its newer Core eight-scenario suite and Environment
+Core-profile tests. Those newer runtime gates were not executed in the recorded
+run and remain pending. No production art/Def/config change is included.
+
+**Next action:** run the saved isolated desktop launcher against updated local
+repositories to exercise the newer suites; human visual acceptance stays separate.
+
+**Procedure:** Core Docs/IntegratedRuntimeTesting.md and
+Scripts/IntegratedRuntimeDesktop/Run-AMJ-IsolatedDesktop.ps1.
