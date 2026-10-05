@@ -92,6 +92,16 @@ Any new RimWorld runtime-test harness added to this repository must include this
 Use the CCTO-based shared [mod description guidelines](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Core/blob/main/Docs/ModDescriptionGuidelines.md) when writing or updating public descriptions. Include save compatibility in every mod description, stating addition/removal conditions accurately for the mod's implementation. Keep README, Workshop English/Japanese BBCode, and About.xml consistent; refine the shared baseline as presentation improves.
 
 
+## Retexture implementation rule (AMJ common)
+
+When AMJ retextures Vanilla, Medieval Overhaul, or another prerequisite Mod asset, follow `Docs/RetextureImplementationGuidelines.md` in addition to the owning repository's art pipeline.
+
+- AMJ-owned prerequisite graphics use AMJ-owned unique texPaths with explicit Def/Patch ownership by default; do not rely only on same-name texture shadowing/load order.
+- Treat one retexture target as the complete loaded graphic-state family, not one mature/base PNG.
+- Keep pure retexture patches visual-only; gameplay changes require their own owning design.
+- Optional parent-Mod graphics must be guarded and must not copy/edit third-party distributed art in place.
+- Audit known explicit-path competitors and validate the final loaded AMJ path where AMJ owns the target.
+
 ## Historical description audit (AMJ common)
 
 Use `Docs/HistoricalDescriptionGuidelines.md` whenever AMJ adopts, patches, retextures, selects, or localizes Vanilla / Medieval Overhaul items, plants, animals, or comparable content.
