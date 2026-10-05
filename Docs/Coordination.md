@@ -630,24 +630,28 @@ The repair restored only the four broken PNG blobs from the earlier same-workstr
 
 **Result / references:** repair `0262092fa06c4578450af15c5b936fdd80156113`; dedicated PNG gate `c0823137002c37cc6e5f9ae69f0ea819c98e7e2a`; successful workflow run #131 (`37216862456`) with `validate-png-assets`, `validate-stage-a`, and `validate-windows-powershell` all Green.
 
-### DESIGN-015 — AMJ共通容器（甕）の別途検討
+### DESIGN-015 — AMJ容器（甕）監査
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Common systems / Fermentation-Preservation design  
-**Status:** OPEN — design investigation only; implementation not approved
+**Status:** DONE — design audit complete; implementation remains per-feature work
 
-AMJで、前近代日本の汎用「甕」を1つの共通容器として持ち、用途に応じて **貯蔵 / 保存 / 発酵** に使い分ける案を別途検討する。現時点では実装確定ではない。
+既存容器Mod・現行MO 1.6ソース・古代～中世日本の甕/陶器/桶樽史を再監査した結果、初期案の「同じ1個の甕を通常貯蔵 / 封蔵 / 発酵へ状態切替して使い回す共通システム」は採用しない方向に更新した。
 
-優先して確認する点:
-- 既存の土器・甕・Storage・Processor系Modに、同一容器を3用途で使い分けられる実装があるか再監査する
-- 3機能を同時発揮させず、通常貯蔵 / 封をした保存 / 発酵仕込み中の占有、という排他的な状態切替がゲームとして有効か検討する
-- RimWorld標準StorageとProcessor系の差を踏まえ、内部収納・Job/UI・腐敗処理・Framework接続の技術プロトタイプを行う
-- Core所有とした場合でも、Core非必須を基本とするFermentation / Salt Preservation等との依存関係を壊さない構成を決める
-- 既存Modで十分な場合は重複実装しない
+確定した設計方針:
+- Storage用甕と発酵甕は別ThingDef/設備でよく、同一物体のモード切替を要求しない。
+- 保存用の封甕が必要ならSalt Preservation等の所有設備として別途追加し、Coreへ万能容器ロジックを置かない。
+- 発酵甕はProcessor Frameworkを利用する専用Processorを優先し、Storageとの統合C#・内部コンテナ・専用Job/UIは初期実装しない。
+- 粘土はMO `DankPyon_Clay` を正本とする。現行MO 1.6ではDigging Spotで20 clay / 600 work、MarketValue 1.2であり、粘土希少性を理由に甕の使い回しを強制しない。
+- 大型甕のコストは原料希少性より成形・焼成・燃料・運搬側にあるため、必要ならWork量・窯/研究前提・焼成工程で表現する。
+- 時代考証上、中世備前/常滑風大甕を新石器段階へそのまま出さない。早期Storageは土器系、後期は焼締大甕・埋甕・結桶/結樽等を機能側で表現する。
+- Adaptive Primitive / Neolithic系のpot Storage、MOのbarrel/chest/sack等を優先再利用し、日本固有の差がない汎用Storageを重複実装しない。
 
-Durable design source: `Docs/Design.md` section **AMJ共通容器（甕）— 別途検討する設計候補**, commit `b042e3f7e0e8d768a658fd9ae345c020cb11daca`.
+歴史監査では、古代大型甕の貯蔵専用器としての利用、中世12世紀以降の甕・壺の広範な生活流通、16世紀酒屋等の埋甕遺構による酒造・液体貯蔵、鎌倉末～室町期の結桶・結樽普及を確認した。したがって「甕は貯蔵にも発酵にも使われた」は正しいが、「同じゲーム内甕を必ず転用する」は歴史的必然ではない。
 
-**Next action:** 容器システムを扱う別作業系統で、既存Mod監査 → 最小プロトタイプ → 所有/依存設計の順に検討し、採否が決まった時点で正式仕様へ更新する。
+Durable design source: `Docs/Design.md` section **AMJ容器（甕）— 既存Mod・時代考証監査後の方針**, commit `fa92e9f8de07f309eaa59c02b1fde63a27178ae0`.
+
+**Next action:** 実装時は機能ごとに判断する。CoreのStorage甕は既存Storageとの差が残る場合だけ追加し、Fermentation側は専用Processor甕を設計する。共通甕状態機械の技術プロトタイプは不要。
 
 ### DOC-010 — Workshop cover common-left drift prevention
 
