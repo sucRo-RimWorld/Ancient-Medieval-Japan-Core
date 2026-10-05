@@ -771,3 +771,19 @@ Accepted visual reference is now persistent at `/AMJ/References/AMJ_BoxedResourc
 The durable rule is `Docs/GoldenPaths/BoxedResourceIconPipeline.md`: boxed-resource families require both a fixed structural master and an accepted filled exemplar; frame occupancy and content fill/height are part of the contract; an empty master cannot become active until a representative filled composite is accepted. The current v1 manifest is marked blocked so automation fails closed.
 
 **Next action:** build and author-approve masu v2 from the accepted filled exemplar, register required/allowed content-fill guides, then produce the Soba in-hull derivative. Do not continue from v1.
+
+
+### ART-TEMPLATE-006 — Masu v2 visual candidate
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** AWAITING AUTHOR VISUAL APPROVAL
+
+The blocked v1 master was not reused unchanged. A v2 candidate was derived by aligning the empty masu to the accepted filled buckwheat reference's 256×256 frame occupancy, then composing the accepted filling profile into a broader contents envelope rather than clipping contents to the old interior-only diamond.
+
+Persistent review assets:
+- empty v2 candidate: `/AMJ/References/AMJ_Masu_Empty_Master_v2_Candidate.png`
+- representative buckwheat-in-hull candidate: `/AMJ/References/AMJ_BuckwheatInHull_v2_Candidate.png`
+- side-by-side 256px + small-size review: `/AMJ/References/AMJ_Masu_v2_Review.png`
+
+The candidate now matches the accepted exemplar's overall alpha envelope `[17, 28, 239, 235]` and restores the fuller mound/occupancy that the previous derivative lost. It is **not yet the active master**. Do not replace the blocked v1 manifest or generate downstream resources until the author visually approves this v2 candidate. After approval, register the v2 master plus allowed-fill/required-fill guides, hashes, and representative-composite regression test before producing the next boxed resource.
