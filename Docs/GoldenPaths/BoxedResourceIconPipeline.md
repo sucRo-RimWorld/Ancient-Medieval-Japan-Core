@@ -52,6 +52,20 @@ A template remains blocked/inactive until all of these are true:
 
 An empty master by itself cannot activate a family.
 
+## High-resolution contents-source rule
+
+The final 256×256 game icon is an output format, not an editing source.
+
+Root-cause audit on the Soba dehulled-grain attempts confirmed that the registered 256px exemplar is an exact Lanczos downsample of the accepted 1254×1254 reference. Recoloring that already-downsampled raster pixel-by-pixel turns the source's smooth gradients and antialiasing into noisy threshold/banding artifacts. Spatial blur can hide those artifacts only by smearing several grains together, which creates the observed faded/oval correction patches.
+
+Therefore:
+- do not derive a new material/palette by per-pixel recoloring of the final 256px icon;
+- retrieve the authoritative high-resolution variable-content source/reference and perform cleanup/material transformation there;
+- use semantic content layers/masks (grain bodies/faces, outlines/gaps, foreground rim), not one broad spatial "interior" correction mask;
+- apply discrete palette changes per coherent face/region, with dithering disabled; do not use Gaussian blur across multiple objects as an artifact fix;
+- downsample exactly once to 256px after the variable contents are complete, then composite into the registered 256px masu and restore all protected pixels;
+- if a clean high-resolution variable source or semantic mask does not yet exist, the task is BLOCKED until it is created from authoritative material. Do not fall back to iterative 256px patching.
+
 ## Contents contract
 
 For the normal/full boxed-resource presentation:

@@ -20,6 +20,12 @@ Once the author accepts an image, treat it as a master source.
 - If only one component changes, keep all other accepted components fixed.
 - A newly generated image is not automatically a replacement for an accepted master.
 
+### Do not edit from production-resolution derivatives
+
+When an accepted source exists at higher resolution than the in-game output, perform material/palette cleanup on the highest authoritative source available and resize only once at export. The 256px production PNG is not a reusable editing source for recoloring/shading transformations. Repeated recolor → blur/median → requantize cycles on a downsampled raster create irreversible noise/banding or broad blurred patches.
+
+For fixed-template contents, build semantic variable layers at high resolution, then downsample the completed variable layer once and composite it into the fixed production-resolution master.
+
 ## 2. New-image generation
 
 Use image generation only when a genuinely new silhouette or subject-specific drawing is required.

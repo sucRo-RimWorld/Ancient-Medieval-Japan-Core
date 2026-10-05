@@ -947,3 +947,16 @@ AMJ共通方針として、人間の目視を必要としない自動テスト�
 Shared durable source: `Docs/DevelopmentGoldenPathGuidelines.md`, commit `a81c0389fb1834a098a462291b3f4814abcffef3`. Repository instruction: `AGENTS.md`, commit `2ac00e423a814708d70113e10b1edbeebfd7c353`.
 
 **Next action:** desktop Work/local Windows toolingでCore runtime harnessを非対話実行へ移行し、8-scenario E2Eが可視ウィンドウなしで同一ERROR gateを保って通ることを確認する。
+
+
+### ART-TEMPLATE-013 — Root cause of Soba recolor roughness
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** ROOT CAUSE CONFIRMED; old recolor path INVALID
+
+Investigation stopped the v1–v7 patch-by-patch approach and compared the actual authoritative assets. The registered 256px Soba exemplar is byte-for-pixel equivalent to a Lanczos resize of the accepted 1254×1254 Library reference. The high-resolution reference contains smooth per-face gradients/antialiasing; the 256px derivative already contains thousands of distinct RGB values.
+
+The failed method recolored/thresholded the **already-downsampled 256px final raster**. Small antialias/gradient differences were therefore classified independently and appeared as grainy light/shadow patches. Median/quantization reduced some speckle but retained threshold contours; Gaussian/spatial smoothing reduced speckle by blending across multiple grains, causing the faded oval/center patch. The broad interior mask was spatial, not semantic, so it also could not distinguish grain faces/outlines/gaps/rim robustly.
+
+Conclusion: this is a pipeline defect, not a palette-tuning problem. All v1–v7 dehulled-Soba candidates are invalid. New work must start from the authoritative 1254px source, create semantic high-resolution variable-content layers, apply flat face/region palette changes there, downsample once, and only then composite into the fixed 256px masu. No more iterative 256px recolor/blur fixes.
