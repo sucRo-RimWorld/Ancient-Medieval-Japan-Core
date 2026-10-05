@@ -909,3 +909,23 @@ AMJにおけるリテクスチャの意味と所有を再精査し、各Modが�
 Durable design source: `Docs/Design.md §8.5.1 AMJ共通リテクスチャ方針`, commit `633dbc04e1f89e423b77f970603362d6dc2421e7`.
 
 **Next action:** 各機能のアート作業では、対象資産のAMJ内ownerを先に確認してから前提資産をリテクスチャする。
+
+### TEST-005 — Core + Environment 自動ゲームプレイ評価
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Core gameplay balance / cross-mod testing  
+**Status:** IN PROGRESS — test implementation added; combined RimWorld runtime PASS pending
+
+「Core + EnvironmentだけでAMJ固有の遊びが成立するか」について、機械判定できる部分を手動プレイへ残さず自動化する。
+
+実装済み:
+- Pickle Stage Aへ `Stage A crops preserve distinct gameplay roles` を追加し、短期作・収量・寒冷適応・痩せ地適応・研究ゲートの役割差を関係式として回帰検証する。
+- Stage Aサマリ契約を7シナリオから8シナリオへ更新した。
+- 最新GitHub Stage A validationは commit `4c77664f6a1cb09e1d89349cda0717c2d4413e48` でGreen。
+- Environment側に実マップ土壌 + Core作物の統合Quickstartを追加し、Thin Soilの播種差、地図加重の肥沃度成長倍率、気候勾配を自動評価する。
+
+手動へ残すのは、見た目、UI自然さ、テンポ、煩雑さ、「差が存在する」ことを超えた面白さのみとする。
+
+Durable design source: `Docs/Design.md` section **Core + Environment 自動ゲームプレイ評価方針**, commit `9eace339ba63e7e23d60d4a13c46727229d2be41`.
+
+**Next action:** ローカルRimWorldでCore `run-e2e.bat` の新8/8ゲートと、Environment `run-runtime-tests.bat` のCore+Environment統合プロファイルを実行し、実行時PASS/ERRORゼロを確定する。合格後は数値条件の手動再確認を要求しない。
