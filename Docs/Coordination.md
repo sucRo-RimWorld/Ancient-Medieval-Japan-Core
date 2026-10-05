@@ -787,10 +787,7 @@ The durable rule is `Docs/GoldenPaths/BoxedResourceIconPipeline.md`: boxed-resou
 
 The blocked v1 master was not reused unchanged. A v2 candidate was derived by aligning the empty masu to the accepted filled buckwheat reference's 256×256 frame occupancy, then composing the accepted filling profile into a broader contents envelope rather than clipping contents to the old interior-only diamond.
 
-Persistent review assets:
-- empty v2 candidate: `/AMJ/References/AMJ_Masu_Empty_Master_v2_Candidate.png`
-- representative buckwheat-in-hull candidate: `/AMJ/References/AMJ_BuckwheatInHull_v2_Candidate.png`
-- side-by-side 256px + small-size review: `/AMJ/References/AMJ_Masu_v2_Review.png`
+The superseded v2 review candidates were discarded after the cleaned v2 master became active. They are not retained as reusable references. Only the registered master/masks and the approved exemplar remain authoritative.
 
 The initial v2 review candidate matched the accepted exemplar's overall alpha envelope `[17, 28, 239, 235]` and restored the fuller mound/occupancy, but self-QC found visible roughness from upscaling the 256px empty master. That known defect was corrected proactively rather than being registered. The active v2 master now keeps the accepted exemplar's protected exterior/rim pixels exactly and rebuilds only the editable cavity from the high-resolution empty source. Registered assets are `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`, `Docs/References/AMJ_Masu_EditableMask.png`, `Docs/References/AMJ_Masu_RequiredFill.png`, `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`, and `Docs/References/AMJ_Masu_Template.json`.
 
@@ -828,3 +825,19 @@ Audit confirmed that the user's uploaded approved exemplar is exactly the regist
 The failure was procedural: a manual comparison path mixed locally named intermediate images and, in a later attempt, whole-image generation was used instead of the registered reference/template path. This allowed an incorrect image/color to be presented as the comparison basis even though the registered reference itself was correct.
 
 Permanent fix: `Scripts/Art/boxed_resource_review.py` now builds comparisons only from the manifest's `representative_final` after SHA-256 verification. `Tests/test_boxed_resource_review.py` regression-tests the fail-closed hash check, and CI runs it. Ad-hoc local aliases or regenerated images must never be presented as the registered reference.
+
+
+### ART-TEMPLATE-010 — Discard contaminated boxed-resource intermediates
+
+**Requested by:** author (2026-10-05 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** DONE
+
+All stale/contaminated boxed-resource candidate images created during the broken reference/compositing path were discarded from the persistent Library, including the old Soba in-hull candidate set and the pre-cleanup masu v2 candidate/review images. The local working copies of dehulled-Soba candidates, color-fix candidates, comparison sheets, generated whole-icon retries, mask previews, and superseded v2 candidate assets were also deleted.
+
+No contaminated dehulled-Soba candidate was committed to the repository. The only authoritative filled Soba reference remains:
+- Library: `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png`
+- SHA-256: `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`
+- normalized repository copy: `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`
+
+Future work must restart the dehulled-Soba image from the registered reference/template path; discarded candidates must not be recovered or reused.
