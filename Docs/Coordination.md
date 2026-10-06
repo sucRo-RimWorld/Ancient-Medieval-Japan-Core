@@ -1189,3 +1189,5 @@ Integrated conclusions:
 `Docs/References/AMJ_Masu_Template.json` now records `new_resource_production_status = blocked_pending_occlusion_validation`. `Scripts/Art/fixed_template.py` refuses generic new-resource composition while blocked, and `Tests/test_masu_template.py` locks that fail-closed state. Existing approved in-hull Soba art and its historical identity evidence remain unchanged.
 
 No new edible-Soba candidate is accepted by this change.
+
+**CI follow-up:** the first fail-closed integration exposed two regressions inherited from the earlier v3 tooling rewrite rather than from the occlusion policy itself: the generic fixed-template validator had lost its historical no-required-fill default behavior, and the public `validate()` / output-overwrite guard had been dropped. These were restored in `cdf64ce4e93dd292ac5f8575448efd9c425ace55`, `345b3ce7756f8fa7221afa203ff1c145f8359324`, and `d1172f4f362f7b3d6c6985d251248bf276f5de43`. GitHub Actions Stage A validation run #225 completed successfully. The unsafe v3 new-resource compositor remains blocked; the CI success validates the fail-closed/tooling state, not a new image-production contract.
