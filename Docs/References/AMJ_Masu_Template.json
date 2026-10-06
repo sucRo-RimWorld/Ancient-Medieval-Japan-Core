@@ -2,8 +2,8 @@
   "version": 1,
   "family": "amj-boxed-resource-masu",
   "template_revision": "v4-contact-study",
-  "production_status": "blocked_pending_occlusion_validation",
-  "approval": "v2 master and in-hull exemplar approved; v4 region contract is registered for structural studies only, visual activation pending",
+  "production_status": "archived_diagnostic_only",
+  "approval": "v2 master and in-hull exemplar approved; v4 region contract retained for diagnostic/automation research only. Active new-resource production uses contents-only source generation plus manual composition per Docs/GoldenPaths/BoxedResourceIconPipeline.md.",
   "size": [
     256,
     256
@@ -99,7 +99,7 @@
     "required_rgba_diff_pixels": 0,
     "note": "Identity validation layer: exact approved variable RGBA inside the registered editable mask; transparent outside. Historical two-layer diagnostic only; not the production compositor for new resources."
   },
-  "new_resource_production_status": "blocked_pending_occlusion_validation",
+  "new_resource_production_status": "manual_composition_pipeline_active",
   "v3_split_status": "superseded_due_visible_split_damage",
   "contact_region_policy": "occludable; do not blindly restore upper/contact wood after contents",
   "region_contract": {
@@ -123,11 +123,11 @@
     }
   },
   "contact_patch_min_defined_coverage": 0.98,
-  "variable_source_contract": "full rendered context canvas based on intact master scaffold; edit contents plus contact/extension only; object-only transparent layer is invalid",
+  "variable_source_contract": "diagnostic v4 contract only: full rendered context canvas based on intact master scaffold; not the active contents-only production source format",
   "activation_requirements": [
-    "one unchanged region contract for low grains, large pieces, and strong over-rim overlap",
-    "structural gates pass for all three",
-    "natural contacts and no cutoffs/seams at 256px and about 64px",
-    "record visual acceptance separately; synthetic tests and identity proof do not activate production"
-  ]
+    "Only relevant if automatic occlusion/compositing research is intentionally resumed.",
+    "Do not treat structural v4 PASS as a requirement for the active manual-composition production workflow."
+  ],
+  "operational_role": "diagnostic_only",
+  "active_production_pipeline": "../GoldenPaths/BoxedResourceIconPipeline.md"
 }
