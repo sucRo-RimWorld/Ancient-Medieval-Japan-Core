@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from PIL import Image, ImageDraw
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "Docs/References/AMJ_Masu_Template.json"
@@ -18,75 +18,52 @@ spec.loader.exec_module(module)
 
 
 class MasuTemplateTest(unittest.TestCase):
-    def test_layered_masu_reconstructs_master_and_occludes_contents(self):
+    def test_new_resource_production_is_fail_closed_after_occlusion_audit(self):
         data = json.loads(MANIFEST.read_text(encoding="utf-8"))
-        self.assertEqual(data["template_revision"], "v3-layered")
-        self.assertEqual(data["master_revision"], "v2")
-        self.assertEqual(data["layer_model"], "rear_contents_front")
-        self.assertEqual(data["content_clipping"], "none")
 
-        master, rear, front, front_mask = module.build_three_layer_stack(MANIFEST)
+        self.assertEqual(
+            data["new_resource_production_status"],
+            "blocked_pending_occlusion_validation",
+        )
+        self.assertEqual(
+            data["v3_split_status"],
+            "superseded_due_visible_split_damage",
+        )
+        self.assertEqual(
+            data["next_layer_model"],
+            "intact_master_base__contents_contact__hard_fixed_foreground",
+        )
+        self.assertIn("occludable", data["contact_region_policy"])
+
+        master, mask = module.load_template(MANIFEST)
         self.assertEqual(master.size, (256, 256))
 
-        empty = Image.alpha_composite(rear, front)
-        differing = sum(
-            a != b
-            for a, b in zip(
-                empty.get_flattened_data(), master.get_flattened_data()
-            )
-        )
-        self.assertEqual(differing, 0)
-
-        # Three-layer scaffold is transparent object-only contents.
-        with tempfile.TemporaryDirectory() as tmp:
-            scaffold_path = Path(tmp) / "contents.png"
-            module.scaffold(MANIFEST, scaffold_path)
-            with Image.open(scaffold_path) as image:
-                contents = image.convert("RGBA")
-            self.assertIsNone(contents.getchannel("A").getbbox())
-
-        # Synthetic contents intentionally cross the front rim.  They are not
-        # pre-clipped; the fixed foreground must occlude them exactly.
-        contents = Image.new("RGBA", master.size, (0, 0, 0, 0))
-        draw = ImageDraw.Draw(contents)
-        draw.polygon(
-            [(128, 52), (214, 104), (128, 170), (42, 104)],
-            fill=(190, 165, 120, 255),
-        )
-
-        with tempfile.TemporaryDirectory() as tmp:
-            contents_path = Path(tmp) / "contents.png"
-            output_path = Path(tmp) / "final.png"
-            contents.save(contents_path)
-            module.compose(MANIFEST, contents_path, output_path)
-            with Image.open(output_path) as image:
-                result = image.convert("RGBA")
-
-        front_diffs = sum(
-            m == 255 and a != b
-            for a, b, m in zip(
-                result.get_flattened_data(),
-                master.get_flattened_data(),
-                front_mask.get_flattened_data(),
-            )
-        )
-        self.assertEqual(front_diffs, 0)
-        self.assertNotEqual(result.getpixel((128, 110)), master.getpixel((128, 110)))
-
-        # Blank contents must not pass the required-fill gate.
-        blank = Image.new("RGBA", master.size, (0, 0, 0, 0))
-        middle = Image.alpha_composite(rear, blank)
-        blank_final = Image.composite(front, middle, front_mask)
-        with self.assertRaisesRegex(ValueError, "under-fills"):
-            module.validate_three_layer_final(MANIFEST, blank_final)
-
-        # Historical editable mask remains registered but is not the compositor.
-        editable_path = MANIFEST.parent / data["editable_mask"]["path"]
+        # Existing approved identity evidence remains registered and hashed.
+        legacy = data["legacy_identity_exemplar"]
+        legacy_path = MANIFEST.parent / legacy["variable_layer_path"]
+        expected_path = MANIFEST.parent / legacy["expected_final_path"]
         self.assertEqual(
-            hashlib.sha256(editable_path.read_bytes()).hexdigest(),
-            data["editable_mask"]["sha256"],
+            hashlib.sha256(legacy_path.read_bytes()).hexdigest(),
+            legacy["variable_layer_sha256"],
         )
-        self.assertIn("not used to clip", data["editable_mask_role"])
+        self.assertEqual(
+            hashlib.sha256(expected_path.read_bytes()).hexdigest(),
+            legacy["expected_final_sha256"],
+        )
+
+        # The old generic three-layer path may remain as historical code, but it
+        # cannot produce a new resource while the occlusion contract is blocked.
+        contents = Image.new("RGBA", master.size, (0, 0, 0, 0))
+        for y in range(70, 145):
+            for x in range(55, 200):
+                contents.putpixel((x, y), (180, 150, 105, 255))
+
+        with tempfile.TemporaryDirectory() as tmp:
+            source = Path(tmp) / "contents.png"
+            output = Path(tmp) / "final.png"
+            contents.save(source)
+            with self.assertRaisesRegex(ValueError, "production is blocked"):
+                module.compose(MANIFEST, source, output)
 
 
 if __name__ == "__main__":
