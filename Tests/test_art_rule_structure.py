@@ -50,6 +50,8 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertEqual(text.count("# Texture Asset Pipeline — Golden Path"), 1)
         self.assertIn("Interpret the user's image intent semantically", text)
         self.assertIn("Shared/fixed parts are never regenerated", text)
+        self.assertIn("material stylistic redrawing", text)
+        self.assertNotIn("only when a genuinely new silhouette", text)
         for forbidden in (
             "v4-contact-study",
             "blocked_pending_occlusion_validation",
