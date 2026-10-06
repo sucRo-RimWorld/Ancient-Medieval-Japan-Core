@@ -64,7 +64,7 @@ Use whichever label best fits the task:
 
 **Requested by:** author (2026-10-06 JST; rule cleanup after repeated generation/style failures)  
 **Owner:** AMJ shared art policy / Core art  
-**Status:** DONE
+**Status:** DONE — follow-up audit and regression guards green
 
 Image rules were consolidated so routine work no longer accumulates failure-specific instructions in every entry document.
 
@@ -87,6 +87,8 @@ Source-of-truth commits:
 - Workshop style/workflow separation: `d193c832a05d72d41110eb6798342191b2337e0e`, obsolete-style cleanup `15ec441bb8d228598b1a7b1ece772827ed71caeb`, inheritance clarification `89410d598c43318baad233ea1bc5d7dcde1e9e50`;
 - boxed-resource contents-first workflow: `ce44ef823c1425def0c8fa5e4db80ec919e49e4b`, current-state cleanup `b0b9a230a5f095617fe774f65c01bf4769301335`;
 - v4 manifest retained fail-closed as diagnostic-only metadata: `1252481382974a39e5a4928a1ffa5b52e1752e02`.
+
+**Follow-up audit (2026-10-06 JST):** Removed the remaining boxed-resource history from shared ArtStyle, removed the brittle exact-keyword ImageGen gate, removed mandatory pre-generation approval loops, scoped Core-only sprite budgets away from Workshop presentation art, and made the current manual masu workflow explicitly outside the active fixed-template zero-difference guarantee until a stable protected region exists. Archived masu v4 automation is now manual-dispatch only and no longer blocks Stage A. Added `Tests/test_art_rule_structure.py`; Stage A also runs the Workshop fixed-template regression. Stage A at `1ff8be70debccbb9da395997eae5ae51e9a49609` passed all art-rule, Workshop-template, fixed-template, boxed-reference, PNG, Stage A, and Windows PowerShell gates.
 
 
 ### ART-TEMPLATE-019 — MO comparison corrections implemented as contact study
