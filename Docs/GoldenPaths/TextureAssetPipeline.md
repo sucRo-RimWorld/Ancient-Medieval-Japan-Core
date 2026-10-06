@@ -1,4 +1,8 @@
-## Wording and ImageGen permission
+# Texture Asset Pipeline — Golden Path
+
+This document owns the general AMJ texture production path. Visual style is owned by `Docs/ArtStyle.md`; family-specific geometry/compositing belongs in the owning family Golden Path.
+
+## 1. Wording and ImageGen permission
 
 For AMJ production art, distinguish **作成/制作** from **生成**.
 
@@ -13,7 +17,7 @@ For AMJ production art, distinguish **作成/制作** from **生成**.
 
 This document records the reusable production path for AMJ texture work after the successful boxed-resource / masu iteration.
 
-## 1. Preserve accepted sources
+## 2. Preserve accepted sources
 
 Once the author accepts an image, treat it as a master source.
 
@@ -28,7 +32,7 @@ When an accepted source exists at higher resolution than the in-game output, per
 
 For fixed-template contents, build semantic variable layers at high resolution, then downsample the completed variable layer once and composite it into the fixed production-resolution master.
 
-## 2. New-image generation
+## 3. New-image generation
 
 Use image generation only when a genuinely new silhouette or subject-specific drawing is required.
 
@@ -38,7 +42,7 @@ Use image generation only when a genuinely new silhouette or subject-specific dr
 4. Ask for author acceptance before treating the output as a master.
 5. After acceptance, preserve that exact source for later derivatives.
 
-## 3. Asset-family handoff
+## 4. Asset-family handoff
 
 This document owns the **general texture production path**, not family geometry or compositing contracts.
 
@@ -50,7 +54,7 @@ Use the owning family document for additional requirements:
 
 Do not copy family-specific masks, occlusion regions, historical failure notes, or layout contracts into this general pipeline.
 
-## 4. PNG integrity
+## 5. PNG integrity
 
 Viewer-open success, a PNG signature, or correct IHDR dimensions are not sufficient.
 
@@ -58,6 +62,6 @@ All production PNGs must pass `Tests/validate_png_assets.py`, which checks compl
 
 For automated Git/GitHub binary writes, validate the bytes that are actually committed/checked out. Prefer an exact previously validated blob when recovering accepted art from history.
 
-## 5. Fixed reused components
+## 6. Fixed reused components
 
 When an image intentionally reuses a visible component pixel-exactly, follow `Docs/GoldenPaths/FixedImageTemplates.md`. Otherwise do not impose fixed-template machinery on a merely stylistically similar asset.
