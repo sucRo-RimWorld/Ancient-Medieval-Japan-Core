@@ -30,6 +30,12 @@ jobs:
       - name: Regression-test masu contents normalization
         run: python Tests/test_normalize_masu_contents.py
 
+      - name: Regression-test generated candidate QA
+        run: python Tests/test_generated_asset_qa.py
+
+      - name: Regression-test boxed candidate preparation
+        run: python Tests/test_prepare_boxed_resource_candidate.py
+
       - name: Regression-test PNG validator
         run: python Tests/test_validate_png_assets.py
 
