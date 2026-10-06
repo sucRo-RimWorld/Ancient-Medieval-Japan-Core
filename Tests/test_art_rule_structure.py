@@ -39,6 +39,7 @@ class ArtRuleStructureTest(unittest.TestCase):
             "blocked_pending_occlusion_validation",
             "AMJ_Masu_Template",
             "AMJ_WorkshopCover_CommonBase",
+            "Boxed-resource research",
         ):
             self.assertNotIn(forbidden, text)
 
@@ -64,6 +65,14 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertIn("Docs/GoldenPaths/TextureAssetPipeline.md", text)
         self.assertNotIn("HardFixed", text)
         self.assertNotIn("ContactZone", text)
+
+    def test_fixed_template_guarantee_requires_stable_region(self):
+        policy = read("Docs/GoldenPaths/FixedImageTemplates.md")
+        boxed = read("Docs/GoldenPaths/BoxedResourceIconPipeline.md")
+        self.assertIn("安定した保護範囲", policy)
+        self.assertIn("固定テンプレート保証を有効化しない", policy)
+        self.assertIn("does **not** claim the active fixed-template zero-difference guarantee", boxed)
+        self.assertIn("diagnostic only", boxed)
 
     def test_workshop_pipeline_has_no_mandatory_preapproval_loop(self):
         text = read("Docs/GoldenPaths/WorkshopCoverPipeline.md")
