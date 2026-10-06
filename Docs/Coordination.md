@@ -1357,3 +1357,46 @@ push and canceled superseded runs. Core's standard preparation gates source and
 staged output; Environment's candidate builder gates the actual subscriber files.
 
 **Next action:** apply current filters to the actual upload root before the next\nauthor-manual Workshop update; separately audit the downloaded package.\n
+
+### ART-SOURCE-ARCHIVE-023 — Recover pre-resize accepted image masters (2026-10-07 JST)
+
+**Requested by:** author  
+**Owner:** Core art / source-archive recovery  
+**Status:** IN PROGRESS — handoff restored after the previous workstream stopped without an explicit remaining-work record
+
+#### Done
+
+- The authoritative development-only source archive exists under `Art/Sources/`; `Art/Sources/README.md` defines the immutable-master rule, mirrored-path convention, and the prohibition on promoting a production-resolution derivative to source status.
+- The following Core sources are already repository-preserved:
+  - `Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.png`
+  - `Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.xcf`
+  - `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png`
+  - `Art/Sources/Workshop/AMJ_WorkshopCover_Template.svg`
+- Workshop packaging rules already exclude the whole root `Art/` tree, so these development masters are not subscriber payload.
+- Environment's separate accepted-tree source archive is owned by the Environment repository and is not part of this Core recovery item.
+
+#### Remaining
+
+- The Core archive is not complete. Audit all previously accepted Core image assets for an exact pre-resize / authoring source that still survives outside `Art/Sources/`.
+- Priority audit families include the currently shipped Soba/Buckwheat and Millet assets, including:
+  - `Textures/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
+  - `Textures/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
+  - `Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat/`
+  - `Textures/Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/`
+  - `Textures/Things/Item/Resource/AMJC_Millet/RawMillet/`
+  - `Textures/Things/Item/Resource/AMJC_Millet/MilletInHull/`
+  - `Textures/Things/Item/Resource/AMJC_Millet/Millet/`
+- This list is an audit queue, not a claim that an original survives for every asset. Exact source identity/provenance must be established before migration.
+- Do **not** copy a 256x256 `Textures/` file into `Art/Sources/` merely to fill a gap, and do **not** regenerate a missing historical master and label it as the original.
+- Where only a production derivative survives, record that limitation explicitly rather than inventing a source.
+
+#### Next action
+
+1. Enumerate the accepted Core production-image inventory and pair each item with any known historical/persistent source candidate.
+2. Verify candidate identity using available provenance, dimensions, hashes, retained approval records, and/or deterministic derivation evidence.
+3. Commit each proven exact pre-resize/editor source under the mirrored `Art/Sources/` path without altering its bytes.
+4. Update `Art/Sources/README.md` so its inventory matches what is actually preserved.
+5. For accepted assets whose exact source cannot be recovered, leave an explicit missing-source record; do not block unrelated work by silently keeping the task open without a handoff.
+
+This item remains open until the Core accepted-image inventory has been audited and every recoverable exact original has either been archived or explicitly recorded as unavailable.
+
