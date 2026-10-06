@@ -172,45 +172,12 @@ These are starting points, not immutable final compositions. Each cover must sti
 | Events | weathered notices, supply bundles, damaged field, road marker, abandoned goods, or other event consequences rather than characters |
 | Backgrounds | tools, clothing bundles, work objects, travel pack, farming / craft / hunting objects representing life histories without portraits |
 
-## 11. Required workflow and pre-generation gate
+## 11. Production handoff
 
-For every new AMJ Workshop cover:
+This document owns **Workshop-cover visual style only**. Retrieval of canonical rasters, author-approval stage, fixed pixels, generation scope, deterministic composition, and validation are owned by `Docs/GoldenPaths/WorkshopCoverPipeline.md`.
 
-1. **Read this document, retrieve and open the current approved cover image itself, and inspect the current reference schematic before proposing or generating anything.** The schematic alone is not sufficient. The persistent cross-chat visual reference is stored in the user's Library at `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`.
-2. **Do not generate immediately.** First propose the composition and design in words.
-3. The proposal must state:
-   - the 2–5 main right-side motifs;
-   - their approximate placement;
-   - the intended silhouette hierarchy;
-   - how the cover differs from adjacent AMJ addons;
-   - any historically specific object that might need verification.
-4. In the same proposal, explicitly state which approved cover image was visually checked, and that the **common-left block is unchanged** from that image: `Ancient &` / `Medieval` / `Japan` in the locked three-line layout, with `Japan` in muted reddish-brown and only the addon name changed.
-5. Wait for author approval or revision.
-6. Before calling image generation, perform this preflight:
-   - an **actual approved Environment/Core cover image has been opened and visually inspected in the current work context**; first look up `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg` in the Library; if no approved image can be accessed, stop and obtain the canonical reference before generating;
-   - the approved image, not memory or the text prompt, is the visual source of truth for the shared background, title placement, typography hierarchy, ornament placement, and left/right balance;
-   - common-left wording and three-line breaks are present in the prompt;
-   - `Japan` is the only title accent;
-   - addon name is correct;
-   - old `中世日本OH`, A/M/J emphasis, dark panel, map, and red badge are explicitly excluded;
-   - approved right-side motifs are present;
-   - no people;
-   - flat / low-saturation / limited-color rules are present.
-7. Generate only after the preflight passes.
-8. **Generate only the variable right-side motifs; never generate the final whole cover.** Follow `Docs/GoldenPaths/WorkshopCoverPipeline.md`. Retrieve the canonical Library files `/AMJ/References/AMJ_WorkshopCover_CommonBase.png` and `/AMJ/References/AMJ_WorkshopCover_VariableMask.png`, then compose with `Scripts/build_workshop_cover.py`. The compositor renders the addon label in its fixed slot and forcibly restores every protected common pixel from the master.
-9. **Addon-specific instructions are allowed to modify the right side and addon name only.** They must not override or omit the common-left block.
-10. Inspect the deterministically composed final image side-by-side against the approved reference image in this order:
-   1. common-left text and layout;
-   2. addon name;
-   3. right-side composition;
-   4. flatness, saturation, and detail level.
-11. Reject any final output with a protected-pixel difference. Repair the composite using the unchanged master; do not regenerate the common region. Inspect the variable motifs separately for visual acceptance.
-12. If the image becomes scenic, realistic, too saturated, too detailed, or stylistically inconsistent, return to the approved composition and regenerate with stronger simplification.
-13. Once a cover is accepted, preserve that accepted image as the reference for that addon. Do not casually regenerate it.
+Before generating variable artwork, visually inspect the registered approved cover reference required by that pipeline. Do not reconstruct the shared cover format from this text alone.
 
-### Cross-chat rule
-
-Do not rely on another chat remembering an accepted cover. A new chat must **retrieve and visually inspect the approved reference before generation**, then retrieve the canonical common base and editable mask from the Library and read this document plus `Docs/GoldenPaths/WorkshopCoverPipeline.md`. Canonical Library paths are `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`, `/AMJ/References/AMJ_WorkshopCover_CommonBase.png`, and `/AMJ/References/AMJ_WorkshopCover_VariableMask.png`. If any required raster cannot be accessed, production is blocked; do not reconstruct it from memory, text, SVG, or ImageGen.
 ## 12. Image-generation prompt baseline — variable artwork only
 
 The image model is **not** responsible for the final cover format. It creates only the addon-specific right-side artwork that will later be composited onto the fixed common raster.
@@ -228,7 +195,3 @@ See:
 `Docs/References/AMJ_WorkshopCover_Template.svg`
 
 Pixel-level registration is recorded in `Docs/References/AMJ_WorkshopCover_Template.json` and `Docs/References/AMJ_WorkshopCover_Manifest.md`. The SVG is only a human-readable schematic. The actual fixed format comes from the Library common-base PNG plus editable-mask PNG and the deterministic compositor documented in `Docs/GoldenPaths/WorkshopCoverPipeline.md`.
-
-## Pixel-exact production gate
-
-`Docs/GoldenPaths/FixedImageTemplates.md` provides the AMJ-wide rule; `Docs/GoldenPaths/WorkshopCoverPipeline.md` is the cover-specific implementation. Final production must use the registered Library master/mask and `Scripts/build_workshop_cover.py`, then pass `Scripts/validate_workshop_cover.py`. Direct whole-cover generation or reference-image editing is not a valid final-production path.
