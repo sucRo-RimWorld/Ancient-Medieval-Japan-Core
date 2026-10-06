@@ -460,6 +460,11 @@ AMJの各Addon・姉妹Modは、詳細設計へ入る前に**同一目的・部�
 - **Medieval Kingdoms: Shogunate**（https://steamcommunity.com/sharedfiles/filedetails/?id=3632552850）
   - 中世日本Factionの直接比較対象。氏族・兵種・文化・宗教側の先行実装として調査する。
   - AMJ Factionsの村落共同体・在地勢力・寺社・交易等の社会構成や、AMJ Eventsの一般社会イベントまで同一責務ではないため、現段階では代替確定とせず任意互換・実装参考候補とする。
+- **Custom Base Framework（CBF）**（https://steamcommunity.com/sharedfiles/filedetails/?id=3813689040）
+  - **AMJ Factions / 日本式NPC集落の将来基盤候補**として記録する（2026-10-06）。Factions・集落の詳細設計時に最優先で再評価する候補であり、現段階の採用・必須依存・互換対応済みを意味しない。
+  - Workshop説明では、再利用可能な建物pieceと集落planから地形に合わせたNPC拠点を生成し、道路・畑・家畜囲いを配置する。ゲーム内エディタから建物・集落・住民等のXMLをModへ出力でき、MO向けの村・市場町・要塞等も同梱する。RimWorld 1.6 / Harmonyが必要で、MO等の追加コンテンツは任意とされる。
+  - 生成エンジンをCBFへ任せ、AMJは日本式の建物・集落構成・住民・生産・防衛・Lootを定義する分担を比較する。既存の西欧系集落をそのまま日本化したり、CBF内部コードを複製したりする前提にはしない。
+  - 再評価条件・依存境界は下記「AMJ Factions / 派閥Mod」の集落生成候補を正本とする。公開直後の候補であり、現行API・実ソース・利用条件・MO併用の実行時挙動は未監査。
 - **Vanilla Factions Expanded - Medieval 2**（https://steamcommunity.com/sharedfiles/filedetails/?id=3444347874）
   - AMJの必須依存や総合中世コンテンツの取り込み対象ではなく、**AMJ Eventsの主要な先行研究元**として扱う。
   - 使えるイベントのゲームループだけを抽出し、日本史・AMJのFaction役割・生活者視点へ再設計する。西欧固有の城・紋章・Faction設定・専用経済をそのまま移植しない。
@@ -501,7 +506,7 @@ AMJの各Addon・姉妹Modは、詳細設計へ入る前に**同一目的・部�
 | Japanese Environment | **独自姉妹Mod候補維持** | 日本的な地形・気候条件を農業・保存判断へ接続する |
 | Hunting & Gathering | **軽量独自候補維持・きのこは互換優先候補** | 新Jobを増やさず、日本の山裾・谷・森林の野生資源を通常採集へ載せる。More Mushroomsで満たせるきのこは重複実装を避け、MO併用確認後に任意互換を検討する |
 | Backgrounds | **小規模独自候補維持** | generic medieval / Edo系では埋まらないpre-Edoの一般生活者を扱う |
-| Factions | **候補維持・後順位** | Shogunate等の氏族Factionを尊重し、村落・在地勢力・寺社・アウトロー・交易等の不足だけ補う |
+| Factions | **候補維持・後順位** | Shogunate等の氏族Factionを尊重し、村落・在地勢力・寺社・アウトロー・交易等の不足だけ補う。日本式NPC集落生成はCBFを将来基盤候補として再評価する |
 | Events | **独自実装価値が高い** | 流民、落ち武者、徴発、水争い、戦乱の余波等の一般社会イベントが主題に直結する |
 | Japanese Iron Resources | **独自候補維持** | MO鉄資源へ地域差・砂鉄という供給選択を追加する |
 | Japanese Ironworking | **保留** | 高度鍛冶に独立ゲームループが成立しない限りMO炉 + Iron Resourcesで足りる |
@@ -682,6 +687,25 @@ AMJ Factions側の候補:
 AMJ Factionsの役割は「Eventsを動かすための必須ライブラリ」ではなく、**外部和風Faction Modを導入していなくてもAMJ時代の社会構成を提供する標準Factionパック**とする。
 
 ただし、**Medieval Kingdoms: Shogunate** や **T's Samurai Faction** 等の既存1.6和風Faction Modがすでに氏族・武装勢力・侍社会の大部分を提供するため、AMJ Factionsは後順位とする。詳細設計へ進むのは、村落共同体・在地社会・寺社勢力・アウトロー・行商等について既存Modでは埋まらない役割がまとまって確認できた場合に限る。
+
+##### 日本式NPC集落生成の将来候補 — Custom Base Framework
+
+**位置づけ:** CBF（Workshop `3813689040`）を、Factions / 集落の詳細設計開始時に最優先で再評価する外部Framework候補とする。集落専用の配布単位（Settlements等）を分けるかは未決定であり、この記録だけで新Addonの作成やFactionsの着手・優先度引き上げを決めない。
+
+**分担案:**
+- CBF: 地形に応じた建物pieceの配置、地区・道路・畑・家畜囲い等の集落生成と編集・XML出力。
+- AMJ: 新石器相当～戦国末期に合う日本式建物piece、集落plan、素材・地表、住民と兵種、生産・防衛・Loot。既存MO / 和風Modの建築・家具を優先し、大型建築Addonを新設しない既存方針を維持する。
+- 既存和風Factionとの接続は、氏族・兵種・Factionを重複実装せず、対象Factionへの集落plan・役割互換を先に検討する。
+
+**候補例:** 小規模農村・山村、街道沿いの集落・市場、寺社中心の集落、在地勢力の館、城柵・砦。城下町・宿泊拠点等は必要になった段階で対象時期・生活層を個別監査し、江戸期の宿場制度や西欧の教会・要塞都市をそのまま取り込まない。これらは制作候補であり実装範囲の確定ではない。
+
+**採用前の再評価:**
+1. 現行版の安定性・保守状況、packageId、Def/API、XML出力形式、依存Modとコード・同梱データ・画像の利用条件を確認する。過去の紹介文だけを転載・改変許可の根拠にしない。
+2. MO、採用する和風建築 / Faction、AMJ Environmentの地形・バイオーム、他の拠点 / Map生成Modとの競合と生成所有権を監査する。
+3. Factionの実際の技術水準とplan選択、産業以降の設備・装備の混入、守備兵の挙動・規模・負荷、既存saveへの追加条件を確認する。
+4. 小規模農村から試作し、Def参照・生成完了・建物配置・進入経路・住民 / Loot・runtime ERRORを可能な範囲で自動検証する。見た目・遊び心地は必要最小限の手動確認とする。
+
+採用する場合も、CBFへの依存は集落機能を所有するModに限定する。Core / Environmentへ必須依存を追加せず、AMJ EventsのFaction役割ベース・疎結合方針を維持する。利用価値と競合解決が確認できるまでは、対応済み・推奨Modや現在の公開条件として扱わない。
 
 #### AMJ Events / 生活・社会イベントMod
 
@@ -1863,6 +1887,8 @@ Hilliness補正についてはバイオームとは独立したワールド側�
 ### 評価待ちの互換候補
 
 - **More Mushrooms**（Workshop `3813323629`）— きのこの重複実装を避けるための任意互換・推奨併用候補。MO併用の実Def・実行時監査後に採用と優先度を決める。現時点では対応済み・必須依存として扱わない。
+
+- **Custom Base Framework（CBF）**（Workshop `3813689040`）— 将来のFactions / 日本式NPC集落生成基盤候補。詳細設計開始時に現行版・MO / 地形 / 外部Faction互換と利用条件を再評価する。採用・依存範囲・対応優先度は未確定であり、Core / Environmentの必須依存にはしない。
 
 ### Faction / Background系の互換方針
 

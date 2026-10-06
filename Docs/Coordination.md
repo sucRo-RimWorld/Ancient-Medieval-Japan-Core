@@ -60,6 +60,19 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### COMPAT-CBF-001 — Custom Base Framework future settlement candidate
+
+**Requested by:** author (2026-10-06 JST)  
+**Owner:** Content design / future Factions and settlement generation  
+**Status:** DONE (design recording only; adoption and compatibility remain unverified)
+
+Recorded Custom Base Framework (Workshop `3813689040`) in `Docs/Design.md`: prior-mod audit, Factions conclusion, Japanese NPC settlement framework candidate, and pending compatibility candidates. The source-of-truth design keeps Factions at its existing later priority and schedules CBF reassessment when settlement design begins.
+
+Potential division: CBF owns procedural assembly / editor / XML export; AMJ owns Japanese building pieces, settlement plans and content. No dependency, implementation, supported-mod claim, new Addon commitment, or runtime PASS is introduced.
+
+**Next action:** when Factions / settlement design resumes, audit current API / package / permissions and MO / terrain / faction-generation coexistence, then prototype a small rural settlement using the existing automated runtime gates.
+
+
 ### ART-RULES-021 — image-rule consolidation and contents-first masu workflow
 
 **Requested by:** author (2026-10-06 JST; rule cleanup after repeated generation/style failures)  
