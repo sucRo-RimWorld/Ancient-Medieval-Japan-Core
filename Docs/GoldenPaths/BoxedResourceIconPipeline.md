@@ -56,17 +56,27 @@ The source layer must:
 
 The raw generation target is a **source layer**, not a placement-ready icon. Do not ask ImageGen to solve the final rim occlusion, contact edge, or exact masu projection.
 
-## Deterministic perspective normalization
+## Automated candidate preparation
 
-After the raw contents source passes the subject/style checks, normalize its projection before presenting it as a masu-placement candidate:
+Do not manually perform first-pass generation inspection. Run the family preparation entry point:
 
 ```bash
-python Scripts/Art/normalize_masu_contents.py \
+python Scripts/Art/prepare_boxed_resource_candidate.py \
   Work/Contents_Source.png \
-  Work/Contents_Projected.png
+  --output-dir Work/BoxedCandidate
 ```
 
-The normalizer:
+It automatically:
+
+1. runs `Scripts/Art/generated_asset_qa.py` with `Docs/References/AMJ_BoxedResource_GenerationQA.json`;
+2. rejects excessive low-alpha residue, excessive game-size color complexity, weak outer contour, overly dark/heavy internal grain lines, and line-hierarchy failures before projection;
+3. calls `Scripts/Art/normalize_masu_contents.py`;
+4. verifies the projected PNG still has usable transparency and no excessive low-alpha residue;
+5. writes JSON reports plus `review-sheet.png` containing raw contents, projected contents, and an enlarged 64 px check.
+
+The QA policy is calibrated in part against the author-selected line-hierarchy reference stored at Library `/AMJ/References/AMJ_BoxedResource_LineHierarchy_Rice_Test.png` (SHA-256 `8e808c75763e8bcd63e9826a4224044dafb4f5d8c786b28ee325641b3e229e81`). That image is a **line-hierarchy/information-density calibration reference only**; it is not an approved production rice icon and not a perspective reference.
+
+The perspective normalizer:
 
 - zeros low-alpha pixels including hidden RGB so generated dark glow/background residue cannot turn into a resampling halo;
 - crops to the actual visible contents;
@@ -78,7 +88,9 @@ The default projection is a **contents-plane normalization guide**, not a cavity
 
 ## Pre-presentation candidate gate
 
-Review the raw source for subject/style and the **normalized output** for projection before showing it as a usable candidate. Reject the candidate when any of the following is true:
+After automated mechanical preparation passes, the agent performs the remaining **automatic semantic visual QA** against the actually viewed references. The author is not the first-pass checker.
+
+Reject internally when any of the following is true:
 
 - the subject does not read as the requested material at game-like size;
 - another reference material's geometry has leaked into it (for example, rice becoming triangular/faceted like buckwheat or stone);
@@ -91,7 +103,11 @@ Review the raw source for subject/style and the **normalized output** for projec
 - the generated layer contains any wood, container rim, box, background, UI, text, or decorative shadow;
 - the source or normalized output is not usable as a transparent contents-only layer.
 
-When a candidate fails this gate, do not repair the failure by adding more ad-hoc permanent rules. First determine whether the failure comes from a missing/ambiguous reference role, a wrong subject description, the projection normalization, or a capability limit. Only durable causes belong in this Golden Path.
+When a candidate fails this gate, regenerate automatically from the same approved reference set, up to three attempts total. Do not show rejected attempts as ordinary candidates. If the same failure persists through all attempts, stop and report the recurring failure class/capability limit.
+
+Do not repair failures by adding more ad-hoc permanent rules. First determine whether the failure comes from a missing/ambiguous reference role, a wrong subject description, the projection normalization, or a capability limit. Only durable causes belong in this Golden Path.
+
+Only after mechanical QA, deterministic projection, agent semantic QA, and the generated review sheet all pass is the candidate shown to the author for the **single remaining human gate: final visual acceptance**.
 
 ## Manual composition
 
@@ -100,7 +116,7 @@ The author/compositor places and adjusts the contents against the canonical masu
 Typical order:
 
 1. canonical empty masu as the base;
-2. normalized contents from `normalize_masu_contents.py`;
+2. projected contents from `prepare_boxed_resource_candidate.py`;
 3. author-controlled front/upper container masking or overlay where needed.
 
 Position, scale, local erasing/masking, and front-edge overlap are manual visual decisions. A small manual perspective correction is allowed when required by the actual content/contact, but the routine base projection should come from the deterministic normalizer rather than asking ImageGen to rediscover it. Do not encode a new universal cavity clipping mask merely to avoid the final manual contact step.
