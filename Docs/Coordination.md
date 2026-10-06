@@ -1119,3 +1119,18 @@ The source was deterministically normalized to a 256×256 transparent production
 All three stack slots intentionally reuse the same approved silhouette for now, matching the current buckwheat-in-hull handling. `AMJC_RawBuckwheat` no longer reuses the millet sheaf path. Stage A validation now locks the dedicated texPath plus all three 256×256 PNG slots.
 
 The edible `AMJC_Buckwheat` grain remains on its temporary millet-grain path; this commit does not create or infer that separate asset.
+
+### DEV-TOOLS-001 — DevKit / Rim Control を開発専用補助ツールとして採用
+
+**Requested by:** author (2026-10-06 JST)  
+**Owner:** Testing/tooling  
+**Status:** DONE (policy documentation)
+
+AMJ共通の対話型開発補助ツールとして、DevKit — Better Dev Mode Menu (Workshop `3814373104`) と Rim Control (Workshop `3774299554`) を採用した。
+
+DevKitはDef検索・スポーン・Debug Action等を用いた目視確認の準備短縮、Rim Controlはゲーム中の数値・visual・placement等の一時変更によるプロトタイピングに使用する。どちらも自動テストの代替や出荷依存にはしない。
+
+Rim Controlで得た採用値はXML / C# / Def / 正式設計書へ正本化し、上書きを無効にしてから静的検証・RimTest Redux・Pickle・runtime gateで再検証する。正式テスト、自動テスト、リリースゲート、通常プロファイルの正式確認では両ツールを無効化する。
+
+**Result / references:** durable rule in `Docs/DevelopmentTools.md`. Documentation-only change; no new runtime PASS is claimed.
+
