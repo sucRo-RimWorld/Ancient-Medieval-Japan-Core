@@ -27,6 +27,16 @@ For each affected Def:
 3. Rewrite the description when the inherited wording is anachronistic, culturally mismatched, misleading, overly modern, or tonally unsuitable for AMJ.
 4. Do not invent a medieval-Japanese counterpart for content that lacks one. If the content itself is historically unsuitable, flag it for a separate keep/replace/remove decision rather than hiding the mismatch with prose alone.
 
+## Japanese name form and aliases
+
+For Japanese descriptions, identify the subject clearly at the start of the prose.
+
+- When an established and appropriate kanji form exists, begin the description with that kanji form, followed by the ordinary Japanese reading/name as needed.
+- When a recognized alias, alternate name, or common alternate written form exists, include it immediately with the opening name rather than omitting it from the description.
+- Do not invent kanji, force uncommon ateji, or mechanically list weakly sourced/local names only to satisfy this rule.
+- When several forms exist, prefer the form best supported for the AMJ historical/ecological context and record important alternatives without turning the opening into an exhaustive name list.
+- The Japanese opening-name form is part of the approved Japanese source. English localization should translate the approved meaning and may romanize or explain the Japanese names where useful; it must not independently add or remove aliases.
+
 ## Required description content
 
 AMJ-authored historical descriptions should include:
