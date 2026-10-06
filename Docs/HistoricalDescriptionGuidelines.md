@@ -39,11 +39,16 @@ For Japanese descriptions, identify the subject clearly at the start of the pros
 
 ## Required description content
 
-AMJ-authored historical descriptions should include:
+AMJ descriptions should help the player learn something concrete about ancient and medieval Japan while remaining useful as in-game text. For AMJ-facing historical descriptions, use the following content order as the default structure:
 
-- at least one concrete historical fact relevant to the object, plant, or animal in Japan;
-- its historical role, use, ecology, cultivation, distribution, material, or social/economic context when relevant;
-- a meaningful difference from modern Japan, modern use, modern distribution, or modern production where that difference can be supported.
+1. **Name and aliases:** begin with the established kanji form when one exists, then give the ordinary reading/name and recognized aliases / alternate written forms as appropriate.
+2. **Distribution and ecological/material context in Japan:** explain where the plant, animal, material, object, or practice belongs in the Japanese environment or material culture when relevant.
+3. **Ancient/medieval Japanese role:** include at least one supported fact about its use, cultivation, gathering, production, trade, social meaning, construction, food culture, ecology, or other relationship to life in ancient/medieval Japan.
+4. **Difference from modern Japan:** when a clear, supportable difference exists, explain how its distribution, use, production, social role, or availability differs from modern Japan.
+
+The purpose is not to pad descriptions with trivia. Prefer facts that teach why the subject matters in the ancient/medieval Japanese setting.
+
+Not every description needs four equally long parts. If one category is irrelevant or cannot be supported reliably, omit it rather than inventing content. However, for historical AMJ content, a description that contains only generic appearance or ecology and gives no ancient/medieval-Japan context is normally incomplete.
 
 Modern comparison is not license to invent contrast. If a reliable historical/modern difference cannot be established, prefer an accurate narrower description and record the research gap rather than fabricating one.
 
