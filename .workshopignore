@@ -1,5 +1,5 @@
-# Developer-only authoring sources. Keep these in Git, not in Steam Workshop content.
+# Developer-only authoring material. Keep Art in Git, not in Steam Workshop content.
 # RimWorld's vanilla uploader does not natively guarantee this file is honored;
 # use Scripts/Prepare-WorkshopContent.ps1 for the fail-closed staging path.
-/Art/Sources/
+/Art/
 /.workshopignore

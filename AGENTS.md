@@ -138,6 +138,14 @@ Historical description text is Japanese-first: research and draft Japanese, obta
 
 AMJC owns its custom crops' temperature values, design/balance tables (including archived candidate ranges), Def mappings, optional CCTO compatibility XML, and validation. Maintain these here, not in CCTO. Use `Docs/Balance/Crops/ColdTolerance.md` together with the cultivation design and implemented XML as the local source of truth. CCTO remains an optional framework; its own Vanilla/MO support data remains owned by CCTO.
 
+## Workshop art-source exclusion
+
+The repository-root `Art/` tree is development-only authoring material and must not be uploaded to Steam Workshop.
+
+- Keep `Art` in the root `.rimignore` so YADA excludes the entire tree recursively.
+- Any other publisher or staging path used by this repository must exclude the entire `Art/` tree as well, not only `Art/Sources/`.
+- Shippable runtime assets belong under their normal production paths such as `Textures/` or `About/`; do not rely on `Art/` content being present in the published Mod.
+
 ## Art / image work
 
 Keep this file as a routing layer; do not duplicate asset-family procedures here.

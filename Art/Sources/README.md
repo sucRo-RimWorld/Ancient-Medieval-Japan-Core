@@ -26,9 +26,10 @@ Additional accepted sources should be added to the corresponding mirrored path a
 
 ## Workshop distribution
 
-`Art/Sources/` is development-only material and must **never** be included in Steam Workshop content.
+The repository-root `Art/` tree is development-only material and must **never** be included in Steam Workshop content.
 
-- `.workshopignore` records the exclusion for uploaders that support ignore files.
-- `_PublisherPlus.xml` excludes `Art\\Sources` when publishing through RimWorld's PublisherPlus workflow.
-- The fail-closed publication path is `Scripts/Prepare-WorkshopContent.ps1` / `prepare-workshop.bat`, which creates a clean `git archive` staging tree and verifies that `Art/Sources/` is absent before manual Steam publication.
-- Do not publish the repository working directory directly when it contains `Art/Sources/`.
+- `.rimignore` excludes the root `Art` directory for YADA Workshop uploads.
+- `.workshopignore` records the same whole-`Art/` exclusion for uploaders that support that file.
+- `_PublisherPlus.xml` excludes `Art` when publishing through RimWorld's PublisherPlus workflow.
+- The fail-closed publication path is `Scripts/Prepare-WorkshopContent.ps1` / `prepare-workshop.bat`, which creates a clean `git archive` staging tree and verifies that the entire `Art/` tree is absent before manual Steam publication.
+- Do not publish the repository working directory through any path that bypasses these exclusions.

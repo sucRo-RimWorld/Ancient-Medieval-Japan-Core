@@ -51,12 +51,12 @@ try {
     New-Item -ItemType Directory -Path $outputFull -Force | Out-Null
     Expand-Archive -LiteralPath $archive -DestinationPath $outputFull -Force
 
-    $forbidden = Join-Path $outputFull "Art\Sources"
+    $forbidden = Join-Path $outputFull "Art"
     if (Test-Path $forbidden) {
-        throw "FAIL: developer source assets leaked into Workshop staging: $forbidden"
+        throw "FAIL: developer Art assets leaked into Workshop staging: $forbidden"
     }
 
-    Write-Host "[PASS] Workshop staging prepared without Art/Sources:"
+    Write-Host "[PASS] Workshop staging prepared without Art/:"
     Write-Host "       $outputFull"
 }
 finally {
