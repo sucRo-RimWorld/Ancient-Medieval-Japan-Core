@@ -51,6 +51,8 @@ def _required_guide(path, spec):
 
 
 def build_three_layer_stack(manifest_path):
+    # Historical v3 experiment only. Visual review found split-boundary damage.
+    # Generic new-resource production is fail-closed before this model can be used.
     path, spec = _read_spec(manifest_path)
     if spec.get("layer_model") != "rear_contents_front":
         raise ValueError("Template does not use rear_contents_front layers")
@@ -210,6 +212,13 @@ def compose(manifest, variable, output):
         image.load()
         layer = image.convert("RGBA")
     validate_variable_layer(path, layer, mask)
+
+    status = spec.get("new_resource_production_status", "active")
+    if status != "active":
+        raise ValueError(
+            "New boxed-resource production is blocked until the occlusion contract is validated: "
+            + status
+        )
 
     if spec.get("layer_model") == "rear_contents_front":
         master, rear, front, front_mask = build_three_layer_stack(path)
