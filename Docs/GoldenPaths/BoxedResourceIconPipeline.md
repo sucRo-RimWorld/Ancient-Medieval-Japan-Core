@@ -45,7 +45,9 @@ The raw generated source owns **material identity and AMJ/MO style**, not final 
 The source layer must:
 
 - inherit the AMJ item/resource style from `Docs/ArtStyle.md`;
-- use the clustered-resource line hierarchy from `Docs/ArtStyle.md`: the **outer silhouette of the complete contents pile is thick and dark**, while **internal boundaries between grains/pieces are thinner and lighter/paler**;
+- use a **boxed-resource-specific line hierarchy**: within the contents layer, the outer silhouette remains stronger than internal grain/piece boundaries, but because the contents sit inside the masu, the contents outline must stay **thinner and lighter in RGB color than the masu rim/outer contour**;
+- "lighter/paler outline" means a lighter **opaque color**, not reduced alpha. Keep substantive outline pixels opaque; transparency is for the background and anti-aliased edge pixels only;
+- internal grain/piece boundaries are thinner and lighter than the contents outer silhouette and may be quite pale, but should likewise use opaque color rather than semi-transparent strokes;
 - do not give every grain/piece an equally heavy dark outline; internal lines are subordinate separators and may be quite light as long as the material remains legible;
 - use a limited palette and flat/simple shading;
 - avoid glossy per-piece highlights, deep AO between every grain, photorealism, and painterly rendering;
@@ -55,6 +57,8 @@ The source layer must:
 - contain no wooden box, rim, background, text, UI, or decorative ground shadow.
 
 The raw generation target is a **source layer**, not a placement-ready icon. Do not ask ImageGen to solve the final rim occlusion, contact edge, or exact masu projection.
+
+If the requested change is only a deterministic adjustment to an existing candidate — such as making the contents outline RGB lighter, thinning a contour, changing alpha cleanup, resizing, masking, or projection — do **not** regenerate the image with ImageGen. Edit the existing contents layer deterministically. In particular, never send the full masu composite back through ImageGen merely to change the contents outline: that would expose the fixed wooden masu to unwanted redrawing.
 
 ## Automated candidate preparation
 
@@ -96,8 +100,10 @@ Reject internally when any of the following is true:
 - another reference material's geometry has leaked into it (for example, rice becoming triangular/faceted like buckwheat or stone);
 - the normalized footprint still cannot be placed naturally on the masu opening plane;
 - a systematic near/far scale gradient has been baked into the source without a subject-specific reason;
-- the outer silhouette is not clearly stronger than the internal piece boundaries;
-- internal grain/piece boundaries are as thick/dark as the outer silhouette, making the pile read as many disconnected outlined objects rather than one mass;
+- the contents outer silhouette is not clearly stronger than the internal piece boundaries;
+- the contents outer silhouette is as thick/dark as, or stronger than, the wooden masu rim after composition;
+- substantive contents outline pixels are made faint through reduced alpha instead of a lighter opaque RGB color;
+- internal grain/piece boundaries are as thick/dark as the contents outer silhouette, making the pile read as many disconnected outlined objects rather than one mass;
 - shading is glossy, heavily modeled, painterly, or uses deep AO on each individual piece;
 - particle count/detail is high enough to become noisy at roughly 64 px;
 - the generated layer contains any wood, container rim, box, background, UI, text, or decorative shadow;
