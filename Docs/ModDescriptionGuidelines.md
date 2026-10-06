@@ -16,6 +16,16 @@
 - [CCTO Workshop説明](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/WorkshopDescription.md)
 - [CCTO 日本語説明](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/SteamWorkshopDescription-ja.txt)
 
+## Mod名のコロン禁止（AMJ共通）
+
+**決定日:** 2026-10-06（日本時間）
+
+- AMJ Core・Environment・CCTOおよび今後の関連Modの名称には、半角コロン `:`・全角コロン `：` を使用しない。区切りが必要な場合は ` - ` を使う（例: `Ancient & Medieval Japan - Environment`）。
+- `About/About.xml` の `<name>` を基準とし、Workshopタイトル、README等で正式名称を記載する場合も同じ名称に揃える。新規Mod作成・改名・公開準備時に確認する。
+- 理由: YADAのWorkshopアップロード前処理ではMod表示名が一時ディレクトリ名に使われるため、Windowsで無効な半角コロンを含むとコピー作成が例外停止する。全角コロンも名称表記の統一と再発防止のため禁止する。
+- この規則はMod名称を対象とする。説明本文の句読点、URL、コード記法に現れるコロンは対象外。表示名の修正だけで `packageId` や既存Workshop IDを変更しない。
+- 公開前に `About/About.xml` の `<name>` と、用意したWorkshopタイトル・READMEの正式名称にコロンがないことを確認する。
+
 ## 基本構成
 
 1. 名称・概要: 何を変え、どのような遊びを提供するか。
