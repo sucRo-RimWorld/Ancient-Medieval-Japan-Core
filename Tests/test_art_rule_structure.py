@@ -51,6 +51,9 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertIn("Interpret the user's image intent semantically", text)
         self.assertIn("Shared/fixed parts are never regenerated", text)
         self.assertIn("material stylistic redrawing", text)
+        self.assertIn("Scripts/Art/generated_asset_qa.py", text)
+        self.assertIn("AMJ_GeneratedAsset_BaseQA.json", text)
+        self.assertIn("author's remaining role is final visual acceptance", text)
         self.assertNotIn("only when a genuinely new silhouette", text)
         for forbidden in (
             "v4-contact-study",
@@ -69,6 +72,9 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertIn("Docs/GoldenPaths/TextureAssetPipeline.md", text)
         self.assertIn("Scripts/Art/normalize_masu_contents.py", text)
         self.assertIn("deterministic normalizer", text)
+        self.assertIn("Scripts/Art/prepare_boxed_resource_candidate.py", text)
+        self.assertIn("AMJ_BoxedResource_GenerationQA.json", text)
+        self.assertIn("single remaining human gate: final visual acceptance", text)
         self.assertIn("outer silhouette of the complete contents pile is thick and dark", text)
         self.assertIn("internal boundaries between grains/pieces are thinner and lighter/paler", text)
         self.assertNotIn("HardFixed", text)
@@ -107,6 +113,8 @@ class ArtRuleStructureTest(unittest.TestCase):
         text = read(".github/workflows/stage-a-validation.yml")
         self.assertIn("Tests/test_art_rule_structure.py", text)
         self.assertIn("Tests/test_workshop_cover_template.py", text)
+        self.assertIn("Tests/test_generated_asset_qa.py", text)
+        self.assertIn("Tests/test_prepare_boxed_resource_candidate.py", text)
         self.assertNotIn("Tests/test_masu_template.py", text)
 
     def test_legacy_masu_coordination_tasks_are_archived(self):
