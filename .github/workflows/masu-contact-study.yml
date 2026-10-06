@@ -1,0 +1,38 @@
+name: Masu contact study artifact
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - ".github/workflows/masu-contact-study.yml"
+      - "Scripts/Art/masu_contact_study.py"
+      - "Scripts/Art/fixed_template.py"
+      - "Scripts/Art/boxed_resource_review.py"
+      - "Docs/References/AMJ_Masu_*"
+      - "Docs/References/AMJ_BuckwheatInHull_Ideal_256.png"
+      - "Textures/Shared/Containers/AMJ_Masu_Empty_Master.png"
+      - "Textures/Things/Item/Resource/AMJC_Millet/**"
+      - "Textures/Things/Item/Resource/AMJC_Buckwheat/**"
+
+jobs:
+  render-study:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install compositing dependency
+        run: python -m pip install Pillow==12.3.0
+
+      - name: Render v4 contact study
+        run: python Scripts/Art/masu_contact_study.py
+
+      - name: Upload study artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: masu-v4-contact-study
+          path: build/masu-contact-study/
+          if-no-files-found: error
+          retention-days: 3
