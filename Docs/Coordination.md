@@ -1429,3 +1429,5 @@ Durable design is now recorded in `Docs/Design.md`:
 2. Define the first supported compatibility matrix for Agriculture/Core, Fermentation and Brewing before changing About.xml dependencies.
 3. When a dependency is actually removed, update About.xml/load order, formal design, compatibility patches, tests and public descriptions together.
 4. Reassess whether the name/role `Core` remains accurate after the dependency audit; do not rename solely from this design note.
+
+**Design consistency follow-up:** `Docs/Design.md` was audited for the superseded hard-MO assumptions. The top-level policy, Core/Agriculture boundary, current-Core positioning, MO integration chapter, Processor Framework dependency wording, food-category rules, and MO-only paper/straw integration are now aligned with the minimal-dependency direction. This does **not** claim that About.xml/runtime implementation is already MO-optional; the code/Defs dependency audit remains the next implementation task.
