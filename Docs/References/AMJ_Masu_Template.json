@@ -161,5 +161,10 @@
     "expected_final_sha256": "0f81aa92460154d2b1ae50de14d7360be5e44ff46f8c81bdd113b6e19143d752",
     "required_rgba_diff_pixels": 0,
     "note": "Identity validation layer: exact approved variable RGBA inside the registered editable mask; transparent outside. Historical two-layer diagnostic only; not the production compositor for new resources."
-  }
+  },
+  "new_resource_production_status": "blocked_pending_occlusion_validation",
+  "v3_split_status": "superseded_due_visible_split_damage",
+  "next_layer_model": "intact_master_base__contents_contact__hard_fixed_foreground",
+  "contact_region_policy": "occludable; do not blindly restore upper/contact wood after contents",
+  "front_occluder_regions_role": "historical v3 experiment only; not approved for new-resource production"
 }
