@@ -132,7 +132,7 @@ Current asset-class specifications:
 
 A family-specific document may narrow the shared style for its asset class, but it must not silently replace the AMJ-wide visual language. Any real exception belongs in the owning style specification, not in chat history or AGENTS.
 
-For image wording and ImageGen permission, follow `Docs/GoldenPaths/TextureAssetPipeline.md`. In particular, 「作成」「制作」「続けて」 do not by themselves authorize new ImageGen source art; 「生成」 is required where the active pipeline permits generation.
+For generation intent and ImageGen use, follow `Docs/GoldenPaths/TextureAssetPipeline.md`. Interpret the user's requested image action semantically; do not use an exact-keyword gate, and never regenerate accepted fixed/shared parts merely because new image work was requested.
 
 ## Golden Path closeout rule
 
