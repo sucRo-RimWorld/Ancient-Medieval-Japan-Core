@@ -120,6 +120,8 @@ Source-of-truth commits:
 
 **Actual generation stress test (2026-10-06 JST):** The approved buckwheat reference and a subject-specific Japanese short-grain-rice reference were actually viewed, then rice contents were generated rather than only auditing prompt text. Direct ImageGen attempts still produced a frontal mound / excessive per-grain modeling and did not reliably reproduce the masu opening plane. This confirmed that stronger wording alone was insufficient. A neutral material-only rice source was then passed through the new deterministic normalizer; the resulting transparent layer adopted the shared diamond-like contents plane without regenerating the masu. This is a pipeline/capability test only: no rice production icon, final masu composite, or author visual approval is claimed. Stage A run #281 for `3f8f9c17ebbea4141b34b278efc886cad592eb01` completed successfully, including the new normalizer regression.
 
+**Line-hierarchy refinement (2026-10-06 JST):** Author selected the best of the rice-generation trials partly because it alone used a strong outer contour around the entire pile while keeping grain-to-grain boundaries thinner and lighter. This is now a durable Core clustered-resource rule in `Docs/ArtStyle.md` and an explicit boxed-resource generation/rejection criterion. Equal-weight dark outlines around every grain are rejected because they fragment the pile and increase game-scale noise. Source commits: `e450bc309d8c25b5bea5bd88b583f909241c601a`, `57dcb408b2b559ece4ac94a7bd92a5f12b24fdee`, regression guard `c25c6bbfcd37a58d3994dc6787c812ed2e79d1a5` (if this SHA changes during commit sequencing, use the actual current commit history).
+
 
 ### ART-TEMPLATE-019 — MO comparison corrections implemented as contact study
 
