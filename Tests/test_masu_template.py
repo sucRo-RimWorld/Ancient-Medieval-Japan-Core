@@ -5,7 +5,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from PIL import Image
+from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "Docs/References/AMJ_Masu_Template.json"
@@ -18,96 +18,75 @@ spec.loader.exec_module(module)
 
 
 class MasuTemplateTest(unittest.TestCase):
-    def test_v2_identity_exemplar_round_trips_at_zero_rgba_diff(self):
+    def test_layered_masu_reconstructs_master_and_occludes_contents(self):
         data = json.loads(MANIFEST.read_text(encoding="utf-8"))
-        self.assertEqual(data["template_revision"], "v2")
-        self.assertEqual(data["production_status"], "active")
-        self.assertEqual(data["compose_mode"], "replace_rgba")
-        self.assertGreaterEqual(data["replace_patch_min_defined_coverage"], 0.98)
+        self.assertEqual(data["template_revision"], "v3-layered")
+        self.assertEqual(data["master_revision"], "v2")
+        self.assertEqual(data["layer_model"], "rear_contents_front")
+        self.assertEqual(data["content_clipping"], "none")
 
-        master, allowed = module.load_template(MANIFEST)
+        master, rear, front, front_mask = module.build_three_layer_stack(MANIFEST)
         self.assertEqual(master.size, (256, 256))
-        self.assertEqual(master.getchannel("A").getbbox(), tuple(data["master_alpha_bbox"]))
-        self.assertEqual(allowed.getbbox(), tuple(data["editable_bbox"]))
 
-        req_path = MANIFEST.parent / data["required_fill"]["path"]
-        rep_path = MANIFEST.parent / data["representative_final"]["path"]
-        var_path = MANIFEST.parent / data["identity_exemplar"]["variable_layer_path"]
-
-        self.assertEqual(hashlib.sha256(req_path.read_bytes()).hexdigest(), data["required_fill"]["sha256"])
-        self.assertEqual(hashlib.sha256(rep_path.read_bytes()).hexdigest(), data["representative_final"]["sha256"])
-        self.assertEqual(hashlib.sha256(var_path.read_bytes()).hexdigest(), data["identity_exemplar"]["variable_layer_sha256"])
-
-        with Image.open(req_path) as image:
-            required = image.convert("L")
-        self.assertEqual(required.getbbox(), tuple(data["required_fill_bbox"]))
-        for a, r in zip(allowed.get_flattened_data(), required.get_flattened_data()):
-            if r == 255:
-                self.assertEqual(a, 255)
-
-        with Image.open(rep_path) as image:
-            representative = image.convert("RGBA")
-        with Image.open(var_path) as image:
-            variable = image.convert("RGBA")
-
-        module.validate_variable_layer(MANIFEST, variable, allowed)
-
-        # A new replace_rgba resource starts from an exact editable-cavity
-        # scaffold copied from the empty master, never from a transparent canvas.
-        with tempfile.TemporaryDirectory() as scaffold_tmp:
-            scaffold_path = Path(scaffold_tmp) / "scaffold.png"
-            module.scaffold(MANIFEST, scaffold_path)
-            with Image.open(scaffold_path) as image:
-                scaffold = image.convert("RGBA")
-
-            for patch_px, master_px, editable in zip(
-                scaffold.get_flattened_data(),
-                master.get_flattened_data(),
-                allowed.get_flattened_data(),
-            ):
-                if editable == 255:
-                    self.assertEqual(patch_px, master_px)
-                else:
-                    self.assertEqual(patch_px[3], 0)
-
-            # Empty scaffold contains no resource; occupancy must fail closed.
-            with self.assertRaisesRegex(ValueError, "under-fills"):
-                module.validate_variable_layer(MANIFEST, scaffold, allowed)
-
-        with tempfile.TemporaryDirectory() as tmp:
-            output = Path(tmp) / "identity.png"
-            module.compose(MANIFEST, var_path, output)
-            with Image.open(output) as image:
-                recomposed = image.convert("RGBA")
-
-        differing_pixels = sum(
+        empty = Image.alpha_composite(rear, front)
+        differing = sum(
             a != b
             for a, b in zip(
-                recomposed.get_flattened_data(),
-                representative.get_flattened_data(),
+                empty.get_flattened_data(), master.get_flattened_data()
             )
         )
-        self.assertEqual(differing_pixels, data["identity_exemplar"]["required_rgba_diff_pixels"])
+        self.assertEqual(differing, 0)
 
-        # Protected/common pixels remain exact copies of the empty master.
-        protected_diffs = sum(
-            m == 0 and a != b
+        # Three-layer scaffold is transparent object-only contents.
+        with tempfile.TemporaryDirectory() as tmp:
+            scaffold_path = Path(tmp) / "contents.png"
+            module.scaffold(MANIFEST, scaffold_path)
+            with Image.open(scaffold_path) as image:
+                contents = image.convert("RGBA")
+            self.assertIsNone(contents.getchannel("A").getbbox())
+
+        # Synthetic contents intentionally cross the front rim.  They are not
+        # pre-clipped; the fixed foreground must occlude them exactly.
+        contents = Image.new("RGBA", master.size, (0, 0, 0, 0))
+        draw = ImageDraw.Draw(contents)
+        draw.polygon(
+            [(128, 52), (214, 104), (128, 170), (42, 104)],
+            fill=(190, 165, 120, 255),
+        )
+
+        with tempfile.TemporaryDirectory() as tmp:
+            contents_path = Path(tmp) / "contents.png"
+            output_path = Path(tmp) / "final.png"
+            contents.save(contents_path)
+            module.compose(MANIFEST, contents_path, output_path)
+            with Image.open(output_path) as image:
+                result = image.convert("RGBA")
+
+        front_diffs = sum(
+            m == 255 and a != b
             for a, b, m in zip(
+                result.get_flattened_data(),
                 master.get_flattened_data(),
-                recomposed.get_flattened_data(),
-                allowed.get_flattened_data(),
+                front_mask.get_flattened_data(),
             )
         )
-        self.assertEqual(protected_diffs, 0)
+        self.assertEqual(front_diffs, 0)
+        self.assertNotEqual(result.getpixel((128, 110)), master.getpixel((128, 110)))
 
-        # Transparent object-only layers are invalid for replace_rgba because
-        # they would erase the cavity wherever the editable mask selects them.
-        tiny = Image.new("RGBA", master.size, (0, 0, 0, 0))
-        for y in range(100, 130):
-            for x in range(105, 150):
-                tiny.putpixel((x, y), (100, 60, 40, 255))
-        with self.assertRaisesRegex(ValueError, "incomplete"):
-            module.validate_variable_layer(MANIFEST, tiny, allowed)
+        # Blank contents must not pass the required-fill gate.
+        blank = Image.new("RGBA", master.size, (0, 0, 0, 0))
+        middle = Image.alpha_composite(rear, blank)
+        blank_final = Image.composite(front, middle, front_mask)
+        with self.assertRaisesRegex(ValueError, "under-fills"):
+            module.validate_three_layer_final(MANIFEST, blank_final)
+
+        # Historical editable mask remains registered but is not the compositor.
+        editable_path = MANIFEST.parent / data["editable_mask"]["path"]
+        self.assertEqual(
+            hashlib.sha256(editable_path.read_bytes()).hexdigest(),
+            data["editable_mask"]["sha256"],
+        )
+        self.assertIn("not used to clip", data["editable_mask_role"])
 
 
 if __name__ == "__main__":

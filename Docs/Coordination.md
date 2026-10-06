@@ -1134,3 +1134,22 @@ Rim Controlで得た採用値はXML / C# / Def / 正式設計書へ正本化し�
 
 **Result / references:** durable rule in `Docs/DevelopmentTools.md`. Documentation-only change; no new runtime PASS is claimed.
 
+
+
+### ART-TEMPLATE-017 — Masu three-layer compositor
+
+**Requested by:** author (2026-10-06 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** IMPLEMENTED; CI pending
+
+The author identified the structural error behind the repeated Soba boundary loop: a complex masu cannot be modeled as “master + contents clipped by one simple interior/pile mask”. The active production model is therefore changed to an explicit z-order stack:
+
+1. fixed **rear masu** (back rim / inner walls / floor);
+2. transparent **contents** layer;
+3. fixed **front/side masu** foreground occluder.
+
+The foreground/rear split selects exact pixels from the canonical masu master; it does not redraw the wood. Contents are no longer clipped by the historical editable mask or a guessed diamond/pile polygon. The foreground layer performs the perspective/occlusion naturally.
+
+The deterministic split currently uses semantic front wood regions registered in the manifest. Local proof: rear + front reconstruct the canonical empty master with **0 differing RGBA pixels**. The old `replace_rgba` complete-cavity patch and exact-variable identity path are superseded for new resource production and retained only as historical diagnostics.
+
+The new gate requires exact empty-master reconstruction, exact fixed foreground pixels, required-fill occupancy, and no visible content outside the authoritative master/reference envelope before a candidate can be presented.

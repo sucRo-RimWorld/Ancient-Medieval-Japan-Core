@@ -1,206 +1,145 @@
 # Boxed Resource Icon Pipeline — Golden Path
 
-This document is the production contract for AMJ resource icons that share a box/masu/container while changing only the contents.
+This document is the production contract for AMJ resource icons that share the Japanese masu while changing only the contents.
 
-## Command semantics for this family
+## Command semantics
 
-For boxed-resource icons, 「作成」「制作」「続けて」 always means **template-based local creation**, not whole-image generation and not automatic ImageGen use. Use the registered reference/master/masks and deterministic tooling.
+For boxed-resource icons, 「作成」「制作」「続けて」 means deterministic local production from registered assets. It does not authorize ImageGen.
 
-Only an explicit author request containing 「生成」 permits ImageGen, and then only for the **contents layer**. The masu, registered reference, and final whole icon must not be generated.
+Only an explicit request containing 「生成」 permits ImageGen, and then only for the **contents** source. Never regenerate the masu or the final whole icon.
 
-If a new contents layer cannot be derived locally and no generation was requested, stop as BLOCKED rather than invoking ImageGen.
+## Active architecture: three layers
 
-## Why fixed pixels are not enough
+The masu family uses this exact z-order:
 
-A deterministic template can preserve every container pixel and still produce a bad icon. The shared part may be registered at the wrong scale on the canvas, or the contents may be too small, too low, too sparse, or layered unnaturally. Therefore boxed-resource production has two independent gates:
+1. **fixed rear masu** — back rim, rear/interior walls and floor;
+2. **transparent contents** — the only resource-specific artwork;
+3. **fixed front/side masu** — foreground rim and visible exterior/front walls.
 
-1. **structural identity** — shared container pixels remain exact;
-2. **composition identity** — the final icon matches an accepted filled exemplar in frame occupancy, fill amount, apparent height, and occlusion.
+This is mandatory. The foreground and rear are exact pixel selections from the canonical master; they are not redrawn or recolored.
 
-Passing only the structural gate is not sufficient.
+### Why the old two-layer path is forbidden
 
-## Required family assets
+Do not model the icon as “empty master + contents clipped/replaced through one cavity/pile/editable mask”.
 
-Before a boxed-resource family is production-active, register all of the following:
+That approach cannot represent the masu's perspective and occlusion correctly. It caused repeated failures at the upper-left/upper-right rim, boundary-color contamination, and complete-cavity replacement artifacts. Expanding or tuning a geometric mask does not fix the structural problem.
 
-- an author-approved **filled exemplar** at known source resolution, stored persistently and identified by SHA-256;
-- an empty lossless master at final production resolution;
-- a protected/editable mask for structural pixel locking;
-- a **required-fill guide** for the area a normal full stack must substantially occupy;
-- an **allowed-fill guide** defining where contents may extend without damaging the container silhouette;
-- a manifest containing paths, hashes, canvas size, frame/alpha bounding box, fill-guide semantics, layer order, and production status.
+The historical editable mask and exact-variable/replace-RGBA identity assets remain useful as diagnostics/history, but they are **not** the production compositor for new resources.
 
-The empty master should be derived from, or explicitly aligned against, the accepted filled exemplar. Do not independently generate an empty container and then declare it canonical because it looks similar.
+## Contents layer contract
 
-## Agent self-QC before review or registration
+The contents layer is a normal transparent RGBA image on the final 256×256 canvas.
 
-The agent owns objective cleanup. Before showing a candidate as ready, and again before registering a master, inspect the 256 px image and a game-like ~64 px reduction. Automatically correct any known fixable defect that does not alter the accepted visual direction, including jaggies from upscaling, resampling artifacts, halos, clipped edges, layer seams, leftover pixels from the exemplar, incorrect frame occupancy, or an obviously under-filled/over-filled container.
+- Do **not** clip it to the historical editable mask.
+- Do **not** clip it to a guessed diamond, pile polygon, or other simple cavity shape.
+- It may extend underneath the foreground rim; the front layer will occlude it.
+- It must not contain any masu wood pixels.
+- It must not be resized after composition.
+- For locally created art, prefer a high-resolution source and downsample the contents once before final composition.
+- Item/resource art follows `Docs/ArtStyle.md`: few broad color planes, thick warm-brown outline, no texture noise, readable at about 64 px.
 
-Do **not** defer a known technical defect to the author with "acceptable?" or "妥協範囲?" when it can be corrected deterministically. Only request author judgment for a real design choice or tradeoff. A candidate with a known fixable defect is not registration-ready.
+The required-fill guide is a **validation target only**. It measures whether a normal/full resource visually fills the box. It is not a clipping mask.
 
-## Identity-exemplar validation before new resources
+## Canonical fixed layers
 
-Before using a boxed-resource family for a *different* material/resource, validate the pipeline against its approved filled exemplar.
+The source of truth remains:
 
-For the current masu family, the expected output is the registered **buckwheat-in-hull** exemplar itself. The validation run must:
+- master: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`
+- manifest: `Docs/References/AMJ_Masu_Template.json`
+- approved filled visual reference: `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`
+- persistent high-resolution reference: `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png`
 
-1. use the registered empty masu/master and the intended reusable content/occlusion layer structure;
-2. recompose the approved buckwheat-in-hull icon without changing its color/material;
-3. preserve all protected/common pixels exactly;
-4. require **0 RGBA pixel differences** against the registered representative final for the identity exemplar;
-5. fail closed if the result needs manual recolor, blur, local patching, or another ad-hoc correction to match the reference.
+The manifest registers semantic foreground regions. Tooling derives rear/front layers directly from the hashed master.
 
-A diagnostic exact-delta round trip may prove that the reference/master pair is internally consistent, but it does not by itself prove that the reusable production layer structure is correct. The production layer structure must pass the same zero-difference exemplar reconstruction before any other resource is attempted.
+An empty reconstruction must satisfy:
 
-### Current identity result: PASS
+`alpha/replacement compose(rear, front) == canonical master`
 
-The current masu v2 family now passes the intended identity validation through the **actual reusable production compositor**, not a diagnostic delta shortcut.
+with **0 decoded RGBA pixel differences**.
 
-- registered compose mode: `replace_rgba`
-- identity variable layer: `Docs/References/AMJ_BuckwheatInHull_IdentityVariable.png`
-- expected final: `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`
-- result: **0 RGBA pixel differences**
-- protected/common pixels: **0 RGBA differences from the empty master**
+## Composition algorithm
 
-Why replacement is required: the approved variable RGBA already contains its own antialiasing/occlusion against the cavity. Alpha-compositing it over the empty master a second time changes those pixels. The reusable contract therefore replaces RGBA only inside the editable mask while leaving every protected pixel from the master untouched.
+For a new resource:
 
-This passes the validation target requested by the author: the approved **buckwheat-in-hull** exemplar can be reconstructed exactly through the standard registered template path. New resources may now use this same structural contract, but must provide their own clean variable RGBA layer.
+1. Verify the master/reference hashes.
+2. Derive the fixed rear and fixed foreground from the manifest.
+3. Create/draw the contents on a transparent 256×256 canvas.
+4. Composite contents over the rear.
+5. Restore/render the fixed foreground last.
+6. Run the mechanical gates.
+7. Inspect the result at 256 px and about 64 px.
+8. Only then present it as a candidate.
 
-## Registration gate
+The front layer is the occlusion model. Do not repair boundary problems by recoloring or blurring the contents edge after composition.
 
-A template remains blocked/inactive until all of these are true:
+## Mechanical gates
 
-1. The outer container/frame occupancy on the final canvas matches the accepted filled exemplar.
-2. Key rim corners, angle, silhouette, transparent margins, and overall scale are aligned to the accepted exemplar.
-3. The required-fill and allowed-fill guides are registered.
-4. A representative contents layer is composed through the deterministic tool.
-5. The representative final icon is compared to the accepted exemplar at 256 px and at game-like small size (about 64 px).
-6. The representative composite is already author-approved or is compared against an author-approved exemplar. Technical cleanup that preserves that approved design is performed proactively before registration; a new approval is needed only for a substantive visual change.
-7. Protected RGBA differences are exactly zero and PNG integrity checks pass.
+A candidate is not presentable until all of these pass:
 
-An empty master by itself cannot activate a family.
+1. **Empty-master round trip:** rear + front = master, 0 RGBA differing pixels.
+2. **Fixed foreground:** every registered front/side wood pixel in the final output equals the canonical master pixel exactly.
+3. **Required-fill occupancy:** the final resource differs from the empty master across the registered required-fill target by at least the manifest threshold.
+4. **Visible-envelope guard:** the final alpha must not leak outside the exact union of the canonical empty-master alpha and the registered representative-final alpha.
+5. PNG integrity passes.
+6. Canvas remains 256×256.
 
-## Identity round-trip gate
+The visible-envelope guard is a fail-closed diagnostic based on authoritative rasters. It is not used to clip the contents.
 
-Before changing material/color/contents, prove that the template decomposition itself is correct.
+## Visual gates
 
-1. Load the registered empty master and registered filled exemplar.
-2. Compute an **exact variable-pixel mask** from pixels whose RGBA differs between those two authoritative images.
-3. Extract the exemplar's pixels only at that exact mask.
-4. Recompose those pixels onto the empty master.
-5. Require the recomposed image to be pixel-identical to the exemplar: **0 differing pixels**.
-6. Only after this passes may a new material variant be derived.
+Mechanical validity does not make a good icon. Before showing a candidate:
 
-Do not use the broad editable mask or a hand-drawn/interior polygon as the production content mask for this identity test. Those masks are permission/coverage guides, not a proof of correct layer decomposition. If exact round-trip fails, stop and repair the template decomposition instead of tuning color.
+- compare against the registered filled reference at 256 px and about 64 px;
+- confirm the resource reads as being **inside** the masu, not pasted onto it;
+- confirm the upper-left and upper-right contacts do not show stale source color or edge contamination;
+- confirm the front rim/wood is unchanged;
+- confirm the contents are not a single flat color when the accepted design requires visible per-piece variation;
+- reject known jaggies, seams, halos, local blur patches, or resampling noise yourself.
 
-## High-resolution contents-source rule
+Do not ask the author to accept a known deterministic defect.
 
-When the family later creates a genuinely new resource, use the highest authoritative source available and downsample once at export. However, the **current validation phase does not recolor or redesign Soba**: it must first reproduce the registered buckwheat-in-hull exemplar exactly through the reusable template/layer structure.
+## Reference integrity
 
-
-## Variable-patch scaffold contract
-
-For a `replace_rgba` family, the variable input is a **complete rendered patch of the editable cavity**, not a transparent object-only contents layer. Starting from transparency would erase the empty-master cavity/rim-adjacent pixels selected by the editable mask and recreates the exact failure mode seen during the Soba validation loop.
-
-Every genuinely new resource must therefore start with:
-
-`python Scripts/Art/fixed_template.py scaffold <manifest> --output <variable-patch.png>`
-
-The scaffold copies the registered empty-master RGBA exactly inside the editable mask and is transparent outside it. Draw or composite the new resource **onto this scaffold** without changing its canvas size. Do not clear broad unchanged cavity areas to transparency. Because the approved exemplar itself contains a small amount of antialiased low-alpha edge data, `replace_rgba` validation uses the manifest's `replace_patch_min_defined_coverage` (currently 0.98) rather than requiring every editable pixel to be opaque.
-
-For `replace_rgba`, required-fill occupancy is measured by **RGBA differences from the registered empty master inside the required-fill guide**, not by alpha coverage. The scaffold by itself must fail the required-fill gate; a transparent object-only layer must fail the editable-patch defined-coverage gate.
-
-The finished variable patch is then passed to `compose`. This ensures that unchanged cavity pixels remain identical to the registered master while actual resource pixels replace only the permitted region.
-
-## Contents contract
-
-For the normal/full boxed-resource presentation:
-
-- contents must visually fill the interior instead of reading as a small pile placed on the floor;
-- the pile footprint should approach the inner rim on all four sides in the same manner as the accepted exemplar;
-- apparent pile height and central mound must remain in the accepted family range;
-- visible empty floor must not increase substantially relative to the accepted exemplar;
-- individual resource shapes may change, but their overall mass/occupancy must remain comparable;
-- stack-count variants may intentionally use less content, but each variant needs an explicit occupancy target rather than arbitrary scaling.
-
-Do not shrink the entire contents group merely to make it fit. Redraw/rearrange contents inside the registered guides.
-
-## Layer order
-
-Use deterministic compositing:
-
-1. fixed rear/interior master;
-2. variable contents layer;
-3. fixed front/side rim or other foreground container layer where required;
-4. restore all protected master RGBA pixels exactly.
-
-Never resize, rotate, recolor, blur, quantize, or regenerate the shared container after registration. Do not resize the completed icon after composition; work on the final canvas from the start.
-
-## Candidate lifecycle and contamination disposal
-
-Candidate assets are disposable working material, not reference material.
-
-If any step reveals that a candidate chain used the wrong registered reference, wrong common-part pixels, a broken/obsolete mask, an unintended whole-image regeneration, contaminated color/edge data, or another invalid production path, then **the entire derivative chain from that point is invalid**.
-
-Required response:
-
-1. Stop using every descendant candidate immediately.
-2. Delete persistent Library copies of those candidates/reviews/previews.
-3. Delete local working copies and generated comparison sheets derived from them.
-4. Remove durable documentation that presents discarded candidates as reusable assets.
-5. Keep the authoritative master/reference/manifest only.
-6. Record the invalidation in `Docs/Coordination.md`.
-7. Restart from the last verified authoritative source; do not "repair" a contaminated candidate unless the repair is a deterministic reconstruction from authoritative sources with no contaminated pixels retained.
-
-Do not retain invalid candidates merely because they might be useful for visual comparison. If a diagnostic example must be preserved, it must be clearly segregated as non-source diagnostic material with an unambiguous `INVALID_`/failure label and must never be accepted by production tooling as a reference.
-
-## Reference-integrity rule
-
-Every comparison sheet and palette judgment must use the exact manifest-registered `representative_final`. Do not use an ad-hoc local alias, a prior candidate, a regenerated image, or a visually similar copy as the "reference".
+Every comparison sheet must load the manifest's registered `representative_final` and verify its SHA-256.
 
 Run:
 
 `python Scripts/Art/boxed_resource_review.py Docs/References/AMJ_Masu_Template.json <candidate.png> --output <review.png>`
 
-The script verifies the registered reference SHA-256 before rendering the 256px and ~64px comparison. Hash mismatch or missing reference is a hard failure. A reference presented to the author without this verification is invalid.
+Do not substitute an ad-hoc local alias, regenerated image, or remembered reference.
 
-## Visual-reference rule
+## Candidate lifecycle
 
-For every derivative, inspect the actual accepted filled exemplar before creating the contents. Text instructions and the empty master alone are insufficient. If the reference cannot be retrieved or its SHA-256 does not match the registered value, stop rather than approximating from memory.
+Invalid production branches are disposable. If a candidate used the wrong reference, wrong layer order, two-layer cavity replacement, simple content clipping, unintended whole-image generation, or contaminated pixels:
 
-A mechanically valid result that visibly diverges from the accepted filled exemplar is rejected. CI success never overrides a failed visual-composition check.
+1. stop using it;
+2. delete its descendants and review sheets;
+3. do not use it as a reference;
+4. record the invalidation in `Docs/Coordination.md`;
+5. restart from authoritative assets.
 
 ## Current masu status
 
-Accepted filled reference:
-- Library source: `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png`
-- source SHA-256: `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`
-- normalized repository exemplar: `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`
-- normalized alpha envelope: `[17, 28, 239, 235]`
+The physical/canonical master remains the visually approved **masu v2**. The compositor contract is **v3-layered**.
 
-**Masu v2 is ACTIVE.** The previous upscaled v2 candidate was not registered because self-QC found visible resampling roughness. The active v2 master was rebuilt from high-resolution sources: the author-approved filled exemplar supplies the protected exterior/rim pixels, while only the editable cavity is replaced with the clean empty interior. This removes the scaling artifacts while keeping the approved outer appearance exact.
+The v3-layered change does not redraw the master. It changes only how future contents are placed relative to it.
 
-Registered v2:
-- master: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`
-- allowed/editable fill mask: `Docs/References/AMJ_Masu_EditableMask.png`
-- required-fill guide: `Docs/References/AMJ_Masu_RequiredFill.png`
-- manifest: `Docs/References/AMJ_Masu_Template.json`
-- representative final: `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`
-
-The representative final has zero RGBA differences from the master outside the editable mask. The required-fill guide is a strict subset of the allowed/editable mask, and the compositor rejects variable layers that do not span/cover the registered required-fill region.
+The former `replace_rgba` complete-cavity patch path is superseded for new resources. The old identity-variable asset remains historical diagnostic evidence that the old reference/master pair was internally consistent; it is not a reusable contents layer.
 
 ## Validation commands
 
-After v2 is active, boxed-resource derivatives must pass the family manifest through:
+Create a transparent contents scaffold:
 
-`python Scripts/Art/fixed_template.py scaffold <manifest> --output <variable-patch.png>`
+`python Scripts/Art/fixed_template.py scaffold Docs/References/AMJ_Masu_Template.json --output <contents.png>`
 
-Edit the scaffold to add the resource, then:
+Draw only the resource into that transparent contents image, then:
 
-`python Scripts/Art/fixed_template.py compose <manifest> <variable-patch.png> --output <final.png>`
+`python Scripts/Art/fixed_template.py compose Docs/References/AMJ_Masu_Template.json <contents.png> --output <final.png>`
 
-`python Scripts/Art/fixed_template.py validate <manifest> <final.png>`
+`python Scripts/Art/fixed_template.py validate Docs/References/AMJ_Masu_Template.json <final.png>`
 
-Then run the family regression test and:
+Then run:
+
+`python Tests/test_masu_template.py`
 
 `python Tests/validate_png_assets.py`

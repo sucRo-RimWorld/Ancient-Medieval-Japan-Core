@@ -148,7 +148,7 @@ Masu v2 is **ACTIVE**. Its outer/rim protected pixels come from the accepted exe
 
 Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
 
-Deterministic template registration: `Docs/References/AMJ_Masu_Template.json` with allowed/editable mask `Docs/References/AMJ_Masu_EditableMask.png` and required-fill guide `Docs/References/AMJ_Masu_RequiredFill.png`. Rim, exterior faces, outline, joinery, protected wood shading, placement, and transparent margins must have zero RGBA pixel differences; variable contents must also satisfy the registered fill profile.
+Deterministic template registration: `Docs/References/AMJ_Masu_Template.json`. The masu uses a semantic three-layer stack: fixed rear/interior, transparent contents, fixed foreground/front-side wood. The historical editable mask remains only a permission/coverage diagnostic and must **not** be used to clip the contents. The required-fill guide remains a validation target. Foreground wood comes from exact canonical master pixels and is rendered after the contents.
 
 Fixed container properties:
 - square masu silhouette and the approved three-quarter viewing angle;
@@ -164,7 +164,7 @@ Only the **contents** may vary between resources. The final production icon must
 Production rule:
 1. Start from the accepted empty-masu master.
 2. Generate/draw only the resource contents, using the master as the visual and geometric reference.
-3. Composite the contents into the master so that the container itself remains unchanged. Where useful, keep the rear/interior and front-rim portions as separate fixed layers so the contents sit naturally inside the masu.
+3. Split the canonical master into **fixed rear masu** and **fixed front/side masu** layers, place the transparent contents between them, and render in that order. This is mandatory for the masu family, not optional. Do not solve occlusion by clipping contents to a simple geometric cavity/pile mask.
 4. For stack-count variants, keep the same master and change only content amount/arrangement.
 5. If image generation alters the masu silhouette, perspective, rim, joinery, wood colors, or placement, reject that output rather than treating the changed container as a new base.
 6. Whole-icon regeneration is not a production path for shared parts. Use deterministic local compositing from the first derivative and require zero protected RGBA pixel differences under `Docs/GoldenPaths/FixedImageTemplates.md`.

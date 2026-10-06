@@ -27,7 +27,7 @@
 
 汚染経路が判明した場合（誤った参照画像、誤った固定パーツ、旧/不正マスク、全体再生成の混入、誤色・境界色の伝播等）は、その時点以降の派生物をすべて失効扱いとし、Library・ローカル作業領域の候補/比較画像/プレビューを削除する。「比較に使えるかもしれない」という理由で保持しない。正本マスター・正本参照・マニフェストのみを残し、そこから再開する。診断用に残す必要がある場合は production source と混同できない隔離名/場所で保持し、正本参照経路から到達できないようにする。
 
-固定テンプレートで可変素材を作る前に、正本マスターと正本完成例のRGBA差分から「正確な可変画素マスク」を求め、その画素だけを抽出してマスターへ戻す**恒等再合成テスト**を行う。再合成結果が完成例と0画素差にならない場合、分解手順が未完成なので色・材質変更へ進まない。広いeditable maskや概形ポリゴンは許可範囲/充填検査用であり、可変レイヤー正本の代用にしない。
+固定テンプレートで前後関係を持つ共有部品（容器・額縁など）は、単一のeditable maskで可変素材を切り抜かない。共有部品を意味的な前景/後景レイヤーへ分割し、可変素材をその間へ置く。空状態で前景+後景が正本マスターと0 RGBA画素差になることを必須ゲートとする。editable/coverage maskは検査用であり、複雑な遮蔽を代替する制作マスクとして使わない。
 
 ## 用語上の実行ルール
 
@@ -78,7 +78,7 @@ variable.pngは登録寸法に配置済みの透明レイヤー。ツールは�
 
 ## 現在の移行状態と新規チャット
 
-- 枡：**v2固定テンプレート ACTIVE。** マスター `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`、許可/変更マスク `Docs/References/AMJ_Masu_EditableMask.png`、required-fill guide `Docs/References/AMJ_Masu_RequiredFill.png`、完成例 `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`、登録簿 `Docs/References/AMJ_Masu_Template.json`。v2は承認済み完成例の保護領域をそのまま固定し、内部だけを高解像度の空枡素材から再構成して拡縮荒れを除去した。派生は共通部のRGBA差分0に加え、required-fill/allowed-fill検査を通す。
+- 枡：**v3 layered compositor ACTIVE（master geometry は v2 継続）。** 正本マスター `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` を意味的に「後方枡」「中身」「前方/側面枡」の3層として扱う。中身は透明オブジェクトレイヤーで、単純なcavity/pile maskではクリップしない。前景木部は正本マスターの画素を最後に戻す。required-fill guideは充填検査専用、旧editable mask/identity variableは診断・履歴用であり新規素材の合成構造ではない。登録簿は `Docs/References/AMJ_Masu_Template.json`。
 - 表紙：**v1固定テンプレート登録済み。** 視覚参照 `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`、空の共通PNGマスター `/AMJ/References/AMJ_WorkshopCover_CommonBase.png`、Addon名/右図案マスク `/AMJ/References/AMJ_WorkshopCover_VariableMask.png` をpersistent Libraryに固定し、登録簿は `Docs/References/AMJ_WorkshopCover_Template.json`、制作手順は `Docs/GoldenPaths/WorkshopCoverPipeline.md` とする。最終表紙をImageGenで直接生成せず、右図案のみ生成して決定的に合成・検査する。SVGは参考図であり画素マスターではない。
 - 樹木：現行Sudajii/ブナは画風の参照。別樹種は別形状。共用する幹等を宣言する状態差分にはそのパーツの固定テンプレートを登録する。
 

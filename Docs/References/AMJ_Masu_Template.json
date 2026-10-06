@@ -1,7 +1,7 @@
 {
   "version": 1,
   "family": "amj-boxed-resource-masu",
-  "template_revision": "v2",
+  "template_revision": "v3-layered",
   "production_status": "active",
   "approval": "visual design anchored to author-approved buckwheat-in-hull exemplar; v2 technical cleanup preserves approved composition and removes known resize artifacts",
   "size": [
@@ -64,9 +64,9 @@
   ],
   "editable_region": "contents may vary only inside the registered allowed/editable fill region; all other RGBA pixels are protected",
   "fixed_layer_order": [
-    "registered v2 master",
-    "replace editable-mask RGBA with variable layer",
-    "protected pixels remain byte-identical to master"
+    "rear masu derived from canonical master",
+    "transparent variable contents layer without simple cavity/pile clipping",
+    "front/side masu foreground derived from canonical master"
   ],
   "self_qc": [
     "inspect at 256px and about 64px",
@@ -79,14 +79,87 @@
     "status": "approved",
     "note": "Author reviewed the v2 comparison at full and game-like small size and confirmed it looked acceptable."
   },
-  "compose_mode": "replace_rgba",
-  "identity_exemplar": {
+  "compose_mode": "rear_contents_front",
+  "master_revision": "v2",
+  "layer_model": "rear_contents_front",
+  "content_clipping": "none",
+  "editable_mask_role": "legacy permission/coverage diagnostic only; not used to clip contents in the active three-layer compositor",
+  "front_occluder_regions": [
+    [
+      [
+        18,
+        102
+      ],
+      [
+        127,
+        173
+      ],
+      [
+        237,
+        103
+      ],
+      [
+        237,
+        152
+      ],
+      [
+        127,
+        234
+      ],
+      [
+        18,
+        153
+      ]
+    ],
+    [
+      [
+        18,
+        102
+      ],
+      [
+        38,
+        104
+      ],
+      [
+        127,
+        160
+      ],
+      [
+        127,
+        173
+      ]
+    ],
+    [
+      [
+        127,
+        160
+      ],
+      [
+        218,
+        104
+      ],
+      [
+        237,
+        103
+      ],
+      [
+        127,
+        173
+      ]
+    ]
+  ],
+  "structural_gates": {
+    "empty_master_roundtrip_rgba_diff_pixels": 0,
+    "fixed_foreground_rgba_diff_pixels": 0,
+    "required_fill_uses_final_difference_from_master": true,
+    "visible_envelope": "union of canonical master and registered representative-final alpha"
+  },
+  "legacy_identity_exemplar": {
     "variable_layer_path": "AMJ_BuckwheatInHull_IdentityVariable.png",
     "variable_layer_sha256": "860c0cba443f1fb2a0bf2ba3f839750b2a4e764cf2041091a87f743f0b33d28e",
     "expected_final_path": "AMJ_BuckwheatInHull_Ideal_256.png",
     "expected_final_sha256": "0f81aa92460154d2b1ae50de14d7360be5e44ff46f8c81bdd113b6e19143d752",
     "required_rgba_diff_pixels": 0,
-    "note": "Identity validation layer: exact approved variable RGBA inside the registered editable mask; transparent outside."
-  },
-  "replace_patch_min_defined_coverage": 0.98
+    "note": "Identity validation layer: exact approved variable RGBA inside the registered editable mask; transparent outside. Historical two-layer diagnostic only; not the production compositor for new resources."
+  }
 }
