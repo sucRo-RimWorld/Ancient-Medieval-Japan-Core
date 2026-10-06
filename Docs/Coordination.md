@@ -100,6 +100,8 @@ Potential division: CBF owns procedural assembly / editor / XML export; AMJ owns
 
 
 ### ART-RULES-021 — image-rule consolidation and contents-first masu workflow
+**Non-destructive source preservation correction (2026-10-06 JST):** Accepted high-resolution image masters are now explicitly immutable and stored under `Art/Sources/`; production `Textures/` PNGs are derivatives only. Resize/crop/recolor/export operations must write new files and leave the accepted source unchanged. If the exact source has not been uploaded/committed, agents must not claim it is preserved. Source commits: `ebeaca8b053fac98a7a822bf9324bb08c3667d41`, `a78495d4502d0795b6c5191ab3c5d61ef8a6a2e6`, guard `6aafbb35e656cf5603e8bc3af272271c3265da85`.
+
 
 **Requested by:** author (2026-10-06 JST; rule cleanup after repeated generation/style failures)  
 **Owner:** AMJ shared art policy / Core art  
