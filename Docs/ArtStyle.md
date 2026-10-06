@@ -1,6 +1,6 @@
 # AMJ Art Style Guide
 
-> Boxed-resource research (2026-10-06): [occlusion audit](Research/BoxedResourceOcclusionAudit.md) records shared lower-container pixels and content-dependent contact boundaries in eleven MO icons. The masu v2 identity PASS does not establish that all different contents can use the exemplar's exact difference shape. Proposed contact-region changes remain unimplemented; this audit does not replace the accepted art, masters, masks, or production rules.
+> Boxed-resource research (2026-10-06): [occlusion audit](Research/BoxedResourceOcclusionAudit.md) records shared lower-container pixels and content-dependent contact boundaries in eleven MO icons. The masu v2 identity PASS does not establish that all different contents can use the exemplar's exact difference shape. The audit itself is historical research; the current v4 contact contract and production block are specified in `GoldenPaths/BoxedResourceIconPipeline.md`. Accepted master and exemplar pixels are unchanged.
 
 This document is the durable visual reference for **Ancient & Medieval Japan (AMJ)** assets.
 
@@ -149,31 +149,22 @@ The author-approved **filled buckwheat-in-hull image** is also a required compos
 
 Persistent accepted visual reference: `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png` (1254×1254 PNG, SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`). The normalized repository exemplar is `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`, with non-transparent envelope `[17, 28, 239, 235]`.
 
-Masu v2 is **ACTIVE**. Its outer/rim protected pixels come from the accepted exemplar, its empty interior is rebuilt from the high-resolution empty source, and the previous upscaling roughness is not part of the registered master. See `Docs/GoldenPaths/BoxedResourceIconPipeline.md`.
+The approved masu v2 master remains registered; **new-resource production is blocked pending v4 contact validation**. Its outer/rim protected pixels come from the accepted exemplar, its empty interior is rebuilt from the high-resolution empty source, and the previous upscaling roughness is not part of the registered master. See `Docs/GoldenPaths/BoxedResourceIconPipeline.md`.
 
 Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
 
-Deterministic template registration: `Docs/References/AMJ_Masu_Template.json`. The masu uses a semantic three-layer stack: fixed rear/interior, transparent contents, fixed foreground/front-side wood. The historical editable mask remains only a permission/coverage diagnostic and must **not** be used to clip the contents. The required-fill guide remains a validation target. Foreground wood comes from exact canonical master pixels and is rendered after the contents.
+Deterministic template registration: `Docs/References/AMJ_Masu_Template.json`. The v4 study uses an intact-master context scaffold. Draw contents and their contact with the box together, then restore only the conservative lower HardFixed wood. Upper rim, inner walls and upper front/side walls are occludable ContactZone. ExtensionAllowed is independent of the Soba silhouette; RequiredFill is a profile-specific validation guide, never a clipping mask. See `Docs/GoldenPaths/BoxedResourceIconPipeline.md` for the complete contract.
 
-Fixed container properties:
-- square masu silhouette and the approved three-quarter viewing angle;
-- container scale and placement on the 256×256 canvas;
-- rim width and board thickness;
-- dark warm-brown outer contour;
-- corner joinery;
-- wood palette and shading planes;
-- transparent margin around the container.
-
-Only the **contents** may vary between resources. The final production icon must preserve the master container geometry and appearance; do not accept a generated variant just because it is "similar".
+The canonical container angle, scale, placement, wood palette and geometry remain the reference. HardFixed lower wood must match all master RGBA exactly. Within ContactZone, visibility and subtle contact shading may depend on contents; do not insist on restoring every upper rim/front-wall pixel. This permitted occlusion is distinct from redesigning the container.
 
 Production rule:
-1. Start from the accepted empty-masu master.
-2. Generate/draw only the resource contents, using the master as the visual and geometric reference.
-3. Split the canonical master into **fixed rear masu** and **fixed front/side masu** layers, place the transparent contents between them, and render in that order. This is mandatory for the masu family, not optional. Do not solve occlusion by clipping contents to a simple geometric cavity/pile mask.
-4. For stack-count variants, keep the same master and change only content amount/arrangement.
-5. If image generation alters the masu silhouette, perspective, rim, joinery, wood colors, or placement, reject that output rather than treating the changed container as a new base.
-6. Whole-icon regeneration is not a production path for shared parts. Use deterministic local compositing from the first derivative and require zero protected RGBA pixel differences under `Docs/GoldenPaths/FixedImageTemplates.md`.
-7. Normalize the finished production texture to the repository format and run `python Tests/validate_png_assets.py` before committing.
+1. Start from the registered intact master scaffold, without carving complementary rear/front rasters.
+2. Edit only contents and ContactZone/ExtensionAllowed. Transparent object-only input is insufficient; retain unoccluded original wood in the context canvas.
+3. Reject forbidden changes instead of clipping away leaks; restore only HardFixed pixels exactly.
+4. Keep the same contract across resource/stack variants. Use suitable fill profiles; the current bulk-grain threshold does not validate every shape.
+5. Inspect 256px and about 64px for natural contacts, no cutoffs, halos, stale colors or pasted appearance; use the exact hashed reference via `boxed_resource_review.py`.
+6. Complete contrasting-shape visual activation before production. A study/identity PASS does not lift the production block.
+7. Run `python Tests/test_masu_template.py` and `python Tests/validate_png_assets.py` before committing.
 
 When AMJ retextures compatible Vanilla / Medieval Overhaul boxed raw-resource icons, preserve their familiar **boxed-item reading at game scale**, but use this same canonical masu treatment for series consistency.
 

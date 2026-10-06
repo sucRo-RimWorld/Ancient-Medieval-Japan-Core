@@ -1,9 +1,9 @@
 {
   "version": 1,
   "family": "amj-boxed-resource-masu",
-  "template_revision": "v3-layered",
-  "production_status": "active",
-  "approval": "visual design anchored to author-approved buckwheat-in-hull exemplar; v2 technical cleanup preserves approved composition and removes known resize artifacts",
+  "template_revision": "v4-contact-study",
+  "production_status": "blocked_pending_occlusion_validation",
+  "approval": "v2 master and in-hull exemplar approved; v4 region contract is registered for structural studies only, visual activation pending",
   "size": [
     256,
     256
@@ -19,8 +19,9 @@
   "required_fill": {
     "path": "AMJ_Masu_RequiredFill.png",
     "sha256": "eac8f749871ea2f511faf69afede8dd89466b92fc0b7cd0a755ad9fca3a5fcc0",
-    "min_alpha_coverage": 0.65,
-    "alpha_threshold": 8
+    "alpha_threshold": 8,
+    "profile": "bulk_grain",
+    "min_changed_visible_coverage": 0.65
   },
   "representative_final": {
     "path": "AMJ_BuckwheatInHull_Ideal_256.png",
@@ -62,97 +63,33 @@
     208,
     157
   ],
-  "editable_region": "contents may vary only inside the registered allowed/editable fill region; all other RGBA pixels are protected",
+  "editable_region": "v4 contact_zone and extension_allowed only; HardFixed restored exactly; all other pixels forbidden",
   "fixed_layer_order": [
-    "rear masu derived from canonical master",
-    "transparent variable contents layer without simple cavity/pile clipping",
-    "front/side masu foreground derived from canonical master"
+    "full intact canonical master",
+    "rendered contents and contact artwork in registered contact/extension regions",
+    "exact canonical HardFixed RGBA restoration"
   ],
   "self_qc": [
     "inspect at 256px and about 64px",
     "fix objective technical artifacts before presentation/registration",
     "do not request acceptance for a known deterministically fixable defect"
   ],
-  "enforce_variable_within_editable": true,
   "author_visual_confirmation": {
     "date": "2026-10-05",
     "status": "approved",
     "note": "Author reviewed the v2 comparison at full and game-like small size and confirmed it looked acceptable."
   },
-  "compose_mode": "rear_contents_front",
+  "compose_mode": "intact_master_contact",
   "master_revision": "v2",
-  "layer_model": "rear_contents_front",
+  "layer_model": "intact_master_base__contents_contact__hard_fixed_foreground",
   "content_clipping": "none",
-  "editable_mask_role": "legacy permission/coverage diagnostic only; not used to clip contents in the active three-layer compositor",
-  "front_occluder_regions": [
-    [
-      [
-        18,
-        102
-      ],
-      [
-        127,
-        173
-      ],
-      [
-        237,
-        103
-      ],
-      [
-        237,
-        152
-      ],
-      [
-        127,
-        234
-      ],
-      [
-        18,
-        153
-      ]
-    ],
-    [
-      [
-        18,
-        102
-      ],
-      [
-        38,
-        104
-      ],
-      [
-        127,
-        160
-      ],
-      [
-        127,
-        173
-      ]
-    ],
-    [
-      [
-        127,
-        160
-      ],
-      [
-        218,
-        104
-      ],
-      [
-        237,
-        103
-      ],
-      [
-        127,
-        173
-      ]
-    ]
-  ],
+  "editable_mask_role": "historical identity reconstruction only; not a v4 permission or clipping mask",
   "structural_gates": {
-    "empty_master_roundtrip_rgba_diff_pixels": 0,
-    "fixed_foreground_rgba_diff_pixels": 0,
-    "required_fill_uses_final_difference_from_master": true,
-    "visible_envelope": "union of canonical master and registered representative-final alpha"
+    "hard_fixed_rgba_diff_pixels": 0,
+    "forbidden_rgba_diff_pixels": 0,
+    "required_fill_uses_visible_final_difference_from_master": true,
+    "visible_envelope": "independent extension_allowed plus intact master; no representative-final alpha constraint",
+    "empty_context_rgba_diff_pixels": 0
   },
   "legacy_identity_exemplar": {
     "variable_layer_path": "AMJ_BuckwheatInHull_IdentityVariable.png",
@@ -164,7 +101,33 @@
   },
   "new_resource_production_status": "blocked_pending_occlusion_validation",
   "v3_split_status": "superseded_due_visible_split_damage",
-  "next_layer_model": "intact_master_base__contents_contact__hard_fixed_foreground",
   "contact_region_policy": "occludable; do not blindly restore upper/contact wood after contents",
-  "front_occluder_regions_role": "historical v3 experiment only; not approved for new-resource production"
+  "region_contract": {
+    "hard_fixed": {
+      "path": "AMJ_Masu_HardFixed.png",
+      "sha256": "9a192649c341173315b20aa3ade5ed1884dfe6b9514033f99968ff049e0d9e42"
+    },
+    "contact_zone": {
+      "path": "AMJ_Masu_ContactZone.png",
+      "sha256": "b3aecd68053c1e55bd957dbf36108879a4271cbcf0648797de9dfd7d95fd26e3"
+    },
+    "extension_allowed": {
+      "path": "AMJ_Masu_ExtensionAllowed.png",
+      "sha256": "5fbd0aa913c8c6e0da3547b2f5bf39d241cc67bb16d1a9f49df0e2f82c61d8b5"
+    },
+    "construction": {
+      "hard_fixed": "master alpha > 0 below front-rim V (y=173 - abs(x-127)*70/110) plus 40px; lower wood only",
+      "contact_zone": "remaining visible master pixels, including front/side upper wall, rim and interior",
+      "extension_allowed": "transparent master pixels inside independent rectangle [8,8,248,196]; not derived from any filled exemplar",
+      "status": "study_only_pending_three_shape_visual_validation"
+    }
+  },
+  "contact_patch_min_defined_coverage": 0.98,
+  "variable_source_contract": "full rendered context canvas based on intact master scaffold; edit contents plus contact/extension only; object-only transparent layer is invalid",
+  "activation_requirements": [
+    "one unchanged region contract for low grains, large pieces, and strong over-rim overlap",
+    "structural gates pass for all three",
+    "natural contacts and no cutoffs/seams at 256px and about 64px",
+    "record visual acceptance separately; synthetic tests and identity proof do not activate production"
+  ]
 }

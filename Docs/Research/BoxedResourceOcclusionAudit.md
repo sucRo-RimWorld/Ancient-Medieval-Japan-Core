@@ -145,3 +145,12 @@ After this audit was pushed, visual review of the separate v3-layered implementa
 The audit and the author's three-layer proposal are reconciled as follows: keep the complete canonical masu master intact as the base/rear layer; render contents/contact artwork over it; then reassert only a conservative hard-fixed foreground subset copied exactly from the master. Do **not** create the rear layer by subtracting a foreground polygon from the master. Do **not** clip contents with a cavity/pile polygon. The upper/contact region remains occludable, consistent with the MO comparison in this report.
 
 This revised model is not yet activated for new-resource production. Core now fails closed until contrasting-content-shape tests and 256px/~64px visual checks establish that one region contract works without per-image mask changes.
+
+
+## 7. 2026-10-06 修正実装への参照
+
+作者の「修正して」により、調査後の修正をv4-contact-studyとして実装した。第4・5節の未実装という記述は調査公開時点の状態を示す。現在の領域契約・入力形式・検証専用入口・本番停止状態は `Docs/GoldenPaths/BoxedResourceIconPipeline.md`、`Docs/References/AMJ_Masu_Template.json`、`Scripts/Art/fixed_template.py` を正本とする。
+
+修正は、下側だけの保守的HardFixed、前壁・側壁上部を含むContactZone、ソバ完成例alphaに依存しないExtensionAllowed、充填検査専用RequiredFillを登録し、完全な枡scaffoldを見ながら内容物と接触部を編集する方式へ統一する。旧相補的前後分割を削除し、上部木部を無条件復元しない。範囲外の変更は透明RGB・低alphaも拒否し、クリップで通さない。
+
+登録した40px接触帯・突出矩形はAMJマスターを基にした**検証用の初版**であり、MO集計から境界位置が証明されたものではない。合成図形3形状で構造を検査しても、自然な実資源の視覚検証には代えない。既存承認画像とマスターを維持し、本番は3形状・256px/約64pxの視覚検証まで停止する。

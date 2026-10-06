@@ -1,149 +1,90 @@
 # Boxed Resource Icon Pipeline — Golden Path
 
-> **2026-10-06 occlusion-audit integration:** the first v3 implementation that physically split the canonical masu into complementary rear/front rasters is **superseded**. Visual inspection found damaged pixels at the split boundary. The separate MO audit also shows that upper/contact-region visibility depends on the contents. New-resource production is therefore blocked. The next model keeps the **full canonical master intact as the base/rear**, renders transparent **contents/contact** artwork above it without a cavity/pile clipping mask, then reasserts only conservative **hard-fixed foreground** wood from exact master pixels. The contact zone remains occludable. Activation requires contrasting-content-shape tests plus 256px/~64px visual review.
+## 状態と正本
 
-> Research addendum (2026-10-06): [the occlusion/fixed-region audit](../Research/BoxedResourceOcclusionAudit.md) assessed the preceding v2 snapshot. Its identity PASS proved exemplar reconstruction, not natural different-content production. The separate v3-layered change is preserved here; this research publication does not validate v3 or prove that restoring a fixed foreground permits natural contents-over-rim occlusion.
+2026-10-06：MO比較で判明した修正を **v4-contact-study** に反映した。正本の空枡と承認済み殻付きソバ画像は変更していない。新規資源の本番制作は `blocked_pending_occlusion_validation`。領域契約と合成・検査コードの実装完了は、自然な別内容物の量産成功を意味しない。
 
-This document is the production contract for AMJ resource icons that share the Japanese masu while changing only the contents.
+- マスター：`Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`（承認済みv2、256×256 RGBA）
+- マニフェスト：`Docs/References/AMJ_Masu_Template.json`
+- 完成例：`Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`
+- 高解像度完成例：Library `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png`
+- 調査根拠：[BoxedResourceOcclusionAudit.md](../Research/BoxedResourceOcclusionAudit.md)
 
-## Command semantics
+各画像・マスクはマニフェストのSHA-256を照合する。殻付きソバの恒等再合成は例示画像の保存・復元の回帰検査であり、汎用性の証明には使わない。
 
-For boxed-resource icons, 「作成」「制作」「続けて」 means deterministic local production from registered assets. It does not authorize ImageGen.
+## 領域契約
 
-Only an explicit request containing 「生成」 permits ImageGen, and then only for the **contents** source. Never regenerate the masu or the final whole icon.
+| 領域 | 責務 | 機械検査 |
+| --- | --- | --- |
+| HardFixed | 下側の前壁・側壁・下角・下部輪郭の保守的な木部 | 最終RGBA差分0。半透明輪郭も元のRGBAを直接コピー |
+| ContactZone / Occludable | 内壁・上面・上縁・前壁上部・側壁上部。内容物で隠れる、接触影が変わる範囲 | 内容物と接触部を一緒に編集。最後に無条件復元しない |
+| ExtensionAllowed | 上方・左右へ突出できる独立した余白 | 範囲外の変更を拒否。ソバ完成例のalpha形状を上限にしない |
+| RequiredFill | 充填量検査用の内部ガイド | 可視かつマスターから変化した画素の割合。描画・切り抜きには使用しない |
+| Forbidden（導出） | 上記3つの許可領域以外の全画素 | 最終RGBA差分0。透明画素のRGBと低alphaも検査 |
 
-## Active architecture: three layers
+HardFixed・ContactZone・ExtensionAllowedは相互排他的。全マスター可視画素をHardFixedまたはContactZoneに分類し、未分類を許さない。RequiredFillはContactZone/ExtensionAllowed内の独立した検査ガイド。
 
-The masu family uses this exact z-order:
+v4初版のHardFixedは、前縁V字の近似線 `y = 173 - abs(x - 127) * 70 / 110` より40px下側のマスター可視画素だけとする。残りの可視木部・内部はContactZone。これにより前壁上部まで接触帯を確保する。ExtensionAllowedは独立矩形 `[8, 8, 248, 196]` 内のマスター透明画素。いずれも**検証用の初版であり、視覚承認済みの境界ではない**。MOの一致率からAMJの具体的な境界が直接証明されたとは扱わない。
 
-1. **fixed rear masu** — back rim, rear/interior walls and floor;
-2. **transparent contents** — the only resource-specific artwork;
-3. **fixed front/side masu** — foreground rim and visible exterior/front walls.
+同じ契約で3形状を試す。個々の候補を通すためにマスクを広げない。契約改訂が必要なら版・ハッシュ・根拠を更新し、3形状すべてを再検証する。
 
-This is mandatory. The foreground and rear are exact pixel selections from the canonical master; they are not redrawn or recolored.
+## 内容物＋接触部の入力
 
-### Why the old two-layer path is forbidden
+入力は、空枡マスターをそのまま複製した256×256の**描画済みコンテキスト画像**。空枡を見た状態で内容物・遮蔽・接触部の輪郭・控えめな接触影をContactZoneとExtensionAllowedへ描く。何も隠れない木部は元のマスターを残す。
 
-Do not model the icon as “empty master + contents clipped/replaced through one cavity/pile/editable mask”.
+- 透明な内容物だけを単独生成して載せる入力は使用しない。入力には元の空枡の文脈を保持する。
+- 完成例との差分マスク、内部の菱形、単純な粒山形状へ内容物をクリップしない。
+- ContactZoneでは、覆われる縁の画素や接触影も編集してよい。木部画素を一律禁止する旧規則は廃止。
+- 内容物を描き終えたコンテキスト画像を、さらにマスターへalpha合成しない。描画済みの接触・半透明輪郭を二重合成しない。
+- マスターへの拡縮、回転、全体色補正、ぼかし、全体量子化は不可。最終サイズを維持する。
+- 全体画像を生成し直して共有部品を採用することは不可。生成が明示的に許可された場合も、制作対象はContactZone/ExtensionAllowed内の内容物と接触部だけ。
 
-That approach cannot represent the masu's perspective and occlusion correctly. It caused repeated failures at the upper-left/upper-right rim, boundary-color contamination, and complete-cavity replacement artifacts. Expanding or tuning a geometric mask does not fix the structural problem.
+`contact_patch_min_defined_coverage = 0.98` は、元マスターが可視の接触帯で入力alphaが8以上の割合を検査する。透明素材で枡の大半を消す誤入力の検出用であり、正しい遮蔽や自然さの証明ではない。
 
-The historical editable mask and exact-variable/replace-RGBA identity assets remain useful as diagnostics/history, but they are **not** the production compositor for new resources.
+## 決定的合成
 
-## Contents layer contract
+1. ハッシュ、寸法、マスクの二値性・分類・重複・RequiredFillの包含を確認する。
+2. 完全なマスターを複製したscaffoldで内容物と接触部を編集する。
+3. 入力のForbidden変更を検出する。許可範囲外を切り落として合格にはしない。
+4. 描画済み画像を保持し、HardFixedのRGBAだけ正本から直接復元する。元枡を相補的な前後ラスターへ分割しない。
+5. HardFixedとForbiddenの最終RGBA差分0、充填、寸法、PNG構造を確認する。
+6. 正本完成例との256px/約64px比較で、縁の前後関係・粒の切断・貼り付け感・ハロー・左右上部の汚染を確認する。
 
-The contents layer is a normal transparent RGBA image on the final 256×256 canvas.
+RequiredFillの現行0.65閾値は **bulk_grain** 用の構造的最低条件。透明消去は充填として数えない。大きな塊や長い物体の本番制作には、形状に適した別の充填プロファイルを登録・検証する。単一の65%基準を全資源の自然さ判定に一般化しない。
 
-- Do **not** clip it to the historical editable mask.
-- Do **not** clip it to a guessed diamond, pile polygon, or other simple cavity shape.
-- It may extend underneath the foreground rim; the front layer will occlude it.
-- It must not contain any masu wood pixels.
-- It must not be resized after composition.
-- For locally created art, prefer a high-resolution source and downsample the contents once before final composition.
-- Item/resource art follows `Docs/ArtStyle.md`: few broad color planes, thick warm-brown outline, no texture noise, readable at about 64 px.
+## 検証と本番を分離する
 
-The required-fill guide is a **validation target only**. It measures whether a normal/full resource visually fills the box. It is not a clipping mask.
+`scaffold` / `compose` は本番入口であり、現在は停止する。検証専用入口を使う：
 
-## Canonical fixed layers
+```bash
+python Scripts/Art/fixed_template.py scaffold-study Docs/References/AMJ_Masu_Template.json --output /tmp/masu-study/context.png
+# 元の空枡を見ながら、内容物と接触部を許可領域内に描く
+python Scripts/Art/fixed_template.py compose-study Docs/References/AMJ_Masu_Template.json /tmp/masu-study/context.png --output /tmp/masu-study/final.png
+python Scripts/Art/fixed_template.py validate Docs/References/AMJ_Masu_Template.json /tmp/masu-study/final.png
+python Scripts/Art/boxed_resource_review.py Docs/References/AMJ_Masu_Template.json /tmp/masu-study/final.png --output /tmp/masu-study/review.png
+python Tests/test_masu_template.py
+python Tests/validate_png_assets.py
+```
 
-The source of truth remains:
+study出力は `Textures` と `Docs/References` へ書けない。マスター・参照・全マスク・恒等素材・入力の上書きも禁止する。構造検査のPASSで本番状態は変化しない。Windowsでは `/tmp/masu-study` を通常テクスチャとして使われない一時フォルダーへ置き換える。
 
-- master: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`
-- manifest: `Docs/References/AMJ_Masu_Template.json`
-- approved filled visual reference: `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`
-- persistent high-resolution reference: `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png`
+比較シートは `boxed_resource_review.py` が登録済み `representative_final` のSHA-256を検証して作る。別の記憶・生成画像・ローカル別名へ参照を差し替えない。
 
-The manifest registers semantic foreground regions. Tooling derives rear/front layers directly from the hashed master.
+## 視覚的な有効化条件
 
-An empty reconstruction must satisfy:
+同じマスター・同じ領域契約を変更せず、**低い粒状物／大きな塊／前縁へ強く重なる形** の3例で以下を満たすこと。
 
-`alpha/replacement compose(rear, front) == canonical master`
+- HardFixed/Forbidden差分0、許可範囲外の漏れ0、適した充填条件を満たす。
+- 内容物に応じた縁の隠れ方、接触、輪郭、陰影が自然。
+- 256pxと約64pxの双方で枡に入っていると読める。直線的な切断・貼り付け感・左右上部の残存色がない。
+- 自己QC後に視覚承認を記録する。合成図形テストやソバの恒等PASSを視覚承認に代用しない。
 
-with **0 decoded RGBA pixel differences**.
+すべて通ったときにだけ `production_status` と `new_resource_production_status` を有効化し、マスク版・承認根拠・適用可能な充填プロファイルを正式記録する。
 
-## Composition algorithm
+## 実行の意味と候補の扱い
 
-For a new resource:
+「作成」「制作」「続けて」「修正」は登録素材によるローカル制作・合成・検査の指示であり、ImageGenの許可ではない。明示的な「生成」と対象Golden Pathの許可が必要。本番停止を生成指示だけで解除しない。
 
-1. Verify the master/reference hashes.
-2. Derive the fixed rear and fixed foreground from the manifest.
-3. Create/draw the contents on a transparent 256×256 canvas.
-4. Composite contents over the rear.
-5. Restore/render the fixed foreground last.
-6. Run the mechanical gates.
-7. Inspect the result at 256 px and about 64 px.
-8. Only then present it as a candidate.
+誤参照、旧分割、不正クリップ、全体再生成、汚染画素から派生した候補は失効し、候補・比較シート・派生物を破棄してmain Coordinationへ記録する。正本・承認済み完成例・明確に隔離された診断証拠を保持する。
 
-The front layer is the occlusion model. Do not repair boundary problems by recoloring or blurring the contents edge after composition.
-
-## Mechanical gates
-
-A candidate is not presentable until all of these pass:
-
-1. **Empty-master round trip:** rear + front = master, 0 RGBA differing pixels.
-2. **Fixed foreground:** every registered front/side wood pixel in the final output equals the canonical master pixel exactly.
-3. **Required-fill occupancy:** the final resource differs from the empty master across the registered required-fill target by at least the manifest threshold.
-4. **Visible-envelope guard:** the final alpha must not leak outside the exact union of the canonical empty-master alpha and the registered representative-final alpha.
-5. PNG integrity passes.
-6. Canvas remains 256×256.
-
-The visible-envelope guard is a fail-closed diagnostic based on authoritative rasters. It is not used to clip the contents.
-
-## Visual gates
-
-Mechanical validity does not make a good icon. Before showing a candidate:
-
-- compare against the registered filled reference at 256 px and about 64 px;
-- confirm the resource reads as being **inside** the masu, not pasted onto it;
-- confirm the upper-left and upper-right contacts do not show stale source color or edge contamination;
-- confirm the front rim/wood is unchanged;
-- confirm the contents are not a single flat color when the accepted design requires visible per-piece variation;
-- reject known jaggies, seams, halos, local blur patches, or resampling noise yourself.
-
-Do not ask the author to accept a known deterministic defect.
-
-## Reference integrity
-
-Every comparison sheet must load the manifest's registered `representative_final` and verify its SHA-256.
-
-Run:
-
-`python Scripts/Art/boxed_resource_review.py Docs/References/AMJ_Masu_Template.json <candidate.png> --output <review.png>`
-
-Do not substitute an ad-hoc local alias, regenerated image, or remembered reference.
-
-## Candidate lifecycle
-
-Invalid production branches are disposable. If a candidate used the wrong reference, wrong layer order, two-layer cavity replacement, simple content clipping, unintended whole-image generation, or contaminated pixels:
-
-1. stop using it;
-2. delete its descendants and review sheets;
-3. do not use it as a reference;
-4. record the invalidation in `Docs/Coordination.md`;
-5. restart from authoritative assets.
-
-## Current masu status
-
-The physical/canonical master remains the visually approved **masu v2**. The compositor contract is **v3-layered**.
-
-The v3-layered change does not redraw the master. It changes only how future contents are placed relative to it.
-
-The former `replace_rgba` complete-cavity patch path is superseded for new resources. The old identity-variable asset remains historical diagnostic evidence that the old reference/master pair was internally consistent; it is not a reusable contents layer.
-
-## Validation commands
-
-Create a transparent contents scaffold:
-
-`python Scripts/Art/fixed_template.py scaffold Docs/References/AMJ_Masu_Template.json --output <contents.png>`
-
-Draw only the resource into that transparent contents image, then:
-
-`python Scripts/Art/fixed_template.py compose Docs/References/AMJ_Masu_Template.json <contents.png> --output <final.png>`
-
-`python Scripts/Art/fixed_template.py validate Docs/References/AMJ_Masu_Template.json <final.png>`
-
-Then run:
-
-`python Tests/test_masu_template.py`
-
-`python Tests/validate_png_assets.py`
+旧 `replace_rgba` 差分マスクと恒等素材は履歴診断専用。旧 `rear_contents_front` の実装入口は削除され、本番にも検証にも使用しない。

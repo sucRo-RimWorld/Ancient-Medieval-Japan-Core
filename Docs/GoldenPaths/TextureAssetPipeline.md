@@ -9,7 +9,7 @@ For AMJ production art, distinguish **作成/制作** from **生成**.
 
 # Texture Asset Pipeline — Golden Path
 
-> Boxed-resource audit (2026-10-06): see [occlusion and fixed-region findings](../Research/BoxedResourceOcclusionAudit.md). Identity reconstruction validates the registered Soba exemplar, not natural new-content production. The occlusion-aware alternatives are unimplemented proposals; no mask/master/status or generation-permission change is made by this audit.
+> Boxed-resource audit (2026-10-06): see [occlusion and fixed-region findings](../Research/BoxedResourceOcclusionAudit.md). Identity reconstruction validates the registered Soba exemplar, not natural new-content production. The audit itself did not change production. Its correction is now implemented as the v4 contact study below; master/exemplar art is unchanged and new-resource production remains blocked.
 
 This document records the reusable production path for AMJ texture work after the successful boxed-resource / masu iteration.
 
@@ -48,44 +48,29 @@ AMJ keeps the familiar Vanilla / Medieval Overhaul boxed-resource silhouette lan
 
 The registered **masu v2 empty master** is the canonical container master. It is a technical derivation of the author-approved filled exemplar and high-resolution empty source; known resampling artifacts were cleaned before registration.
 
-The family also requires an accepted **filled exemplar**. For the current masu family the visual reference is `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png` (SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`). Masu v2 is active and matches the exemplar's `[17, 28, 239, 235]` frame occupancy.
+The family also requires an accepted **filled exemplar**. For the current masu family the visual reference is `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png` (SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`). The accepted v2 master matches the exemplar's `[17, 28, 239, 235]` frame occupancy.
 
 Detailed activation, fill-profile, layering, and acceptance rules are in `Docs/GoldenPaths/BoxedResourceIconPipeline.md`.
 
 Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
 
-Registered fixed-template manifest: `Docs/References/AMJ_Masu_Template.json`; editable mask: `Docs/References/AMJ_Masu_EditableMask.png`. New chats/agents must fetch the manifest, master, and mask from `main`, then use `Scripts/Art/fixed_template.py`; do not regenerate the container from prose.
+Registered fixed-template manifest: `Docs/References/AMJ_Masu_Template.json`. New chats must retrieve the master, registered HardFixed/ContactZone/ExtensionAllowed masks and RequiredFill guide from main. The historical editable mask remains an identity diagnostic; it is not the current content permission shape.
 
-### Immutable parts
+### Container reuse and contact
 
-The following are fixed across every icon in this family:
-
-- masu silhouette;
-- approved three-quarter angle/perspective;
-- scale and placement;
-- rim width and board thickness;
-- corner joinery;
-- outline;
-- wood colors and shading planes;
-- transparent margins.
-
-Only the contents change.
+The approved master establishes the container angle, geometry, scale, wood palette and placement. Only conservative lower HardFixed wood is immutable in the final RGBA. Upper rim, interior and upper front/side walls form an occludable contact band: contents, contact outline and subtle contact shading are edited together. Unoccluded wood retains master pixels. Independent ExtensionAllowed permits different protruding shapes; Soba's alpha envelope is not the family limit.
 
 ### Production sequence
 
-1. Start from the registered v2 empty-masu master. Before presenting or registering a result, self-QC both 256 px and ~64 px views and automatically repair objective artifacts that preserve the approved design.
-2. Create the new contents separately. Generation may be used for the contents, but it must not define a new container.
-3. Fit the contents to the master interior.
-4. Composite them into the master. Prefer fixed rear/interior and front-rim layers so the contents are naturally occluded by the front wall.
-5. For stack-count variants, reuse the same master and alter only the quantity/arrangement of contents.
-6. Compare against the empty master. Any drift in container silhouette, angle, rim, joinery, palette, shading, or placement is a rejection.
-7. Use deterministic local compositing from the first derivative; whole-icon generation cannot certify fixed pixels.
-8. Export to the repository's production texture requirements.
-9. Run:
-   `python Scripts/Art/fixed_template.py validate Docs/References/AMJ_Masu_Template.json <final.png>`
-   `python Tests/test_masu_template.py`
-   `python Tests/validate_png_assets.py`
-10. Commit only after both protected-pixel and PNG-integrity gates pass.
+The current **v4-contact-study** contract is implemented for validation, with production blocked. Follow `BoxedResourceIconPipeline.md` for exact commands and masks.
+
+1. Use `scaffold-study` to copy the full intact master into a diagnostic context canvas outside production/reference folders.
+2. Draw contents and contact within ContactZone/ExtensionAllowed. Do not use a transparent object-only layer or cavity/pile clipping.
+3. Use `compose-study`; it rejects forbidden changes and restores only HardFixed directly from the master. It does not split or re-alpha-blend the rendered master/context.
+4. Run structural checks, the registered-reference comparison at 256px/~64px, and PNG integrity. Correct technical defects before presentation.
+5. Validate low grains, large pieces and strong over-rim overlap with the same unchanged region contract. Synthetic fixtures are structural evidence only.
+6. Record visual acceptance and suitable fill profiles before activating production. The current bulk-grain fill rule is not universal.
+7. Only after activation may production `scaffold` / `compose` produce resources; use the same master/contract for stack variants.
 
 ### Vanilla / Medieval Overhaul retextures
 

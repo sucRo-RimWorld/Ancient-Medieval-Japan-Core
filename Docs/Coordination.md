@@ -60,6 +60,23 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### ART-TEMPLATE-019 — MO comparison corrections implemented as contact study
+
+**Requested by:** author (2026-10-06 JST; 「修正して」 after MO icon comparison)
+**Owner:** Art/tooling / boxed-resource icons
+**Status:** DONE — correction implementation; BLOCKED — new-resource visual activation
+
+Current authoritative state is **v4-contact-study**, superseding the earlier v2/v3 production instructions below. Master and approved in-hull Soba raster bytes remain unchanged. No ImageGen or new production item was made.
+
+The registered study contract now uses conservative lower HardFixed wood, occludable ContactZone including upper front/side walls, independent ExtensionAllowed, and bulk-grain RequiredFill. The rendered source keeps the full intact master as context, and includes contents plus contact edits. The compositor restores only HardFixed exactly, rejects Forbidden RGBA changes (including transparent RGB/low-alpha) rather than clipping, and does not split rear/front or constrain extension to Soba's silhouette. Old v3 compositor entry points are removed. Both production status fields are blocked.
+
+Explicit scaffold-study/compose-study commands provide the reviewable research path without writing into Textures or Docs/References, or overwriting registered sources. AGENTS, ArtStyle, all related Golden Paths, the manifest, scripts and tests are aligned. Durable source: `Docs/GoldenPaths/BoxedResourceIconPipeline.md`; original research remains separately recorded.
+
+Validation: 14 Python regression tests pass, including same-mask synthetic shapes, over-front-wall overlap preservation, exact lower-wood RGBA restoration, leak/hash/binary/disjoint guards, historical Soba 0-diff identity and fail-closed production. All 24 production PNGs pass integrity; Stage A/New Village static validation passes. Synthetic shapes are structural evidence only; no new visual approval or RimWorld runtime PASS is claimed.
+
+**Next action:** with the same registered contract, inspect actual low grains, large pieces and strong over-rim overlap at 256px/about 64px; use shape-appropriate occupancy profiles and record visual acceptance before production activation. Do not expand masks to pass an individual candidate. The v4 region boundaries are a study proposal, not approved geometry.
+
+
 ### ART-RESEARCH-017 — Boxed-resource occlusion audit recorded
 
 **Requested by:** author (2026-10-06 JST; investigation only, then push findings)  
@@ -214,7 +231,7 @@ The Soba data slice uses temporary Awa/millet graphics only. Under `Docs/Design.
 
 **Result / references:** data DefNames are `AMJC_Plant_Buckwheat_Soba`, `AMJC_RawBuckwheat`, `AMJC_BuckwheatInHull`, `AMJC_Buckwheat`; current temporary paths reuse Awa/millet assets.
 **2026-10-05 boxed-resource icon lock:** The author approved a dedicated empty **Japanese masu** as the canonical boxed-resource master. AMJ keeps the familiar Vanilla/MO boxed-item silhouette language, but all compatible AMJ/Vanilla/MO retextures should use the same masu treatment. The container geometry, viewing angle, rim, joinery, palette, shading and placement are fixed; only the contents change. Generate/draw contents separately and composite them into the fixed master. If whole-icon generation drifts twice, stop regenerating and use deterministic local compositing. Durable procedure: `Docs/GoldenPaths/TextureAssetPipeline.md`; visual source of truth: `Docs/ArtStyle.md`.
-Current boxed-resource template: **masu v2 ACTIVE**.
+Current master: **approved masu v2**. New-resource production: **v4 contact study BLOCKED pending visual validation**; see ART-TEMPLATE-019.
 
 **2026-10-05 Soba in-hull integration:** `AMJC_BuckwheatInHull` now uses Soba-specific production art at `Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull`. The approved filled exemplar is reused for stack variants a/b/c for now. Remaining AMJ-009 art backlog is Soba immature/mature plant integration, sheaf integration, and edible buckwheat grain. Master `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`; manifest `Docs/References/AMJ_Masu_Template.json`; allowed/editable mask `Docs/References/AMJ_Masu_EditableMask.png`; required-fill guide `Docs/References/AMJ_Masu_RequiredFill.png`; approved representative `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`.
 
