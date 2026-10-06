@@ -107,21 +107,33 @@ class ArtRuleStructureTest(unittest.TestCase):
 
     def test_legacy_masu_coordination_tasks_are_archived(self):
         text = read("Docs/Coordination.md")
-        for number in range(4, 19):
-            ident = f"ART-TEMPLATE-{number:03d}"
-            marker = f"### {ident}"
-            start = text.find(marker)
-            self.assertGreaterEqual(start, 0, ident)
-            end = text.find("\n### ", start + len(marker))
-            section = text[start:] if end < 0 else text[start:end]
-            status_marker = "**Status:** "
-            status_start = section.find(status_marker)
-            self.assertGreaterEqual(status_start, 0, ident)
-            status = section[status_start + len(status_marker):].splitlines()[0]
+        lines = text.splitlines()
+        found = []
+        for i, line in enumerate(lines):
+            if not line.startswith("### ART-TEMPLATE-"):
+                continue
+            ident = line.split()[1]
+            try:
+                number = int(ident.rsplit("-", 1)[1])
+            except (IndexError, ValueError):
+                continue
+            if not 4 <= number <= 18:
+                continue
+            found.append(ident)
+            status = None
+            for later in lines[i + 1:]:
+                if later.startswith("### "):
+                    break
+                if later.startswith("**Status:** "):
+                    status = later[len("**Status:** "):]
+                    break
+            self.assertIsNotNone(status, ident)
             self.assertTrue(
                 status.startswith("ARCHIVED"),
                 f"{ident} is not archived: {status}",
             )
+        self.assertGreaterEqual(len(found), 15)
+
 
 
 if __name__ == "__main__":
