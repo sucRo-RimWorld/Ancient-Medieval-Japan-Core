@@ -1402,3 +1402,28 @@ This item remains open until the Core accepted-image inventory has been audited 
 
 **Handoff request (2026-10-07 JST):** This recovery is now a priority handoff to the next dedicated Core art/source-recovery chat or agent. Before starting any new Core image-production work, that workstream should read this item, recover ChatGPT/Library-only accepted pre-resize sources while they are still available, archive every proven source under `Art/Sources/`, and record unrecoverable gaps explicitly. Do not ask the author to relay this handoff manually.
 
+
+
+### ARCH-MODULAR-001 — Minimal dependencies / optional AMJ integration (2026-10-07 JST)
+
+**Requested by:** author  
+**Owner:** AMJ architecture / dependency design  
+**Status:** OPEN — design direction accepted; implementation/dependency audit pending
+
+The author accepted a shift from a central Core dependency tree toward **independent AMJ mods with official optional integration**.
+
+Durable design is now recorded in `Docs/Design.md`:
+- an AMJ mod depends on another AMJ mod only when its own primary gameplay loop cannot exist without it;
+- optional recipes, materials, Def connections and richer historical coverage use conditional compatibility instead of mandatory dependencies;
+- Fermentation and Brewing are not automatically Agriculture/Core-dependent; both should be able to form a smaller Vanilla-compatible loop where practical, then gain AMJ crop/process integrations when Agriculture is present;
+- MO remains the author's primary play/balance environment, but that does not by itself justify a hard dependency;
+- the currently published Core remains MO-required until its Def/research/recipe/building/material/C# references are audited and a Vanilla-capable path is proven;
+- Japan Only remains MO-required by definition;
+- existing third-party soybean mods are outside official compatibility support when AMJ owns soybean; duplicate crop/resource/recipe behavior is not normalized by AMJ;
+- the larger compatibility surface is expected to be maintained with automated static/RimTest Redux/Pickle matrix testing rather than by collapsing everything into hard dependencies.
+
+**Next actions:**
+1. Audit current Core/MO coupling and classify each coupling as truly required, Vanilla-self-contained, or optional MO patch.
+2. Define the first supported compatibility matrix for Agriculture/Core, Fermentation and Brewing before changing About.xml dependencies.
+3. When a dependency is actually removed, update About.xml/load order, formal design, compatibility patches, tests and public descriptions together.
+4. Reassess whether the name/role `Core` remains accurate after the dependency audit; do not rename solely from this design note.
