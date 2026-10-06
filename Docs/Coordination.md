@@ -60,6 +60,18 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### LOC-RULE-001 — Japanese kanji / alias opening rule
+
+**Requested by:** author (2026-10-06 JST)  
+**Owner:** AMJ shared localization policy  
+**Status:** DONE — shared rule published
+
+AMJ-wide description policy now requires Japanese descriptions to begin with an established kanji form when one exists and to include recognized aliases / alternate names or common alternate written forms at the opening. Do not invent kanji, force uncommon ateji, or add weakly sourced names merely to satisfy the rule.
+
+This extends, but does not replace, the existing Japanese-first workflow: draft/research Japanese, obtain author approval, then translate only the approved Japanese text into English.
+
+**Durable source:** `Docs/HistoricalDescriptionGuidelines.md`, commit `fed314b19e3a61c88e0b93cec05d68ca6f966d67`. Core / Environment / CCTO AGENTS routing has been synchronized.
+
 ### COMPAT-CBF-001 — Custom Base Framework future settlement candidate
 
 **Requested by:** author (2026-10-06 JST)  
