@@ -72,6 +72,8 @@ The existing Japanese-first Workshop localization rule remains unchanged: README
 
 **Durable source:** `Docs/ModDescriptionGuidelines.md`.
 
+**Publication responsibility update (2026-10-06 JST):** actual Steam Workshop publication/update operations are author-manual. Agents prepare and synchronize the repository-side README, BBCode descriptions, localization and publication assets only, and must not treat Steam as updated until the author confirms it.
+
 ### LOC-RULE-001 — Japanese kanji / alias opening rule
 
 **Requested by:** author (2026-10-06 JST)  
