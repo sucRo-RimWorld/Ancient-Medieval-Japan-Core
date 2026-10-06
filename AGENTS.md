@@ -108,7 +108,7 @@ Use `Docs/HistoricalDescriptionGuidelines.md` whenever AMJ adopts, patches, rete
 
 Audit inherited Vanilla/MO prose for historical fit with ancient/medieval Japan and rewrite unsuitable text. AMJ-authored descriptions should include supported historical facts and, where supportable, a meaningful difference from modern Japan, modern use, or modern distribution. Do not invent a medieval counterpart for historically unsuitable content; record it for a separate keep/replace/remove design decision.
 
-Historical description text is Japanese-first: research and draft Japanese, obtain author approval, then translate only the approved Japanese text into English. Keep source/rationale notes in durable design/localization documentation rather than only in Coordination.
+Historical description text is Japanese-first: research and draft Japanese, obtain author approval, then translate only the approved Japanese text into English. For Japanese descriptions, follow `Docs/HistoricalDescriptionGuidelines.md` name-form rules: begin with an established kanji form when one exists, and include recognized aliases / alternate names or common alternate written forms at the opening. Do not invent kanji or weakly sourced names. Keep source/rationale notes in durable design/localization documentation rather than only in Coordination.
 
 ## CCTO framework and crop-data ownership
 
