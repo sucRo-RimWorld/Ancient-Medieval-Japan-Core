@@ -13,11 +13,11 @@ This file owns the **AMJ-wide visual language**. Keep operational procedures out
 Apply image rules in this order:
 
 1. **Shared AMJ visual language (this file):** simplified silhouette-first forms, strong readable outlines, restrained palette/detail, no photorealism or painterly noise, and readability at game scale.
-2. **Asset-class style specification:** may add or narrow rules for a real class difference. For example, Environment tree sprites may use restrained internal gradient variation documented by that repository, while Core crop/item textures use the flatter budgets below.
-3. **Production Golden Path:** controls source reuse, generation permission, compositing, export, and validation. It must not redefine the visual style.
+2. **Asset-class style specification:** adds class-specific visual rules and may explicitly define a controlled deviation from non-invariant details such as shading treatment. For example, Environment tree sprites may use restrained internal gradient variation while Core crop/item textures use the flatter budgets below.
+3. **Production Golden Path:** controls source reuse, generation/compositing, export, and validation. It must not redefine the visual style.
 4. **Fixed-template rules:** apply only when visible parts are intentionally reused pixel-exactly.
 
-A lower layer must not silently contradict a higher layer. If an asset class genuinely needs an exception, record that exception in its owning style specification instead of accumulating one-off prompt rules or AGENTS notes.
+The AMJ-wide invariants are silhouette-first simplification, restrained palette/information density, non-photorealistic/non-painterly rendering, and readability at game scale. Asset classes may vary outline treatment, shading budget, canvas, or composition only when their owning style specification says so explicitly. Do not accumulate one-off prompt exceptions or AGENTS notes.
 
 ## 1. Primary target
 
