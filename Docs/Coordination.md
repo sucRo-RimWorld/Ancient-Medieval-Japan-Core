@@ -80,11 +80,11 @@ Core AGENTS now routes to those sources instead of repeating boxed-resource/cont
 The active boxed-resource workflow is now **contents-source generation + manual composition**: ImageGen produces only transparent contents in AMJ style and the masu's perspective; final placement/masking/occlusion is adjusted manually against the canonical masu. The earlier v2/v3/v4 automatic contact-study remains diagnostic/research only and is no longer the ordinary production path.
 
 Source-of-truth commits:
-- AGENTS routing: `71f9f97728efefd74903fc736727804e3ae2d075`;
+- AGENTS routing: `71f9f97728efefd74903fc736727804e3ae2d075`, obsolete-history removal `0fff08ee37dc972538589ad373b8d4e93c33f694`;
 - shared ArtStyle separation: `3d649c7e67543d0753638a93c93ea91b02dc3a01`, `93bb24bf9869793163ae7b7eecad999331f8dea2`;
-- general texture pipeline: `681d1c43692537b6967e2359505271888904ac21`, cleanup `a9bbffd6ec62e50223821d33ccdbb8530593d420`;
+- general texture pipeline: `681d1c43692537b6967e2359505271888904ac21`, cleanup `a9bbffd6ec62e50223821d33ccdbb8530593d420`, ownership/heading normalization `f9e960c3368eb79b4e1b2e3d79c49e459289ae2a`;
 - fixed-template simplification: `b1556b87832bd24f665de691fb4e8ad28e1d372b`;
-- Workshop style/workflow separation: `d193c832a05d72d41110eb6798342191b2337e0e`, obsolete-style cleanup `15ec441bb8d228598b1a7b1ece772827ed71caeb`;
+- Workshop style/workflow separation: `d193c832a05d72d41110eb6798342191b2337e0e`, obsolete-style cleanup `15ec441bb8d228598b1a7b1ece772827ed71caeb`, inheritance clarification `89410d598c43318baad233ea1bc5d7dcde1e9e50`;
 - boxed-resource contents-first workflow: `ce44ef823c1425def0c8fa5e4db80ec919e49e4b`, current-state cleanup `b0b9a230a5f095617fe774f65c01bf4769301335`;
 - v4 manifest retained fail-closed as diagnostic-only metadata: `1252481382974a39e5a4928a1ffa5b52e1752e02`.
 
