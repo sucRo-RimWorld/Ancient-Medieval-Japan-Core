@@ -69,6 +69,8 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertIn("Docs/GoldenPaths/TextureAssetPipeline.md", text)
         self.assertIn("Scripts/Art/normalize_masu_contents.py", text)
         self.assertIn("deterministic normalizer", text)
+        self.assertIn("outer silhouette of the complete contents pile is thick and dark", text)
+        self.assertIn("internal boundaries between grains/pieces are thinner and lighter/paler", text)
         self.assertNotIn("HardFixed", text)
         self.assertNotIn("ContactZone", text)
 
