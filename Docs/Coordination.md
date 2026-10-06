@@ -82,10 +82,11 @@ The active boxed-resource workflow is now **contents-source generation + manual 
 Source-of-truth commits:
 - AGENTS routing: `71f9f97728efefd74903fc736727804e3ae2d075`;
 - shared ArtStyle separation: `3d649c7e67543d0753638a93c93ea91b02dc3a01`, `93bb24bf9869793163ae7b7eecad999331f8dea2`;
-- general texture pipeline: `681d1c43692537b6967e2359505271888904ac21`;
+- general texture pipeline: `681d1c43692537b6967e2359505271888904ac21`, cleanup `a9bbffd6ec62e50223821d33ccdbb8530593d420`;
 - fixed-template simplification: `b1556b87832bd24f665de691fb4e8ad28e1d372b`;
-- Workshop style/workflow separation: `d193c832a05d72d41110eb6798342191b2337e0e`;
-- boxed-resource current workflow: `ce44ef823c1425def0c8fa5e4db80ec919e49e4b`.
+- Workshop style/workflow separation: `d193c832a05d72d41110eb6798342191b2337e0e`, obsolete-style cleanup `15ec441bb8d228598b1a7b1ece772827ed71caeb`;
+- boxed-resource contents-first workflow: `ce44ef823c1425def0c8fa5e4db80ec919e49e4b`, current-state cleanup `b0b9a230a5f095617fe774f65c01bf4769301335`;
+- v4 manifest retained fail-closed as diagnostic-only metadata: `1252481382974a39e5a4928a1ffa5b52e1752e02`.
 
 
 ### ART-TEMPLATE-019 — MO comparison corrections implemented as contact study
