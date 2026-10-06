@@ -1150,11 +1150,11 @@ Rim Controlで得た採用値はXML / C# / Def / 正式設計書へ正本化し�
 
 
 
-### ART-TEMPLATE-017 — Masu three-layer compositor
+### ART-TEMPLATE-017 — Masu three-layer compositor (superseded split)
 
 **Requested by:** author (2026-10-06 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** IMPLEMENTED; CI pending
+**Status:** SUPERSEDED — visual split damage confirmed
 
 The author identified the structural error behind the repeated Soba boundary loop: a complex masu cannot be modeled as “master + contents clipped by one simple interior/pile mask”. The active production model is therefore changed to an explicit z-order stack:
 
@@ -1167,3 +1167,25 @@ The foreground/rear split selects exact pixels from the canonical masu master; i
 The deterministic split currently uses semantic front wood regions registered in the manifest. Local proof: rear + front reconstruct the canonical empty master with **0 differing RGBA pixels**. The old `replace_rgba` complete-cavity patch and exact-variable identity path are superseded for new resource production and retained only as historical diagnostics.
 
 The new gate requires exact empty-master reconstruction, exact fixed foreground pixels, required-fill occupancy, and no visible content outside the authoritative master/reference envelope before a candidate can be presented.
+
+
+### ART-TEMPLATE-018 — Occlusion audit integrated; unsafe compositor blocked
+
+**Requested by:** author (2026-10-06 JST)  
+**Owner:** Art/tooling / boxed-resource icons  
+**Status:** IMPLEMENTED — production fail-closed; revised model pending visual activation
+
+The separate research push `5690fbf8daa1eb73d0b9d263ca37ad1c0e08c024` has been read and integrated. The author also confirmed that the first v3 three-layer split visibly damaged the masu image. Therefore the fact that rear+front numerically reconstructed the empty master is not accepted as sufficient evidence.
+
+Integrated conclusions:
+- the Soba identity round trip proves preservation of that exemplar only;
+- the upper/contact region is content-dependent and must be occludable;
+- do not use a guessed cavity/pile polygon to clip contents;
+- do not destructively carve the canonical master into complementary rear/front rasters;
+- the revised target model is: **full canonical masu master as base/rear → transparent contents/contact → conservative hard-fixed foreground copied exactly from the master**;
+- only hard-fixed foreground is reasserted after contents; contact-zone wood is not blindly restored;
+- activation requires the same contract to work for contrasting content shapes and to pass 256px/~64px visual review.
+
+`Docs/References/AMJ_Masu_Template.json` now records `new_resource_production_status = blocked_pending_occlusion_validation`. `Scripts/Art/fixed_template.py` refuses generic new-resource composition while blocked, and `Tests/test_masu_template.py` locks that fail-closed state. Existing approved in-hull Soba art and its historical identity evidence remain unchanged.
+
+No new edible-Soba candidate is accepted by this change.
