@@ -2,6 +2,8 @@
 
 This document is the source of truth for the shared visual system used by **Ancient & Medieval Japan (AMJ)** Workshop cover images.
 
+Workshop covers inherit the project-wide simplification, restrained-palette, non-photorealistic, small-size-readability principles from `Docs/ArtStyle.md`, but they are a separate presentation class and do not inherit the 256×256 Core Thing/Plant palette or outline budgets.
+
 The current baseline is the author-approved Environment/Core cover system: a warm parchment field, an invariant left-side editorial title block, and a symbolic flat illustration occupying the right side.
 
 ## 1. Purpose
