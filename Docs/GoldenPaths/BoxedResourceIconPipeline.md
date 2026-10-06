@@ -8,6 +8,8 @@ For new boxed resources, ImageGen is used only to create the **contents source l
 
 Final placement, masking, overlap, and contact with the masu are adjusted manually in an image editor.
 
+The canonical empty masu is reused as the composition source. Because the visible contact/occlusion boundary changes with the contents and no stable protected region is currently approved for this manual path, this workflow does **not** claim the active fixed-template zero-difference guarantee. The archived v4 masks remain diagnostic only. Do not use their PASS/FAIL state as a production gate for manually composed icons.
+
 Previous automatic contact/mask experiments remain research/diagnostic material only. They are not required reading for ordinary contents generation and are not the active production path.
 
 ## Canonical visual references
