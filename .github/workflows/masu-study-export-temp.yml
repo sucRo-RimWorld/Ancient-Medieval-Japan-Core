@@ -1,0 +1,33 @@
+name: Masu study export temp
+
+on:
+  push:
+    branches:
+      - tmp/masu-study-export
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect registered study inputs
+        shell: bash
+        run: |
+          mkdir -p out
+          cp Textures/Shared/Containers/AMJ_Masu_Empty_Master.png out/master.png
+          cp Docs/References/AMJ_Masu_HardFixed.png out/hard_fixed.png
+          cp Docs/References/AMJ_Masu_ContactZone.png out/contact_zone.png
+          cp Docs/References/AMJ_Masu_ExtensionAllowed.png out/extension_allowed.png
+          cp Docs/References/AMJ_Masu_RequiredFill.png out/required_fill.png
+          cp Docs/References/AMJ_BuckwheatInHull_Ideal_256.png out/ideal_256.png
+          cp Textures/Things/Item/Resource/AMJC_Millet/Millet/Millet_a.png out/low_grain_source.png
+          cp Textures/Things/Item/Resource/AMJC_Millet/MilletInHull/MilletInHull_a.png out/large_piece_source.png
+          cp Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat/RawBuckwheat_a.png out/overlap_source.png
+      - uses: actions/upload-artifact@v4
+        with:
+          name: masu-study-inputs
+          path: out
+          retention-days: 1
