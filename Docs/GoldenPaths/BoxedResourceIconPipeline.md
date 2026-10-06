@@ -6,9 +6,9 @@ This file owns only the **masu boxed-resource family**. Shared visual style come
 
 For new boxed resources, ImageGen is used only to create the **contents source layer**. The wooden masu is not generated.
 
-Final placement, masking, overlap, and contact with the masu are adjusted manually in an image editor. This is intentional: the earlier attempts to make one automatic occlusion/mask contract solve every content shape produced repeated visual failures and excessive rule growth.
+Final placement, masking, overlap, and contact with the masu are adjusted manually in an image editor.
 
-The previous v2/v3/v4 automatic contact/mask experiments remain research/diagnostic material only. They are not required reading for ordinary contents generation and are not the active production path.
+Previous automatic contact/mask experiments remain research/diagnostic material only. They are not required reading for ordinary contents generation and are not the active production path.
 
 ## Canonical visual references
 
