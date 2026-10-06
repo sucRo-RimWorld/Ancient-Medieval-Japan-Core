@@ -60,6 +60,26 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+
+### DES-HOTSPRING-001 — standalone Hot Springs baseline and Waterworks boundary
+
+**Requested by:** author (2026-10-07 JST)  
+**Owner:** future Hot Springs / Waterworks design  
+**Status:** DONE — baseline recorded; implementation/repository creation not started
+
+Confirmed Hot Springs as a Core/Agriculture-independent AMJ Addon. Baseline: replace Steam Geyser-style natural generation with 2×2 natural hot-spring units, bias generation toward hills/mountains, permit adjacent units, and keep undeveloped springs out of autonomous bathing. Developed springs provide local bathing / tōji; ambulatory injured pawns may voluntarily use only enabled, reachable, allowed-area springs within a real-path travel threshold, while urgent treatment/downed/major bleeding states take priority. Player-directed use may bypass the autonomous-distance threshold.
+
+Tōji is modeled as temporary injury natural-healing improvement plus mood/recreation, not direct HP restoration or a general disease/immunity cure. Exact numbers remain balance-test work.
+
+Dubs Bad Hygiene is a required official compatibility target but not currently a hard dependency: DBH-loaded profiles must integrate bathing with hygiene and are part of release testing. Existing hot-spring mods should coexist without AMJ replacing their buildings/jobs; Standalone Hot Spring-style source interoperability is an implementation-audit target, without automatic conversion or full behavior unification.
+
+Remote hot-water extraction/conveyance is not owned by Hot Springs. Waterworks owns source intake, conveyance, remote supply/artificial baths, and general river/shallow-water/open-channel/culvert/distribution infrastructure. Core Stage E no longer owns that water-network implementation; it retains only the paddy-side water requirement / Waterworks integration surface.
+
+**Durable source:** `Docs/Design.md`, commit `52683ed3c8b27302eb1cf107543cebb55eb2ce24`.
+
+**Next action:** when either Addon implementation begins, create/choose its owning repository, read its AGENTS/Coordination first, then move implementation-specific details into that repository's formal design without turning Core into a required dependency.
+
+
 ### DOC-RULE-002 — README / Workshop summary relationship
 
 **Requested by:** author (2026-10-06 JST)  
