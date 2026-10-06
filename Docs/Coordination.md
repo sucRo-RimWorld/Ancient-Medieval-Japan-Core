@@ -1400,3 +1400,5 @@ staged output; Environment's candidate builder gates the actual subscriber files
 
 This item remains open until the Core accepted-image inventory has been audited and every recoverable exact original has either been archived or explicitly recorded as unavailable.
 
+**Handoff request (2026-10-07 JST):** This recovery is now a priority handoff to the next dedicated Core art/source-recovery chat or agent. Before starting any new Core image-production work, that workstream should read this item, recover ChatGPT/Library-only accepted pre-resize sources while they are still available, archive every proven source under `Art/Sources/`, and record unrecoverable gaps explicitly. Do not ask the author to relay this handoff manually.
+
