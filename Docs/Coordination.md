@@ -60,6 +60,23 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### DES-WATERWORKS-SPLIT-001 — Waterworks / Rice Cultivation responsibility split
+
+**Requested by:** author (2026-10-07 JST)  
+**Owner:** future Waterworks design / future Rice Cultivation design  
+**Status:** IN PROGRESS — ownership split confirmed; Waterworks specification work continues here, Rice Cultivation deferred to a separate workstream
+
+Confirmed boundary:
+- **Waterworks is a standalone water-management mod only.** It owns natural intake, gravity-fed open canals, culverts, distribution/control points, optional stone-lined upgrades, hot-spring intake/conveyance interfaces, and minimal external water-supply integration surfaces.
+- **Rice Cultivation is a separate standalone mod.** It owns paddies, rice plants, rice-specific items and processing. It must not require Waterworks.
+- Rice Cultivation without Waterworks will use a simpler paddy-establishment/water abstraction so that the rice mod remains independently playable. Exact rules are deliberately deferred to the Rice Cultivation workstream.
+- Waterworks + Rice Cultivation may have official optional integration so paddies can consume Waterworks network state; Waterworks itself does not own paddy logic.
+- For the already-discussed rice processing handoff, “same as grains” means the **same stage pattern, not the same ThingDefs**. Rice keeps its own item chain. The author also confirmed that rice produced via haza-kake remains a separate item from normal rice. Exact rice-processing details are not to be expanded in the Waterworks workstream.
+
+**Durable source:** `Docs/Design.md`, ownership split commit `f594c340fad0ee067e7ce07778e68856822402fb`.
+
+**Next action:** continue only the Waterworks specification in the present workstream. Start a separate Rice Cultivation workstream/repository design later and transfer the rice-specific provisional notes there.
+
 
 ### DES-HOTSPRING-001 — standalone Hot Springs baseline and Waterworks boundary
 
@@ -73,7 +90,7 @@ Tōji is modeled as temporary injury natural-healing improvement plus mood/recre
 
 Dubs Bad Hygiene is a required official compatibility target but not currently a hard dependency: DBH-loaded profiles must integrate bathing with hygiene and are part of release testing. Existing hot-spring mods should coexist without AMJ replacing their buildings/jobs; Standalone Hot Spring-style source interoperability is an implementation-audit target, without automatic conversion or full behavior unification.
 
-Remote hot-water extraction/conveyance is not owned by Hot Springs. Waterworks owns source intake, conveyance, remote supply/artificial baths, general river/shallow-water/open-channel/culvert/distribution infrastructure, and the paddy/rice-cultivation loop that directly depends on that water system. The current Core/Grains direction no longer owns a separate paddy-side Stage E or Waterworks integration surface.
+Remote hot-water extraction/conveyance is not owned by Hot Springs. **Waterworks owns only the general water-management layer**: source intake, conveyance, remote supply/artificial baths, river/shallow-water/open-channel/culvert/distribution infrastructure, and external integration surfaces. Paddy/rice cultivation has now been split into a separate standalone Rice Cultivation mod and is no longer owned by Waterworks or Core/Grains.
 
 **Durable source:** `Docs/Design.md`, baseline commit `52683ed3c8b27302eb1cf107543cebb55eb2ce24`; natural-spring priority-use refinement `7e49dfaa33ac9b802e6bcdc083308fded9ef106e`.
 
@@ -1448,7 +1465,7 @@ Audit result:
 - If Stage A still exposes wheat in the Vanilla profile, Vanilla has no suitable wheat PlantDef to inherit as the Stage A wheat, so AMJ needs a non-MO fallback wheat Plant/harvest chain while preserving existing `AMJC_Wheat`. MO-loaded profiles must not expose a duplicate AMJ wheat crop.
 - Flour/milling is **not required merely to prove the minimum Vanilla agriculture loop** (`grow -> harvest -> primary process -> Vanilla meal`). If the Vanilla profile formally retains wheat's flour-food role, add an AMJ-owned flour/recipe then; a separate dedicated mill building is not mandatory because the existing AMJ grain-processing equipment can host a minimal milling recipe.
 - Paper/Paper Press, Salt, MO Drying Rack and Processor Framework are not current Stage A production dependencies and must not become Agriculture hard dependencies. Paper/salt/drying belong to their owning feature/Addons or conditional MO integration. Future PF users must declare PF directly rather than relying on MO to pull it transitively.
-- Waterworks remains Core-independent and owns paddy/water/rice-specific gameplay. Agriculture owns dry-field crops and generic primary processing; cross-use of worktables/categories is optional compatibility.
+- Waterworks remains Core-independent and owns **water-management infrastructure only**. Rice Cultivation is a separate standalone mod that owns paddies/rice/its primary processing and may integrate with Waterworks optionally. Agriculture/Grains owns dry-field grains and generic primary processing; cross-use remains optional compatibility.
 - Keep `sucro.ancientmedievaljapan.core`, the current public Core name, `AMJC_` prefix, and existing AMJC DefNames. Architecturally, however, Core is now treated as an **Agriculture-equivalent independent content mod, not the common required foundation of the AMJ suite**.
 - Existing MO+Core saves should retain current AMJC identifiers and MO-profile behavior through compatibility. Removing MO from an already-running save is a separate migration case and is not considered safe until dedicated runtime tests prove it.
 
@@ -1471,7 +1488,7 @@ This changes several assumptions that must be reconciled **before** runtime migr
 - The standalone target is no longer merely “enough dry-field agriculture to reach a Vanilla meal.” If the mod becomes Grains, **wheat, wheat flour, and a minimal milling path are part of the standalone identity**, because wheat's defining role is flour-food rather than just another raw plant ingredient.
 - Grains flour foods are intended to be research-free, low-equipment daily foods; milling must conserve total nutrition, and flour-food value comes from the extra processing/meal quality rather than free food multiplication.
 - Grains' retention criterion is environmental crop choice: representative map conditions must make different grains preferable through soil fertility, temperature, growing-season length, yield and processing value. A permanent regression should verify that one grain does not collapse into the best choice across nearly all profiles.
-- Waterworks now owns the paddy/rice loop rather than Core retaining a paddy-side interface. Do not use the former Stage E boundary when planning dependency removal.
+- The former Stage E paddy/rice loop is now assigned to a separate **Rice Cultivation** mod, not Waterworks and not Core/Grains. Waterworks is water-management only. Do not use the older combined Waterworks+paddy ownership model when planning dependency removal.
 - Beans, fiber and root crops are no longer safe assumptions for the future Core scope while the Grains re-scope is being evaluated. Do not perform new dependency work for those future stages until ownership is settled.
 - Two earlier audit conclusions now require explicit resolution rather than silent implementation: **(a)** whether Vanilla/Grains threshing omits straw or Grains owns a non-MO straw path, and **(b)** whether MO-loaded profiles keep MO wheat as the visible crop or Grains keeps one AMJ-owned wheat source across profiles. Preserve existing save/DefName compatibility while deciding these.
 - Consequently, migration step 4 is broadened from “fallback wheat if needed” to **design and test the standalone wheat + flour + milling chain**, and step 5 must then isolate or map MO wheat/flour/category/straw compatibility around that chain.
