@@ -1,5 +1,7 @@
 # Boxed Resource Icon Pipeline — Golden Path
 
+> Research addendum (2026-10-06): [the occlusion/fixed-region audit](../Research/BoxedResourceOcclusionAudit.md) assessed the preceding v2 snapshot. Its identity PASS proved exemplar reconstruction, not natural different-content production. The separate v3-layered change is preserved here; this research publication does not validate v3 or prove that restoring a fixed foreground permits natural contents-over-rim occlusion.
+
 This document is the production contract for AMJ resource icons that share the Japanese masu while changing only the contents.
 
 ## Command semantics

@@ -1,5 +1,7 @@
 # AMJ Core Agent Instructions
 
+Boxed-resource investigation (2026-10-06): also read `Docs/Research/BoxedResourceOcclusionAudit.md`. The registered Soba identity round trip proves exemplar preservation, not natural composition of different contents. Proposed occlusion-region changes are research candidates only; this audit does not change masters, masks, generation permission, or template activation.
+
 This repository is part of the **Ancient & Medieval Japan (AMJ)** project.
 
 Before starting work in this repository:

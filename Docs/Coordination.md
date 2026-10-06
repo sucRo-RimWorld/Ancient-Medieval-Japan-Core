@@ -60,6 +60,20 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### ART-RESEARCH-017 — Boxed-resource occlusion audit recorded
+
+**Requested by:** author (2026-10-06 JST; investigation only, then push findings)  
+**Owner:** Art/tooling / boxed-resource research  
+**Status:** DONE — research documentation; research publication only
+
+Durable source: `Docs/Research/BoxedResourceOcclusionAudit.md`. Eleven MO 1.6.2.2 boxed-produce PNGs from the author-provided package were inspected and compared at original resolution. Shared RGBA pixels concentrate in the lower portion; upper/contact-region differences depend on the contents. The source art's AI/manual/compositing method is unknown.
+
+The existing Soba zero-difference identity result remains valid as an exemplar-preservation regression. It does not prove natural different-content production. Earlier ART-TEMPLATE-013/014/016 statements treating the exemplar's exact difference shape or identity PASS as sufficient for future materials must be read with this limitation.
+
+Hard-fixed / occludable / extension regions plus a required-fill guide, and joint contact-region artwork, are recorded as research candidates; this publication does not implement them. No images, master/mask bytes, manifest activation, scripts, tests, or generation permissions change. No new identity/runtime PASS or completed production fix is claimed. Related art entry documents link to the audit. Before publication, separate commit `c8e7f2ff1248a2ec677a9b511f03d217ff53712e` changed main to v3-layered. That work is preserved; this audit assessed the preceding v2 snapshot and does not claim to validate v3 or its rim-overlap behavior.
+
+**Next action:** if pipeline redesign is requested, validate contrasting content shapes under one registered region contract before implementing/activating revised production tooling. This task closes on research publication only.
+
 ### AMJ-020 — More Mushrooms compatibility candidate recorded
 
 **Requested by:** author (2026-10-04 JST)  

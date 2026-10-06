@@ -9,6 +9,8 @@ For AMJ production art, distinguish **作成/制作** from **生成**.
 
 # Texture Asset Pipeline — Golden Path
 
+> Boxed-resource audit (2026-10-06): see [occlusion and fixed-region findings](../Research/BoxedResourceOcclusionAudit.md). Identity reconstruction validates the registered Soba exemplar, not natural new-content production. The occlusion-aware alternatives are unimplemented proposals; no mask/master/status or generation-permission change is made by this audit.
+
 This document records the reusable production path for AMJ texture work after the successful boxed-resource / masu iteration.
 
 ## 1. Preserve accepted sources

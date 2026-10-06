@@ -1,5 +1,7 @@
 # AMJ Art Style Guide
 
+> Boxed-resource research (2026-10-06): [occlusion audit](Research/BoxedResourceOcclusionAudit.md) records shared lower-container pixels and content-dependent contact boundaries in eleven MO icons. The masu v2 identity PASS does not establish that all different contents can use the exemplar's exact difference shape. Proposed contact-region changes remain unimplemented; this audit does not replace the accepted art, masters, masks, or production rules.
+
 This document is the durable visual reference for **Ancient & Medieval Japan (AMJ)** assets.
 
 The style was locked after comparing AMJ cereal/resource assets directly against Medieval Overhaul (MO) wheat and leather/hide textures. The author-approved Awa, Hie, and Kibi plant set from 2026-10-04 is the canonical cereal-plant baseline; the accepted millet-item/straw set remains the resource baseline. The rules and production assets below are the reproducible source of truth for future generation and manual art work.
