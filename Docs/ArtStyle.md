@@ -136,6 +136,9 @@ For item/resource icons add:
 
 > Even flatter than the plant art. Use one base fill and at most one secondary plane per material. No per-piece highlights or deep contact shadows.
 
+
+2026-10-06 correction: the complementary rear/front raster split introduced in the first three-layer experiment is not a valid production split; visual inspection found damaged pixels at the split boundary. The MO occlusion audit also shows that the upper/contact region cannot be assumed universally fixed. Preserve the complete canonical masu as the base/rear, place contents/contact artwork above it without a simple cavity/pile clip, and restore only a conservative hard-fixed foreground subset. The contact region must remain occludable. New boxed-resource production is blocked until this revised model is validated across contrasting shapes.
+
 ### Canonical boxed-resource icon: Japanese masu master
 
 For loose harvested produce, beans, grains, hulled grain, and similar resources, AMJ uses the **Vanilla / Medieval Overhaul boxed-resource silhouette language** but replaces the generic crate surface treatment with a simplified Japanese **masu**.
