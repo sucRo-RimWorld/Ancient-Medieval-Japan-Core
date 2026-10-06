@@ -50,13 +50,13 @@ These six transparent 256×256 production textures were accepted together on 202
 
 Use this set together with the MO reference textures when calibrating future AMJ plant art.
 
-## 2. Palette and shading budget
+## 2. Core crop/item palette and shading budget
 
-2026-10-04 cereal refinement: Awa, Hie, and Kibi now share the same warm medium-dark brown contour treatment and simplified information density. This supersedes earlier Awa/Hie production candidates and the short-lived per-material/color-trace outline experiment. The shared RawMillet sheaf remains in the same broad warm-outline family, but the crop-plant trio is the canonical reference for subsequent cereal plants.
+These numeric budgets are the current **Core crop and Thing/resource baseline**. Other AMJ asset classes inherit the project-wide invariants from section 1, but may define a controlled class-specific shading budget in their owning style specification.
 
 Treat these as upper limits, not targets to fill.
 
-### Plants
+### Core crop plants
 
 - 1 common warm brown / ochre-brown outline color;
 - foliage: normally 2 flat colors (base + one secondary plane);
@@ -67,9 +67,9 @@ Treat these as upper limits, not targets to fill.
 - no fine leaf veins;
 - no many-step highlights.
 
-### Items and resources
+### Core items and resources
 
-Items should be at least as flat as plants, and usually flatter.
+Items should be at least as flat as the Core crop art, and usually flatter.
 
 - 1 common dark outline color;
 - 1 base fill color;
@@ -83,13 +83,10 @@ For piles of grain, use a **small number of large simplified pieces** to communi
 
 For bundles such as straw, use a few broad strips/stems and a simple binding band. Do not render fiber texture.
 
-The first canonical post-harvest millet item assets are now stored under:
-
-- `Textures/Things/Item/Resource/AMJC_Millet/RawMillet/`
-- `Textures/Things/Item/Resource/AMJC_Millet/MilletInHull/`
-- `Textures/Things/Item/Resource/AMJC_Millet/Millet/`
-
-They are isolated from the user-approved 2026-10-03 millet set rather than regenerated. The three states intentionally read as distinct material stages: warm-gold raw millet, brown hulled grain, and pale cleaned grain. They retain `Graphic_StackCount`; during this first integration pass the same approved pile silhouette is supplied to each stack-count slot so only rendering scale/readability changes are evaluated.
+Canonical post-harvest millet item references are stored under:
+- `Textures/Things/Item/Resource/AMJC_Millet/RawMillet/`;
+- `Textures/Things/Item/Resource/AMJC_Millet/MilletInHull/`;
+- `Textures/Things/Item/Resource/AMJC_Millet/Millet/`.
 
 ## 3. Shape language
 
