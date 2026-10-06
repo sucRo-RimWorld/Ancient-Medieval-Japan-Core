@@ -257,7 +257,9 @@ AMJ各Modは、**AMJシリーズ内の別Modを理由なく必須依存にしな
 
 監査後、2・3で主要ゲームループが成立するなら、現Core（将来的なGrains等への再編候補を含む）はMOを必須依存から外し、**MO推奨 + 公式互換**へ移行する。移行完了までは現在の公開依存関係を正とする。
 
-MO必須を外す場合、現行Stage AでMOに所有を委ねている**小麦・小麦収穫物・小麦粉・最低限の製粉設備/Recipeも、単体プロファイルでGrains自身が成立させる必要がある**。小麦だけをMO必須資産として残したままGrainsをMO非依存とは扱わない。MO併用時にAMJ側Defを正本として統合するか、条件付きでMO Defへ寄せるかは移行実装時に決めるが、Vanilla単体で「栽培→脱穀→製粉」まで完結できることを依存解除の条件とする。
+MO必須を外す場合、現行Stage AでMOに所有を委ねている**小麦・小麦収穫物は、Vanillaプロファイルでも小麦をStage A作物として提供するならAMJ側のフォールバックDefが必要**とする。RimWorld VanillaにはStage Aの代替としてそのまま再利用できる小麦PlantDefがないため、小麦だけをMO必須資産として残したままAgriculture / 現CoreをMO非依存とは扱わない。
+
+一方、依存解除そのものの成立条件は **「栽培 → 収穫 → 一次加工 → Vanilla既存料理で消費」** とし、粉食を必須工程にはしない。小麦粉・製粉は、Vanillaプロファイルでも小麦の「粉食向け」という役割を正式に提供する段階でAMJ所有の粉/Recipeを追加する。専用の新規製粉設備Defは必須ではなく、既存のAMJ穀物加工設備へ製粉Recipeを追加して自己完結させてもよい。MO併用時はAMJ側の重複製粉経路を標準経路にせず、条件付き互換からMO小麦粉・製粉設備へ接続する。
 
 Japan Onlyは責務上MOの既知Defを除去・非表示化するレイヤーなので、**Japan Only自身はMO必須**を維持する。
 
@@ -340,6 +342,85 @@ Japan Onlyは例外で、MO本体の既知Defを対象にすること自体が�
 - **Vanillaプロファイル** — RimWorld + 現Core/Agriculture（MO依存解除後の目標）
 - **MO併用プロファイル** — RimWorld + MO + 現Core/Agriculture
 - **現行公開Coreプロファイル** — 移行完了までの RimWorld + MO + AMJ Core。公開版の実装事実を示す語であり、長期依存原則ではない
+
+#### 2026-10-07 Core / MO依存監査結果
+
+`ARCH-MODULAR-001` の実装監査では、現行CoreのStage A / New VillageはMOなしではロード・進行できない直接参照を複数持つ一方、**Agricultureとしての主要ゲームループ自体はMO固有機能を必要としない**と判断した。したがって、MO必須解除は現実的であり、現在のハード依存は「作者の基準環境」ではなく移行前実装の結合として扱う。
+
+監査時点の実装事実:
+- 本体には `1.6/` フォルダ、製品C#、製品DLLは存在せず、実行時実装は主にXML Def / Patchで構成される。C#はE2Eテスト側にのみ存在する。
+- Production DefのParentNameはVanilla側の `PlantBase` / `PlantFoodRawBase` / `RoughPlantBase` / `BenchBase` 等で、MO ParentDef継承はない。
+- MO向け `MayRequire` / `PatchOperationFindMod` は未実装で、`Patches/MedievalOverhaul_StageA_Wheat.xml` はMO存在を前提に無条件で読み込まれる。CCTO互換だけは既に `PatchOperationFindMod` で条件化されている。
+- Base側の主な直接MO参照は、`DankPyon_Straw`、`DankPyon_BasicAgriculture`、`DankPyon_IronIngot`、`DankPyon_RawWood`、`DankPyon_Cereal`、MO小麦/RawWheat、New VillageのMO研究・初期物資、`DankPyon_Peasant` apparel tag、MO由来の仮テクスチャである。
+- Paper / Paper Press、Salt、MO Drying Rack、Processor Frameworkは現行Stage AのProduction XMLから直接参照されていない。これらは設計上の将来連携であり、Agricultureのハード依存理由にはしない。
+
+依存の分類と所有方針:
+
+| 依存領域 | 分類 | Vanilla / Agriculture側 | MO併用時 |
+|---|---|---|---|
+| MO小麦そのものへの調整、MO RawWheat/Flour/製粉Recipeの変更、日本語ラベル上書き | **A — MO拡張そのもの** | 読み込まない | 専用互換Patchとして維持 |
+| Awa/Hie/Kibi/Soba/Barleyの栽培・脱穀・殻取り | **B — 自己完結可能** | AMJ既存Def/Recipeを正本とする | 同じAMJ Defを利用 |
+| Barley / 加工台の `DankPyon_BasicAgriculture` 前提 | **B — 自己完結可能** | AMJ所有の農業進行へ置換するか、研究なしの初期経路として成立させる。正確な研究Def/コストは実装前バランスで確定 | MO研究ツリーへの接続・置換は互換Patch |
+| `DankPyon_Straw` を全穀物の脱穀副産物として直接出力 | **C — MO時だけ互換可能** | Strawを主要農業ループの必須出力にしない。Agriculture自身に用途がない段階では重複Straw Defを作らない | MO互換Patchから `DankPyon_Straw` を副産物として追加 |
+| `DankPyon_RawWood` StuffCategory | **C — MO時だけ互換可能** | Vanilla `Woody` で成立 | MO時だけ許可素材へ追加 |
+| 加工台の `DankPyon_IronIngot` cost | **B — 自己完結可能** | Vanilla資源で建設可能にする。専用AMJ金属Defは不要 | 必要ならMO互換でiron ingot costへ寄せる |
+| `DankPyon_Cereal` ThingCategory | **C — MO時だけ互換可能** | Vanilla食事で利用できる食材属性を正本とする | MO汎用製粉・醸造へ接続する対象だけ条件付き登録 |
+| MO小麦Plant/RawWheatをStage A小麦そのものとして利用 | **B — 自己完結可能** | 小麦をVanillaプロファイルでも提供するならAMJ所有のフォールバック小麦Plant/収穫物が必要。既存 `AMJC_Wheat` のDefNameは維持 | AMJフォールバック小麦を重複表示・栽培させず、MO小麦を公式互換から利用 |
+| MO Flour / 製粉設備 | **C — MO時だけ互換可能**（依存解除の最低条件ではない） | Vanilla料理へ穀粒として消費できれば主要ループ成立。粉食を正式提供する段階でAMJ所有の粉/Recipeを追加。専用新規設備は必須ではない | MO Flour / Millstone / mill系経路を優先再利用 |
+| MO仮テクスチャ（Barley wheat art、StonecuttingSpot、Millstone） | **B — 自己完結可能** | Production用AMJ画像へ置換 | 同じAMJ画像を利用してよい |
+| New VillageのMO研究・ration/raw wood/iron ingot・knife stuff | **B — 自己完結可能** | Vanilla/AMJ所有要素だけでStartを成立させる | MOらしい研究・物資差分が必要なら条件付きPatch |
+| `DankPyon_Peasant` apparel tag | **C — MO時だけ互換可能** | Vanilla `Neolithic` 等だけで成立 | MO時だけtagを追加 |
+| MO Paper / Paper Press | **C — MO時だけ互換可能** | Agriculture本体では所有しない。植物/繊維原料までを必要に応じて所有 | MO製紙への原料接続は互換Patch。Vanilla製紙が必要になれば製紙側機能の責務 |
+| MO Drying Rack / Processor Framework | **C — MO時だけ互換可能** | Agricultureの依存にしない | MO設備へ接続する機能だけ条件付き利用。別AddonがPFを必要とする場合はMOの推移的依存に頼らず直接依存を宣言 |
+| MO Salt | **C — MO時だけ互換可能** | Agriculture本体では所有しない | 塩を必要とするPreservation / Coastal系等の責務側で条件付き接続 |
+
+この監査では、**A分類の存在はCoreをMO必須にする理由にならない**。Aは「MOがある時だけ意味を持つ互換機能」なので、Baseから隔離・条件化する。
+
+##### Agriculture / Waterworks境界
+
+- Agriculture / 現Coreは、畑作作物、畑作物の一次加工、Vanilla料理へ到達する最低限の食材経路を所有する。
+- WaterworksはCore非依存のまま、自然取水・用水路・水田・稲・籾・米・稲作固有の一次加工を自己完結して所有する。
+- 両方を導入した場合のみ、Waterworksの米/稲をAMJ穀物加工設備へ追加する、Agriculture側の食材カテゴリをWaterworksで利用する等の相互互換を行う。Waterworksを成立させるためにCoreを必須化しない。
+- MO Drying Rack等を使う任意乾燥はWaterworks/MO互換側の責務であり、Agricultureの依存解除条件には含めない。
+
+##### 紙・塩・Processor Framework
+
+- Paper / Paper PressはAgricultureの主要ループではないため、Core/Agriculture本体へVanilla代替を抱え込まない。Agricultureが靭皮繊維等を所有する場合も、製紙そのものはMO互換または将来の製紙/Materials側機能へ接続する。
+- SaltもAgriculture本体の主要ループではない。既存設計の「海水採取 → `DankPyon_Salt`」はMO併用時だけ成立する互換案として扱い、BaseにMO Saltへの直接出力を置かない。
+- 現行CoreはProcessor Frameworkのclass / ProcessDefを直接利用していない。MOがPFを依存に含めていることを理由に、将来AddonがPFを暗黙利用してはならない。Fermentation等がPFを主要ループに必要と判断した場合は、そのAddon自身が直接依存を宣言する。
+
+##### 識別子・セーブ互換
+
+MO依存解除で、既存の `packageId=sucro.ancientmedievaljapan.core`、公開名、`AMJC_` prefix、既存AMJC DefNameは変更しない。**Coreという名称は当面維持するが、アーキテクチャ上は「AMJ全体の共通必須基盤」ではなくAgriculture相当の独立コンテンツModとして扱う。** 「Core」は歴史的な公開名/識別子であり、他Addonが依存すべきという意味を持たせない。
+
+MO併用の既存セーブでは、現在参照されているMO Defを急にAMJ Defへ置換しない。MOが残っている更新経路では、現在のMO小麦・MO素材・AMJC既存DefNameを条件付き互換から維持する。新規のVanillaフォールバックDefはMO併用時に重複栽培・重複Recipeを標準表示しない。
+
+「Core更新と同時にMOを既存セーブから外す」経路は別の移行ケースであり、依存メタデータを外しただけで安全とは扱わない。実装時に専用のロード/Def参照テストを通すまでは未保証とする。
+
+##### MO必須解除の実装順序
+
+1. **テストを先に分岐**し、Production About.xmlを変更しなくてもMOなしのBase XMLをロードできるテスト用Vanillaプロファイルを用意する。
+2. BaseのMO直接参照を除去する。Straw / Cereal / RawWood等はMO互換へ移し、建設材料・研究・ScenarioはVanilla/AMJ側で自己完結させる。
+3. Barley/設備のMO仮画像をAMJ-owned Production画像へ置換する。
+4. Stage Aで小麦をVanillaプロファイルにも提供する場合は、AMJフォールバック小麦を追加し、MO時の重複を抑止する。粉食は必要な用途が確定した範囲だけ追加する。
+5. `Patches/MedievalOverhaul_StageA_Wheat.xml`、MOラベル、MOカテゴリ、MO Scenario/素材差分を明示的な条件付き互換へ隔離する。
+6. Vanilla / MO × CCTO有無の自動マトリクスをすべて通し、runtime ERROR 0を確認する。
+7. **最後に** About.xmlのMO必須依存・load orderとREADME/Workshop等の公開説明を一括変更する。About.xmlだけを先行変更しない。
+
+##### 自動テスト・サポートマトリクス
+
+最低限、依存解除実装前に次の4プロファイルを常設する。
+
+| プロファイル | 主な自動確認 |
+|---|---|
+| Vanilla + Core | 未解決MO Def/class 0、Stage A作物、一次加工、Vanilla simple meal受入、New Village、runtime ERROR 0 |
+| Vanilla + Core + CCTO | 上記 + AMJC crop cold-tolerance extension |
+| MO + Core | MO小麦/Flour/Cereal/Straw等の互換Patch、重複小麦経路なし、New Village MO差分、runtime ERROR 0 |
+| MO + Core + CCTO | MO互換とCCTO互換の同時適用、Stage A回帰、runtime ERROR 0 |
+
+静的XML検証は全プロファイルの前段に置き、Pickleで実ロード後のDef・Recipe・Scenario・Vanilla meal受入・MO互換・runtime ERRORを確認する。RimTest Reduxは、今後C#の移行補助や独立ロジックを追加した場合の単体/ロジック試験を優先し、現行のXML中心実装で無理に代替しない。人間の手動確認は、Production画像/UI/操作感など自動化できない項目に限定する。
+
+Fermentation / Brewingは、AgricultureやMOをハード依存にしない設計を採る場合、それぞれ **Vanilla単独の主要ループ** と **Agriculture併用時の追加原料接続** を最低限の自動ケースとする。MO設備/原料を正式互換する場合だけMO併用ケースを追加し、CCTOは発酵・酒造側が作物温度Defを直接変更しない限り直積マトリクスへ含めない。Fermentation + Brewing相互のケースも、一方の出力を他方が公式に消費する設計が確定した場合だけ追加する。
 
 #### 外部Modとの競合優先順位
 
