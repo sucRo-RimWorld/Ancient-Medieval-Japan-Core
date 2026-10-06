@@ -20,9 +20,13 @@ Once the author accepts an image, treat it as an **immutable master source**.
 - If only one component changes, keep all other accepted components fixed.
 - A newly generated image is not automatically a replacement for an accepted master.
 - Production-size PNGs under `Textures/` are derivatives. They are not the only copy of accepted high-resolution source art.
-- Accepted high-resolution source art belongs under `Art/Sources/`, mirroring the production asset path where practical. Example: a production asset at `Textures/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat_a.png` may keep its authoritative high-resolution source under `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/`.
+- Accepted source art belongs under `Art/Sources/`, mirroring the production asset path where practical. Example: a production asset at `Textures/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat_a.png` keeps its authoritative source under `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/`.
+- **Acceptance closeout is not complete until the exact accepted source is committed under `Art/Sources/`.** Do this before creating or replacing the 256×256 production derivative whenever the source is available.
+- Keep editable authoring files such as `.xcf` beside the accepted rendered master when they are part of the source used to produce the asset.
 - Export operations such as 256×256 conversion must write a **new file** and leave the authoritative source byte-for-byte unchanged.
-- If the authoritative source has not yet been uploaded/committed, do not claim it has been preserved in the repository. Keep the task blocked on obtaining that exact source instead of silently treating a derivative as the master.
+- If an already-approved master survives in another persistent location, migrate the exact accepted bytes into `Art/Sources/` when that asset is next touched; do not promote a lower-resolution production derivative or regenerated approximation to master status.
+- If the authoritative source has not yet been uploaded/committed, do not claim it has been preserved in the repository. Keep the source-migration state explicit instead of silently treating a derivative as the master.
+- `Art/Sources/` is development-only and must not ship in Steam Workshop content. Use the fail-closed Workshop staging path documented in `Art/Sources/README.md`; do not rely on publishing the repository working directory directly.
 
 ### Do not edit from production-resolution derivatives
 
@@ -90,6 +94,6 @@ Publishing a validated PNG must not mutate the asset merely to make a Git/GitHub
 
 This rule separates **asset production** from **asset transport**: transport must never change appearance or dimensions.
 
-## 7. Fixed reused components
+## 8. Fixed reused components
 
 When an image intentionally reuses a visible component pixel-exactly, follow `Docs/GoldenPaths/FixedImageTemplates.md`. Otherwise do not impose fixed-template machinery on a merely stylistically similar asset.
