@@ -246,6 +246,16 @@ def compose(manifest, variable, output):
     output = Path(output)
     if output.suffix.lower() != ".png":
         raise ValueError("Lossless PNG output required")
+    source_paths = {
+        Path(manifest).resolve(),
+        Path(variable).resolve(),
+    }
+    source_paths.update(
+        (Path(manifest).parent / spec[k]["path"]).resolve()
+        for k in ("master", "editable_mask")
+    )
+    if output.resolve() in source_paths:
+        raise ValueError("Output must not overwrite an input/template")
     output.parent.mkdir(parents=True, exist_ok=True)
     result.save(output, format="PNG")
     print(f"PASS: deterministic composition complete; {output}")
