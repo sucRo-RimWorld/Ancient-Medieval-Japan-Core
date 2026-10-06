@@ -1434,24 +1434,35 @@ This item remains open until the Core accepted-image inventory has been audited 
 
 **Requested by:** author  
 **Owner:** AMJ architecture / dependency design  
-**Status:** OPEN — design direction accepted; implementation/dependency audit pending
+**Status:** IN PROGRESS — dependency audit/classification complete; runtime migration not started
 
-The author accepted a shift from a central Core dependency tree toward **independent AMJ mods with official optional integration**.
+The author accepted a shift from a central Core dependency tree toward **independent AMJ mods with official optional integration**. The 2026-10-07 Core/MO implementation audit is now complete and its durable conclusions are recorded in `Docs/Design.md` at commit `aa0481c8c8eba2486f1b5db7a7a28240e8314922`.
 
-Durable design is now recorded in `Docs/Design.md`:
-- an AMJ mod depends on another AMJ mod only when its own primary gameplay loop cannot exist without it;
-- optional recipes, materials, Def connections and richer historical coverage use conditional compatibility instead of mandatory dependencies;
-- Fermentation and Brewing are not automatically Agriculture/Core-dependent; both should be able to form a smaller Vanilla-compatible loop where practical, then gain AMJ crop/process integrations when Agriculture is present;
-- MO remains the author's primary play/balance environment, but that does not by itself justify a hard dependency;
-- the currently published Core remains MO-required until its Def/research/recipe/building/material/C# references are audited and a Vanilla-capable path is proven;
-- Japan Only remains MO-required by definition;
-- existing third-party soybean mods are outside official compatibility support when AMJ owns soybean; duplicate crop/resource/recipe behavior is not normalized by AMJ;
-- the larger compatibility surface is expected to be maintained with automated static/RimTest Redux/Pickle matrix testing rather than by collapsing everything into hard dependencies.
+Audit result:
+- Removing Medieval Overhaul as a hard dependency is **technically realistic**, but current Core cannot load MO-free yet because Stage A / New Village still contain unconditional MO Def/material/research/category/texture references.
+- No production `1.6/`, production C# source, or production DLL exists in Core main; runtime implementation is XML/Patches. E2E test C# is separate.
+- No production AMJC Def currently inherits an MO ParentDef. CCTO is already correctly guarded with `PatchOperationFindMod`; MO compatibility is not.
+- The largest current Base couplings are `DankPyon_Straw` outputs, `DankPyon_BasicAgriculture`, `DankPyon_IronIngot`, `DankPyon_RawWood`, `DankPyon_Cereal`, MO wheat/RawWheat, MO-only New Village research/supplies, `DankPyon_Peasant`, and temporary MO texture paths.
+- `Patches/MedievalOverhaul_StageA_Wheat.xml` and the MO RawWheat localization override are class A: they exist specifically to extend MO and should remain as **conditional MO compatibility**, not as Base dependencies.
+- Base crop/processing functionality is class B and can be self-contained. Straw is class C: Agriculture does not need to own a duplicate straw resource merely to remove MO; Base threshing can omit straw and MO compatibility can add `DankPyon_Straw`.
+- If Stage A still exposes wheat in the Vanilla profile, Vanilla has no suitable wheat PlantDef to inherit as the Stage A wheat, so AMJ needs a non-MO fallback wheat Plant/harvest chain while preserving existing `AMJC_Wheat`. MO-loaded profiles must not expose a duplicate AMJ wheat crop.
+- Flour/milling is **not required merely to prove the minimum Vanilla agriculture loop** (`grow -> harvest -> primary process -> Vanilla meal`). If the Vanilla profile formally retains wheat's flour-food role, add an AMJ-owned flour/recipe then; a separate dedicated mill building is not mandatory because the existing AMJ grain-processing equipment can host a minimal milling recipe.
+- Paper/Paper Press, Salt, MO Drying Rack and Processor Framework are not current Stage A production dependencies and must not become Agriculture hard dependencies. Paper/salt/drying belong to their owning feature/Addons or conditional MO integration. Future PF users must declare PF directly rather than relying on MO to pull it transitively.
+- Waterworks remains Core-independent and owns paddy/water/rice-specific gameplay. Agriculture owns dry-field crops and generic primary processing; cross-use of worktables/categories is optional compatibility.
+- Keep `sucro.ancientmedievaljapan.core`, the current public Core name, `AMJC_` prefix, and existing AMJC DefNames. Architecturally, however, Core is now treated as an **Agriculture-equivalent independent content mod, not the common required foundation of the AMJ suite**.
+- Existing MO+Core saves should retain current AMJC identifiers and MO-profile behavior through compatibility. Removing MO from an already-running save is a separate migration case and is not considered safe until dedicated runtime tests prove it.
 
-**Next actions:**
-1. Audit current Core/MO coupling and classify each coupling as truly required, Vanilla-self-contained, or optional MO patch.
-2. Define the first supported compatibility matrix for Agriculture/Core, Fermentation and Brewing before changing About.xml dependencies.
-3. When a dependency is actually removed, update About.xml/load order, formal design, compatibility patches, tests and public descriptions together.
-4. Reassess whether the name/role `Core` remains accurate after the dependency audit; do not rename solely from this design note.
+Required migration order (not started):
+1. Split the test harness first so a test-only Vanilla target can load Base XML without changing production About.xml.
+2. Remove unconditional MO refs from Base XML and supply Vanilla/AMJ research/material/scenario paths.
+3. Replace MO placeholder art used by Barley and grain-processing buildings with AMJ-owned production art.
+4. Add the non-MO wheat fallback if wheat remains part of the Vanilla Stage A promise; keep MO wheat as the MO-profile source.
+5. Guard/isolate all MO wheat/flour/category/straw/scenario/localization compatibility.
+6. Pass the permanent four-profile matrix: Vanilla+Core, Vanilla+Core+CCTO, MO+Core, MO+Core+CCTO, with runtime ERROR 0.
+7. Only after that change About.xml/load order and synchronize README/Workshop/public descriptions.
 
-**Design consistency follow-up:** `Docs/Design.md` was audited for the superseded hard-MO assumptions. The top-level policy, Core/Agriculture boundary, current-Core positioning, MO integration chapter, Processor Framework dependency wording, food-category rules, and MO-only paper/straw integration are now aligned with the minimal-dependency direction. This does **not** claim that About.xml/runtime implementation is already MO-optional; the code/Defs dependency audit remains the next implementation task.
+Future Fermentation/Brewing dependency tests should cover their Vanilla standalone loop plus Agriculture integration when Agriculture adds ingredients. Add MO cases only for declared MO compatibility; do not multiply by CCTO unless those mods directly touch crop-temperature definitions.
+
+**No dependency metadata or runtime Def was changed by this audit.** About.xml still requires MO, as requested.
+
+**Next action:** implementation workstream should begin at migration step 1 (test-harness split) and must not edit About.xml first.
