@@ -27,7 +27,7 @@ For fixed-template contents, build semantic variable layers at high resolution, 
 
 ## 3. New-image generation
 
-Use image generation only when a genuinely new silhouette or subject-specific drawing is required.
+Use image generation when the requested result needs genuinely new visual content, a new silhouette/structure, or material stylistic redrawing that is not a deterministic source transform. Do not use it for simple resize/crop/mask/export operations or for recreating an accepted fixed/shared component.
 
 1. Generate one isolated asset.
 2. Compare it to the relevant accepted AMJ/MO reference at game-like size.
