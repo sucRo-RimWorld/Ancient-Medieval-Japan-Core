@@ -103,12 +103,15 @@ class ArtRuleStructureTest(unittest.TestCase):
         ignore = read(".workshopignore")
         attrs = read(".gitattributes")
         source_readme = read("Art/Sources/README.md")
+        publisher_plus = read("_PublisherPlus.xml")
         staging = read("Scripts/Prepare-WorkshopContent.ps1")
 
         self.assertIn("/Art/Sources/", ignore)
         self.assertIn("/Art/Sources export-ignore", attrs)
         self.assertIn("/Art/Sources/** export-ignore", attrs)
+        self.assertIn("/_PublisherPlus.xml export-ignore", attrs)
         self.assertIn("must **never** be included in Steam Workshop content", source_readme)
+        self.assertIn("<exclude>Art\\Sources</exclude>", publisher_plus)
         self.assertIn("Art\\Sources", staging)
 
         with tempfile.TemporaryDirectory() as tmp:
@@ -126,6 +129,14 @@ class ArtRuleStructureTest(unittest.TestCase):
                 any(name == "Art/Sources/" or name.startswith("Art/Sources/") for name in names),
                 "Art/Sources leaked into git-archive Workshop staging",
             )
+
+    def test_source_inventory_does_not_promote_texture_derivatives(self):
+        source_readme = read("Art/Sources/README.md")
+        self.assertIn("Do not copy a `Textures/` derivative", source_readme)
+        self.assertTrue((ROOT / "Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.png").exists())
+        self.assertTrue((ROOT / "Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.xcf").exists())
+        self.assertTrue((ROOT / "Art/Sources/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png").exists())
+        self.assertTrue((ROOT / "Art/Sources/Workshop/AMJ_WorkshopCover_Template.svg").exists())
 
     def test_workshop_pipeline_has_no_mandatory_preapproval_loop(self):
         text = read("Docs/GoldenPaths/WorkshopCoverPipeline.md")
