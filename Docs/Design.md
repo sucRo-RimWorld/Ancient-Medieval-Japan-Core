@@ -423,6 +423,79 @@ MO併用の既存セーブでは、現在参照されているMO Defを急にAMJ
 
 Fermentation / Brewingは、AgricultureやMOをハード依存にしない設計を採る場合、それぞれ **Vanilla単独の主要ループ** と **Agriculture併用時の追加原料接続** を最低限の自動ケースとする。MO設備/原料を正式互換する場合だけMO併用ケースを追加し、CCTOは発酵・酒造側が作物温度Defを直接変更しない限り直積マトリクスへ含めない。Fermentation + Brewing相互のケースも、一方の出力を他方が公式に消費する設計が確定した場合だけ追加する。
 
+##### Grains再編後の最終 Base / MO 所有境界（2026-10-07）
+
+この節は ARCH-MODULAR-001 のGrains再編確定版である。上記の旧Agriculture監査、後段の旧Stage B〜Dロードマップ、MO前提の一次加工記述と矛盾する場合は、Grains移行ターゲットについてはこの節を優先する。現行MO必須版の具体値・Scenario表は、実装移行が始まるまで現行実装スナップショットとして残す。
+
+| 領域 | Base（Vanilla + Grains） | MO併用時 | 最終所有判断 |
+|---|---|---|---|
+| アワ・ヒエ・キビ・ソバ・大麦 | AMJ既存Plant・収穫物・一次加工を使用 | 同じAMJ Defを使用 | **Grains** |
+| 小麦Plant / 小麦束 | Grains所有の非MO小麦Plant・穀束を供給 | MOの DankPyon_Plant_Wheat / DankPyon_RawWheat を可視の供給元として使い、AMJフォールバックは重複表示しない | **概念・バランスはGrains、MO時の実Def供給元はMO** |
+| 脱穀後の小麦穀粒 | 既存 AMJC_Wheat | MO小麦束をGrains脱穀工程へ通し、同じ AMJC_Wheat へ合流 | **Grains**。既存DefName維持 |
+| 小麦粉 | Grains所有のフォールバック小麦粉 | DankPyon_Flour を唯一の標準小麦粉として利用し、AMJ小麦粉を二重表示しない | **Base概念はGrains、MO時の実Def供給元はMO** |
+| 蕎麦粉 / 雑穀粉 | Grains所有 | Grains所有のまま。MO generic flourへ統合しない | **Grains** |
+| 製粉Recipe | Grainsが小麦・蕎麦・雑穀のBase Recipeを所有。製粉では総栄養を保存 | 小麦はMO既存製粉経路へ接続。蕎麦/雑穀のGrains RecipeはMO石臼へ追加 | **工程仕様はGrains** |
+| 石臼 / 最低限の製粉設備 | Grains単体で使えるAMJ所有の手動石臼を持つ。最低限経路はMO研究なしで成立 | MOの DankPyon_Millstone を標準設備として再利用し、AMJ石臼は重複表示しない | **BaseはGrains、MO時の実Def供給元はMO** |
+| DankPyon_Cereal | 存在しない前提。Base主要ループに使わない | MO既存製粉/醸造へ参加させる対象だけ登録。未脱穀束・ソバ・雑穀を一律登録しない | **MO互換専用** |
+| Straw | **AMJ Straw ThingDefを作らない。** Base脱穀では茎葉残渣を非アイテム化 | 脱穀時だけ DankPyon_Straw を副産物として追加。収穫時Hay・製粉時Hay/Strawは出さない | **MO時のみMO所有資産を利用** |
+| 作物・加工研究 | Base主要ループからMO ResearchDef参照を除去。最低限の栽培・一次加工・手動製粉はMO研究なしで成立 | MO研究との接続は条件付き互換。MO研究がないとGrains主要ループが止まる構成にしない | **BaseはGrains/MO非依存** |
+| 建築材料 | Vanilla / Grains所有のStuff・Thingだけで建設可能 | RawWood / IronIngot等への材料置換・追加は条件付き互換 | **BaseはVanilla/Grains** |
+| New Village Scenario | 既存 AMJC_NewVillage / Faction / PawnKindをセーブ互換のため当面同package内に保持し、BaseからMO研究・物資・apparel tagを除去 | MOらしい開始差分が必要な場合だけ条件付きPatch | **Grains主要機能ではない互換保持コンテンツ** |
+| CCTO | なくてもGrains作物は成立 | CCTO存在時だけ既存互換Patch | **任意互換** |
+| 米・水田 | 所有しない | 所有しない | **Waterworks / Rice Cultivation** |
+| 豆類 | 所有しない | 所有しない | **Grains外。将来所有先を用途と合わせて決定** |
+| 繊維・紡績・製紙 | 所有しない | Grains-MO互換にも置かない | **Grains外。将来のMaterials/Textiles等で決定** |
+| 根菜・一般野菜 | 所有しない | 所有しない | **Grains外。将来所有先を決定** |
+
+**小麦統合の固定ルール**
+- MOなし: Grains小麦Plant → Grains小麦束 → 脱穀 → AMJC_Wheat → Grains小麦粉。
+- MOあり: MO小麦Plant → DankPyon_RawWheat（小麦束）→ 脱穀 → AMJC_Wheat → DankPyon_Flour。
+- 同一プロファイルでAMJ小麦PlantとMO小麦Plant、AMJ小麦粉とMO小麦粉を標準経路として並存させない。
+- 既存MO+Coreセーブで参照されているMO小麦/RawWheatと AMJC_Wheat の関係は維持する。Core更新と同時にMOを既存セーブから外す移行は別ケースとして扱う。
+- MO小麦の成長・肥沃度等はGrainsの6穀物バランスに合わせて条件付きPatchし、供給元がMOであることを理由に未調整値へ戻さない。
+
+**Strawの固定ルール**
+- Grains単体ではStraw ThingDefを所有しない。
+- Vanilla + Grainsの主要ループで独立した需要先を持たず、依存解除のためだけに追加すると用途の薄い在庫を増やすためである。
+- MO併用時にはMO Strawの既存需要があるので、穀束の脱穀時だけ DankPyon_Straw を追加する。
+- MO Strawの価値が作物選択を過度に歪めないこともMOプロファイルの回帰テスト対象とする。
+- 将来、MOなしでも藁を主要資源として消費するAMJ機能が成立した場合は、その自然な所有Modを決めてGrainsと条件付き互換する。
+
+**研究・材料・Scenarioの分離条件**
+
+Base側から次の無条件参照を0にする。
+- DankPyon_BasicAgriculture とNew VillageのMO研究
+- DankPyon_IronIngot / DankPyon_RawWood
+- DankPyon_Peasant
+- DankPyon_MealRations 等、ScenarioのMO専用初期物資
+- DankPyon_Cereal / DankPyon_Straw
+- MO小麦 / RawWheat / Flour / MillstoneへのBase直接参照
+- MO由来のProduction仮テクスチャ
+
+現行Scenarioの具体値表は現行MO必須版の実装スナップショットとする。Grains移行では既存Scenario/Faction/PawnKindのDefNameを維持しつつ、Base定義をVanilla/Grains参照だけへ置換し、MO差分だけを条件付き互換へ移す。Scenario自体を別Modへ物理分離する判断は、既存セーブ参照を壊さない移行方法を別途設計してから行う。
+
+**Grainsの存在意義を守る恒久回帰**
+
+最低限、痩せ地/標準/肥沃地、寒冷/温暖、短期/標準/長期の代表環境を組み合わせて評価する。収量・growDays・加工価値に加え、CCTO併用時は固定枯死温度/休眠、MO併用時はStraw等の追加価値も含める。
+
+期待する役割は、ソバ/キビ=短期・痩せ地、ヒエ/大麦=寒冷側、小麦=肥沃地・長期・粉食、アワ=標準〜肥沃地で収穫回数を抑える主力とする。単一穀物が代表条件のほぼ全てで最適になる状態を回帰失敗とする。Environmentは差を強調する推奨姉妹Modだが、**Vanilla + Grainsでもこの選択が消えないこと**をリリース条件とする。
+
+**旧Stage B〜Dとの整合**
+- 旧Stage B（豆類）、Stage C（繊維）、Stage D（根菜）はGrainsロードマップから外す。
+- これらの歴史的調査・候補記述はAMJ全体の将来候補として参照してよいが、「Grainsが所有する予定」という意味では失効する。
+- 大豆をFermentationが使う、繊維を製紙/織物が使う、根菜を将来の食生活機能が使う等の接続は、実際の所有Mod確定後に任意互換で行う。
+
+**移行順序**
+1. About.xmlを変えず、MOなしBase XMLをロードできるテスト用プロファイルを先に作る。
+2. Base XMLからMO研究・素材・カテゴリ・Straw・Scenario参照を除去する。
+3. 非MO小麦Plant/穀束、小麦粉、蕎麦粉、雑穀粉、手動石臼、最低限粉食をGrains Baseへ追加する。
+4. MO互換を条件化し、MO小麦/RawWheat/Flour/Millstone/Strawへ上表どおり収束させる。
+5. MO仮テクスチャをGrains所有Production画像へ置換する。
+6. Vanilla + Grains / Vanilla + Grains + CCTO / MO + Grains / MO + Grains + CCTO の恒久マトリクスに、環境別穀物選択回帰を加えて通す。
+7. 最後にAbout.xml、load order、README/Workshop等の公開説明を同期する。
+
+この所有境界確定後の最初のruntime作業は、**テストハーネス分離**とする。
+
 #### 外部Modとの競合優先順位
 
 AMJを導入している場合、**AMJが責務を持つ機能・資源・バランスについてはAMJの設計を最終優先する。**
