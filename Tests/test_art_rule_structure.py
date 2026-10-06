@@ -31,6 +31,8 @@ class ArtRuleStructureTest(unittest.TestCase):
         text = read("Docs/ArtStyle.md")
         self.assertIn("AMJ-wide invariants", text)
         self.assertIn("Asset-class style specification", text)
+        self.assertIn("## 1. In-game asset primary target", text)
+        self.assertIn("## 8. Core Thing/Plant rejection criteria", text)
         for forbidden in (
             "HardFixed",
             "ContactZone",
