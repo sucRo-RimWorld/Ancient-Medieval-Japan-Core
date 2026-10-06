@@ -18,6 +18,9 @@ This directory stores accepted source artwork and authoring files that must surv
 - `Shared/Containers/AMJ_Masu_Empty_Master.png`
 - `Shared/Containers/AMJ_Masu_Empty_Master.xcf`
 - `Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png`
+- `Workshop/AMJ_WorkshopCover_Template.svg`
+
+Do not copy a `Textures/` derivative into this tree merely to make the inventory look complete. Historical accepted assets whose exact higher-resolution/source bytes still survive elsewhere should be migrated here only from those exact bytes. If only the production derivative remains, keep that limitation explicit rather than relabeling the derivative as an original source.
 
 Additional accepted sources should be added to the corresponding mirrored path as they are finalized or recovered.
 
@@ -26,5 +29,6 @@ Additional accepted sources should be added to the corresponding mirrored path a
 `Art/Sources/` is development-only material and must **never** be included in Steam Workshop content.
 
 - `.workshopignore` records the exclusion for uploaders that support ignore files.
+- `_PublisherPlus.xml` excludes `Art\\Sources` when publishing through RimWorld's PublisherPlus workflow.
 - The fail-closed publication path is `Scripts/Prepare-WorkshopContent.ps1` / `prepare-workshop.bat`, which creates a clean `git archive` staging tree and verifies that `Art/Sources/` is absent before manual Steam publication.
 - Do not publish the repository working directory directly when it contains `Art/Sources/`.
