@@ -105,14 +105,18 @@ class ArtRuleStructureTest(unittest.TestCase):
         text = read("Docs/Coordination.md")
         for number in range(4, 19):
             ident = f"ART-TEMPLATE-{number:03d}"
-            match = re.search(
-                rf"(?ms)^### {re.escape(ident)}\b.*?^\*\*Status:\*\* ([^\n]+)",
-                text,
-            )
-            self.assertIsNotNone(match, ident)
+            marker = f"### {ident}"
+            start = text.find(marker)
+            self.assertGreaterEqual(start, 0, ident)
+            end = text.find("\n### ", start + len(marker))
+            section = text[start:] if end < 0 else text[start:end]
+            status_marker = "**Status:** "
+            status_start = section.find(status_marker)
+            self.assertGreaterEqual(status_start, 0, ident)
+            status = section[status_start + len(status_marker):].splitlines()[0]
             self.assertTrue(
-                match.group(1).startswith("ARCHIVED"),
-                f"{ident} is not archived: {match.group(1)}",
+                status.startswith("ARCHIVED"),
+                f"{ident} is not archived: {status}",
             )
 
 
