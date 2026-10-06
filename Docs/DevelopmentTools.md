@@ -13,6 +13,21 @@ AMJおよび関連Modでは、RimTest Redux・Pickleを積極的に用いた自�
 - 自動化が未整備の項目は、未検証範囲と自動化する対象を明示する。静的検証の成功を実行時テストの成功として扱わない。
 - RimWorldを起動する自動テストでは、既存の実行時ERROR検出方針を必ず適用する。シナリオが全件成功しても対象Mod由来のERRORがあれば全体を失敗とする。
 
+## 対話型開発補助ツール（AMJ共通）
+
+人間の目視・操作が必要な確認を短時間で準備するため、次のツールを開発専用として利用してよい。これらは自動テストの代替ではなく、出荷Modの依存関係にも含めない。
+
+- **DevKit — Better Dev Mode Menu** (Workshop `3814373104`): Def / defName 検索、Thing・植物・建築物・Pawn等の配置、Debug Action検索、Favorites / Recent等を使い、目視確認・デバッグ用の盤面準備を高速化する。
+- **Rim Control** (Workshop `3774299554`): ゲーム中の数値・visual・placement等を一時変更し、バランス値や表示設定の候補を素早く比較するためのプロトタイピング用途に使う。
+
+運用ルール:
+
+- DevKitでスポーン・配置できたこと自体を、実装またはテスト成功の証拠として扱わない。
+- Rim Controlで変更した値は試作値にすぎない。採用する場合は、必ず所有リポジトリのXML / C# / Def / 正式設計書へ反映して正本化する。
+- 正本へ反映した後、Rim Controlの上書きを無効化し、必要な静的検証・RimTest Redux・Pickle・通常のruntime gateで再検証する。
+- 自動テスト、リリースゲート、正式な通常プロファイル確認では DevKit / Rim Control を無効化する。例外は、そのツール自身との互換性を明示的に調べるテストだけとする。
+- 可視実行を行う場合も、用途は最終テクスチャ、通常ズーム視認性、UI、操作感、遊び心地など、人間判断が必要な項目に限定する。
+
 ## GitHub validation
 
 `.github/workflows/stage-a-validation.yml` runs `Tests/validate_stage_a.py` on pushes to `main` and pull requests.
