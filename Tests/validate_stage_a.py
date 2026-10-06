@@ -381,6 +381,13 @@ assert_stack_graphic(
     "BuckwheatInHull",
 )
 
+assert_stack_graphic(
+    buckwheat,
+    "Things/Item/Resource/AMJC_Buckwheat/Buckwheat",
+    "Textures/Things/Item/Resource/AMJC_Buckwheat/Buckwheat",
+    "Buckwheat",
+)
+
 def rot_days(node):
     for comp in node.findall("./comps/li"):
         if comp.attrib.get("Class") == "CompProperties_Rottable":

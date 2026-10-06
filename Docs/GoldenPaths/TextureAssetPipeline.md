@@ -28,6 +28,19 @@ Once the author accepts an image, treat it as an **immutable master source**.
 - If the authoritative source has not yet been uploaded/committed, do not claim it has been preserved in the repository. Keep the source-migration state explicit instead of silently treating a derivative as the master.
 - `Art/Sources/` is development-only and must not ship in Steam Workshop content. Use the fail-closed Workshop staging path documented in `Art/Sources/README.md`; do not rely on publishing the repository working directory directly.
 
+### Human-authored final master → production export
+
+When the author or another human produces the final accepted image directly, use that exact image as the authoritative master. Do not send it through ImageGen or redraw it before production export.
+
+1. Treat `Art/Sources/` at repository root as temporary staging only. Once the owning production path is known, move the master under `Art/Sources/` so it mirrors the corresponding `Textures/` hierarchy as closely as practical. Do not leave finalized masters loose in the staging root.
+2. Leave the organized master byte-for-byte unchanged. All game-ready PNGs are deterministic derivatives written elsewhere.
+3. When a production texture contract requires a 256×256 square PNG, scale the complete source canvas with one uniform scale factor: `min(256 / source_width, 256 / source_height)`. Never scale X and Y independently. Center the scaled result on a transparent 256×256 canvas. Do not crop or stretch unless the author explicitly requests it.
+4. For `Graphic_StackCount` assets, if no distinct stack-count variants have been authored, reuse the exact same derived PNG bytes for the `_a`, `_b`, and `_c` slots rather than independently re-exporting them.
+5. After export, wire the owning Def to its dedicated AMJ path and extend the existing validation so the production path and required PNG slots cannot silently fall back to a placeholder.
+6. The publication step must preserve the already-exported bytes exactly and still pass the repository PNG integrity gate.
+
+This is the standard AMJ flow for human-finished texture art: **human final master → organized `Art/Sources` source of truth → deterministic production export → Def/test wiring**.
+
 ### Do not edit from production-resolution derivatives
 
 When an accepted source exists at higher resolution than the in-game output, perform material/palette cleanup on the highest authoritative source available and resize only once at export. The 256px production PNG is not a reusable editing source for recoloring/shading transformations. Repeated recolor → blur/median → requantize cycles on a downsampled raster create irreversible noise/banding or broad blurred patches.

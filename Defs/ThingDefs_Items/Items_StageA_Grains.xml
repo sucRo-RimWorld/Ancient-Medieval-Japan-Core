@@ -86,8 +86,8 @@
   <!--
     Buckwheat processing states. They intentionally remain outside
     DankPyon_Cereal so MO generic processing cannot bypass AMJ threshing/hulling.
-    Soba-specific production art is wired per state as it is approved. The
-    the edible grain may temporarily reuse the millet grain path until replaced.
+    Soba-specific production art is wired per state as it is approved. Each
+    approved state uses its dedicated AMJ-owned texture path.
   -->
   <ThingDef ParentName="RoughPlantBase">
     <defName>AMJC_RawBuckwheat</defName>
@@ -146,7 +146,7 @@
     <label>buckwheat</label>
     <description>Edible buckwheat grain with its hull removed. It is a short-lived staple grain suited to direct cooking; flour is introduced only when a concrete flour-based use is implemented.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/AMJC_Millet/Millet</texPath>
+      <texPath>Things/Item/Resource/AMJC_Buckwheat/Buckwheat</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
