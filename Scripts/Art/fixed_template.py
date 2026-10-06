@@ -156,6 +156,11 @@ def _validate_legacy(master, mask, candidate):
     return candidate
 
 
+def validate(master, mask, candidate):
+    """Backward-compatible public validator for fixed-mask template families."""
+    return _validate_legacy(master, mask, candidate)
+
+
 def validate_variable_layer(manifest_path, layer, mask=None):
     path, spec = _read_spec(manifest_path)
     layer = layer.convert("RGBA")
