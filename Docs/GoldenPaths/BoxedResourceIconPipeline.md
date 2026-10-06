@@ -6,7 +6,9 @@ This file owns only the **masu boxed-resource family**. Shared visual style come
 
 For new boxed resources, ImageGen is used only to create the **contents source layer**. The wooden masu is not generated.
 
-Final placement, masking, overlap, and contact with the masu are adjusted manually in an image editor.
+Do not rely on ImageGen to solve the masu projection. The generated subject/style layer is passed through the deterministic `Scripts/Art/normalize_masu_contents.py` perspective normalizer before it is treated as a placement candidate.
+
+Final placement, scale, masking, overlap, and contact with the masu are adjusted manually in an image editor.
 
 The canonical empty masu is reused as the composition source. Because the visible contact/occlusion boundary changes with the contents and no stable protected region is currently approved for this manual path, this workflow does **not** claim the active fixed-template zero-difference guarantee. The archived v4 masks remain diagnostic only. Do not use their PASS/FAIL state as a production gate for manually composed icons.
 
@@ -38,6 +40,8 @@ Do not regenerate or restyle the masu.
 
 Generate **contents only**, on transparency.
 
+The raw generated source owns **material identity and AMJ/MO style**, not final container perspective. Prefer a neutral or near-top view that keeps the individual pieces readable enough for deterministic projection.
+
 The source layer must:
 
 - inherit the AMJ item/resource style from `Docs/ArtStyle.md`;
@@ -45,29 +49,47 @@ The source layer must:
 - use a limited palette and flat/simple shading;
 - avoid glossy per-piece highlights, deep AO between every grain, photorealism, and painterly rendering;
 - simplify the bulk into readable clustered pieces rather than rendering every particle, while preserving the subject's characteristic piece shape;
-- match the masu opening's oblique/isometric **projection and plane orientation** rather than using a top-down view;
-- form a footprint and mound that can be placed naturally inside the opening;
-- do **not** impose a generic "rear pieces smaller / front pieces larger" perspective gradient. The approved masu reads closer to a parallel/isometric projection, so piece size should remain broadly stable across depth unless the subject's own pose or overlap genuinely requires foreshortening;
-- use overlap, visible top/side planes, and the shared opening-plane orientation to convey depth instead of artificial near/far scaling;
+- keep piece size broadly consistent instead of introducing an artificial near/far scale gradient;
+- form one compact continuous pile/footprint with information density comparable to the approved boxed-resource reference;
 - contain no wooden box, rim, background, text, UI, or decorative ground shadow.
 
-The generation target is a **source layer**, not a finished icon. Do not ask ImageGen to solve the final rim occlusion or final contact edge.
+The raw generation target is a **source layer**, not a placement-ready icon. Do not ask ImageGen to solve the final rim occlusion, contact edge, or exact masu projection.
+
+## Deterministic perspective normalization
+
+After the raw contents source passes the subject/style checks, normalize its projection before presenting it as a masu-placement candidate:
+
+```bash
+python Scripts/Art/normalize_masu_contents.py \
+  Work/Contents_Source.png \
+  Work/Contents_Projected.png
+```
+
+The normalizer:
+
+- zeros low-alpha pixels including hidden RGB so generated dark glow/background residue cannot turn into a resampling halo;
+- crops to the actual visible contents;
+- deterministically projects that crop onto the shared diamond-like masu contents plane;
+- keeps the output background transparent;
+- never adds, redraws, or edits the wooden masu.
+
+The default projection is a **contents-plane normalization guide**, not a cavity clipping mask and not a claim that final contact/occlusion is automatic. Final scale/placement and rim overlap remain manual. Do not tune the projection separately for each material merely to make a bad generation look acceptable; change the registered default only after cross-material visual review.
 
 ## Pre-presentation candidate gate
 
-A generated contents layer must be reviewed **before it is shown as a usable candidate**. Reject it and regenerate from the same approved references when any of the following is true:
+Review the raw source for subject/style and the **normalized output** for projection before showing it as a usable candidate. Reject the candidate when any of the following is true:
 
 - the subject does not read as the requested material at game-like size;
 - another reference material's geometry has leaked into it (for example, rice becoming triangular/faceted like buckwheat or stone);
-- the apparent projection conflicts with the masu opening plane or collapses into a top-down pile;
-- a systematic near/far scale gradient has been introduced without a subject-specific reason;
+- the normalized footprint still cannot be placed naturally on the masu opening plane;
+- a systematic near/far scale gradient has been baked into the source without a subject-specific reason;
 - outline strength is materially weaker than the applicable AMJ/MO item baseline;
 - shading is glossy, heavily modeled, painterly, or uses deep AO on each individual piece;
 - particle count/detail is high enough to become noisy at roughly 64 px;
 - the generated layer contains any wood, container rim, box, background, UI, text, or decorative shadow;
-- the layer is not usable as a transparent contents-only source.
+- the source or normalized output is not usable as a transparent contents-only layer.
 
-When a candidate fails this gate, do not repair the failure by adding more ad-hoc permanent rules. First determine whether the failure comes from a missing/ambiguous reference role, a wrong subject description, or a capability limit. Only durable causes belong in this Golden Path.
+When a candidate fails this gate, do not repair the failure by adding more ad-hoc permanent rules. First determine whether the failure comes from a missing/ambiguous reference role, a wrong subject description, the projection normalization, or a capability limit. Only durable causes belong in this Golden Path.
 
 ## Manual composition
 
@@ -76,10 +98,10 @@ The author/compositor places and adjusts the contents against the canonical masu
 Typical order:
 
 1. canonical empty masu as the base;
-2. generated/edited contents;
+2. normalized contents from `normalize_masu_contents.py`;
 3. author-controlled front/upper container masking or overlay where needed.
 
-Position, scale, perspective transform, local erasing/masking, and front-edge overlap are manual visual decisions. Do not encode a new universal cavity shape or one-size-fits-all automatic clipping mask merely to avoid this manual step.
+Position, scale, local erasing/masking, and front-edge overlap are manual visual decisions. A small manual perspective correction is allowed when required by the actual content/contact, but the routine base projection should come from the deterministic normalizer rather than asking ImageGen to rediscover it. Do not encode a new universal cavity clipping mask merely to avoid the final manual contact step.
 
 If a reusable front/upper overlay becomes author-approved and is registered as a fixed component later, it may be added to the fixed-template system. Until then, do not invent or reconstruct such a raster from memory.
 
