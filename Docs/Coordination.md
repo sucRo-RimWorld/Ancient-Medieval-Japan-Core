@@ -1404,6 +1404,8 @@ This item remains open until the Core accepted-image inventory has been audited 
 
 
 
+**Single-asset closeout (2026-10-07 JST):** Recovered and archived only the accepted Soba mature original at `Art/Sources/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png` (1247×1261 RGBA, 779,854 bytes; SHA-256 `4899ea7fa6aed00d87b78819b26148b74ff5404c6e28ab050b5ad4042c08d97c`). The source bytes are unchanged, and `Art/Sources/README.md` records the original identity, production counterpart, provenance and the limit that the historical palette/export recipe was not reconstructed. The preceding different composition was checked and excluded. No production texture was changed. Source PNG integrity, all production PNGs, Workshop exclusion and exact copy checks PASS. This turn stops after this one image as requested; there is no background recovery worker. Overall ART-SOURCE-ARCHIVE-023 remains OPEN/IN PROGRESS for the other sources. **Next smallest unit:** recover and verify the accepted Soba immature original, then archive that one image and record its result before proceeding to item-art families.
+
 ### ARCH-MODULAR-001 — Minimal dependencies / optional AMJ integration (2026-10-07 JST)
 
 **Requested by:** author  
