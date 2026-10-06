@@ -172,7 +172,7 @@ def validate_variable_layer(manifest_path, layer, mask=None):
         mask = registered_mask
     alpha = layer.getchannel("A")
     threshold = int(spec.get("required_fill", {}).get("alpha_threshold", 1))
-    if spec.get("enforce_variable_within_editable", True):
+    if spec.get("enforce_variable_within_editable", bool(spec.get("required_fill"))):
         outside = sum(
             a >= threshold and m == 0
             for a, m in zip(alpha.get_flattened_data(), mask.get_flattened_data())
