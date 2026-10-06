@@ -1392,6 +1392,7 @@ staged output; Environment's candidate builder gates the actual subscriber files
   - `Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.xcf`
   - `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png`
   - `Art/Sources/Workshop/AMJ_WorkshopCover_Template.svg`
+  - `Art/Sources/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
 - Workshop packaging rules already exclude the whole root `Art/` tree, so these development masters are not subscriber payload.
 - Environment's separate accepted-tree source archive is owned by the Environment repository and is not part of this Core recovery item.
 
@@ -1412,7 +1413,7 @@ staged output; Environment's candidate builder gates the actual subscriber files
 
 #### Next action
 
-1. Enumerate the accepted Core production-image inventory and pair each item with any known historical/persistent source candidate.
+1. Read the completed `Art/Sources/Inventory.md` before the next single-image recovery; use its pending-source rows and do not count production derivatives as masters.
 2. Verify candidate identity using available provenance, dimensions, hashes, retained approval records, and/or deterministic derivation evidence.
 3. Commit each proven exact pre-resize/editor source under the mirrored `Art/Sources/` path without altering its bytes.
 4. Update `Art/Sources/README.md` so its inventory matches what is actually preserved.
@@ -1425,6 +1426,9 @@ This item remains open until the Core accepted-image inventory has been audited 
 
 
 **Single-asset closeout (2026-10-07 JST):** Recovered and archived only the accepted Soba mature original at `Art/Sources/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png` (1247×1261 RGBA, 779,854 bytes; SHA-256 `4899ea7fa6aed00d87b78819b26148b74ff5404c6e28ab050b5ad4042c08d97c`). The source bytes are unchanged, and `Art/Sources/README.md` records the original identity, production counterpart, provenance and the limit that the historical palette/export recipe was not reconstructed. The preceding different composition was checked and excluded. No production texture was changed. Source PNG integrity, all production PNGs, Workshop exclusion and exact copy checks PASS. This turn stops after this one image as requested; there is no background recovery worker. Overall ART-SOURCE-ARCHIVE-023 remains OPEN/IN PROGRESS for the other sources. **Next smallest unit:** recover and verify the accepted Soba immature original, then archive that one image and record its result before proceeding to item-art families.
+
+
+**Whole-Core inventory closeout (2026-10-07 JST):** Completed the requested inventory before further image migration. `Art/Sources/Inventory.md` is the durable item-by-item ledger; README links it. 26 production PNGs form 14 distinct image groups (6 identical a/b/c triples); 2 production-source groups are archived, 12 pending. The current empty masu plus 4 registered Workshop roles add 5 image roles, of which 2 are archived and 3 pending. Total: **19 roles / 4 archived / 15 pending verification or recovery**, not a claim of 15 proven recoverable original files. Millet hull/edible candidate art shares one 1448×1086 sheet, so one recovered file may satisfy two rows. Three named immature-millet candidates were measured at 256×256 and remain insufficient as pre-resize originals. Two supplemental roles (masu foreground and rice line-hierarchy calibration) are separate from the total. Grain rework status does not erase the historical-source preservation task. No new image was moved or generated in this inventory turn. Inventory row/count consistency and byte-identical a/b/c grouping checks PASS; source archive remains Workshop-excluded. **Next action:** continue with one verified G08 Soba-immature source, archive its exact bytes, then update Inventory/README and this main-only log before the next image. No background worker is active.
 
 ### ARCH-MODULAR-001 — Minimal dependencies / optional AMJ integration (2026-10-07 JST)
 

@@ -13,6 +13,10 @@ This directory stores accepted source artwork and authoring files that must surv
 - If an already-approved master survives elsewhere (for example a persistent reference store), migrate the **exact accepted bytes** here when that asset is next touched. Do not substitute a production-resolution derivative or regenerated approximation for a missing source.
 - A source is not considered repository-preserved until the exact file is actually committed here.
 
+## Inventory / recovery queue
+
+The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 4 already archived and 15 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters.
+
 ## Current authoritative sources
 
 - `Shared/Containers/AMJ_Masu_Empty_Master.png`
