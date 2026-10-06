@@ -2,7 +2,7 @@
 
 This document is the source of truth for the shared visual system used by **Ancient & Medieval Japan (AMJ)** Workshop cover images.
 
-The current baseline is the author-approved 2026-10-05 Environment concept, confirmed again by the author-approved Core cover: a warm parchment field, an invariant left-side editorial title block, and a symbolic flat illustration occupying the right side. It replaces the earlier dark-map / scenic-landscape cover direction.
+The current baseline is the author-approved Environment/Core cover system: a warm parchment field, an invariant left-side editorial title block, and a symbolic flat illustration occupying the right side.
 
 ## 1. Purpose
 
@@ -58,9 +58,7 @@ Rules:
 - preserve the same line breaks, hierarchy, approximate scale, and placement across all covers;
 - the addon name must use consistent position and tracking across the series;
 - pale beige abstract cloud / paper-cut shapes may be retained only as the **same subdued shared ornament** seen in the accepted series reference; do not invent addon-specific left-side decoration;
-- do **not** add the older `中世日本OH` heading;
-- do **not** use the older A / M / J-initial emphasis treatment;
-- no dark left panel, Japan map, red brush badge, decorative plaque, glow, metallic effects, or calligraphic rewrite.
+- no decorative plaque, glow, metallic effects, or calligraphic rewrite.
 
 The common-left block is not a suggestion. If a generated image changes its wording, line breaks, hierarchy, accent placement, or overall composition, reject that generation even when the right-side illustration is good.
 ## 5. No stereotypical-Japan decoration
