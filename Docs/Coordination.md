@@ -60,6 +60,18 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### DOC-RULE-002 — README / Workshop summary relationship
+
+**Requested by:** author (2026-10-06 JST)  
+**Owner:** AMJ shared public-description policy  
+**Status:** DONE — shared guideline updated
+
+AMJ-wide public-description policy now treats each mod's README as the detailed public-content source of truth and the Steam Workshop description as a concise summary of that README. Workshop text may reorganize and compress for installation/selection readability, but it must not introduce substantive features, design rationale, compatibility claims, or other public facts that are absent from README.
+
+The existing Japanese-first Workshop localization rule remains unchanged: README detailed content first → natural Japanese Workshop summary → author-approved Japanese Workshop text → English translation of that Japanese text.
+
+**Durable source:** `Docs/ModDescriptionGuidelines.md`.
+
 ### LOC-RULE-001 — Japanese kanji / alias opening rule
 
 **Requested by:** author (2026-10-06 JST)  
