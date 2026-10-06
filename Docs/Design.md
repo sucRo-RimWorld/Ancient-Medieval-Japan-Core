@@ -335,9 +335,9 @@ Japan Onlyは例外で、MO本体の既知Defを対象にすること自体が�
 - **MO併用プロファイル** — RimWorld + MO + Grains
 - **現行公開Coreプロファイル** — 移行完了までの RimWorld + MO + AMJ Core。公開版の実装事実を示す語であり、長期依存原則ではない
 
-#### 2026-10-07 Core / MO依存監査結果
+#### 2026-10-07 Core / MO依存監査結果（初回分類・履歴）
 
-`ARCH-MODULAR-001` の実装監査では、現行CoreのStage A / New VillageはMOなしではロード・進行できない直接参照を複数持つ一方、**Agricultureとしての主要ゲームループ自体はMO固有機能を必要としない**と判断した。したがって、MO必須解除は現実的であり、現在のハード依存は「作者の基準環境」ではなく移行前実装の結合として扱う。
+`ARCH-MODULAR-001` の初回実装監査では、現行CoreのStage A / New VillageはMOなしではロード・進行できない直接参照を複数持つ一方、農業ループ自体はMO固有機能を必要としないと判断した。**この初回分類のうちGrains再編で変更された所有判断は、直後の「Grains再編後の最終 Base / MO 所有境界」を優先する。**
 
 監査時点の実装事実:
 - 本体には `1.6/` フォルダ、製品C#、製品DLLは存在せず、実行時実装は主にXML Def / Patchで構成される。C#はE2Eテスト側にのみ存在する。
@@ -406,14 +406,14 @@ MO併用の既存セーブでは、現在参照されているMO Defを急にAMJ
 
 | プロファイル | 主な自動確認 |
 |---|---|
-| Vanilla + Core | 未解決MO Def/class 0、Stage A作物、一次加工、Vanilla simple meal受入、New Village、runtime ERROR 0 |
-| Vanilla + Core + CCTO | 上記 + AMJC crop cold-tolerance extension |
-| MO + Core | MO小麦/Flour/Cereal/Straw等の互換Patch、重複小麦経路なし、New Village MO差分、runtime ERROR 0 |
-| MO + Core + CCTO | MO互換とCCTO互換の同時適用、Stage A回帰、runtime ERROR 0 |
+| Vanilla + Grains | 未解決MO Def/class 0、Stage A作物、一次加工、製粉・最低限粉食、Vanilla simple meal受入、New Village、runtime ERROR 0 |
+| Vanilla + Grains + CCTO | 上記 + AMJC crop cold-tolerance extension |
+| MO + Grains | MO小麦/Flour/Cereal/Straw等の互換Patch、重複小麦・小麦粉・石臼経路なし、New Village MO差分、runtime ERROR 0 |
+| MO + Grains + CCTO | MO互換とCCTO互換の同時適用、Stage A回帰、runtime ERROR 0 |
 
 静的XML検証は全プロファイルの前段に置き、Pickleで実ロード後のDef・Recipe・Scenario・Vanilla meal受入・MO互換・runtime ERRORを確認する。RimTest Reduxは、今後C#の移行補助や独立ロジックを追加した場合の単体/ロジック試験を優先し、現行のXML中心実装で無理に代替しない。人間の手動確認は、Production画像/UI/操作感など自動化できない項目に限定する。
 
-Fermentation / Brewingは、AgricultureやMOをハード依存にしない設計を採る場合、それぞれ **Vanilla単独の主要ループ** と **Agriculture併用時の追加原料接続** を最低限の自動ケースとする。MO設備/原料を正式互換する場合だけMO併用ケースを追加し、CCTOは発酵・酒造側が作物温度Defを直接変更しない限り直積マトリクスへ含めない。Fermentation + Brewing相互のケースも、一方の出力を他方が公式に消費する設計が確定した場合だけ追加する。
+Fermentation / Brewingは、GrainsやMOをハード依存にしない設計を採る場合、それぞれ **Vanilla単独の主要ループ** と **Grains併用時の追加原料接続** を最低限の自動ケースとする。MO設備/原料を正式互換する場合だけMO併用ケースを追加し、CCTOは発酵・酒造側が作物温度Defを直接変更しない限り直積マトリクスへ含めない。Fermentation + Brewing相互のケースも、一方の出力を他方が公式に消費する設計が確定した場合だけ追加する。
 
 ##### Grains再編後の最終 Base / MO 所有境界（2026-10-07）
 
@@ -1018,7 +1018,9 @@ R⁴は既存作業台を使って武器・衣服のrepair / clean taint / recyc
 
 ### Core標準Scenario
 
-Core標準Scenarioは **「新しい村」 / New Village**（`AMJC_NewVillage`）とする。様々な事情で元の共同体を離れた一般の人々が、新しい土地で小さな村を興す。武将・大名・特権階級の開始にはしない。
+> **Grains移行注記:** 以下は現行MO必須版の実装・テストに対応するScenarioスナップショットである。既存DefNameは互換のため維持するが、Grains移行後はBaseからMO研究・物資・apparel tagを除去し、必要なMO差分だけ条件付き互換へ移す。ScenarioはGrainsの主要機能ではない。
+
+現行公開CoreのScenarioは **「新しい村」 / New Village**（`AMJC_NewVillage`）とする。様々な事情で元の共同体を離れた一般の人々が、新しい土地で小さな村を興す。武将・大名・特権階級の開始にはしない。
 
 #### Alpha開始条件（2026-10-04）
 
@@ -1474,13 +1476,13 @@ Food Dryingは**必須依存にしない**。
 - 稲架掛け等の稲作固有の任意工程はRice Cultivation側で別途設計する。MO既存Drying Rackは必須前提にしない
 - 「屋根下でも使える日本式乾燥設備」という外観・利便性だけを理由に、既存乾燥システムと重複するBuildingを追加しない
 - 将来、特定のAMJ生産物に既存設備では表現できない乾燥条件やゲーム上の選択が生じた場合だけ、その機能を所有するAddon側で専用設備を再検討する
-### Core側
+### Grains側
 
 - 乾燥システムを重複実装しない
 - Food Dryingは `paseri.FoodDrying` の任意互換対象として扱い、存在確認付きPatchだけを使う
 - 互換は**意味の合う乾燥先が存在する食材単位**で追加し、別作物の乾燥品へ便宜的に変換しない
 - Stage Aの雑穀・大麦・小麦・ソバは、脱穀・殻取り後の穀粒自体が乾燥保存食であり、現行Food DryingのDried Rice等へ変換する利益より食材同一性の破壊が大きいため、公開Alphaでは互換対象外とする
-- Food Dryingを導入しなくてもCore + MOの農業は成立する
+- Food Dryingを導入しなくてもVanilla + Grainsの穀物農業は成立する
 
 Food Drying 1.6はProcessor Frameworkを利用し、米・ジャガイモ・トウモロコシ・果物・きのこ等に専用の乾燥品を持ち、乾燥品から元食材へ戻す再水和経路も持つ。このため互換では入出力の意味を一致させることを必須条件とする。将来、山菜・きのこ・果実・根菜等を追加した段階で互換価値が大きくなる。
 
@@ -1760,18 +1762,20 @@ Grainsの主要実装は、次の順で管理する。
 - DBH水源互換: Waterworks / Hot Springs等の自然な所有Modで扱う
 
 
-### Stage外のCore候補
+### 旧Core候補の履歴（Grains外）
 
-- 葛（Coreでは葛根を薬草として実装。食品・澱粉・繊維用途はAddon側）
-- 海水採取（実装する場合の出力はMO `DankPyon_Salt`）
-- DBH水源互換はCore候補から外し、一般水利はWaterworks、温泉入浴時の衛生連携はHot Springsが所有する
+以下は旧Core案の履歴であり、Grains所有を意味しない。
 
-### Coreに入れない / 保留した農作物・植物
+- 葛: Grains外。薬草・採集等の自然な所有先で再検討
+- 海水採取・塩: Grains外。Preservation / Coastal等の自然な所有先で再検討
+- DBH水源互換: Grains外。一般水利はWaterworks、温泉入浴時の衛生連携はHot Springsが所有する
+
+### Grainsに入れない / 旧Coreで保留した農作物・植物
 
 一度検討した要素も、後から同じ議論を繰り返さないよう不採用・移管理由を記録する。
 判断基準は、**史実上存在したかではなく、VanillaプロファイルまたはMO併用プロファイルで既存作物と異なるゲーム上の役割を持てるか**とする。
 
-| 候補 | Coreでの判断 | 理由 / 将来の置き場所 |
+| 候補 | 旧Coreでの判断 / Grains再編後 | 理由 / 将来の置き場所 |
 |---|---|---|
 | カブ | 不採用 | 大根と食感・用途・栽培上の役割が近い。文化的な代表性も考え、大根を採用する |
 | ナス | Core不採用・将来再検討 | 古代から存在するが、CoreではMOトマト等の暖地果菜・再収穫作物との差が弱い。ナス固有の加工・料理にゲーム上の役割が成立する段階で再検討 |
