@@ -255,7 +255,9 @@ AMJ各Modは、**AMJシリーズ内の別Modを理由なく必須依存にしな
 2. Vanilla側で自己完結できる機能
 3. MO存在時だけ条件付きPatchで接続できる機能
 
-監査後、2・3で主要ゲームループが成立するなら、現Core（将来的なAgriculture等への再編候補を含む）はMOを必須依存から外し、**MO推奨 + 公式互換**へ移行する。移行完了までは現在の公開依存関係を正とする。
+監査後、2・3で主要ゲームループが成立するなら、現Core（将来的なGrains等への再編候補を含む）はMOを必須依存から外し、**MO推奨 + 公式互換**へ移行する。移行完了までは現在の公開依存関係を正とする。
+
+MO必須を外す場合、現行Stage AでMOに所有を委ねている**小麦・小麦収穫物・小麦粉・最低限の製粉設備/Recipeも、単体プロファイルでGrains自身が成立させる必要がある**。小麦だけをMO必須資産として残したままGrainsをMO非依存とは扱わない。MO併用時にAMJ側Defを正本として統合するか、条件付きでMO Defへ寄せるかは移行実装時に決めるが、Vanilla単体で「栽培→脱穀→製粉」まで完結できることを依存解除の条件とする。
 
 Japan Onlyは責務上MOの既知Defを除去・非表示化するレイヤーなので、**Japan Only自身はMO必須**を維持する。
 
@@ -1365,9 +1367,9 @@ MO 1.6実ファイル（Workshop 3219596926）を基準に、AMJが自前実装�
 
 | 分野 | MO側の正本 | AMJ側の扱い |
 |---|---|---|
-| 小麦 | `DankPyon_Plant_Wheat` / `DankPyon_RawWheat` | 新規小麦Defを作らず、必要な農業数値だけPatch |
-| 小麦粉 | `DankPyon_Flour` | AMJ Flourを作らない |
-| 製粉設備 | `DankPyon_Millstone`、CraftingSpot手挽き、Windmill / Watermill系Process | 既存経路を直接利用 |
+| 小麦 | `DankPyon_Plant_Wheat` / `DankPyon_RawWheat` | **現行MO必須プロファイルでは**新規小麦Defを作らず必要値だけPatch。GrainsのMO非依存化時は独自小麦を追加する |
+| 小麦粉 | `DankPyon_Flour` | **現行MO必須プロファイルでは**再利用。GrainsのMO非依存化時は独自小麦粉を持つ |
+| 製粉設備 | `DankPyon_Millstone`、CraftingSpot手挽き、Windmill / Watermill系Process | **現行MO必須プロファイルでは**既存経路を利用。Grains単体用には最低限の石臼/製粉Recipeを持つ |
 | 藁 | `DankPyon_Straw` | 稲等から出る藁もこれへ統合し、Rice Strawを作らない |
 | 亜麻原料 | `DankPyon_RawFlax` | MO亜麻はそのまま使用 |
 | リネン | `DankPyon_Linen` | MO既存布として維持 |
@@ -1382,7 +1384,9 @@ MO 1.6実ファイル（Workshop 3219596926）を基準に、AMJが自前実装�
 | 農業研究 | `DankPyon_BasicAgriculture` / `DankPyon_IntermediateAgriculture` / `DankPyon_AdvancedAgriculture` / `DankPyon_PlowedSoil` | 日本側作物を必要な位置へ直接接続・Patch |
 | 基礎料理研究・設備 | MOのCooking研究、Campfire / Stove / Grill / StewPot / Oven等 | AMJで料理Recipeを追加する場合も、まず既存設備への追加を検討 |
 
-MO側に存在しないため、**Coreが**所有する必要がある代表例:
+現行公開Core + MOプロファイルでは以下を基準とする。一方、将来GrainsとしてMO必須を外す場合は、小麦・小麦粉・最低限の製粉設備もGrains側の所有物へ移す。
+
+MO側に存在しないため、**現行Coreが**所有する必要がある代表例:
 - アワ・ヒエ・キビ・ソバ・大麦・小豆・大豆・里芋・大根・クズ・大麻・カラムシ等、Core採用が確定した作物のPlantDef / 収穫物。荏胡麻・その他油料作物は採用保留
 - Core所属作物ごとの肥沃度条件・感応度と、Environment等の自然土壌へ接続する農業バランス
 - 日本固有用途に必要なRecipe / Addon側の料理・加工差分
