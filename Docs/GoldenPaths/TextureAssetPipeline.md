@@ -35,7 +35,23 @@ Use image generation when the requested result needs genuinely new visual conten
 4. Ask for author acceptance before treating the output as a master.
 5. After acceptance, preserve that exact source for later derivatives.
 
-## 4. Asset-family handoff
+## 4. Automated candidate QA before author review
+
+Generated candidates are not sent directly to the author for first-pass debugging. The production default is:
+
+**ImageGen/source creation → mechanical QA → deterministic family processing → agent semantic visual QA → author final visual review.**
+
+Mechanical QA uses `Scripts/Art/generated_asset_qa.py`. Use the owning family policy when one exists; otherwise use the conservative baseline `Docs/References/AMJ_GeneratedAsset_BaseQA.json`. Measurable checks may include PNG/alpha structure, low-alpha residue, transparency, game-size color complexity, edge density, and family-specific line hierarchy.
+
+The mechanical validator does **not** claim to understand subject identity or aesthetics. After it passes, the agent must automatically compare the candidate against the actual viewed references and reject it internally when the requested subject, silhouette, style, forbidden-content rules, or family composition are wrong. A failed candidate is not presented as a normal review candidate.
+
+For repeated generation, make at most three automatic attempts from the same approved reference set. If all attempts fail, stop and report the recurring failure class/capability limit rather than asking the author to inspect a stream of known-bad images.
+
+The author should normally see only a candidate that has passed all automatic gates, together with the applicable game-size/reference comparison. **The author's remaining role is final visual acceptance**, not routine detection of mechanical/style failures that the pipeline can identify itself.
+
+Family pipelines may add stronger deterministic transforms, metrics, review-sheet generation, or fixed-pixel validation. They must preserve this ordering.
+
+## 5. Asset-family handoff
 
 This document owns the **general texture production path**, not family geometry or compositing contracts.
 
@@ -47,7 +63,7 @@ Use the owning family document for additional requirements:
 
 Do not copy family-specific masks, occlusion regions, historical failure notes, or layout contracts into this general pipeline.
 
-## 5. PNG integrity
+## 6. PNG integrity
 
 Viewer-open success, a PNG signature, or correct IHDR dimensions are not sufficient.
 
@@ -55,6 +71,6 @@ All production PNGs must pass `Tests/validate_png_assets.py`, which checks compl
 
 For automated Git/GitHub binary writes, validate the bytes that are actually committed/checked out. Prefer an exact previously validated blob when recovering accepted art from history.
 
-## 6. Fixed reused components
+## 7. Fixed reused components
 
 When an image intentionally reuses a visible component pixel-exactly, follow `Docs/GoldenPaths/FixedImageTemplates.md`. Otherwise do not impose fixed-template machinery on a merely stylistically similar asset.
