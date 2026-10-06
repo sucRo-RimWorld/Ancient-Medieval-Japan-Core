@@ -73,7 +73,7 @@ Tōji is modeled as temporary injury natural-healing improvement plus mood/recre
 
 Dubs Bad Hygiene is a required official compatibility target but not currently a hard dependency: DBH-loaded profiles must integrate bathing with hygiene and are part of release testing. Existing hot-spring mods should coexist without AMJ replacing their buildings/jobs; Standalone Hot Spring-style source interoperability is an implementation-audit target, without automatic conversion or full behavior unification.
 
-Remote hot-water extraction/conveyance is not owned by Hot Springs. Waterworks owns source intake, conveyance, remote supply/artificial baths, and general river/shallow-water/open-channel/culvert/distribution infrastructure. Core Stage E no longer owns that water-network implementation; it retains only the paddy-side water requirement / Waterworks integration surface.
+Remote hot-water extraction/conveyance is not owned by Hot Springs. Waterworks owns source intake, conveyance, remote supply/artificial baths, general river/shallow-water/open-channel/culvert/distribution infrastructure, and the paddy/rice-cultivation loop that directly depends on that water system. The current Core/Grains direction no longer owns a separate paddy-side Stage E or Waterworks integration surface.
 
 **Durable source:** `Docs/Design.md`, baseline commit `52683ed3c8b27302eb1cf107543cebb55eb2ce24`; natural-spring priority-use refinement `7e49dfaa33ac9b802e6bcdc083308fded9ef106e`.
 
