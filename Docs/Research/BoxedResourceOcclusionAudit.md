@@ -137,3 +137,11 @@ for lo, hi in [(0, 32), (32, 64), (64, 96), (96, 128)]:
 画像、マスター、マスク、マニフェストの `active` 状態、合成コード、CI・テストは変更しない。既存の殻付きソバ承認画像と恒等テストも失効させない。既存手順には今回の検証限界への参照を付ける。
 
 次に工程改訂を行う場合は、本記録の候補を実画像で検証し、採用範囲を決めてから実装する。現時点で「4領域化で問題が解決した」「自然な別内容物の量産工程が完成した」とは報告しない。
+
+## 6. 2026-10-06 integration follow-up
+
+After this audit was pushed, visual review of the separate v3-layered implementation found actual pixel damage at its complementary rear/front split boundary. That v3 split is therefore superseded.
+
+The audit and the author's three-layer proposal are reconciled as follows: keep the complete canonical masu master intact as the base/rear layer; render contents/contact artwork over it; then reassert only a conservative hard-fixed foreground subset copied exactly from the master. Do **not** create the rear layer by subtracting a foreground polygon from the master. Do **not** clip contents with a cavity/pile polygon. The upper/contact region remains occludable, consistent with the MO comparison in this report.
+
+This revised model is not yet activated for new-resource production. Core now fails closed until contrasting-content-shape tests and 256px/~64px visual checks establish that one region contract works without per-image mask changes.
