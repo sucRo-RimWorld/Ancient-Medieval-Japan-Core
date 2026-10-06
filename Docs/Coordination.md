@@ -1291,3 +1291,17 @@ Integrated conclusions:
 No new edible-Soba candidate is accepted by this change.
 
 **CI follow-up:** the first fail-closed integration exposed two regressions inherited from the earlier v3 tooling rewrite rather than from the occlusion policy itself: the generic fixed-template validator had lost its historical no-required-fill default behavior, and the public `validate()` / output-overwrite guard had been dropped. These were restored in `cdf64ce4e93dd292ac5f8575448efd9c425ace55`, `345b3ce7756f8fa7221afa203ff1c145f8359324`, and `d1172f4f362f7b3d6c6985d251248bf276f5de43`. GitHub Actions Stage A validation run #225 completed successfully. The unsafe v3 new-resource compositor remains blocked; the CI success validates the fail-closed/tooling state, not a new image-production contract.
+
+
+### ART-OPS-022 — Binary PNG publication timeout prevention
+
+**Requested by:** author (2026-10-06 JST)  
+**Owner:** AMJ shared art / repository operations  
+**Status:** DONE — durable publication rule added
+
+A RawBuckwheat correction attempt entered an unnecessarily expensive transport path after the image candidate itself had already been validated: the workflow explored palette quantization and emitted a complete base64 PNG payload as intermediate output before the GitHub write. The low-level Git data path itself is sometimes necessary because the available high-level GitHub file update action is UTF-8-text-only; the avoidable failure was mixing image transformation and verbose payload transport into that publication step.
+
+The shared texture Golden Path now separates asset production from publication. Publishing PNGs may not quantize/re-encode/resize them merely to reduce API payload size, must not echo full binary/base64 payloads, and must use the shortest exact-byte path available. With connector-only binary writes, all target PNG paths are committed in one blob/tree/commit/ref transaction, reusing one blob SHA for identical stack-count slots. Repository-side PNG validation remains the completion gate.
+
+**Durable source:** `Docs/GoldenPaths/TextureAssetPipeline.md`, commit `85934b3c65b50c426ce8edabcc541387bd990af1`.
+
