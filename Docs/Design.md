@@ -331,8 +331,8 @@ MO導入時は、既存の農業・研究・設備・素材を可能な限り再
 Japan Onlyは例外で、MO本体の既知Defを対象にすること自体が存在理由なのでMO必須を維持する。
 
 用語:
-- **Vanillaプロファイル** — RimWorld + 現Core/Agriculture（MO依存解除後の目標）
-- **MO併用プロファイル** — RimWorld + MO + 現Core/Agriculture
+- **Vanillaプロファイル** — RimWorld + Grains（MO依存解除後の目標）
+- **MO併用プロファイル** — RimWorld + MO + Grains
 - **現行公開Coreプロファイル** — 移行完了までの RimWorld + MO + AMJ Core。公開版の実装事実を示す語であり、長期依存原則ではない
 
 #### 2026-10-07 Core / MO依存監査結果
@@ -763,7 +763,7 @@ Fermentation側の実装思想もCoreと同じく、**史実上の工程をす�
 
 - Repository: `sucRo-RimWorld/Ancient-Medieval-Japan-Environment`
 - EnvironmentはAMJ Coreを必須にしない
-- Core側はCore/Agriculture所属の畑作作物・農地・農業用Defと、その作物固有の成長温度・肥沃度感応度・収量・加工等を所有する。水田・稲・米は独立したRice Cultivation Modが所有する
+- Grains側は乾田穀物と、その作物固有の成長温度・肥沃度感応度・収量・一次加工・製粉を所有する。水田・稲・米は独立したRice Cultivation Modが所有する
 - Environment側は、それらが置かれる外部環境である気候・標高/Hilliness・河川・海岸線・バイオーム・野生植生等を所有する
 - AMJ Core / CCTO / MO等との接続は必要に応じて任意互換とする
 
@@ -1146,7 +1146,7 @@ AMJC固有作物の耐寒値と保存候補範囲の正本は [AMJC作物の耐�
 
 ### 4.2.1 Stage A畑作6作物の確定バランス
 
-2026-10-01〜02のStage A詳細設計で確定していた数値を、現行公開版のMO併用プロファイルとCCTO独立姉妹Mod方針に基づく初期値として正本化する。MO必須解除後もAMJ作物自身の値は維持し、変更する場合は6作物と競合するVanilla/MO作物をまとめて再監査する。
+2026-10-01〜02のStage A詳細設計で確定していた数値を、現行公開版のMO併用プロファイルとCCTO独立姉妹Mod方針に基づく初期値として正本化する。**この表のMO研究名・小麦供給元は現行MO必須実装のスナップショットであり、Grains移行後の所有境界は §2.8 の最終Base / MO所有境界を優先する。** growDays・収量・肥沃度・温度等の6穀物バランス値は移行後も原則維持し、変更する場合は競合作物をまとめて再監査する。
 
 | 作物 | growDays | 可食穀粒の基準収量 | fertilityMin | fertilitySensitivity | 成長可能温度 | 最適温度 | CCTO固定枯死温度 | sowMinSkill | 栽培解禁 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---|
@@ -1162,7 +1162,7 @@ AMJC固有作物の耐寒値と保存候補範囲の正本は [AMJC作物の耐�
 補足:
 - 収量列は、穀束・殻付き中間物を経由する場合も含めた**最終的な可食穀粒量のバランス基準**であり、PlantDefの未脱穀物 `harvestYield` をそのままこの値にするという意味ではない。未脱穀物の収量とRecipe変換比率は、この最終基準値を再現するよう実装時に決める。
 - アワ・ヒエ・キビは栽培中のみ別PlantDefとし、収穫後は共通の「雑穀束」→殻付き雑穀→「雑穀」へ統合するため、収穫後の性能差を残さない。
-- 小麦はMO 1.6の `DankPyon_Plant_Wheat` をそのまま利用し、新規の重複小麦PlantDefを作らない。growDays 12、収量28、fertilitySensitivity 0.9はMO実値を維持し、AMJでは `fertilityMin=0.7` を基準として扱う。
+- **現行MO必須版では**MO 1.6の `DankPyon_Plant_Wheat` を利用する。Grains移行後はBaseにフォールバック小麦Plant/穀束を持ち、MO併用時だけMO小麦を可視供給元として利用する。growDays 12、収量28、fertilitySensitivity 0.9、AMJ基準 `fertilityMin=0.7` の役割は両プロファイルで維持する。
 - CCTO固定枯死温度は**CCTO導入時のAMJ互換値**である。AMJ CoreはCCTOを内部実装として複製せず、CCTOの `ColdToleranceExtension` を条件付き互換Patchから利用する。小麦はCCTOのMO 1.6バランス（最低成長0℃・固定枯死-6℃）をそのまま使う。
 - 2026-10-04の再監査では、低温で成長できる性質と凍霜害への耐性を分離して評価した。キビは-3℃を維持、アワは-4℃から-3℃、ヒエは-4℃から-2℃へ改定した。詳細な根拠・確度は `Docs/Balance/Crops/ColdTolerance.md` を正本とする。
 - CCTOの固定枯死判定は閾値未満（strict `<`）で発生するため、表の温度ちょうどでは生存する。
@@ -1181,8 +1181,8 @@ Stage Aの穀物は、加工前後の保存性も作物選択と備蓄判断に�
 - 雑穀粉は具体的用途を追加する段階で実装し、その場合の保存期間は一般粉の60日を基準とする。
 - 蕎麦粉は蕎麦切り・蕎麦がき等の用途とセットで追加し、Stage Aで用途がなければThingDefだけを先行追加しない。
 - 大麦の製粉は具体的用途が必要になった段階で決める。Stage Aでは可食大麦穀粒までを基本経路とする。
-- Straw副産物は製粉ではなく脱穀段階へ統一し、アワ・ヒエ・キビ・大麦・小麦・ソバで `DankPyon_Straw` を共通利用する。
-- 小麦はMO `DankPyon_Plant_Wheat` と収穫物 `DankPyon_RawWheat` を再利用する。AMJでは `DankPyon_RawWheat` を「小麦束」として `DankPyon_Cereal` から外し、脱穀後の `AMJC_Wheat`（小麦穀粒）だけを `DankPyon_Cereal` に接続する。これによりMOの製粉・醸造等は再利用しつつ、未脱穀の束を直接加工する経路を防ぐ。
+- Straw副産物は製粉ではなく脱穀段階へ統一する。ただし `DankPyon_Straw` はMO併用時だけ出力し、BaseではStraw ThingDefを所有しない。
+- **MO併用時は** `DankPyon_Plant_Wheat` / `DankPyon_RawWheat` を可視供給元として再利用し、`DankPyon_RawWheat` を未脱穀の小麦束として `DankPyon_Cereal` から外す。脱穀後の `AMJC_Wheat` だけをMO製粉へ接続する。BaseではGrains所有の小麦Plant/穀束を同じ `AMJC_Wheat` へ合流させる。
 - MO 1.6標準では小麦収穫時の `Plant_SecondaryDrop` と製粉Recipeの両方でHayが生じるが、AMJでは収穫時副産物を外し、製粉側のHayも削除する。藁はAMJ脱穀Recipeでのみ `DankPyon_Straw` として発生させる。
 - MO `DankPyon_Flour` の保存期間はAMJ共通粉基準に合わせて60日へ調整する。
 
@@ -1209,7 +1209,7 @@ Core側では0.50を代表的な低肥沃度テスト点として扱う。Stage 
 
 ソバの `fertilityMin=0.4` は、Environmentへ0.40 Terrain追加を要求する値ではない。外部Terrain Mod・将来の土地設計との互換余地、および作物自身の最低条件として保持する。Environment側で0.40帯を追加するのは、0.50/0.70の既存段階では不足する具体的なゲームプレイ上の理由が確認された場合だけとする。
 
-現行のCore + MOプロファイルでも農業・一次加工は成立し、VanillaのGravel 0.70でも肥沃度感応度差は働く。将来のVanilla単体プロファイルでも同じ土地適性原則を維持する。EnvironmentはCore/Agricultureの必須依存ではなく、**自然地形分布によって土地選択をより強く表現する推奨姉妹Mod**と位置づける。
+現行のCore + MOプロファイルでも穀物農業・一次加工は成立し、VanillaのGravel 0.70でも肥沃度感応度差は働く。GrainsのVanillaプロファイルでも同じ土地適性原則を維持する。EnvironmentはGrainsの必須依存ではなく、**自然地形分布によって土地選択をより強く表現する推奨姉妹Mod**と位置づける。
 
 ### 4.4 ワールド地形・Hillinessの責務
 
@@ -1527,22 +1527,9 @@ Waterworksは、Dubs Bad Hygiene (DBH) の圧力配管とは別系統の **重�
 
 ### 8.2 大豆
 
-大豆栽培そのものも最初の公開Alphaでは後回し。
+大豆はGrainsから外す。史実上・AMJ全体として重要でも、乾田穀物の選択・製粉というGrainsの主要ループとは別責務である。
 
-将来的にはCoreに作物として追加するが、
-
-- 豆乳
-- 豆腐
-- にがり
-- おから
-- 大豆油
-- 味噌
-- 納豆
-- 醤・醤油
-
-まで同時に抱えない。
-
-大豆加工は別フェーズまたは別アドオン化を検討する。
+将来AMJ大豆を実装する場合は、Fermentation等の具体的な主要用途、Vanilla単体での存在意義、外部大豆Modとの重複を再監査して所有Modを決める。**Grainsが将来Addon向け共通資源として大豆Plant/ThingDefを先行所有することはしない。**
 
 ### 8.3 発酵食品
 
@@ -1922,10 +1909,12 @@ Hilliness補正についてはバイオームとは独立したワールド側�
 
 ### 基準環境
 
-- Medieval Overhaul
+- RimWorld Vanilla
+- Medieval Overhaul（公式互換・主要比較対象）
 
 ### 優先度A
 
+- Medieval Overhaul互換の継続回帰
 - Food Drying
 
 ### 優先度B
