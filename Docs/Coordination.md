@@ -73,7 +73,7 @@ Confirmed boundary:
 - Waterworks + Rice Cultivation may have official optional integration so paddies can consume Waterworks network state; Waterworks itself does not own paddy logic.
 - For the already-discussed rice processing handoff, “same as grains” means the **same stage pattern, not the same ThingDefs**. Rice keeps its own item chain. The author also confirmed that rice produced via haza-kake remains a separate item from normal rice. Exact rice-processing details are not to be expanded in the Waterworks workstream.
 
-**Durable source:** `Docs/Design.md`, ownership split commit `f594c340fad0ee067e7ce07778e68856822402fb`.
+**Durable source:** `Docs/Design.md`, ownership split commit `f594c340fad0ee067e7ce07778e68856822402fb`; rice-handoff cleanup / Waterworks-only scope refinement `10b13764427dd2abdac916eab1deeba9d07bc6df`.
 
 **Next action:** continue only the Waterworks specification in the present workstream. Start a separate Rice Cultivation workstream/repository design later and transfer the rice-specific provisional notes there.
 
