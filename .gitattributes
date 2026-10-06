@@ -1,4 +1,5 @@
 # Workshop staging uses git archive; these developer-only sources must not ship.
+/Art/Sources export-ignore
 /Art/Sources/** export-ignore
 /.workshopignore export-ignore
 /Scripts/Prepare-WorkshopContent.ps1 export-ignore
