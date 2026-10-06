@@ -1434,7 +1434,7 @@ This item remains open until the Core accepted-image inventory has been audited 
 
 **Requested by:** author  
 **Owner:** AMJ architecture / dependency design  
-**Status:** IN PROGRESS — dependency audit/classification complete; runtime migration not started
+**Status:** IN PROGRESS — dependency audit/classification complete; Grains re-scope discussion merged; runtime migration not started
 
 The author accepted a shift from a central Core dependency tree toward **independent AMJ mods with official optional integration**. The 2026-10-07 Core/MO implementation audit is now complete and its durable conclusions are recorded in `Docs/Design.md` at commit `aa0481c8c8eba2486f1b5db7a7a28240e8314922`.
 
@@ -1465,4 +1465,17 @@ Future Fermentation/Brewing dependency tests should cover their Vanilla standalo
 
 **No dependency metadata or runtime Def was changed by this audit.** About.xml still requires MO, as requested.
 
-**Next action:** implementation workstream should begin at migration step 1 (test-harness split) and must not edit About.xml first.
+**2026-10-07 Grains re-scope reconciliation:** The ongoing Core-scope discussion has now been merged into this dependency workstream rather than treated as a separate design thread. The current direction in `Docs/Design.md` is to evaluate shrinking the future Core/Agriculture concept into a **Grains-focused independent mod**, while Waterworks owns paddy/rice cultivation. Relevant durable design commits include `957bdd5908c0e6995ea3f0f7837b987f613464e9`, `b92feac69babd925427d78e43599bdde29e82db8`, `cc9ad4f2b3b8b6045d6b81ed4b553b9b25a4b16b`, `b2a3dc8a4159eba5985970bf9b5c9c7e34c7023d`, `6f42c92796c8a5b1bd347d8d543ef3f5b9c87cf1`, and `582c3b1ee53bf58b4ff96c7647d33c23a7626e67`.
+
+This changes several assumptions that must be reconciled **before** runtime migration starts:
+- The standalone target is no longer merely “enough dry-field agriculture to reach a Vanilla meal.” If the mod becomes Grains, **wheat, wheat flour, and a minimal milling path are part of the standalone identity**, because wheat's defining role is flour-food rather than just another raw plant ingredient.
+- Grains flour foods are intended to be research-free, low-equipment daily foods; milling must conserve total nutrition, and flour-food value comes from the extra processing/meal quality rather than free food multiplication.
+- Grains' retention criterion is environmental crop choice: representative map conditions must make different grains preferable through soil fertility, temperature, growing-season length, yield and processing value. A permanent regression should verify that one grain does not collapse into the best choice across nearly all profiles.
+- Waterworks now owns the paddy/rice loop rather than Core retaining a paddy-side interface. Do not use the former Stage E boundary when planning dependency removal.
+- Beans, fiber and root crops are no longer safe assumptions for the future Core scope while the Grains re-scope is being evaluated. Do not perform new dependency work for those future stages until ownership is settled.
+- Two earlier audit conclusions now require explicit resolution rather than silent implementation: **(a)** whether Vanilla/Grains threshing omits straw or Grains owns a non-MO straw path, and **(b)** whether MO-loaded profiles keep MO wheat as the visible crop or Grains keeps one AMJ-owned wheat source across profiles. Preserve existing save/DefName compatibility while deciding these.
+- Consequently, migration step 4 is broadened from “fallback wheat if needed” to **design and test the standalone wheat + flour + milling chain**, and step 5 must then isolate or map MO wheat/flour/category/straw compatibility around that chain.
+
+Until that reconciliation is complete, do **not** start changing `About.xml`, production dependency metadata, or runtime Def ownership merely from the older Agriculture assumptions.
+
+**Next action:** the Core/MO separation workstream should first reconcile the Grains scope against the completed dependency inventory, produce the final Base-vs-MO ownership table (especially wheat/flour/milling/straw/research/material/scenario), then begin migration step 1 (test-harness split). About.xml remains last.
