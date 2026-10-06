@@ -828,7 +828,7 @@ The three Library rasters were re-listed, materialized into a fresh container di
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 A consistency audit found that two different files were simultaneously documented as the canonical masu master. The later duplicate path is retained as the sole v1 source of truth because it is the 256×256 master explicitly stored for cross-chat reuse; the older `Textures/Things/Item/Resource/AMJC_Shared/Masu/AMJC_Masu_Empty.png` copy is removed to eliminate ambiguous masters.
 
@@ -848,7 +848,7 @@ The editable region is limited to the masu interior cavity. Rim, exterior faces,
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE (rule); BLOCKED (masu v2 activation)
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 Direct comparison of the accepted buckwheat-in-hull icon with the first deterministic masu derivative exposed a gap in the fixed-part rule. Protected RGBA pixels were stable, but the result was still visually wrong: the container/contents composition occupied too little of the canvas and the contents read as a small pile placed in an oversized empty box.
 
@@ -863,7 +863,7 @@ The durable rule is `Docs/GoldenPaths/BoxedResourceIconPipeline.md`: boxed-resou
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE — v2 ACTIVE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The blocked v1 master was not reused unchanged. A v2 candidate was derived by aligning the empty masu to the accepted filled buckwheat reference's 256×256 frame occupancy, then composing the accepted filling profile into a broader contents envelope rather than clipping contents to the old interior-only diamond.
 
@@ -876,7 +876,7 @@ The initial v2 review candidate matched the accepted exemplar's overall alpha en
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 A review exposed that the agent had identified visible roughness in a candidate yet was still prepared to wait for author acceptance before correcting it. This is now forbidden. Before presenting a candidate as registration-ready, the agent must inspect the full-size and game-size views and automatically repair objective defects that preserve the already approved design: resize jaggies, resampling roughness, halos, clipping, seams, stray/leftover layer pixels, incorrect frame occupancy, and other deterministic cleanup issues.
 
@@ -889,7 +889,7 @@ Applied immediately to masu v2: the upscaled 256px candidate was discarded as ma
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The author reviewed the v2 comparison, including the 256px and game-like small-size views, and confirmed that it looks acceptable ("問題なさそう"). This closes the remaining visual-approval gate for the active masu v2 family. Continue subsequent boxed-resource icons from the registered v2 master/fill guides; do not regenerate the masu.
 
@@ -898,7 +898,7 @@ The author reviewed the v2 comparison, including the 256px and game-like small-s
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 Audit confirmed that the user's uploaded approved exemplar is exactly the registered Library visual reference: SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`. The repository's normalized representative remains `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`, SHA-256 `0f81aa92460154d2b1ae50de14d7360be5e44ff46f8c81bdd113b6e19143d752`.
 
@@ -911,7 +911,7 @@ Permanent fix: `Scripts/Art/boxed_resource_review.py` now builds comparisons onl
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 All stale/contaminated boxed-resource candidate images created during the broken reference/compositing path were discarded from the persistent Library, including the old Soba in-hull candidate set and the pre-cleanup masu v2 candidate/review images. The local working copies of dehulled-Soba candidates, color-fix candidates, comparison sheets, generated whole-icon retries, mask previews, and superseded v2 candidate assets were also deleted.
 
@@ -927,7 +927,7 @@ Future work must restart the dehulled-Soba image from the registered reference/t
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 Durable rule added: when an image-processing path is discovered to be contaminated, all descendants from that point are invalidated immediately and removed from both persistent Library and local working storage. Invalid candidates are not retained merely for possible comparison because they can later be mistaken for authoritative sources.
 
@@ -940,7 +940,7 @@ Formal rules: `AGENTS.md`, `Docs/GoldenPaths/BoxedResourceIconPipeline.md`, and 
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 Author clarified that 「画像作成」 must not be interpreted as permission to invoke ImageGen. Durable rule now distinguishes command semantics:
 
@@ -1013,7 +1013,7 @@ Shared durable source: `Docs/DevelopmentGoldenPathGuidelines.md`, commit `a81c03
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** ACTIVE — validation reset
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The author clarified that the current work was never intended to produce a dehulled-Soba asset. The purpose of the exercise is to validate the boxed-resource pipeline itself by asking whether the approved **buckwheat-in-hull** exemplar can be reconstructed correctly from the registered masu/template workflow.
 
@@ -1032,7 +1032,7 @@ The test is about reproducing the approved in-hull reference faithfully, not cha
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE (structural gate); dehulled Soba variant reset
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 Repeated Soba failures showed that color work was continuing before the layer decomposition itself had been proven. The broad editable/interior masks allowed visually plausible but structurally wrong composites, including broken rim occlusion and simple layer-over effects.
 
@@ -1071,7 +1071,7 @@ Scripts/IntegratedRuntimeDesktop/Run-AMJ-IsolatedDesktop.ps1.
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The author corrected the workstream intent: the current image exercise is a **pipeline validation using the approved buckwheat-in-hull image as both source reference and expected output**. It is not a request to design a dehulled-buckwheat icon.
 
@@ -1114,7 +1114,7 @@ Shared source of truth: `Docs/RetextureImplementationGuidelines.md`, introduced 
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The corrected validation target is now complete. The approved buckwheat-in-hull exemplar is reconstructed through the actual registered reusable template path with **0 differing RGBA pixels**.
 
@@ -1200,7 +1200,7 @@ Rim Controlで得た採用値はXML / C# / Def / 正式設計書へ正本化し�
 
 **Requested by:** author (2026-10-06 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** SUPERSEDED — visual split damage confirmed
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The author identified the structural error behind the repeated Soba boundary loop: a complex masu cannot be modeled as “master + contents clipped by one simple interior/pile mask”. The active production model is therefore changed to an explicit z-order stack:
 
@@ -1219,7 +1219,7 @@ The new gate requires exact empty-master reconstruction, exact fixed foreground 
 
 **Requested by:** author (2026-10-06 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** IMPLEMENTED — production fail-closed; revised model pending visual activation
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The separate research push `5690fbf8daa1eb73d0b9d263ca37ad1c0e08c024` has been read and integrated. The author also confirmed that the first v3 three-layer split visibly damaged the masu image. Therefore the fact that rear+front numerically reconstructed the empty master is not accepted as sufficient evidence.
 
