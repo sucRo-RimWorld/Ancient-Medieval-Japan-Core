@@ -14,7 +14,8 @@ $outputFull = [System.IO.Path]::GetFullPath(
 )
 $repoPrefix = $repoRoot.TrimEnd("\", "/") + [System.IO.Path]::DirectorySeparatorChar
 
-if ($outputFull.StartsWith($repoPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+if ($outputFull.Equals($repoRoot, [System.StringComparison]::OrdinalIgnoreCase) -or
+    $outputFull.StartsWith($repoPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
     throw "Workshop staging output must be outside the source repository: $outputFull"
 }
 
