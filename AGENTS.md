@@ -138,13 +138,15 @@ Historical description text is Japanese-first: research and draft Japanese, obta
 
 AMJC owns its custom crops' temperature values, design/balance tables (including archived candidate ranges), Def mappings, optional CCTO compatibility XML, and validation. Maintain these here, not in CCTO. Use `Docs/Balance/Crops/ColdTolerance.md` together with the cultivation design and implemented XML as the local source of truth. CCTO remains an optional framework; its own Vanilla/MO support data remains owned by CCTO.
 
-## Workshop art-source exclusion
+## Workshop distribution rule (AMJ common)
 
-The repository-root `Art/` tree is development-only authoring material and must not be uploaded to Steam Workshop.
+AMJ Core, Environment, CCTO and future related Mods must exclude **all files unnecessary for a Workshop subscriber** through the repository-root `.rimignore`. This includes Art masters/templates, design and development documentation (including README), source, tests/fixtures/reports, scripts/build tools, VCS/editor metadata, local overrides and debug/backup/archive files. Preserve runtime assets, About metadata, loadFolders.xml where used, and legally required licenses/attribution.
 
-- Keep `Art` in the root `.rimignore` so YADA excludes the entire tree recursively.
-- Any other publisher or staging path used by this repository must exclude the entire `Art/` tree as well, not only `Art/Sources/`.
-- Shippable runtime assets belong under their normal production paths such as `Textures/` or `About/`; do not rely on `Art/` content being present in the published Mod.
+- `.rimignore` is the authoritative exclusion list. YADA uses inherited basename/wildcard rules, not Git-ignore path or negation syntax; exclude `_LocalTest.xml`, not `Patches/_LocalTest.xml`.
+- Adding a file/folder includes deciding whether subscribers need it and updating exclusions when they do not. Preserve development/source material in Git; exclusion is not deletion.
+- Every alternative publisher/archive/staging builder must produce the same subscriber-only payload. Keep adapters synchronized with `.rimignore`; do not maintain independent policy exceptions.
+- Run `python Tests/validate_workshop_payload.py` before publication. Validate the final staging/installed package too; runtime-required DLLs and assets must actually be present. Repository filtering PASS alone is not build/runtime/Steam publication PASS.
+- Shared procedure and payload contract: [Core Docs/WorkshopPackaging.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Core/blob/main/Docs/WorkshopPackaging.md).
 
 ## Art / image work
 
@@ -169,3 +171,4 @@ For generation intent and ImageGen use, follow `Docs/GoldenPaths/TextureAssetPip
 ## Golden Path closeout rule
 
 Follow `Docs/DevelopmentGoldenPathGuidelines.md`. Reusable procedures belong in the owning Golden Path or source-of-truth document; `Docs/Coordination.md` remains status/handoff only.
+

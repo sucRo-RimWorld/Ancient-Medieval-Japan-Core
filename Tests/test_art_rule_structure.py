@@ -106,13 +106,13 @@ class ArtRuleStructureTest(unittest.TestCase):
         publisher_plus = read("_PublisherPlus.xml")
         staging = read("Scripts/Prepare-WorkshopContent.ps1")
 
-        self.assertIn("/Art/Sources/", ignore)
-        self.assertIn("/Art/Sources export-ignore", attrs)
-        self.assertIn("/Art/Sources/** export-ignore", attrs)
+        self.assertIn("\nArt\n", ignore)
+        self.assertIn("/Art export-ignore", attrs)
+        self.assertIn("/Art/** export-ignore", attrs)
         self.assertIn("/_PublisherPlus.xml export-ignore", attrs)
         self.assertIn("must **never** be included in Steam Workshop content", source_readme)
-        self.assertIn("<exclude>Art\\Sources</exclude>", publisher_plus)
-        self.assertIn("Art\\Sources", staging)
+        self.assertIn("<exclude>Art</exclude>", publisher_plus)
+        self.assertIn('Join-Path $outputFull "Art"', staging)
 
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "workshop.zip"
@@ -126,8 +126,8 @@ class ArtRuleStructureTest(unittest.TestCase):
             with zipfile.ZipFile(archive) as zf:
                 names = zf.namelist()
             self.assertFalse(
-                any(name == "Art/Sources/" or name.startswith("Art/Sources/") for name in names),
-                "Art/Sources leaked into git-archive Workshop staging",
+                any(name == "Art/" or name.startswith("Art/") for name in names),
+                "Art leaked into git-archive Workshop staging",
             )
 
     def test_source_inventory_does_not_promote_texture_derivatives(self):
@@ -200,3 +200,4 @@ class ArtRuleStructureTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
