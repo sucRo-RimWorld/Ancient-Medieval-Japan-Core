@@ -40,47 +40,17 @@ Use image generation only when a genuinely new silhouette or subject-specific dr
 
 If the same failure mode appears in two consecutive generation attempts, stop repeating the prompt and switch to local editing/compositing.
 
-## 3. Boxed resource icons — canonical masu workflow
+## 3. Asset-family handoff
 
-### Visual target
+This document owns the **general texture production path**, not family geometry or compositing contracts.
 
-AMJ keeps the familiar Vanilla / Medieval Overhaul boxed-resource silhouette language so raw resources remain immediately readable, but the shared container is a simplified Japanese **masu**.
+Use the owning family document for additional requirements:
+- boxed resources / masu: `Docs/GoldenPaths/BoxedResourceIconPipeline.md`;
+- Workshop covers: `Docs/WorkshopCoverStyle.md` + `Docs/GoldenPaths/WorkshopCoverPipeline.md`;
+- fixed reused components: `Docs/GoldenPaths/FixedImageTemplates.md`;
+- Environment tree/plant retextures: Environment `Docs/ArtDirection.md` + its texture pipeline.
 
-The registered **masu v2 empty master** is the canonical container master. It is a technical derivation of the author-approved filled exemplar and high-resolution empty source; known resampling artifacts were cleaned before registration.
-
-The family also requires an accepted **filled exemplar**. For the current masu family the visual reference is `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png` (SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`). The accepted v2 master matches the exemplar's `[17, 28, 239, 235]` frame occupancy.
-
-Detailed activation, fill-profile, layering, and acceptance rules are in `Docs/GoldenPaths/BoxedResourceIconPipeline.md`.
-
-Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
-
-Registered fixed-template manifest: `Docs/References/AMJ_Masu_Template.json`. New chats must retrieve the master, registered HardFixed/ContactZone/ExtensionAllowed masks and RequiredFill guide from main. The historical editable mask remains an identity diagnostic; it is not the current content permission shape.
-
-### Container reuse and contact
-
-The approved master establishes the container angle, geometry, scale, wood palette and placement. Only conservative lower HardFixed wood is immutable in the final RGBA. Upper rim, interior and upper front/side walls form an occludable contact band: contents, contact outline and subtle contact shading are edited together. Unoccluded wood retains master pixels. Independent ExtensionAllowed permits different protruding shapes; Soba's alpha envelope is not the family limit.
-
-### Production sequence
-
-The current **v4-contact-study** contract is implemented for validation, with production blocked. Follow `BoxedResourceIconPipeline.md` for exact commands and masks.
-
-1. Use `scaffold-study` to copy the full intact master into a diagnostic context canvas outside production/reference folders.
-2. Draw contents and contact within ContactZone/ExtensionAllowed. Do not use a transparent object-only layer or cavity/pile clipping.
-3. Use `compose-study`; it rejects forbidden changes and restores only HardFixed directly from the master. It does not split or re-alpha-blend the rendered master/context.
-4. Run structural checks, the registered-reference comparison at 256px/~64px, and PNG integrity. Correct technical defects before presentation.
-5. Validate low grains, large pieces and strong over-rim overlap with the same unchanged region contract. Synthetic fixtures are structural evidence only.
-6. Record visual acceptance and suitable fill profiles before activating production. The current bulk-grain fill rule is not universal.
-7. Only after activation may production `scaffold` / `compose` produce resources; use the same master/contract for stack variants.
-
-### Vanilla / Medieval Overhaul retextures
-
-When AMJ retextures a compatible Vanilla or Medieval Overhaul boxed raw-resource icon:
-
-- retain the familiar boxed-item reading/silhouette class;
-- replace the generic crate treatment with the canonical AMJ masu;
-- do not independently redesign the container per resource.
-
-A genuinely different container family requires a separately approved master.
+Do not copy family-specific masks, occlusion regions, historical failure notes, or layout contracts into this general pipeline.
 
 ## 4. PNG integrity
 
@@ -90,6 +60,6 @@ All production PNGs must pass `Tests/validate_png_assets.py`, which checks compl
 
 For automated Git/GitHub binary writes, validate the bytes that are actually committed/checked out. Prefer an exact previously validated blob when recovering accepted art from history.
 
-## Pixel-exact shared image components
+## 5. Fixed reused components
 
-Follow `Docs/GoldenPaths/FixedImageTemplates.md` for every reused component. Registered masters and binary editable masks are mandatory before producing derivatives. Generate variable material only, composite deterministically, and require zero decoded RGBA differences in protected pixels. Reference-image editing and visual similarity are insufficient. Existing style references do not imply identical silhouettes for different species.
+When an image intentionally reuses a visible component pixel-exactly, follow `Docs/GoldenPaths/FixedImageTemplates.md`. Otherwise do not impose fixed-template machinery on a merely stylistically similar asset.
