@@ -38,8 +38,6 @@ Use image generation only when a genuinely new silhouette or subject-specific dr
 4. Ask for author acceptance before treating the output as a master.
 5. After acceptance, preserve that exact source for later derivatives.
 
-If the same failure mode appears in two consecutive generation attempts, stop repeating the prompt and switch to local editing/compositing.
-
 ## 3. Asset-family handoff
 
 This document owns the **general texture production path**, not family geometry or compositing contracts.
