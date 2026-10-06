@@ -73,6 +73,17 @@ Historical description text is authored Japanese-first:
 
 Do not translate an unapproved Japanese draft merely to keep localization files synchronized during review.
 
+## Gameplay-feature ownership in descriptions
+
+Do not describe a planned gameplay function in a base mod merely because the underlying historical object, plant, or animal could support that function.
+
+- If a later Addon introduces a concrete gameplay function such as harvesting acorns, nuts, fruit, fiber, resin, medicinal material, or another resource, the Addon that owns and implements that function also owns the gameplay-facing description update for that function.
+- The base mod may describe accurate historical, botanical, ecological, or material facts, but it must not imply that an unimplemented harvest/use mechanic already exists.
+- When the Addon is active, its localization/description patch may add the relevant functional explanation while preserving the approved base description and historical facts.
+- Keep this ownership aligned with code/XML ownership: the mod that adds the mechanic is the mod that explains that mechanic to the player.
+
+Example: AMJ Environment may describe Sudajii or Japanese beech as trees with historically edible nuts where appropriate, but an explicit explanation of harvestable acorns/nuts belongs to the Addon that actually adds that harvesting feature.
+
 ## Vanilla / Medieval Overhaul ownership
 
 Reusing a Vanilla or Medieval Overhaul Def does not require preserving its original prose.
