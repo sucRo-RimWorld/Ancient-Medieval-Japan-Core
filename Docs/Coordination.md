@@ -89,7 +89,7 @@ Potential division: CBF owns procedural assembly / editor / XML export; AMJ owns
 
 **Requested by:** author (2026-10-06 JST; rule cleanup after repeated generation/style failures)  
 **Owner:** AMJ shared art policy / Core art  
-**Status:** DONE — follow-up audit and regression guards green
+**Status:** DONE — actual generation stress test completed; deterministic perspective guard green
 
 Image rules were consolidated so routine work no longer accumulates failure-specific instructions in every entry document.
 
@@ -102,7 +102,7 @@ Current hierarchy:
 
 Core AGENTS now routes to those sources instead of repeating boxed-resource/contact/fixed-template history. ArtStyle no longer contains masu masks, Workshop production steps, or fixed-template implementation. The fixed-template policy was reduced to generic pixel-reuse essentials.
 
-The active boxed-resource workflow is now **contents-source generation + manual composition**: ImageGen produces only transparent contents in AMJ style and the masu's perspective; final placement/masking/occlusion is adjusted manually against the canonical masu. The earlier v2/v3/v4 automatic contact-study remains diagnostic/research only and is no longer the ordinary production path.
+The active boxed-resource workflow is now **contents-source generation + deterministic perspective normalization + manual composition**. ImageGen produces only the transparent material layer in AMJ style; it no longer owns the exact masu projection. `Scripts/Art/normalize_masu_contents.py` removes low-alpha generator residue and projects the material onto the shared diamond-like contents plane before manual placement/masking/occlusion against the canonical masu. The earlier v2/v3/v4 automatic contact-study remains diagnostic/research only and is no longer the ordinary production path.
 
 Source-of-truth commits:
 - AGENTS routing: `71f9f97728efefd74903fc736727804e3ae2d075`, obsolete-history removal `0fff08ee37dc972538589ad373b8d4e93c33f694`;
@@ -111,9 +111,14 @@ Source-of-truth commits:
 - fixed-template simplification: `b1556b87832bd24f665de691fb4e8ad28e1d372b`;
 - Workshop style/workflow separation: `d193c832a05d72d41110eb6798342191b2337e0e`, obsolete-style cleanup `15ec441bb8d228598b1a7b1ece772827ed71caeb`, inheritance clarification `89410d598c43318baad233ea1bc5d7dcde1e9e50`;
 - boxed-resource contents-first workflow: `ce44ef823c1425def0c8fa5e4db80ec919e49e4b`, current-state cleanup `b0b9a230a5f095617fe774f65c01bf4769301335`;
-- v4 manifest retained fail-closed as diagnostic-only metadata: `1252481382974a39e5a4928a1ffa5b52e1752e02`.
+- v4 manifest retained fail-closed as diagnostic-only metadata: `1252481382974a39e5a4928a1ffa5b52e1752e02`;
+- reference-role / direct-perspective audit correction: `0f5005cde88c28c0724a7a962accd0097310253d`;
+- deterministic contents normalizer: `8ec65c92199db30c764e2addc37ad7ce82556f58`, regression test `f66dbed535cf169576017f0e6bb347fbbfa8941d`, Stage A hook `1a2304af33cf66ed10736bfed7f4369150afc84a`;
+- production-pipeline switch to deterministic projection: `d15ef5dc711288b6514958cd433bd96a4ac6fb39`, structural routing guard `3f8f9c17ebbea4141b34b278efc886cad592eb01`.
 
 **Follow-up audit (2026-10-06 JST):** Removed the remaining boxed-resource history from shared ArtStyle, removed the brittle exact-keyword ImageGen gate, removed mandatory pre-generation approval loops, scoped Core-only sprite budgets away from Workshop presentation art, and made the current manual masu workflow explicitly outside the active fixed-template zero-difference guarantee until a stable protected region exists. Archived masu v4 automation is now manual-dispatch only and no longer blocks Stage A. Added `Tests/test_art_rule_structure.py`; Stage A also runs the Workshop fixed-template regression. Stage A at `1ff8be70debccbb9da395997eae5ae51e9a49609` passed all art-rule, Workshop-template, fixed-template, boxed-reference, PNG, Stage A, and Windows PowerShell gates.
+
+**Actual generation stress test (2026-10-06 JST):** The approved buckwheat reference and a subject-specific Japanese short-grain-rice reference were actually viewed, then rice contents were generated rather than only auditing prompt text. Direct ImageGen attempts still produced a frontal mound / excessive per-grain modeling and did not reliably reproduce the masu opening plane. This confirmed that stronger wording alone was insufficient. A neutral material-only rice source was then passed through the new deterministic normalizer; the resulting transparent layer adopted the shared diamond-like contents plane without regenerating the masu. This is a pipeline/capability test only: no rice production icon, final masu composite, or author visual approval is claimed. Stage A run #281 for `3f8f9c17ebbea4141b34b278efc886cad592eb01` completed successfully, including the new normalizer regression.
 
 
 ### ART-TEMPLATE-019 — MO comparison corrections implemented as contact study
