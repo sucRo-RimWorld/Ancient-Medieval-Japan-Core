@@ -45,7 +45,8 @@ The raw generated source owns **material identity and AMJ/MO style**, not final 
 The source layer must:
 
 - inherit the AMJ item/resource style from `Docs/ArtStyle.md`;
-- use a strong readable dark outline consistent with the relevant AMJ/MO item references;
+- use the clustered-resource line hierarchy from `Docs/ArtStyle.md`: the **outer silhouette of the complete contents pile is thick and dark**, while **internal boundaries between grains/pieces are thinner and lighter/paler**;
+- do not give every grain/piece an equally heavy dark outline; internal lines are subordinate separators and may be quite light as long as the material remains legible;
 - use a limited palette and flat/simple shading;
 - avoid glossy per-piece highlights, deep AO between every grain, photorealism, and painterly rendering;
 - simplify the bulk into readable clustered pieces rather than rendering every particle, while preserving the subject's characteristic piece shape;
@@ -83,7 +84,8 @@ Review the raw source for subject/style and the **normalized output** for projec
 - another reference material's geometry has leaked into it (for example, rice becoming triangular/faceted like buckwheat or stone);
 - the normalized footprint still cannot be placed naturally on the masu opening plane;
 - a systematic near/far scale gradient has been baked into the source without a subject-specific reason;
-- outline strength is materially weaker than the applicable AMJ/MO item baseline;
+- the outer silhouette is not clearly stronger than the internal piece boundaries;
+- internal grain/piece boundaries are as thick/dark as the outer silhouette, making the pile read as many disconnected outlined objects rather than one mass;
 - shading is glossy, heavily modeled, painterly, or uses deep AO on each individual piece;
 - particle count/detail is high enough to become noisy at roughly 64 px;
 - the generated layer contains any wood, container rim, box, background, UI, text, or decorative shadow;
