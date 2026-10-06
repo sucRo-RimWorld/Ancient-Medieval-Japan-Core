@@ -1,5 +1,7 @@
 # Boxed Resource Icon Pipeline — Golden Path
 
+> **2026-10-06 occlusion-audit integration:** the first v3 implementation that physically split the canonical masu into complementary rear/front rasters is **superseded**. Visual inspection found damaged pixels at the split boundary. The separate MO audit also shows that upper/contact-region visibility depends on the contents. New-resource production is therefore blocked. The next model keeps the **full canonical master intact as the base/rear**, renders transparent **contents/contact** artwork above it without a cavity/pile clipping mask, then reasserts only conservative **hard-fixed foreground** wood from exact master pixels. The contact zone remains occludable. Activation requires contrasting-content-shape tests plus 256px/~64px visual review.
+
 > Research addendum (2026-10-06): [the occlusion/fixed-region audit](../Research/BoxedResourceOcclusionAudit.md) assessed the preceding v2 snapshot. Its identity PASS proved exemplar reconstruction, not natural different-content production. The separate v3-layered change is preserved here; this research publication does not validate v3 or prove that restoring a fixed foreground permits natural contents-over-rim occlusion.
 
 This document is the production contract for AMJ resource icons that share the Japanese masu while changing only the contents.
