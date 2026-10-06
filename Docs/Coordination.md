@@ -94,7 +94,7 @@ Source-of-truth commits:
 **Owner:** Art/tooling / boxed-resource icons
 **Status:** ARCHIVED — retained as diagnostic/research; superseded for production by ART-RULES-021
 
-Current authoritative state is **v4-contact-study**, superseding the earlier v2/v3 production instructions below. Master and approved in-hull Soba raster bytes remain unchanged. No ImageGen or new production item was made.
+Historical result: the **v4-contact-study** superseded earlier automatic v2/v3 experiments at the time. It is now retained only as diagnostic/research material; the active production workflow is ART-RULES-021 / `Docs/GoldenPaths/BoxedResourceIconPipeline.md`. Master and approved in-hull Soba raster bytes remain unchanged.
 
 The registered study contract now uses conservative lower HardFixed wood, occludable ContactZone including upper front/side walls, independent ExtensionAllowed, and bulk-grain RequiredFill. The rendered source keeps the full intact master as context, and includes contents plus contact edits. The compositor restores only HardFixed exactly, rejects Forbidden RGBA changes (including transparent RGB/low-alpha) rather than clipping, and does not split rear/front or constrain extension to Soba's silhouette. Old v3 compositor entry points are removed. Both production status fields are blocked.
 
@@ -102,7 +102,7 @@ Explicit scaffold-study/compose-study commands provide the reviewable research p
 
 Validation: 14 Python regression tests pass, including same-mask synthetic shapes, over-front-wall overlap preservation, exact lower-wood RGBA restoration, leak/hash/binary/disjoint guards, historical Soba 0-diff identity and fail-closed production. All 24 production PNGs pass integrity; Stage A/New Village static validation passes. Synthetic shapes are structural evidence only; no new visual approval or RimWorld runtime PASS is claimed.
 
-**Next action:** with the same registered contract, inspect actual low grains, large pieces and strong over-rim overlap at 256px/about 64px; use shape-appropriate occupancy profiles and record visual acceptance before production activation. Do not expand masks to pass an individual candidate. The v4 region boundaries are a study proposal, not approved geometry.
+**Next action:** none for ordinary production. Revisit the v4 study only if automatic occlusion/compositing research is intentionally resumed.
 
 
 ### ART-RESEARCH-017 — Boxed-resource occlusion audit recorded
