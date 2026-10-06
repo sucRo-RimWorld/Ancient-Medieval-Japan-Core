@@ -1150,7 +1150,7 @@ The previously approved Soba sheaf source has not been wired in this commit beca
 
 **Requested by:** author / follow-up to boxed-resource identity validation (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** IMPLEMENTED; CI pending
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The zero-diff identity gate exposed a second reusable-contract issue before any new resource was attempted: under `replace_rgba`, the input cannot be a transparent object-only contents layer. It must be a complete rendered editable-cavity patch. Otherwise transparent pixels selected by the editable mask erase the empty-master cavity and reproduce the earlier broken-rim/layer-paste failure.
 
