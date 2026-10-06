@@ -67,6 +67,8 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertIn("adjusted manually in an image editor", text)
         self.assertIn("Docs/ArtStyle.md", text)
         self.assertIn("Docs/GoldenPaths/TextureAssetPipeline.md", text)
+        self.assertIn("Scripts/Art/normalize_masu_contents.py", text)
+        self.assertIn("deterministic normalizer", text)
         self.assertNotIn("HardFixed", text)
         self.assertNotIn("ContactZone", text)
 
