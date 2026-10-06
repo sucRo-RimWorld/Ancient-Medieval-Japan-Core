@@ -111,7 +111,10 @@ Future cereals should match this **information density** even when their silhoue
 - **Stage A crop plants use one shared outline color.** The accepted 2026-10-04 Awa/Hie comparison establishes a warm, medium-dark brown contour that reads clearly dark without appearing near-black. Do not vary the outline hue by crop, seed head, or foliage; silhouette and fill colors carry the botanical distinction. This supersedes the earlier per-material/color-trace outline experiment.
 - Outline width must stay visually strong after downscaling.
 - The outer contour is more important than internal linework.
+- For clustered Core items/resources such as piles of grain, use a clear **line hierarchy**: the silhouette around the entire pile is the thickest/darkest contour, while boundaries between individual pieces are thinner and lighter.
+- Internal piece boundaries are subordinate structure, not equal-strength outlines. They may be visibly pale when that preserves the pile as one readable mass.
 - Internal outlines should be minimized; prefer adjacent color planes where possible.
+- Reject clustered-item art where every grain/piece is enclosed by the same heavy dark line as the outer silhouette, because it fragments the pile and raises visual noise at game scale.
 - Do not add sketch lines, ink hatching, or thin decorative strokes.
 
 ## 5. Canvas and export
