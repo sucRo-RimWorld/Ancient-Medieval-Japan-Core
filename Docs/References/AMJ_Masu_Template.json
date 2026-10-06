@@ -2,8 +2,8 @@
   "version": 1,
   "family": "amj-boxed-resource-masu",
   "template_revision": "v4-contact-study",
-  "production_status": "archived_diagnostic_only",
-  "approval": "v2 master and in-hull exemplar approved; v4 region contract retained for diagnostic/automation research only. Active new-resource production uses contents-only source generation plus manual composition per Docs/GoldenPaths/BoxedResourceIconPipeline.md.",
+  "production_status": "blocked_pending_occlusion_validation",
+  "approval": "v2 master and in-hull exemplar approved; v4 region contract retained for diagnostic/automation research only and remains blocked. Active ordinary new-resource production uses contents-only source generation plus manual composition per Docs/GoldenPaths/BoxedResourceIconPipeline.md.",
   "size": [
     256,
     256
@@ -99,7 +99,7 @@
     "required_rgba_diff_pixels": 0,
     "note": "Identity validation layer: exact approved variable RGBA inside the registered editable mask; transparent outside. Historical two-layer diagnostic only; not the production compositor for new resources."
   },
-  "new_resource_production_status": "manual_composition_pipeline_active",
+  "new_resource_production_status": "blocked_pending_occlusion_validation",
   "v3_split_status": "superseded_due_visible_split_damage",
   "contact_region_policy": "occludable; do not blindly restore upper/contact wood after contents",
   "region_contract": {
