@@ -54,6 +54,20 @@ Modern comparison is not license to invent contrast. If a reliable historical/mo
 
 Avoid generic encyclopedia trivia that does not help explain the content's place in ancient/medieval Japan.
 
+### In-game paragraph formatting
+
+Long RimWorld descriptions should be split into a small number of readable paragraphs using the literal `\n\n` sequence in Def / DefInjected text.
+
+Use paragraph breaks by meaning rather than after every sentence. The default shape for longer AMJ historical descriptions is:
+
+1. name / aliases + distribution / ecology or material context;
+2. ancient / medieval Japanese role, use, evidence, or cultural context;
+3. modern difference or present-day use, when relevant and supportable.
+
+Two paragraphs are sufficient when the material does not justify three. Short descriptions should remain a single paragraph. Do not add padding merely to satisfy the structure.
+
+After the Japanese text is approved, keep the English translation's paragraph structure broadly aligned where natural.
+
 ## Evidence and source notes
 
 Historical claims should be grounded in reliable sources. Prefer, where practical:
