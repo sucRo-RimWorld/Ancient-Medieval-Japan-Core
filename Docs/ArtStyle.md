@@ -6,6 +6,19 @@ This document is the durable visual reference for **Ancient & Medieval Japan (AM
 
 The style was locked after comparing AMJ cereal/resource assets directly against Medieval Overhaul (MO) wheat and leather/hide textures. The author-approved Awa, Hie, and Kibi plant set from 2026-10-04 is the canonical cereal-plant baseline; the accepted millet-item/straw set remains the resource baseline. The rules and production assets below are the reproducible source of truth for future generation and manual art work.
 
+## Rule ownership and precedence
+
+This file owns the **AMJ-wide visual language**. Keep operational procedures out of this document.
+
+Apply image rules in this order:
+
+1. **Shared AMJ visual language (this file):** simplified silhouette-first forms, strong readable outlines, restrained palette/detail, no photorealism or painterly noise, and readability at game scale.
+2. **Asset-class style specification:** may add or narrow rules for a real class difference. For example, Environment tree sprites may use restrained internal gradient variation documented by that repository, while Core crop/item textures use the flatter budgets below.
+3. **Production Golden Path:** controls source reuse, generation permission, compositing, export, and validation. It must not redefine the visual style.
+4. **Fixed-template rules:** apply only when visible parts are intentionally reused pixel-exactly.
+
+A lower layer must not silently contradict a higher layer. If an asset class genuinely needs an exception, record that exception in its owning style specification instead of accumulating one-off prompt rules or AGENTS notes.
+
 ## 1. Primary target
 
 AMJ art should look at home beside **Medieval Overhaul**, not beside RimWorld Vanilla.
@@ -122,115 +135,29 @@ Larger working files are allowed, but the final result must survive reduction wi
 
 ## 6. Generation prompt baseline
 
-When generating an AMJ asset, begin from this semantic prompt rather than generic "RimWorld style":
+For **Core Thing/Plant textures**, begin from this semantic baseline rather than generic "RimWorld style":
 
-> Single isolated game texture for Ancient & Medieval Japan, visually matched to Medieval Overhaul. Flat vector-like 2D graphic, very limited palette, thick dark warm-brown outline, large simple silhouette, hard-edged color planes, minimal shading, no gradient, no texture noise, no photorealism, no painterly rendering, no fine detail, transparent background, readable at 64 px, 256×256 composition.
+> Single isolated game texture for Ancient & Medieval Japan, visually matched to Medieval Overhaul. Flat vector-like 2D graphic, very limited palette, thick dark warm-brown outline, large simple silhouette, hard-edged color planes, minimal shading, no texture noise, no photorealism, no painterly rendering, no fine detail, transparent background, readable at 64 px, 256×256 composition.
 
-Then add only the subject-specific shape and colors.
+For Core crop plants, keep the existing no-gradient/few-plane budget from section 2. For Core items/resources, make the result at least as flat as the plant art: one base fill and at most one secondary plane per material, no per-piece glossy highlights, and no deep contact shadow on every grain.
 
-For plants add:
+Do not reuse this exact budget for a different asset class when its owning style specification defines a controlled exception. The project-wide invariants in section 1 still apply.
 
-> Simplify botanical structure aggressively. Use only a few broad leaves/stems and large symbolic flower/seed-head shapes. Do not draw individual seeds, leaf veins, hairs, or realistic surface detail.
-
-For item/resource icons add:
-
-> Even flatter than the plant art. Use one base fill and at most one secondary plane per material. No per-piece highlights or deep contact shadows.
-
-
-2026-10-06 correction: the complementary rear/front raster split introduced in the first three-layer experiment is not a valid production split; visual inspection found damaged pixels at the split boundary. The MO occlusion audit also shows that the upper/contact region cannot be assumed universally fixed. Preserve the complete canonical masu as the base/rear, place contents/contact artwork above it without a simple cavity/pile clip, and restore only a conservative hard-fixed foreground subset. The contact region must remain occludable. New boxed-resource production is blocked until this revised model is validated across contrasting shapes.
-
-### Canonical boxed-resource icon: Japanese masu master
-
-For loose harvested produce, beans, grains, hulled grain, and similar resources, AMJ uses the **Vanilla / Medieval Overhaul boxed-resource silhouette language** but replaces the generic crate surface treatment with a simplified Japanese **masu**.
-
-The registered **masu v2 empty master** is the canonical container master. It is derived from the author-approved filled exemplar plus the high-resolution empty source, with technical cleanup applied before registration. The container is a reusable production component, not something to redraw for every resource.
-
-The author-approved **filled buckwheat-in-hull image** is also a required composition reference for this family. Pixel-stable container reuse is necessary but not sufficient: the container scale on the canvas and the apparent amount/height of contents must match the accepted visual family.
-
-Persistent accepted visual reference: `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png` (1254×1254 PNG, SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`). The normalized repository exemplar is `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`, with non-transparent envelope `[17, 28, 239, 235]`.
-
-The approved masu v2 master remains registered; **new-resource production is blocked pending v4 contact validation**. Its outer/rim protected pixels come from the accepted exemplar, its empty interior is rebuilt from the high-resolution empty source, and the previous upscaling roughness is not part of the registered master. See `Docs/GoldenPaths/BoxedResourceIconPipeline.md`.
-
-Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
-
-Deterministic template registration: `Docs/References/AMJ_Masu_Template.json`. The v4 study uses an intact-master context scaffold. Draw contents and their contact with the box together, then restore only the conservative lower HardFixed wood. Upper rim, inner walls and upper front/side walls are occludable ContactZone. ExtensionAllowed is independent of the Soba silhouette; RequiredFill is a profile-specific validation guide, never a clipping mask. See `Docs/GoldenPaths/BoxedResourceIconPipeline.md` for the complete contract.
-
-The canonical container angle, scale, placement, wood palette and geometry remain the reference. HardFixed lower wood must match all master RGBA exactly. Within ContactZone, visibility and subtle contact shading may depend on contents; do not insist on restoring every upper rim/front-wall pixel. This permitted occlusion is distinct from redesigning the container.
-
-Production rule:
-1. Start from the registered intact master scaffold, without carving complementary rear/front rasters.
-2. Edit only contents and ContactZone/ExtensionAllowed. Transparent object-only input is insufficient; retain unoccluded original wood in the context canvas.
-3. Reject forbidden changes instead of clipping away leaks; restore only HardFixed pixels exactly.
-4. Keep the same contract across resource/stack variants. Use suitable fill profiles; the current bulk-grain threshold does not validate every shape.
-5. Inspect 256px and about 64px for natural contacts, no cutoffs, halos, stale colors or pasted appearance; use the exact hashed reference via `boxed_resource_review.py`.
-6. Complete contrasting-shape visual activation before production. A study/identity PASS does not lift the production block.
-7. Run `python Tests/test_masu_template.py` and `python Tests/validate_png_assets.py` before committing.
-
-When AMJ retextures compatible Vanilla / Medieval Overhaul boxed raw-resource icons, preserve their familiar **boxed-item reading at game scale**, but use this same canonical masu treatment for series consistency.
-
-This masu workflow is the default for boxed resource icons. A genuinely different container class requires an explicitly approved new master; do not mutate the masu master ad hoc.
+Family-specific geometry, perspective, fixed regions, and compositing are **not** style rules and do not belong here:
+- boxed resources / masu: `Docs/GoldenPaths/BoxedResourceIconPipeline.md`;
+- Workshop covers: `Docs/WorkshopCoverStyle.md` and `Docs/GoldenPaths/WorkshopCoverPipeline.md`;
+- Environment tree/plant retextures: Environment `Docs/ArtDirection.md`.
 
 ## 7. Required iteration procedure
 
-Prefer **reuse and local image processing before new image generation**. Image generation is comparatively slow and may time out, while most AMJ follow-up work after a style/silhouette is accepted can be completed more reliably by transforming the accepted source asset.
+1. Read this shared style plus the owning asset-class specification.
+2. Open the actual accepted AMJ/MO reference images relevant to that class; do not substitute memory or a text-only description.
+3. Prefer an accepted source/local edit when no new silhouette or structure is needed. Use new generation only when the active production pipeline permits it.
+4. For a new candidate, compare it directly against the relevant reference at full size and at roughly game-size display.
+5. Reject the candidate before presentation if it is more realistic, more shaded, more detailed, more saturated, or less clearly outlined than the applicable baseline.
+6. Once accepted, preserve that exact source and use the owning production Golden Path for integration and validation.
 
-Use this priority order:
-
-1. Reuse an already accepted AMJ asset when the subject or visual family is the same.
-2. For size, crop, transparent-margin, palette, outline-color, simple recolor, stack-slot, or export-format changes, modify the accepted image locally without regenerating the artwork.
-3. For related assets that can be derived from an approved source without inventing a new silhouette, use local editing/compositing first.
-4. Use image generation only when a genuinely new silhouette, object structure, or subject-specific drawing is required.
-5. Once a generated source is accepted, preserve that accepted source and make later revisions from it rather than repeatedly regenerating near-identical variants.
-
-For genuinely new AMJ art, use this loop:
-
-1. Generate **one isolated asset**, not an infographic or multi-asset presentation.
-2. Compare it directly with the relevant MO reference at similar display size.
-3. Ask:
-   - Does AMJ have more color steps?
-   - More shading?
-   - More interior lines?
-   - More small pieces?
-   - More realistic texture?
-4. If yes, simplify the AMJ asset.
-5. Repeat until its information density is at or below MO.
-6. Only then perform the in-game appearance check.
-7. Once the style for that asset class is accepted, reuse the same palette/outline/detail budget for related assets.
-
-Do not treat a generated comparison sheet as the final game texture. The final texture must be a clean isolated asset.
-
-Before committing any PNG asset to GitHub, run `python Tests/validate_png_assets.py` and do not commit until it passes. The dedicated validator checks every `Textures/**/*.png` for complete chunk boundaries, CRCs, a complete compressed image stream, supported 8-bit indexed/RGBA encoding, and valid scanlines, and reports all broken PNGs in one run. GitHub Actions runs the same integrity gate before Stage A validation. A file opening in an image viewer, having a PNG signature, or reporting 256×256 in IHDR is not sufficient evidence of a valid production asset.
-
-When binary textures are written through automation or Git/GitHub APIs, validate the bytes that will actually be committed. If a binary replacement is recovered from repository history, prefer an exact previously validated blob over re-encoding or regenerating accepted art.
-
-
-### Workshop cover generation workflow
-
-The Workshop-cover visual system is maintained separately from in-game Thing/Plant texture rules.
-
-**Source of truth:** `Docs/WorkshopCoverStyle.md`  
-**Layout schematic:** `Docs/References/AMJ_WorkshopCover_Template.svg`
-
-The 2026-10-05 author-approved Environment-style direction supersedes the earlier dark-left-panel / Japan-map / scenic-landscape cover template.
-
-High-level rules:
-- first propose the composition and design in words, then generate only after author approval;
-- use a warm pale parchment field rather than a dark common-left panel;
-- treat the left side as an **invariant shared series block**: three lines reading `Ancient &` / `Medieval` / `Japan`, with `Japan` alone in muted reddish-brown, followed by the addon name in the fixed tracked position;
-- do not reintroduce the superseded `中世日本OH` heading, A/M/J-initial emphasis, dark panel, Japan map, or red brush badge;
-- addon-specific generation instructions may change the right-side motifs and addon name only, not the common-left composition;
-- make the right side a symbolic, highly simplified flat editorial illustration rather than a scenic landscape;
-- no people on any AMJ Workshop cover;
-- use low saturation and a limited palette;
-- target about three colors per motif (base / dark / light), with only a very light gradient where useful;
-- do not use stereotypical Japan decoration merely for atmosphere;
-- preserve strong readability at small Steam Workshop thumbnail size;
-- before generation, retrieve and visually inspect the approved Core cover reference from Library `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`; do not generate from text rules or SVG alone;
-- do **not** ask ImageGen to create the complete Workshop cover. Generate only the addon-specific right-side artwork, preferably with transparency;
-- retrieve the canonical Library common base and variable mask, then compose with `Scripts/build_workshop_cover.py` following `Docs/GoldenPaths/WorkshopCoverPipeline.md`;
-- run `Scripts/validate_workshop_cover.py`; any protected-pixel difference is a hard failure.
-
-Do not use the older fixed dark-left common image or red brush-stroke addon badge for new covers.
+This section is the visual review loop only. Source preservation, ImageGen permission, fixed-template compositing, PNG integrity, and family-specific masks belong in the owning Golden Path documents.
 
 ## 8. Rejection criteria
 
@@ -272,6 +199,6 @@ The swatches are not mandatory exact colors. They document the approved relation
 
 The consistent relationship and low number of planes matter more than exact RGB values.
 
-## Pixel-exact shared image components
+## 11. Fixed reused components
 
-Follow `Docs/GoldenPaths/FixedImageTemplates.md` for every reused component. Registered masters and binary editable masks are mandatory before producing derivatives. Generate variable material only, composite deterministically, and require zero decoded RGBA differences in protected pixels. Reference-image editing and visual similarity are insufficient. Existing style references do not imply identical silhouettes for different species.
+Pixel-exact reuse is a production concern, not a visual-style rule. When an asset intentionally reuses a visible component, follow `Docs/GoldenPaths/FixedImageTemplates.md` and the owning family pipeline.
