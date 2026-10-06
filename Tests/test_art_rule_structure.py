@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,7 +55,9 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertIn("Shared/fixed parts are never regenerated", text)
         self.assertIn("immutable master source", text)
         self.assertIn("Art/Sources/", text)
+        self.assertIn("Acceptance closeout is not complete", text)
         self.assertIn("write a **new file**", text)
+        self.assertIn("must not ship in Steam Workshop content", text)
         self.assertIn("material stylistic redrawing", text)
         self.assertIn("Scripts/Art/generated_asset_qa.py", text)
         self.assertIn("AMJ_GeneratedAsset_BaseQA.json", text)
@@ -80,7 +85,9 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertIn("single remaining human gate: final visual acceptance", text)
         self.assertIn("lighter **opaque color**, not reduced alpha", text)
         self.assertIn("never send the full masu composite back through ImageGen", text)
-        self.assertIn("thinner and lighter in RGB color than the masu rim/outer contour", text)
+        self.assertIn("does **not** have to be mechanically thinner than the masu rim", text)
+        self.assertIn("outline thickness by itself is not a failure", text)
+        self.assertIn("Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.png", text)
         self.assertNotIn("HardFixed", text)
         self.assertNotIn("ContactZone", text)
 
@@ -91,6 +98,34 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertIn("固定テンプレート保証を有効化しない", policy)
         self.assertIn("does **not** claim the active fixed-template zero-difference guarantee", boxed)
         self.assertIn("diagnostic only", boxed)
+
+    def test_authoritative_sources_are_excluded_from_workshop_archive(self):
+        ignore = read(".workshopignore")
+        attrs = read(".gitattributes")
+        source_readme = read("Art/Sources/README.md")
+        staging = read("Scripts/Prepare-WorkshopContent.ps1")
+
+        self.assertIn("/Art/Sources/", ignore)
+        self.assertIn("/Art/Sources export-ignore", attrs)
+        self.assertIn("/Art/Sources/** export-ignore", attrs)
+        self.assertIn("must **never** be included in Steam Workshop content", source_readme)
+        self.assertIn("Art\\Sources", staging)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "workshop.zip"
+            subprocess.run(
+                ["git", "archive", "--format=zip", f"--output={archive}", "HEAD"],
+                cwd=ROOT,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            with zipfile.ZipFile(archive) as zf:
+                names = zf.namelist()
+            self.assertFalse(
+                any(name == "Art/Sources/" or name.startswith("Art/Sources/") for name in names),
+                "Art/Sources leaked into git-archive Workshop staging",
+            )
 
     def test_workshop_pipeline_has_no_mandatory_preapproval_loop(self):
         text = read("Docs/GoldenPaths/WorkshopCoverPipeline.md")
