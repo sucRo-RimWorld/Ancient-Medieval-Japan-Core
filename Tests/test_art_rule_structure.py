@@ -101,11 +101,11 @@ class ArtRuleStructureTest(unittest.TestCase):
                 rf"(?ms)^### {re.escape(ident)}\b.*?^\*\*Status:\*\* ([^\n]+)",
                 text,
             )
-            if match:
-                self.assertTrue(
-                    match.group(1).startswith("ARCHIVED"),
-                    f"{ident} is not archived: {match.group(1)}",
-                )
+            self.assertIsNotNone(match, ident)
+            self.assertTrue(
+                match.group(1).startswith("ARCHIVED"),
+                f"{ident} is not archived: {match.group(1)}",
+            )
 
 
 if __name__ == "__main__":
