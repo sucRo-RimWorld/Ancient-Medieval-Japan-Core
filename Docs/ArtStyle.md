@@ -17,9 +17,9 @@ Apply image rules in this order:
 
 The AMJ-wide invariants are silhouette-first simplification, restrained palette/information density, non-photorealistic/non-painterly rendering, and readability at game scale. Asset classes may vary outline treatment, shading budget, canvas, or composition only when their owning style specification says so explicitly. Do not accumulate one-off prompt exceptions or AGENTS notes.
 
-## 1. Primary target
+## 1. In-game asset primary target
 
-AMJ art should look at home beside **Medieval Overhaul**, not beside RimWorld Vanilla.
+AMJ in-game sprites/textures should look at home beside **Medieval Overhaul**, not beside RimWorld Vanilla. Presentation classes such as Workshop covers inherit the shared invariants above but use their own class-specific composition, palette, and edge-treatment rules.
 
 Reference characteristics observed in MO wheat and leather/hide:
 
@@ -154,9 +154,9 @@ Family-specific geometry, perspective, fixed regions, and compositing are **not*
 
 This section is the visual review loop only. Source preservation, ImageGen permission, fixed-template compositing, PNG integrity, and family-specific masks belong in the owning Golden Path documents.
 
-## 8. Rejection criteria
+## 8. Core Thing/Plant rejection criteria
 
-Reject and regenerate when any of the following is true:
+For Core Thing/Plant assets, reject and regenerate when any of the following is true. Other asset classes use their owning style specification plus the shared invariants above:
 
 - it looks closer to RimWorld Vanilla than MO;
 - it uses realistic/painterly shading;
@@ -179,7 +179,7 @@ When available locally, compare against these MO assets before accepting new AMJ
 
 Use them as references for **flatness, palette size, outline strength, shading amount, and information density**, not as shapes to copy.
 
-## 10. Palette swatch reference
+## 10. Core crop/item palette swatch reference
 
 See `Docs/References/AMJ_ArtStyle_Palette.svg`.
 
