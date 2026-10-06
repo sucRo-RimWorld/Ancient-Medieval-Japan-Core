@@ -4,3 +4,4 @@
 /.workshopignore export-ignore
 /Scripts/Prepare-WorkshopContent.ps1 export-ignore
 /prepare-workshop.bat export-ignore
+/_PublisherPlus.xml export-ignore
