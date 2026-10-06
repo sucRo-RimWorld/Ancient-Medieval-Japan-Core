@@ -76,6 +76,20 @@ All production PNGs must pass `Tests/validate_png_assets.py`, which checks compl
 
 For automated Git/GitHub binary writes, validate the bytes that are actually committed/checked out. Prefer an exact previously validated blob when recovering accepted art from history.
 
+## 7. Binary asset publication
+
+Publishing a validated PNG must not mutate the asset merely to make a Git/GitHub transport path easier.
+
+- Do **not** quantize, recompress to a different visual result, resize, or otherwise re-encode an accepted/validated production PNG solely to reduce API payload size. The publication step transports exact bytes; it is not an image-processing step.
+- Never dump a full binary/base64 payload into chat, logs, or diagnostic output. Diagnostics should report path, byte size, dimensions, mode, and hashes only.
+- Validate the local candidate first, then record its SHA-256 before any remote write.
+- Prefer the shortest exact-byte publication path available. When a normal authenticated working copy is available, use the normal Git add/commit/push path. When only the GitHub connector can write binary data, use one bounded Git-data transaction: create the blob(s) from base64 without echoing the payload, create one tree containing all target PNG paths, create one commit, then update the branch ref with an expected-head lease.
+- Do not create one commit per stack-count slot when several paths intentionally receive identical bytes; reuse the same blob SHA in one tree.
+- If a candidate write path would require lossy conversion, ad-hoc payload shrinking, or repeated large intermediate output, stop and switch transport paths before modifying the asset.
+- After publication, treat repository-side bytes and the PNG integrity gate as authoritative. Do not report the image update complete until the committed state passes the required validation.
+
+This rule separates **asset production** from **asset transport**: transport must never change appearance or dimensions.
+
 ## 7. Fixed reused components
 
 When an image intentionally reuses a visible component pixel-exactly, follow `Docs/GoldenPaths/FixedImageTemplates.md`. Otherwise do not impose fixed-template machinery on a merely stylistically similar asset.
