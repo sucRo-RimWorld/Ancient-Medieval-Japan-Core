@@ -76,7 +76,9 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertIn("AMJ_BoxedResource_GenerationQA.json", text)
         self.assertIn("single remaining human gate: final visual acceptance", text)
         self.assertIn("outer silhouette of the complete contents pile is thick and dark", text)
-        self.assertIn("internal boundaries between grains/pieces are thinner and lighter/paler", text)
+        self.assertIn("lighter **opaque color**, not reduced alpha", text)
+        self.assertIn("never send the full masu composite back through ImageGen", text)
+        self.assertIn("thinner and lighter in RGB color than the masu rim/outer contour", text)
         self.assertNotIn("HardFixed", text)
         self.assertNotIn("ContactZone", text)
 
