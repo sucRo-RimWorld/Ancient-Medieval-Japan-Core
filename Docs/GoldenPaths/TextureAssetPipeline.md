@@ -2,20 +2,13 @@
 
 This document owns the general AMJ texture production path. Visual style is owned by `Docs/ArtStyle.md`; family-specific geometry/compositing belongs in the owning family Golden Path.
 
-## 1. Wording and ImageGen permission
+## 1. Generation intent and fixed-part protection
 
-For AMJ production art, distinguish **作成/制作** from **生成**.
+Interpret the user's image intent semantically rather than by requiring a specific Japanese keyword. A request to create, generate, render, redraw, or materially restyle a new visual source may use ImageGen when the active asset-class pipeline allows it. A request that only needs deterministic reuse, resizing, cropping, masking, palette adjustment, or compositing should use the accepted source and local tooling instead of regenerating it.
 
-- 「作成」「制作」「続けて」: use the established pipeline only — reuse accepted sources, local transforms, deterministic compositing, masks, and validation. Do not invoke ImageGen merely because the task is an image task.
-- 「生成」: ImageGen may be used only where this pipeline explicitly allows new source artwork.
-- Shared/fixed parts are never regenerated. If generation is allowed, generate only the variable component and then composite it through the registered template.
-- If no valid local/deterministic route exists and generation was not explicitly requested, fail closed and report the missing source instead of substituting generation.
+Shared/fixed parts are never regenerated. When an asset family has registered fixed components, generate or edit only the variable component and composite it through the owning template/pipeline. Do not treat a request to continue work as permission to replace accepted masters or fixed regions.
 
-# Texture Asset Pipeline — Golden Path
-
-> Boxed-resource audit (2026-10-06): see [occlusion and fixed-region findings](../Research/BoxedResourceOcclusionAudit.md). Identity reconstruction validates the registered Soba exemplar, not natural new-content production. The audit itself did not change production. Its correction is now implemented as the v4 contact study below; master/exemplar art is unchanged and new-resource production remains blocked.
-
-This document records the reusable production path for AMJ texture work after the successful boxed-resource / masu iteration.
+This document records the general reusable production path for AMJ texture work.
 
 ## 2. Preserve accepted sources
 
