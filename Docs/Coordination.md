@@ -60,11 +60,39 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### ART-RULES-021 — image-rule consolidation and contents-first masu workflow
+
+**Requested by:** author (2026-10-06 JST; rule cleanup after repeated generation/style failures)  
+**Owner:** AMJ shared art policy / Core art  
+**Status:** DONE
+
+Image rules were consolidated so routine work no longer accumulates failure-specific instructions in every entry document.
+
+Current hierarchy:
+- `Docs/ArtStyle.md` owns AMJ-wide visual language and precedence;
+- asset-class style documents own only genuine class-specific visual differences;
+- `Docs/GoldenPaths/TextureAssetPipeline.md` owns general generation/source/export/validation procedure;
+- `Docs/GoldenPaths/FixedImageTemplates.md` applies only to intentionally reused visible components;
+- family pipelines own geometry/compositing details.
+
+Core AGENTS now routes to those sources instead of repeating boxed-resource/contact/fixed-template history. ArtStyle no longer contains masu masks, Workshop production steps, or fixed-template implementation. The fixed-template policy was reduced to generic pixel-reuse essentials.
+
+The active boxed-resource workflow is now **contents-source generation + manual composition**: ImageGen produces only transparent contents in AMJ style and the masu's perspective; final placement/masking/occlusion is adjusted manually against the canonical masu. The earlier v2/v3/v4 automatic contact-study remains diagnostic/research only and is no longer the ordinary production path.
+
+Source-of-truth commits:
+- AGENTS routing: `71f9f97728efefd74903fc736727804e3ae2d075`;
+- shared ArtStyle separation: `3d649c7e67543d0753638a93c93ea91b02dc3a01`, `93bb24bf9869793163ae7b7eecad999331f8dea2`;
+- general texture pipeline: `681d1c43692537b6967e2359505271888904ac21`;
+- fixed-template simplification: `b1556b87832bd24f665de691fb4e8ad28e1d372b`;
+- Workshop style/workflow separation: `d193c832a05d72d41110eb6798342191b2337e0e`;
+- boxed-resource current workflow: `ce44ef823c1425def0c8fa5e4db80ec919e49e4b`.
+
+
 ### ART-TEMPLATE-019 — MO comparison corrections implemented as contact study
 
 **Requested by:** author (2026-10-06 JST; 「修正して」 after MO icon comparison)
 **Owner:** Art/tooling / boxed-resource icons
-**Status:** DONE — correction implementation; BLOCKED — new-resource visual activation
+**Status:** ARCHIVED — retained as diagnostic/research; superseded for production by ART-RULES-021
 
 Current authoritative state is **v4-contact-study**, superseding the earlier v2/v3 production instructions below. Master and approved in-hull Soba raster bytes remain unchanged. No ImageGen or new production item was made.
 
