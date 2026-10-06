@@ -1451,7 +1451,7 @@ This item remains open until the Core accepted-image inventory has been audited 
 
 **Requested by:** author  
 **Owner:** AMJ architecture / dependency design  
-**Status:** IN PROGRESS — dependency audit/classification complete; Grains re-scope discussion merged; runtime migration not started
+**Status:** IN PROGRESS — Grains final Base/MO ownership boundary finalized; runtime migration not started; next step is test-harness split
 
 The author accepted a shift from a central Core dependency tree toward **independent AMJ mods with official optional integration**. The 2026-10-07 Core/MO implementation audit is now complete and its durable conclusions are recorded in `Docs/Design.md` at commit `aa0481c8c8eba2486f1b5db7a7a28240e8314922`.
 
@@ -1495,4 +1495,15 @@ This changes several assumptions that must be reconciled **before** runtime migr
 
 Until that reconciliation is complete, do **not** start changing `About.xml`, production dependency metadata, or runtime Def ownership merely from the older Agriculture assumptions.
 
-**Next action:** the Core/MO separation workstream should first reconcile the Grains scope against the completed dependency inventory, produce the final Base-vs-MO ownership table (especially wheat/flour/milling/straw/research/material/scenario), then begin migration step 1 (test-harness split). About.xml remains last.
+**2026-10-07 Grains ownership resolution complete:** The requested Base-vs-MO ownership reconciliation is now durable in Docs/Design.md, latest design commit eb8a62dceb4c9e06557b06da9db26c262fbcbcb2. The final boundary is:
+- Base/Grains owns dry-field grains, a non-MO wheat fallback, AMJC_Wheat as the shared post-thresh wheat grain, fallback wheat flour, buckwheat/millet flour, Base milling recipes, a minimal manual millstone, and research-free minimum flour foods.
+- MO-loaded profiles use MO wheat/RawWheat as the visible crop/sheaf provider, converge after threshing to AMJC_Wheat, then use DankPyon_Flour as the sole standard wheat flour and DankPyon_Millstone as the standard mill. Do not expose duplicate AMJ wheat/flour/millstone in the same profile.
+- Grains does not own an AMJ Straw ThingDef. Base threshing abstracts stalk residue; MO compatibility adds DankPyon_Straw only at threshing. Harvest-time and milling-time Hay/Straw remain removed in the MO integration.
+- Base must contain zero unconditional MO research/material/category/scenario refs. New Village remains in the current package only as save-compatible auxiliary content during migration; its Base definition must become Vanilla/Grains-only and MO differences must move to conditional compatibility.
+- Environmental grain choice is a release invariant for both Base and MO profiles; representative fertility/temperature/growing-season cases must not collapse to one grain being best almost everywhere.
+- Beans, fiber/spinning/paper and root/general vegetable stages are removed from the Grains roadmap. Their historical design notes remain future AMJ candidates, but Grains ownership is explicitly invalidated.
+- The current Stage A crop/Scenario tables that still show MO identifiers are marked as the current MO-required implementation snapshot until runtime migration updates code/tests and those tables together.
+
+No runtime Def, About.xml, dependency metadata, or production texture was changed in this ownership-resolution turn.
+
+**Next action:** begin migration step 1 only: split the test harness so Vanilla + Grains Base can be loaded and validated without changing production About.xml. After that, remove Base MO refs in the order defined in Docs/Design.md. About.xml remains last.
