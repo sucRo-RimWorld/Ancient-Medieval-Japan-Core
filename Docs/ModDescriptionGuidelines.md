@@ -16,6 +16,20 @@
 - [CCTO Workshop説明](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/WorkshopDescription.md)
 - [CCTO 日本語説明](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/SteamWorkshopDescription-ja.txt)
 
+## 2game向け説明（AMJ共通）
+
+**対象:** AMJ Core・Environment・CCTOおよび今後の関連Mod。
+
+- 公開説明の準備・更新には2game向け日本語説明も含める。管理元は各リポジトリの `Docs/2GameDescription-ja.txt`、掲載方針は `Docs/2GamePresentation.md` とする。2game掲載前でも説明を準備し、掲載ページIDは確認後に記録する。
+- READMEを詳細な公開内容の正本とし、2gameはWorkshopよりさらに短い要約とする。機能・依存関係・セーブ互換性・実装済みと予定の区別を一致させる。細かな版番号やテスト件数は本文へ転記しない。
+- 形式の基準はCCTOの[掲載方針](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/2GamePresentation.md)と[日本語説明](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/2GameDescription-ja.txt)。構成は短い要約 → `▼ 主な機能` → `▼ バランス方針` → `▼ 対応範囲` → `▼ 対応・互換性` → `▼ セーブ互換性` → `▼ 今後の予定`。
+- 本文は常体、1文1情報を基本とする。箇条書きは短い句または1文で書く。見出し記号は `▼` に統一し、後ろに半角スペースを入れる。`◆`、Workshop用BBCode、Markdown装飾は使わない。
+- 名前を出す関連MODには直接リンクを付ける。2game掲載済みなら同サイトの詳細ページURLを使い、未掲載・ID未確認なら所有元GitHubまたは確認済みWorkshopページを使う。IDを推測しない。同じ長いURLを毎回繰り返さず、初出または依存関係欄でリンクする。
+- 各MOD自身のGitHubリポジトリへ本文から1回以上誘導し、詳細な値・設計意図をREADMEへ案内する。
+- 掲載方針や推奨タグは実装済みの現在機能に合わせる。他MODの機能・未実装の予定を対応済みとして記載しない。
+- GitHub管理元の更新と2game公開ページへの反映は別作業として記録する。実際のサイト投稿・更新は個別の明示指示に従い、公開確認なしに反映済みとは報告しない。
+- 公開説明更新時はREADME、Workshop日英、2game日本語、About.xmlを整合確認する。既存の説明がない公開準備対象では、2game管理元の欠落を完了扱いにしない。
+
 ## Mod名のコロン禁止（AMJ共通）
 
 **決定日:** 2026-10-06（日本時間）
