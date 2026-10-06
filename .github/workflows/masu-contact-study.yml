@@ -2,18 +2,6 @@ name: Masu contact study artifact
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
-    paths:
-      - ".github/workflows/masu-contact-study.yml"
-      - "Scripts/Art/masu_contact_study.py"
-      - "Scripts/Art/fixed_template.py"
-      - "Scripts/Art/boxed_resource_review.py"
-      - "Docs/References/AMJ_Masu_*"
-      - "Docs/References/AMJ_BuckwheatInHull_Ideal_256.png"
-      - "Textures/Shared/Containers/AMJ_Masu_Empty_Master.png"
-      - "Textures/Things/Item/Resource/AMJC_Millet/**"
-      - "Textures/Things/Item/Resource/AMJC_Buckwheat/**"
 
 jobs:
   render-study:
@@ -24,6 +12,9 @@ jobs:
 
       - name: Install compositing dependency
         run: python -m pip install Pillow==12.3.0
+
+      - name: Validate archived v4 diagnostic contract
+        run: python Tests/test_masu_template.py
 
       - name: Render v4 contact study
         run: python Scripts/Art/masu_contact_study.py

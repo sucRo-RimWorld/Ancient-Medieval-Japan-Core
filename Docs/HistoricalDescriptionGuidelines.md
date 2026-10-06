@@ -27,17 +27,46 @@ For each affected Def:
 3. Rewrite the description when the inherited wording is anachronistic, culturally mismatched, misleading, overly modern, or tonally unsuitable for AMJ.
 4. Do not invent a medieval-Japanese counterpart for content that lacks one. If the content itself is historically unsuitable, flag it for a separate keep/replace/remove decision rather than hiding the mismatch with prose alone.
 
+## Japanese name form and aliases
+
+For Japanese descriptions, identify the subject clearly at the start of the prose.
+
+- When an established and appropriate kanji form exists, begin the description with that kanji form, followed by the ordinary Japanese reading/name as needed.
+- When a recognized alias, alternate name, or common alternate written form exists, include it immediately with the opening name rather than omitting it from the description.
+- Do not invent kanji, force uncommon ateji, or mechanically list weakly sourced/local names only to satisfy this rule.
+- When several forms exist, prefer the form best supported for the AMJ historical/ecological context and record important alternatives without turning the opening into an exhaustive name list.
+- The Japanese opening-name form is part of the approved Japanese source. English localization should translate the approved meaning and may romanize or explain the Japanese names where useful; it must not independently add or remove aliases.
+
 ## Required description content
 
-AMJ-authored historical descriptions should include:
+AMJ descriptions should help the player learn something concrete about ancient and medieval Japan while remaining useful as in-game text. For AMJ-facing historical descriptions, use the following content order as the default structure:
 
-- at least one concrete historical fact relevant to the object, plant, or animal in Japan;
-- its historical role, use, ecology, cultivation, distribution, material, or social/economic context when relevant;
-- a meaningful difference from modern Japan, modern use, modern distribution, or modern production where that difference can be supported.
+1. **Name and aliases:** begin with the established kanji form when one exists, then give the ordinary reading/name and recognized aliases / alternate written forms as appropriate.
+2. **Distribution and ecological/material context in Japan:** explain where the plant, animal, material, object, or practice belongs in the Japanese environment or material culture when relevant.
+3. **Ancient/medieval Japanese role:** include at least one supported fact about its use, cultivation, gathering, production, trade, social meaning, construction, food culture, ecology, or other relationship to life in ancient/medieval Japan.
+4. **Difference from modern Japan:** when a clear, supportable difference exists, explain how its distribution, use, production, social role, or availability differs from modern Japan.
+
+The purpose is not to pad descriptions with trivia. Prefer facts that teach why the subject matters in the ancient/medieval Japanese setting.
+
+Not every description needs four equally long parts. If one category is irrelevant or cannot be supported reliably, omit it rather than inventing content. However, for historical AMJ content, a description that contains only generic appearance or ecology and gives no ancient/medieval-Japan context is normally incomplete.
 
 Modern comparison is not license to invent contrast. If a reliable historical/modern difference cannot be established, prefer an accurate narrower description and record the research gap rather than fabricating one.
 
 Avoid generic encyclopedia trivia that does not help explain the content's place in ancient/medieval Japan.
+
+### In-game paragraph formatting
+
+Long RimWorld descriptions should be split into a small number of readable paragraphs using the literal `\n\n` sequence in Def / DefInjected text.
+
+Use paragraph breaks by meaning rather than after every sentence. The default shape for longer AMJ historical descriptions is:
+
+1. name / aliases + distribution / ecology or material context;
+2. ancient / medieval Japanese role, use, evidence, or cultural context;
+3. modern difference or present-day use, when relevant and supportable.
+
+Two paragraphs are sufficient when the material does not justify three. Short descriptions should remain a single paragraph. Do not add padding merely to satisfy the structure.
+
+After the Japanese text is approved, keep the English translation's paragraph structure broadly aligned where natural.
 
 ## Evidence and source notes
 
@@ -62,6 +91,17 @@ Historical description text is authored Japanese-first:
 5. keep the English version semantically aligned with the approved Japanese source and do not independently add or remove historical claims.
 
 Do not translate an unapproved Japanese draft merely to keep localization files synchronized during review.
+
+## Gameplay-feature ownership in descriptions
+
+Do not describe a planned gameplay function in a base mod merely because the underlying historical object, plant, or animal could support that function.
+
+- If a later Addon introduces a concrete gameplay function such as harvesting acorns, nuts, fruit, fiber, resin, medicinal material, or another resource, the Addon that owns and implements that function also owns the gameplay-facing description update for that function.
+- The base mod may describe accurate historical, botanical, ecological, or material facts, but it must not imply that an unimplemented harvest/use mechanic already exists.
+- When the Addon is active, its localization/description patch may add the relevant functional explanation while preserving the approved base description and historical facts.
+- Keep this ownership aligned with code/XML ownership: the mod that adds the mechanic is the mod that explains that mechanic to the player.
+
+Example: AMJ Environment may describe Sudajii or Japanese beech as trees with historically edible nuts where appropriate, but an explicit explanation of harvestable acorns/nuts belongs to the Addon that actually adds that harvesting feature.
 
 ## Vanilla / Medieval Overhaul ownership
 

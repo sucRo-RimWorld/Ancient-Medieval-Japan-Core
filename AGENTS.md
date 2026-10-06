@@ -1,9 +1,5 @@
 # AMJ Core Agent Instructions
 
-Boxed-resource occlusion correction (2026-10-06): the v3 complementary rear/front raster split is superseded because visual inspection found damaged pixels at the split boundary. Read `Docs/Research/BoxedResourceOcclusionAudit.md`. Do not resume new-resource production with that split. The v4 study implementation keeps the canonical masu intact in the context scaffold, edits contents/contact artwork without a simple cavity/pile clipping mask, and reasserts only conservative HardFixed wood last; the contact zone remains occludable. See `Docs/GoldenPaths/BoxedResourceIconPipeline.md`. New-resource production is fail-closed until contrasting-shape and 256px/~64px visual validation pass.
-
-Boxed-resource investigation (2026-10-06): also read `Docs/Research/BoxedResourceOcclusionAudit.md`. The registered Soba identity round trip proves exemplar preservation, not natural composition of different contents. Proposed occlusion-region changes are research candidates only; this audit does not change masters, masks, generation permission, or template activation.
-
 This repository is part of the **Ancient & Medieval Japan (AMJ)** project.
 
 Before starting work in this repository:
@@ -112,54 +108,32 @@ Use `Docs/HistoricalDescriptionGuidelines.md` whenever AMJ adopts, patches, rete
 
 Audit inherited Vanilla/MO prose for historical fit with ancient/medieval Japan and rewrite unsuitable text. AMJ-authored descriptions should include supported historical facts and, where supportable, a meaningful difference from modern Japan, modern use, or modern distribution. Do not invent a medieval counterpart for historically unsuitable content; record it for a separate keep/replace/remove design decision.
 
-Historical description text is Japanese-first: research and draft Japanese, obtain author approval, then translate only the approved Japanese text into English. Keep source/rationale notes in durable design/localization documentation rather than only in Coordination.
+Historical description text is Japanese-first: research and draft Japanese, obtain author approval, then translate only the approved Japanese text into English. For Japanese descriptions, follow `Docs/HistoricalDescriptionGuidelines.md` name-form rules: begin with an established kanji form when one exists, and include recognized aliases / alternate names or common alternate written forms at the opening. Do not invent kanji or weakly sourced names. Keep source/rationale notes in durable design/localization documentation rather than only in Coordination.
 
 ## CCTO framework and crop-data ownership
 
 AMJC owns its custom crops' temperature values, design/balance tables (including archived candidate ranges), Def mappings, optional CCTO compatibility XML, and validation. Maintain these here, not in CCTO. Use `Docs/Balance/Crops/ColdTolerance.md` together with the cultivation design and implemented XML as the local source of truth. CCTO remains an optional framework; its own Vanilla/MO support data remains owned by CCTO.
 
+## Art / image work
+
+Keep this file as a routing layer; do not duplicate asset-family procedures here.
+
+For AMJ art, resolve rules in this order:
+
+1. `Docs/ArtStyle.md` — project-wide visual language and precedence.
+2. The owning asset-class specification — adds subject-specific visual rules only.
+3. `Docs/GoldenPaths/TextureAssetPipeline.md` — source preservation, generation permission, export, and validation.
+4. `Docs/GoldenPaths/FixedImageTemplates.md` — only when visible parts are intentionally reused pixel-exactly.
+
+Current asset-class specifications:
+- boxed resources / masu: `Docs/GoldenPaths/BoxedResourceIconPipeline.md`;
+- Workshop covers: `Docs/WorkshopCoverStyle.md` + `Docs/GoldenPaths/WorkshopCoverPipeline.md`;
+- prerequisite-Mod retextures: `Docs/RetextureImplementationGuidelines.md` plus the owning repository's art specification.
+
+A family-specific document may narrow the shared style for its asset class, but it must not silently replace the AMJ-wide visual language. Any real exception belongs in the owning style specification, not in chat history or AGENTS.
+
+For generation intent and ImageGen use, follow `Docs/GoldenPaths/TextureAssetPipeline.md`. Interpret the user's requested image action semantically; do not use an exact-keyword gate, and never regenerate accepted fixed/shared parts merely because new image work was requested.
+
 ## Golden Path closeout rule
 
-Follow the AMJ shared Golden Path policy in Ancient-Medieval-Japan-Core `Docs/DevelopmentGoldenPathGuidelines.md`.
-
-For production texture work, also follow `Docs/GoldenPaths/TextureAssetPipeline.md`. Boxed-resource icons must additionally follow `Docs/GoldenPaths/BoxedResourceIconPipeline.md`. A shared container template is not production-ready merely because its protected pixels are stable: the registered filled visual reference, frame occupancy, content-fill profile, and representative final composite must also pass. If the family manifest is marked blocked/inactive, do not generate or compose a production derivative from it.
-
-Before presenting any art candidate as ready for approval or registration, perform a self-QC pass and automatically fix objective defects that do not change the approved design: jagged/rough edges caused by resizing, halos, clipping, seams, stray pixels, wrong canvas occupancy, accidental leftovers from another layer, or visibly inconsistent common-part geometry. Do not ask the author to accept a defect you already know how to fix. Ask only when the correction would change the approved design or requires a genuine aesthetic tradeoff.
-
-For boxed-resource visual comparisons, never substitute a locally remembered/generated "reference" image. Use `Scripts/Art/boxed_resource_review.py`, which loads the manifest's `representative_final`, verifies its SHA-256, and builds the 256px/~64px comparison from that exact registered file. If the hash or file is unavailable, stop instead of approximating.
-
-For the masu boxed-resource family, use the registered **v4-contact-study** contract: intact canonical master scaffold -> rendered contents **plus contact region** -> exact HardFixed RGBA restoration. Do not destructively split rear/front rasters, use transparent object-only input, clip by a cavity/pile/exemplar difference mask, or restore upper/front-wall contact wood unconditionally. ContactZone includes upper front/side walls; ExtensionAllowed is independent of representative-final alpha. The historical identity mask is diagnostic only. Production and production scaffolding are blocked pending the same contract's three contrasting-shape visual checks at 256px/~64px. Only explicit `scaffold-study` / `compose-study` commands may make structural study artifacts outside production/reference folders; structural PASS does not activate production. Read `Docs/GoldenPaths/BoxedResourceIconPipeline.md` for source-canvas, mask, occupancy-profile, and activation rules.
-
-If an art-processing path is found to be contaminated (wrong reference, wrong shared part, broken mask/composite path, unintended whole-image regeneration, or any other condition that makes downstream derivatives untrustworthy), invalidate and discard all derivatives from that path immediately. Do not retain them "for comparison" where they can be selected later by mistake. Keep only authoritative registered masters/references and explicitly clean diagnostic artifacts that cannot be mistaken for production sources. Persistent Library copies and local working copies must both be removed; Coordination must record the invalidation.
-
-After a non-trivial task succeeds, especially after debugging or failed attempts, do not move on with only the working implementation. Record the successful reusable procedure in the owning repository, automate deterministic/repetitive steps, and add regression guards for failure modes discovered during the work. For recurring work, completion includes the reusable documented/automated path, not only the one successful result.
-
-`Docs/Coordination.md` remains status/handoff only; the procedure itself must live in durable repository documentation/scripts.
-
-## AMJ image wording / generation permission
-
-In AMJ art work, Japanese wording is operationally significant:
-
-- 「作成」「制作」「続けて」 means **execute the established production pipeline** using authoritative masters, local editing, deterministic compositing, and validation. It does **not** grant permission to invoke ImageGen.
-- 「生成」 explicitly permits image generation when the active Golden Path allows it.
-- For fixed-template families, even an explicit 「生成」 applies only to the variable material. Never regenerate the registered shared part or whole final image.
-- If deterministic/local creation cannot proceed without new generated source material and the author did not ask for 「生成」, stop and report the specific missing source/blocked step instead of silently invoking ImageGen.
-
-## Pixel-exact shared image components
-
-Follow `Docs/GoldenPaths/FixedImageTemplates.md` for every reused component. Registered masters and binary editable masks are mandatory before producing derivatives. Generate variable material only, composite deterministically, and require zero decoded RGBA differences in protected pixels. Reference-image editing and visual similarity are insufficient. Existing style references do not imply identical silhouettes for different species.
-
-### Workshop cover fixed-template rule
-
-For AMJ Workshop covers, also follow `Docs/GoldenPaths/WorkshopCoverPipeline.md` and `Docs/WorkshopCoverStyle.md`.
-
-Before any cover generation:
-- retrieve and visually inspect Library `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`;
-- retrieve the canonical `AMJ_WorkshopCover_CommonBase.png` and `AMJ_WorkshopCover_VariableMask.png` from the same Library folder;
-- generate only addon-specific right-side artwork, not a complete cover;
-- compose with `Scripts/build_workshop_cover.py` and validate with `Scripts/validate_workshop_cover.py`;
-- if the required Library rasters are unavailable, do not reconstruct them from memory, prompts, or SVG; treat cover production as blocked.
-
-## Future shared-image families
-
-For every new image family with reused parts, automatically apply `Docs/GoldenPaths/FixedImageTemplates.md` without waiting for a separate author request. Before the next derivative, register the approved master/mask/hashed manifest, extend the family-owned specification and generation entry, and implement/run zero protected RGBA pixel-difference validation. Include recurring registered derivatives in automated integration/CI checks. This registration/documentation/validation is part of task completion, not an optional follow-up.
+Follow `Docs/DevelopmentGoldenPathGuidelines.md`. Reusable procedures belong in the owning Golden Path or source-of-truth document; `Docs/Coordination.md` remains status/handoff only.

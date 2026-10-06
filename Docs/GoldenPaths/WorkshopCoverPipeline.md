@@ -37,7 +37,7 @@ Everything outside those variable regions is forcibly restored from the canonica
 1. Read `AGENTS.md`, `main:Docs/Coordination.md`, `Docs/WorkshopCoverStyle.md`, and this file.
 2. Retrieve and visually inspect `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`. If it cannot be viewed, stop; do not generate a cover from memory/text alone.
 3. Retrieve/materialize `AMJ_WorkshopCover_CommonBase.png` and `AMJ_WorkshopCover_VariableMask.png` from the Library. Verify their hashes if there is any doubt about identity.
-4. Propose only the addon-specific right-side composition and obtain author approval.
+4. Resolve the addon-specific right-side composition from the current user request and any already-approved addon specification. Reuse an existing approved composition when one exists. Do not insert a mandatory extra approval round unless the user explicitly asks for proposal/review-first work.
 5. Generate **only the addon-specific illustration**, preferably as a transparent-background PNG. Do not ask ImageGen to draw the AMJ title, parchment background, divider, ornaments, or addon label.
 6. Compose the final cover with `Scripts/build_workshop_cover.py`. The compositor adds the addon label and forcibly restores every locked common pixel.
 7. Run `Scripts/validate_workshop_cover.py` on the composed PNG. A failure means the output is not an AMJ-format cover.

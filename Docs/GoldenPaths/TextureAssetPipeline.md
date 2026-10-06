@@ -1,26 +1,28 @@
-## Wording and ImageGen permission
-
-For AMJ production art, distinguish **作成/制作** from **生成**.
-
-- 「作成」「制作」「続けて」: use the established pipeline only — reuse accepted sources, local transforms, deterministic compositing, masks, and validation. Do not invoke ImageGen merely because the task is an image task.
-- 「生成」: ImageGen may be used only where this pipeline explicitly allows new source artwork.
-- Shared/fixed parts are never regenerated. If generation is allowed, generate only the variable component and then composite it through the registered template.
-- If no valid local/deterministic route exists and generation was not explicitly requested, fail closed and report the missing source instead of substituting generation.
-
 # Texture Asset Pipeline — Golden Path
 
-> Boxed-resource audit (2026-10-06): see [occlusion and fixed-region findings](../Research/BoxedResourceOcclusionAudit.md). Identity reconstruction validates the registered Soba exemplar, not natural new-content production. The audit itself did not change production. Its correction is now implemented as the v4 contact study below; master/exemplar art is unchanged and new-resource production remains blocked.
+This document owns the general AMJ texture production path. Visual style is owned by `Docs/ArtStyle.md`; family-specific geometry/compositing belongs in the owning family Golden Path.
 
-This document records the reusable production path for AMJ texture work after the successful boxed-resource / masu iteration.
+## 1. Generation intent and fixed-part protection
 
-## 1. Preserve accepted sources
+Interpret the user's image intent semantically rather than by requiring a specific Japanese keyword. A request to create, generate, render, redraw, or materially restyle a new visual source may use ImageGen when the active asset-class pipeline allows it. A request that only needs deterministic reuse, resizing, cropping, masking, palette adjustment, or compositing should use the accepted source and local tooling instead of regenerating it.
 
-Once the author accepts an image, treat it as a master source.
+Shared/fixed parts are never regenerated. When an asset family has registered fixed components, generate or edit only the variable component and composite it through the owning template/pipeline. Do not treat a request to continue work as permission to replace accepted masters or fixed regions.
 
+This document records the general reusable production path for AMJ texture work.
+
+## 2. Preserve accepted sources
+
+Once the author accepts an image, treat it as an **immutable master source**.
+
+- Do not overwrite or destructively resize/crop/recolor the accepted master.
 - Do not recreate an accepted asset from memory or from text alone.
-- Reuse, crop, recolor, resize, mask, or composite the accepted source before considering fresh generation.
+- Reuse, crop, recolor, resize, mask, or composite from a **copy/derived working file** before considering fresh generation.
 - If only one component changes, keep all other accepted components fixed.
 - A newly generated image is not automatically a replacement for an accepted master.
+- Production-size PNGs under `Textures/` are derivatives. They are not the only copy of accepted high-resolution source art.
+- Accepted high-resolution source art belongs under `Art/Sources/`, mirroring the production asset path where practical. Example: a production asset at `Textures/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat_a.png` may keep its authoritative high-resolution source under `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/`.
+- Export operations such as 256×256 conversion must write a **new file** and leave the authoritative source byte-for-byte unchanged.
+- If the authoritative source has not yet been uploaded/committed, do not claim it has been preserved in the repository. Keep the task blocked on obtaining that exact source instead of silently treating a derivative as the master.
 
 ### Do not edit from production-resolution derivatives
 
@@ -28,9 +30,9 @@ When an accepted source exists at higher resolution than the in-game output, per
 
 For fixed-template contents, build semantic variable layers at high resolution, then downsample the completed variable layer once and composite it into the fixed production-resolution master.
 
-## 2. New-image generation
+## 3. New-image generation
 
-Use image generation only when a genuinely new silhouette or subject-specific drawing is required.
+Use image generation when the requested result needs genuinely new visual content, a new silhouette/structure, or material stylistic redrawing that is not a deterministic source transform. Do not use it for simple resize/crop/mask/export operations or for recreating an accepted fixed/shared component.
 
 1. Generate one isolated asset.
 2. Compare it to the relevant accepted AMJ/MO reference at game-like size.
@@ -38,51 +40,35 @@ Use image generation only when a genuinely new silhouette or subject-specific dr
 4. Ask for author acceptance before treating the output as a master.
 5. After acceptance, preserve that exact source for later derivatives.
 
-If the same failure mode appears in two consecutive generation attempts, stop repeating the prompt and switch to local editing/compositing.
+## 4. Automated candidate QA before author review
 
-## 3. Boxed resource icons — canonical masu workflow
+Generated candidates are not sent directly to the author for first-pass debugging. The production default is:
 
-### Visual target
+**ImageGen/source creation → mechanical QA → deterministic family processing → agent semantic visual QA → author final visual review.**
 
-AMJ keeps the familiar Vanilla / Medieval Overhaul boxed-resource silhouette language so raw resources remain immediately readable, but the shared container is a simplified Japanese **masu**.
+Mechanical QA uses `Scripts/Art/generated_asset_qa.py`. Use the owning family policy when one exists; otherwise use the conservative baseline `Docs/References/AMJ_GeneratedAsset_BaseQA.json`. Measurable checks may include PNG/alpha structure, low-alpha residue, transparency, game-size color complexity, edge density, and family-specific line hierarchy.
 
-The registered **masu v2 empty master** is the canonical container master. It is a technical derivation of the author-approved filled exemplar and high-resolution empty source; known resampling artifacts were cleaned before registration.
+The mechanical validator does **not** claim to understand subject identity or aesthetics. After it passes, the agent must automatically compare the candidate against the actual viewed references and reject it internally when the requested subject, silhouette, style, forbidden-content rules, or family composition are wrong. A failed candidate is not presented as a normal review candidate.
 
-The family also requires an accepted **filled exemplar**. For the current masu family the visual reference is `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png` (SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`). The accepted v2 master matches the exemplar's `[17, 28, 239, 235]` frame occupancy.
+For repeated generation, make at most three automatic attempts from the same approved reference set. If all attempts fail, stop and report the recurring failure class/capability limit rather than asking the author to inspect a stream of known-bad images.
 
-Detailed activation, fill-profile, layering, and acceptance rules are in `Docs/GoldenPaths/BoxedResourceIconPipeline.md`.
+The author should normally see only a candidate that has passed all automatic gates, together with the applicable game-size/reference comparison. **The author's remaining role is final visual acceptance**, not routine detection of mechanical/style failures that the pipeline can identify itself.
 
-Canonical master file: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png` (256×256 RGBA). This file is the authoritative pixel source for the masu itself; future boxed-resource icons must reuse these pixels rather than regenerate the container.
+Family pipelines may add stronger deterministic transforms, metrics, review-sheet generation, or fixed-pixel validation. They must preserve this ordering.
 
-Registered fixed-template manifest: `Docs/References/AMJ_Masu_Template.json`. New chats must retrieve the master, registered HardFixed/ContactZone/ExtensionAllowed masks and RequiredFill guide from main. The historical editable mask remains an identity diagnostic; it is not the current content permission shape.
+## 5. Asset-family handoff
 
-### Container reuse and contact
+This document owns the **general texture production path**, not family geometry or compositing contracts.
 
-The approved master establishes the container angle, geometry, scale, wood palette and placement. Only conservative lower HardFixed wood is immutable in the final RGBA. Upper rim, interior and upper front/side walls form an occludable contact band: contents, contact outline and subtle contact shading are edited together. Unoccluded wood retains master pixels. Independent ExtensionAllowed permits different protruding shapes; Soba's alpha envelope is not the family limit.
+Use the owning family document for additional requirements:
+- boxed resources / masu: `Docs/GoldenPaths/BoxedResourceIconPipeline.md`;
+- Workshop covers: `Docs/WorkshopCoverStyle.md` + `Docs/GoldenPaths/WorkshopCoverPipeline.md`;
+- fixed reused components: `Docs/GoldenPaths/FixedImageTemplates.md`;
+- Environment tree/plant retextures: Environment `Docs/ArtDirection.md` + its texture pipeline.
 
-### Production sequence
+Do not copy family-specific masks, occlusion regions, historical failure notes, or layout contracts into this general pipeline.
 
-The current **v4-contact-study** contract is implemented for validation, with production blocked. Follow `BoxedResourceIconPipeline.md` for exact commands and masks.
-
-1. Use `scaffold-study` to copy the full intact master into a diagnostic context canvas outside production/reference folders.
-2. Draw contents and contact within ContactZone/ExtensionAllowed. Do not use a transparent object-only layer or cavity/pile clipping.
-3. Use `compose-study`; it rejects forbidden changes and restores only HardFixed directly from the master. It does not split or re-alpha-blend the rendered master/context.
-4. Run structural checks, the registered-reference comparison at 256px/~64px, and PNG integrity. Correct technical defects before presentation.
-5. Validate low grains, large pieces and strong over-rim overlap with the same unchanged region contract. Synthetic fixtures are structural evidence only.
-6. Record visual acceptance and suitable fill profiles before activating production. The current bulk-grain fill rule is not universal.
-7. Only after activation may production `scaffold` / `compose` produce resources; use the same master/contract for stack variants.
-
-### Vanilla / Medieval Overhaul retextures
-
-When AMJ retextures a compatible Vanilla or Medieval Overhaul boxed raw-resource icon:
-
-- retain the familiar boxed-item reading/silhouette class;
-- replace the generic crate treatment with the canonical AMJ masu;
-- do not independently redesign the container per resource.
-
-A genuinely different container family requires a separately approved master.
-
-## 4. PNG integrity
+## 6. PNG integrity
 
 Viewer-open success, a PNG signature, or correct IHDR dimensions are not sufficient.
 
@@ -90,6 +76,6 @@ All production PNGs must pass `Tests/validate_png_assets.py`, which checks compl
 
 For automated Git/GitHub binary writes, validate the bytes that are actually committed/checked out. Prefer an exact previously validated blob when recovering accepted art from history.
 
-## Pixel-exact shared image components
+## 7. Fixed reused components
 
-Follow `Docs/GoldenPaths/FixedImageTemplates.md` for every reused component. Registered masters and binary editable masks are mandatory before producing derivatives. Generate variable material only, composite deterministically, and require zero decoded RGBA differences in protected pixels. Reference-image editing and visual similarity are insufficient. Existing style references do not imply identical silhouettes for different species.
+When an image intentionally reuses a visible component pixel-exactly, follow `Docs/GoldenPaths/FixedImageTemplates.md`. Otherwise do not impose fixed-template machinery on a merely stylistically similar asset.

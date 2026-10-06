@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "family": "AMJ boxed-resource raw contents source",
+  "calibration": {
+    "reference_library_path": "/AMJ/References/AMJ_BoxedResource_LineHierarchy_Rice_Test.png",
+    "reference_sha256": "8e808c75763e8bcd63e9826a4224044dafb4f5d8c786b28ee325641b3e229e81",
+    "status": "author-selected line-hierarchy calibration reference; not a production rice icon and not a perspective reference",
+    "metrics": {
+      "transparent_fraction": 0.6498508453369141,
+      "low_alpha_fraction_1_39": 0.0050029754638671875,
+      "coarse_color_bins_16_at_64": 70,
+      "outer_dark_fraction_lt80": 0.3474663908996898,
+      "internal_dark_edge_fraction_lt140": 0.003271537622682661,
+      "internal_very_dark_edge_fraction_lt100": 0.0,
+      "line_hierarchy_ratio": 106.20889348500518
+    }
+  },
+  "allowed_formats": ["PNG"],
+  "require_visible_content": true,
+  "metric_ranges": {
+    "transparent_fraction": {"min": 0.25},
+    "low_alpha_fraction_1_39": {"max": 0.02},
+    "coarse_color_bins_16_at_64": {"max": 90},
+    "outer_dark_fraction_lt80": {"min": 0.20},
+    "internal_dark_edge_fraction_lt140": {"max": 0.04},
+    "internal_very_dark_edge_fraction_lt100": {"max": 0.02},
+    "line_hierarchy_ratio": {"min": 12.0}
+  },
+  "automatic_semantic_review": [
+    "requested material identity is visually correct",
+    "no other material geometry leaks from a reference",
+    "no wooden masu, rim, UI, text, background scenery or decorative ground shadow",
+    "AMJ/MO simplification, palette and shading remain within the applicable visual rules",
+    "the projected footprint can be placed naturally on the masu opening plane"
+  ]
+}

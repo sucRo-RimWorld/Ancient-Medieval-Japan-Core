@@ -60,13 +60,96 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### DOC-RULE-002 — README / Workshop summary relationship
+
+**Requested by:** author (2026-10-06 JST)  
+**Owner:** AMJ shared public-description policy  
+**Status:** DONE — shared guideline updated
+
+AMJ-wide public-description policy now treats each mod's README as the detailed public-content source of truth and the Steam Workshop description as a concise summary of that README. Workshop text may reorganize and compress for installation/selection readability, but it must not introduce substantive features, design rationale, compatibility claims, or other public facts that are absent from README.
+
+The existing Japanese-first Workshop localization rule remains unchanged: README detailed content first → natural Japanese Workshop summary → author-approved Japanese Workshop text → English translation of that Japanese text.
+
+**Durable source:** `Docs/ModDescriptionGuidelines.md`.
+
+**Publication responsibility update (2026-10-06 JST):** actual Steam Workshop publication/update operations are author-manual. Agents prepare and synchronize the repository-side README, BBCode descriptions, localization and publication assets only, and must not treat Steam as updated until the author confirms it.
+
+### LOC-RULE-001 — Japanese kanji / alias opening rule
+
+**Requested by:** author (2026-10-06 JST)  
+**Owner:** AMJ shared localization policy  
+**Status:** DONE — shared rule published
+
+AMJ-wide description policy now requires Japanese descriptions to begin with an established kanji form when one exists and to include recognized aliases / alternate names or common alternate written forms at the opening. Do not invent kanji, force uncommon ateji, or add weakly sourced names merely to satisfy the rule.
+
+This extends, but does not replace, the existing Japanese-first workflow: draft/research Japanese, obtain author approval, then translate only the approved Japanese text into English.
+
+**Durable source:** `Docs/HistoricalDescriptionGuidelines.md`, commit `fed314b19e3a61c88e0b93cec05d68ca6f966d67`. Core / Environment / CCTO AGENTS routing has been synchronized.
+
+### COMPAT-CBF-001 — Custom Base Framework future settlement candidate
+
+**Requested by:** author (2026-10-06 JST)  
+**Owner:** Content design / future Factions and settlement generation  
+**Status:** DONE (design recording only; adoption and compatibility remain unverified)
+
+Recorded Custom Base Framework (Workshop `3813689040`) in `Docs/Design.md`: prior-mod audit, Factions conclusion, Japanese NPC settlement framework candidate, and pending compatibility candidates. The source-of-truth design keeps Factions at its existing later priority and schedules CBF reassessment when settlement design begins.
+
+Potential division: CBF owns procedural assembly / editor / XML export; AMJ owns Japanese building pieces, settlement plans and content. No dependency, implementation, supported-mod claim, new Addon commitment, or runtime PASS is introduced.
+
+**Next action:** when Factions / settlement design resumes, audit current API / package / permissions and MO / terrain / faction-generation coexistence, then prototype a small rural settlement using the existing automated runtime gates.
+
+
+### ART-RULES-021 — image-rule consolidation and contents-first masu workflow
+**Non-destructive source preservation correction (2026-10-06 JST):** Accepted high-resolution image masters are now explicitly immutable and stored under `Art/Sources/`; production `Textures/` PNGs are derivatives only. Resize/crop/recolor/export operations must write new files and leave the accepted source unchanged. If the exact source has not been uploaded/committed, agents must not claim it is preserved. Source commits: `ebeaca8b053fac98a7a822bf9324bb08c3667d41`, `a78495d4502d0795b6c5191ab3c5d61ef8a6a2e6`, guard `6aafbb35e656cf5603e8bc3af272271c3265da85`.
+
+
+**Requested by:** author (2026-10-06 JST; rule cleanup after repeated generation/style failures)  
+**Owner:** AMJ shared art policy / Core art  
+**Status:** DONE — actual generation stress test completed; deterministic perspective guard green
+
+Image rules were consolidated so routine work no longer accumulates failure-specific instructions in every entry document.
+
+Current hierarchy:
+- `Docs/ArtStyle.md` owns AMJ-wide visual language and precedence;
+- asset-class style documents own only genuine class-specific visual differences;
+- `Docs/GoldenPaths/TextureAssetPipeline.md` owns general generation/source/export/validation procedure;
+- `Docs/GoldenPaths/FixedImageTemplates.md` applies only to intentionally reused visible components;
+- family pipelines own geometry/compositing details.
+
+Core AGENTS now routes to those sources instead of repeating boxed-resource/contact/fixed-template history. ArtStyle no longer contains masu masks, Workshop production steps, or fixed-template implementation. The fixed-template policy was reduced to generic pixel-reuse essentials.
+
+The active boxed-resource workflow is now **contents-source generation + deterministic perspective normalization + manual composition**. ImageGen produces only the transparent material layer in AMJ style; it no longer owns the exact masu projection. `Scripts/Art/normalize_masu_contents.py` removes low-alpha generator residue and projects the material onto the shared diamond-like contents plane before manual placement/masking/occlusion against the canonical masu. The earlier v2/v3/v4 automatic contact-study remains diagnostic/research only and is no longer the ordinary production path.
+
+Source-of-truth commits:
+- AGENTS routing: `71f9f97728efefd74903fc736727804e3ae2d075`, obsolete-history removal `0fff08ee37dc972538589ad373b8d4e93c33f694`;
+- shared ArtStyle separation: `3d649c7e67543d0753638a93c93ea91b02dc3a01`, `93bb24bf9869793163ae7b7eecad999331f8dea2`;
+- general texture pipeline: `681d1c43692537b6967e2359505271888904ac21`, cleanup `a9bbffd6ec62e50223821d33ccdbb8530593d420`, ownership/heading normalization `f9e960c3368eb79b4e1b2e3d79c49e459289ae2a`;
+- fixed-template simplification: `b1556b87832bd24f665de691fb4e8ad28e1d372b`;
+- Workshop style/workflow separation: `d193c832a05d72d41110eb6798342191b2337e0e`, obsolete-style cleanup `15ec441bb8d228598b1a7b1ece772827ed71caeb`, inheritance clarification `89410d598c43318baad233ea1bc5d7dcde1e9e50`;
+- boxed-resource contents-first workflow: `ce44ef823c1425def0c8fa5e4db80ec919e49e4b`, current-state cleanup `b0b9a230a5f095617fe774f65c01bf4769301335`;
+- v4 manifest retained fail-closed as diagnostic-only metadata: `1252481382974a39e5a4928a1ffa5b52e1752e02`;
+- reference-role / direct-perspective audit correction: `0f5005cde88c28c0724a7a962accd0097310253d`;
+- deterministic contents normalizer: `8ec65c92199db30c764e2addc37ad7ce82556f58`, regression test `f66dbed535cf169576017f0e6bb347fbbfa8941d`, Stage A hook `1a2304af33cf66ed10736bfed7f4369150afc84a`;
+- production-pipeline switch to deterministic projection: `d15ef5dc711288b6514958cd433bd96a4ac6fb39`, structural routing guard `3f8f9c17ebbea4141b34b278efc886cad592eb01`.
+
+**Follow-up audit (2026-10-06 JST):** Removed the remaining boxed-resource history from shared ArtStyle, removed the brittle exact-keyword ImageGen gate, removed mandatory pre-generation approval loops, scoped Core-only sprite budgets away from Workshop presentation art, and made the current manual masu workflow explicitly outside the active fixed-template zero-difference guarantee until a stable protected region exists. Archived masu v4 automation is now manual-dispatch only and no longer blocks Stage A. Added `Tests/test_art_rule_structure.py`; Stage A also runs the Workshop fixed-template regression. Stage A at `1ff8be70debccbb9da395997eae5ae51e9a49609` passed all art-rule, Workshop-template, fixed-template, boxed-reference, PNG, Stage A, and Windows PowerShell gates.
+
+**Actual generation stress test (2026-10-06 JST):** The approved buckwheat reference and a subject-specific Japanese short-grain-rice reference were actually viewed, then rice contents were generated rather than only auditing prompt text. Direct ImageGen attempts still produced a frontal mound / excessive per-grain modeling and did not reliably reproduce the masu opening plane. This confirmed that stronger wording alone was insufficient. A neutral material-only rice source was then passed through the new deterministic normalizer; the resulting transparent layer adopted the shared diamond-like contents plane without regenerating the masu. This is a pipeline/capability test only: no rice production icon, final masu composite, or author visual approval is claimed. Stage A run #281 for `3f8f9c17ebbea4141b34b278efc886cad592eb01` completed successfully, including the new normalizer regression.
+
+**Line-hierarchy refinement (2026-10-06 JST):** Author selected the best of the rice-generation trials partly because it alone used a strong outer contour around the entire pile while keeping grain-to-grain boundaries thinner and lighter. This is now a durable Core clustered-resource rule in `Docs/ArtStyle.md` and an explicit boxed-resource generation/rejection criterion. Equal-weight dark outlines around every grain are rejected because they fragment the pile and increase game-scale noise. Source commits: `e450bc309d8c25b5bea5bd88b583f909241c601a`, `57dcb408b2b559ece4ac94a7bd92a5f12b24fdee`, regression guard `368e62f04b3759b0c0644e2a2900771403c86df6`.
+
+**Opaque-outline clarification (2026-10-06 JST):** For boxed-resource contents, "lighter outline" now explicitly means a lighter **opaque RGB color**, not lower alpha. The contents outer contour must remain weaker/thinner than the wooden masu rim while staying stronger than internal piece boundaries; internal separators may be pale but likewise use opaque color. Deterministic requests such as outline lightening/thinning must edit the existing contents layer rather than send the full masu composite through ImageGen, so the fixed wooden masu cannot be redrawn. Source commits: `8ea306d04a58d66b23550a4ea7a209db259467b6`, regression guard `9c5938c45c0985addec1f251ad4fb37f239bea1b`.
+
+**Automated generation QA (2026-10-06 JST):** First-pass generated-image checking is now automated before author review. Common production order is ImageGen/source creation → mechanical QA → deterministic family processing → agent semantic visual QA → author final visual acceptance. Reusable mechanical validator: `Scripts/Art/generated_asset_qa.py`; common baseline policy: `Docs/References/AMJ_GeneratedAsset_BaseQA.json`. Boxed resources add `Docs/References/AMJ_BoxedResource_GenerationQA.json` and `Scripts/Art/prepare_boxed_resource_candidate.py`, which runs mechanical QA, deterministic projection, post-projection structural checks, and review-sheet generation. The author-selected rice trial is stored persistently at Library `/AMJ/References/AMJ_BoxedResource_LineHierarchy_Rice_Test.png` (SHA-256 `8e808c75763e8bcd63e9826a4224044dafb4f5d8c786b28ee325641b3e229e81`) only as line-hierarchy/information-density calibration, not as an approved rice production icon. Calibration replay: the selected trial passes the registered boxed policy; the other three retained generation trials are rejected automatically (two for overly dark/heavy internal lines and one for excessive game-size color complexity). Rejected attempts are no longer ordinary author-review candidates; after up to three automatic attempts, persistent failure is reported as a capability/blocker instead. Source commits: validator `c045b3d91f7a68c8dd6f0f6f4aa4600183ea4647`, boxed policy `6b13f9633fc993523a957d048350d247e41afa25`, boxed preparation `120d2f4d9e9b49dc02d343a63fa3d4121a9c59c9`, tests `076ec04b300de4d55941e1d660c22d7345f7e74d` / `a35c356cbcb5b79e055e71364e3f74d19c63b42f`, baseline policy `1057eeee26dd9779feef87686008d91b9063aaf6`, shared workflow `be01463b25e70f34a137a532471fe6bc5baa665a`, boxed workflow `50418b09ae76980a6b1eebe3868b0a403cf81026`, routing guard `90dfa5b745a9e6328bbf118a2c2e7cf6596a753e`, Stage A hook `8ad840b81c8dfca35d18605d6b2c186e1e2922e7`.
+
+
 ### ART-TEMPLATE-019 — MO comparison corrections implemented as contact study
 
 **Requested by:** author (2026-10-06 JST; 「修正して」 after MO icon comparison)
 **Owner:** Art/tooling / boxed-resource icons
-**Status:** DONE — correction implementation; BLOCKED — new-resource visual activation
+**Status:** ARCHIVED — retained as diagnostic/research; superseded for production by ART-RULES-021
 
-Current authoritative state is **v4-contact-study**, superseding the earlier v2/v3 production instructions below. Master and approved in-hull Soba raster bytes remain unchanged. No ImageGen or new production item was made.
+Historical result: the **v4-contact-study** superseded earlier automatic v2/v3 experiments at the time. It is now retained only as diagnostic/research material; the active production workflow is ART-RULES-021 / `Docs/GoldenPaths/BoxedResourceIconPipeline.md`. Master and approved in-hull Soba raster bytes remain unchanged.
 
 The registered study contract now uses conservative lower HardFixed wood, occludable ContactZone including upper front/side walls, independent ExtensionAllowed, and bulk-grain RequiredFill. The rendered source keeps the full intact master as context, and includes contents plus contact edits. The compositor restores only HardFixed exactly, rejects Forbidden RGBA changes (including transparent RGB/low-alpha) rather than clipping, and does not split rear/front or constrain extension to Soba's silhouette. Old v3 compositor entry points are removed. Both production status fields are blocked.
 
@@ -74,7 +157,7 @@ Explicit scaffold-study/compose-study commands provide the reviewable research p
 
 Validation: 14 Python regression tests pass, including same-mask synthetic shapes, over-front-wall overlap preservation, exact lower-wood RGBA restoration, leak/hash/binary/disjoint guards, historical Soba 0-diff identity and fail-closed production. All 24 production PNGs pass integrity; Stage A/New Village static validation passes. Synthetic shapes are structural evidence only; no new visual approval or RimWorld runtime PASS is claimed.
 
-**Next action:** with the same registered contract, inspect actual low grains, large pieces and strong over-rim overlap at 256px/about 64px; use shape-appropriate occupancy profiles and record visual acceptance before production activation. Do not expand masks to pass an individual candidate. The v4 region boundaries are a study proposal, not approved geometry.
+**Next action:** none for ordinary production. Revisit the v4 study only if automatic occlusion/compositing research is intentionally resumed.
 
 
 ### ART-RESEARCH-017 — Boxed-resource occlusion audit recorded
@@ -799,7 +882,7 @@ The three Library rasters were re-listed, materialized into a fresh container di
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 A consistency audit found that two different files were simultaneously documented as the canonical masu master. The later duplicate path is retained as the sole v1 source of truth because it is the 256×256 master explicitly stored for cross-chat reuse; the older `Textures/Things/Item/Resource/AMJC_Shared/Masu/AMJC_Masu_Empty.png` copy is removed to eliminate ambiguous masters.
 
@@ -819,7 +902,7 @@ The editable region is limited to the masu interior cavity. Rim, exterior faces,
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE (rule); BLOCKED (masu v2 activation)
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 Direct comparison of the accepted buckwheat-in-hull icon with the first deterministic masu derivative exposed a gap in the fixed-part rule. Protected RGBA pixels were stable, but the result was still visually wrong: the container/contents composition occupied too little of the canvas and the contents read as a small pile placed in an oversized empty box.
 
@@ -834,7 +917,7 @@ The durable rule is `Docs/GoldenPaths/BoxedResourceIconPipeline.md`: boxed-resou
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE — v2 ACTIVE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The blocked v1 master was not reused unchanged. A v2 candidate was derived by aligning the empty masu to the accepted filled buckwheat reference's 256×256 frame occupancy, then composing the accepted filling profile into a broader contents envelope rather than clipping contents to the old interior-only diamond.
 
@@ -847,7 +930,7 @@ The initial v2 review candidate matched the accepted exemplar's overall alpha en
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 A review exposed that the agent had identified visible roughness in a candidate yet was still prepared to wait for author acceptance before correcting it. This is now forbidden. Before presenting a candidate as registration-ready, the agent must inspect the full-size and game-size views and automatically repair objective defects that preserve the already approved design: resize jaggies, resampling roughness, halos, clipping, seams, stray/leftover layer pixels, incorrect frame occupancy, and other deterministic cleanup issues.
 
@@ -860,7 +943,7 @@ Applied immediately to masu v2: the upscaled 256px candidate was discarded as ma
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The author reviewed the v2 comparison, including the 256px and game-like small-size views, and confirmed that it looks acceptable ("問題なさそう"). This closes the remaining visual-approval gate for the active masu v2 family. Continue subsequent boxed-resource icons from the registered v2 master/fill guides; do not regenerate the masu.
 
@@ -869,7 +952,7 @@ The author reviewed the v2 comparison, including the 256px and game-like small-s
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 Audit confirmed that the user's uploaded approved exemplar is exactly the registered Library visual reference: SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`. The repository's normalized representative remains `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`, SHA-256 `0f81aa92460154d2b1ae50de14d7360be5e44ff46f8c81bdd113b6e19143d752`.
 
@@ -882,7 +965,7 @@ Permanent fix: `Scripts/Art/boxed_resource_review.py` now builds comparisons onl
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 All stale/contaminated boxed-resource candidate images created during the broken reference/compositing path were discarded from the persistent Library, including the old Soba in-hull candidate set and the pre-cleanup masu v2 candidate/review images. The local working copies of dehulled-Soba candidates, color-fix candidates, comparison sheets, generated whole-icon retries, mask previews, and superseded v2 candidate assets were also deleted.
 
@@ -898,7 +981,7 @@ Future work must restart the dehulled-Soba image from the registered reference/t
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 Durable rule added: when an image-processing path is discovered to be contaminated, all descendants from that point are invalidated immediately and removed from both persistent Library and local working storage. Invalid candidates are not retained merely for possible comparison because they can later be mistaken for authoritative sources.
 
@@ -911,7 +994,7 @@ Formal rules: `AGENTS.md`, `Docs/GoldenPaths/BoxedResourceIconPipeline.md`, and 
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 Author clarified that 「画像作成」 must not be interpreted as permission to invoke ImageGen. Durable rule now distinguishes command semantics:
 
@@ -984,7 +1067,7 @@ Shared durable source: `Docs/DevelopmentGoldenPathGuidelines.md`, commit `a81c03
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** ACTIVE — validation reset
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The author clarified that the current work was never intended to produce a dehulled-Soba asset. The purpose of the exercise is to validate the boxed-resource pipeline itself by asking whether the approved **buckwheat-in-hull** exemplar can be reconstructed correctly from the registered masu/template workflow.
 
@@ -1003,7 +1086,7 @@ The test is about reproducing the approved in-hull reference faithfully, not cha
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE (structural gate); dehulled Soba variant reset
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 Repeated Soba failures showed that color work was continuing before the layer decomposition itself had been proven. The broad editable/interior masks allowed visually plausible but structurally wrong composites, including broken rim occlusion and simple layer-over effects.
 
@@ -1042,7 +1125,7 @@ Scripts/IntegratedRuntimeDesktop/Run-AMJ-IsolatedDesktop.ps1.
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The author corrected the workstream intent: the current image exercise is a **pipeline validation using the approved buckwheat-in-hull image as both source reference and expected output**. It is not a request to design a dehulled-buckwheat icon.
 
@@ -1085,7 +1168,7 @@ Shared source of truth: `Docs/RetextureImplementationGuidelines.md`, introduced 
 
 **Requested by:** author (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** DONE
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The corrected validation target is now complete. The approved buckwheat-in-hull exemplar is reconstructed through the actual registered reusable template path with **0 differing RGBA pixels**.
 
@@ -1121,7 +1204,7 @@ The previously approved Soba sheaf source has not been wired in this commit beca
 
 **Requested by:** author / follow-up to boxed-resource identity validation (2026-10-05 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** IMPLEMENTED; CI pending
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The zero-diff identity gate exposed a second reusable-contract issue before any new resource was attempted: under `replace_rgba`, the input cannot be a transparent object-only contents layer. It must be a complete rendered editable-cavity patch. Otherwise transparent pixels selected by the editable mask erase the empty-master cavity and reproduce the earlier broken-rim/layer-paste failure.
 
@@ -1171,7 +1254,7 @@ Rim Controlで得た採用値はXML / C# / Def / 正式設計書へ正本化し�
 
 **Requested by:** author (2026-10-06 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** SUPERSEDED — visual split damage confirmed
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The author identified the structural error behind the repeated Soba boundary loop: a complex masu cannot be modeled as “master + contents clipped by one simple interior/pile mask”. The active production model is therefore changed to an explicit z-order stack:
 
@@ -1190,7 +1273,7 @@ The new gate requires exact empty-master reconstruction, exact fixed foreground 
 
 **Requested by:** author (2026-10-06 JST)  
 **Owner:** Art/tooling / boxed-resource icons  
-**Status:** IMPLEMENTED — production fail-closed; revised model pending visual activation
+**Status:** ARCHIVED — task superseded by ART-RULES-021; artifacts remain valid only where current source-of-truth documents still reference them.
 
 The separate research push `5690fbf8daa1eb73d0b9d263ca37ad1c0e08c024` has been read and integrated. The author also confirmed that the first v3 three-layer split visibly damaged the masu image. Therefore the fact that rear+front numerically reconstructed the empty master is not accepted as sufficient evidence.
 

@@ -1,90 +1,146 @@
 # Boxed Resource Icon Pipeline — Golden Path
 
-## 状態と正本
+This file owns only the **masu boxed-resource family**. Shared visual style comes from `Docs/ArtStyle.md`; general source preservation, ImageGen permission, export, and PNG validation come from `Docs/GoldenPaths/TextureAssetPipeline.md`.
 
-2026-10-06：MO比較で判明した修正を **v4-contact-study** に反映した。正本の空枡と承認済み殻付きソバ画像は変更していない。新規資源の本番制作は `blocked_pending_occlusion_validation`。領域契約と合成・検査コードの実装完了は、自然な別内容物の量産成功を意味しない。
+## Current production model
 
-- マスター：`Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`（承認済みv2、256×256 RGBA）
-- マニフェスト：`Docs/References/AMJ_Masu_Template.json`
-- 完成例：`Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`
-- 高解像度完成例：Library `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png`
-- 調査根拠：[BoxedResourceOcclusionAudit.md](../Research/BoxedResourceOcclusionAudit.md)
+For new boxed resources, ImageGen is used only to create the **contents source layer**. The wooden masu is not generated.
 
-各画像・マスクはマニフェストのSHA-256を照合する。殻付きソバの恒等再合成は例示画像の保存・復元の回帰検査であり、汎用性の証明には使わない。
+Do not rely on ImageGen to solve the masu projection. The generated subject/style layer is passed through the deterministic `Scripts/Art/normalize_masu_contents.py` perspective normalizer before it is treated as a placement candidate.
 
-## 領域契約
+Final placement, scale, masking, overlap, and contact with the masu are adjusted manually in an image editor.
 
-| 領域 | 責務 | 機械検査 |
-| --- | --- | --- |
-| HardFixed | 下側の前壁・側壁・下角・下部輪郭の保守的な木部 | 最終RGBA差分0。半透明輪郭も元のRGBAを直接コピー |
-| ContactZone / Occludable | 内壁・上面・上縁・前壁上部・側壁上部。内容物で隠れる、接触影が変わる範囲 | 内容物と接触部を一緒に編集。最後に無条件復元しない |
-| ExtensionAllowed | 上方・左右へ突出できる独立した余白 | 範囲外の変更を拒否。ソバ完成例のalpha形状を上限にしない |
-| RequiredFill | 充填量検査用の内部ガイド | 可視かつマスターから変化した画素の割合。描画・切り抜きには使用しない |
-| Forbidden（導出） | 上記3つの許可領域以外の全画素 | 最終RGBA差分0。透明画素のRGBと低alphaも検査 |
+The canonical empty masu is reused as the composition source. Because the visible contact/occlusion boundary changes with the contents and no stable protected region is currently approved for this manual path, this workflow does **not** claim the active fixed-template zero-difference guarantee. The archived v4 masks remain diagnostic only. Do not use their PASS/FAIL state as a production gate for manually composed icons.
 
-HardFixed・ContactZone・ExtensionAllowedは相互排他的。全マスター可視画素をHardFixedまたはContactZoneに分類し、未分類を許さない。RequiredFillはContactZone/ExtensionAllowed内の独立した検査ガイド。
+Previous automatic contact/mask experiments remain research/diagnostic material only. They are not required reading for ordinary contents generation and are not the active production path.
 
-v4初版のHardFixedは、前縁V字の近似線 `y = 173 - abs(x - 127) * 70 / 110` より40px下側のマスター可視画素だけとする。残りの可視木部・内部はContactZone。これにより前壁上部まで接触帯を確保する。ExtensionAllowedは独立矩形 `[8, 8, 248, 196]` 内のマスター透明画素。いずれも**検証用の初版であり、視覚承認済みの境界ではない**。MOの一致率からAMJの具体的な境界が直接証明されたとは扱わない。
+## Canonical visual references
 
-同じ契約で3形状を試す。個々の候補を通すためにマスクを広げない。契約改訂が必要なら版・ハッシュ・根拠を更新し、3形状すべてを再検証する。
+Before generating contents, open and compare against:
 
-## 内容物＋接触部の入力
+- empty masu master: `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`;
+- approved filled reference: `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`;
+- high-resolution reference when available: Library `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png`;
+- a subject-specific visual reference for the material being generated (rice for rice, soybeans for soybeans, etc.).
 
-入力は、空枡マスターをそのまま複製した256×256の**描画済みコンテキスト画像**。空枡を見た状態で内容物・遮蔽・接触部の輪郭・控えめな接触影をContactZoneとExtensionAllowedへ描く。何も隠れない木部は元のマスターを残す。
+Reference roles are deliberately separated:
 
-- 透明な内容物だけを単独生成して載せる入力は使用しない。入力には元の空枡の文脈を保持する。
-- 完成例との差分マスク、内部の菱形、単純な粒山形状へ内容物をクリップしない。
-- ContactZoneでは、覆われる縁の画素や接触影も編集してよい。木部画素を一律禁止する旧規則は廃止。
-- 内容物を描き終えたコンテキスト画像を、さらにマスターへalpha合成しない。描画済みの接触・半透明輪郭を二重合成しない。
-- マスターへの拡縮、回転、全体色補正、ぼかし、全体量子化は不可。最終サイズを維持する。
-- 全体画像を生成し直して共有部品を採用することは不可。生成が明示的に許可された場合も、制作対象はContactZone/ExtensionAllowed内の内容物と接触部だけ。
+- the **empty masu** defines the container geometry and the apparent projection/opening plane;
+- the **approved buckwheat-in-hull image** defines approximate fill amount, mound footprint, composition density, and the target AMJ/MO simplification level;
+- the **subject-specific reference** defines the material's own shape, aspect ratio, surface character, and characteristic color;
+- relevant accepted AMJ/MO item art defines outline weight, palette restraint, and shading density.
 
-`contact_patch_min_defined_coverage = 0.98` は、元マスターが可視の接触帯で入力alphaが8以上の割合を検査する。透明素材で枡の大半を消す誤入力の検出用であり、正しい遮蔽や自然さの証明ではない。
+Do **not** inherit buckwheat's triangular/angular grain shape, dark color, faceting, or material character when generating another subject. The buckwheat image is not a universal grain-shape template.
 
-## 決定的合成
+If any required reference cannot actually be retrieved and visually inspected, stop before ImageGen. Do not substitute memory, filename-only knowledge, or an unrelated material and do not claim a visual comparison that was not performed.
 
-1. ハッシュ、寸法、マスクの二値性・分類・重複・RequiredFillの包含を確認する。
-2. 完全なマスターを複製したscaffoldで内容物と接触部を編集する。
-3. 入力のForbidden変更を検出する。許可範囲外を切り落として合格にはしない。
-4. 描画済み画像を保持し、HardFixedのRGBAだけ正本から直接復元する。元枡を相補的な前後ラスターへ分割しない。
-5. HardFixedとForbiddenの最終RGBA差分0、充填、寸法、PNG構造を確認する。
-6. 正本完成例との256px/約64px比較で、縁の前後関係・粒の切断・貼り付け感・ハロー・左右上部の汚染を確認する。
+Do not regenerate or restyle the masu.
 
-RequiredFillの現行0.65閾値は **bulk_grain** 用の構造的最低条件。透明消去は充填として数えない。大きな塊や長い物体の本番制作には、形状に適した別の充填プロファイルを登録・検証する。単一の65%基準を全資源の自然さ判定に一般化しない。
+## Contents-source generation
 
-## 検証と本番を分離する
+Generate **contents only**, on transparency.
 
-`scaffold` / `compose` は本番入口であり、現在は停止する。検証専用入口を使う：
+The raw generated source owns **material identity and AMJ/MO style**, not final container perspective. Prefer a neutral or near-top view that keeps the individual pieces readable enough for deterministic projection.
+
+The source layer must:
+
+- inherit the AMJ item/resource style from `Docs/ArtStyle.md`;
+- use a **boxed-resource-specific line hierarchy**: within the contents layer, the outer silhouette remains stronger than internal grain/piece boundaries, but because the contents sit inside the masu, the contents outline must stay **thinner and lighter in RGB color than the masu rim/outer contour**;
+- "lighter/paler outline" means a lighter **opaque color**, not reduced alpha. Keep substantive outline pixels opaque; transparency is for the background and anti-aliased edge pixels only;
+- internal grain/piece boundaries are thinner and lighter than the contents outer silhouette and may be quite pale, but should likewise use opaque color rather than semi-transparent strokes;
+- do not give every grain/piece an equally heavy dark outline; internal lines are subordinate separators and may be quite light as long as the material remains legible;
+- use a limited palette and flat/simple shading;
+- avoid glossy per-piece highlights, deep AO between every grain, photorealism, and painterly rendering;
+- simplify the bulk into readable clustered pieces rather than rendering every particle, while preserving the subject's characteristic piece shape;
+- keep piece size broadly consistent instead of introducing an artificial near/far scale gradient;
+- form one compact continuous pile/footprint with information density comparable to the approved boxed-resource reference;
+- contain no wooden box, rim, background, text, UI, or decorative ground shadow.
+
+The raw generation target is a **source layer**, not a placement-ready icon. Do not ask ImageGen to solve the final rim occlusion, contact edge, or exact masu projection.
+
+If the requested change is only a deterministic adjustment to an existing candidate — such as making the contents outline RGB lighter, thinning a contour, changing alpha cleanup, resizing, masking, or projection — do **not** regenerate the image with ImageGen. Edit the existing contents layer deterministically. In particular, never send the full masu composite back through ImageGen merely to change the contents outline: that would expose the fixed wooden masu to unwanted redrawing.
+
+## Automated candidate preparation
+
+Do not manually perform first-pass generation inspection. Run the family preparation entry point:
 
 ```bash
-python Scripts/Art/fixed_template.py scaffold-study Docs/References/AMJ_Masu_Template.json --output /tmp/masu-study/context.png
-# 元の空枡を見ながら、内容物と接触部を許可領域内に描く
-python Scripts/Art/fixed_template.py compose-study Docs/References/AMJ_Masu_Template.json /tmp/masu-study/context.png --output /tmp/masu-study/final.png
-python Scripts/Art/fixed_template.py validate Docs/References/AMJ_Masu_Template.json /tmp/masu-study/final.png
-python Scripts/Art/boxed_resource_review.py Docs/References/AMJ_Masu_Template.json /tmp/masu-study/final.png --output /tmp/masu-study/review.png
-python Tests/test_masu_template.py
-python Tests/validate_png_assets.py
+python Scripts/Art/prepare_boxed_resource_candidate.py \
+  Work/Contents_Source.png \
+  --output-dir Work/BoxedCandidate
 ```
 
-study出力は `Textures` と `Docs/References` へ書けない。マスター・参照・全マスク・恒等素材・入力の上書きも禁止する。構造検査のPASSで本番状態は変化しない。Windowsでは `/tmp/masu-study` を通常テクスチャとして使われない一時フォルダーへ置き換える。
+It automatically:
 
-比較シートは `boxed_resource_review.py` が登録済み `representative_final` のSHA-256を検証して作る。別の記憶・生成画像・ローカル別名へ参照を差し替えない。
+1. runs `Scripts/Art/generated_asset_qa.py` with `Docs/References/AMJ_BoxedResource_GenerationQA.json`;
+2. rejects excessive low-alpha residue, excessive game-size color complexity, weak outer contour, overly dark/heavy internal grain lines, and line-hierarchy failures before projection;
+3. calls `Scripts/Art/normalize_masu_contents.py`;
+4. verifies the projected PNG still has usable transparency and no excessive low-alpha residue;
+5. writes JSON reports plus `review-sheet.png` containing raw contents, projected contents, and an enlarged 64 px check.
 
-## 視覚的な有効化条件
+The QA policy is calibrated in part against the author-selected line-hierarchy reference stored at Library `/AMJ/References/AMJ_BoxedResource_LineHierarchy_Rice_Test.png` (SHA-256 `8e808c75763e8bcd63e9826a4224044dafb4f5d8c786b28ee325641b3e229e81`). That image is a **line-hierarchy/information-density calibration reference only**; it is not an approved production rice icon and not a perspective reference.
 
-同じマスター・同じ領域契約を変更せず、**低い粒状物／大きな塊／前縁へ強く重なる形** の3例で以下を満たすこと。
+The perspective normalizer:
 
-- HardFixed/Forbidden差分0、許可範囲外の漏れ0、適した充填条件を満たす。
-- 内容物に応じた縁の隠れ方、接触、輪郭、陰影が自然。
-- 256pxと約64pxの双方で枡に入っていると読める。直線的な切断・貼り付け感・左右上部の残存色がない。
-- 自己QC後に視覚承認を記録する。合成図形テストやソバの恒等PASSを視覚承認に代用しない。
+- zeros low-alpha pixels including hidden RGB so generated dark glow/background residue cannot turn into a resampling halo;
+- crops to the actual visible contents;
+- deterministically projects that crop onto the shared diamond-like masu contents plane;
+- keeps the output background transparent;
+- never adds, redraws, or edits the wooden masu.
 
-すべて通ったときにだけ `production_status` と `new_resource_production_status` を有効化し、マスク版・承認根拠・適用可能な充填プロファイルを正式記録する。
+The default projection is a **contents-plane normalization guide**, not a cavity clipping mask and not a claim that final contact/occlusion is automatic. Final scale/placement and rim overlap remain manual. Do not tune the projection separately for each material merely to make a bad generation look acceptable; change the registered default only after cross-material visual review.
 
-## 実行の意味と候補の扱い
+## Pre-presentation candidate gate
 
-「作成」「制作」「続けて」「修正」は登録素材によるローカル制作・合成・検査の指示であり、ImageGenの許可ではない。明示的な「生成」と対象Golden Pathの許可が必要。本番停止を生成指示だけで解除しない。
+After automated mechanical preparation passes, the agent performs the remaining **automatic semantic visual QA** against the actually viewed references. The author is not the first-pass checker.
 
-誤参照、旧分割、不正クリップ、全体再生成、汚染画素から派生した候補は失効し、候補・比較シート・派生物を破棄してmain Coordinationへ記録する。正本・承認済み完成例・明確に隔離された診断証拠を保持する。
+Reject internally when any of the following is true:
 
-旧 `replace_rgba` 差分マスクと恒等素材は履歴診断専用。旧 `rear_contents_front` の実装入口は削除され、本番にも検証にも使用しない。
+- the subject does not read as the requested material at game-like size;
+- another reference material's geometry has leaked into it (for example, rice becoming triangular/faceted like buckwheat or stone);
+- the normalized footprint still cannot be placed naturally on the masu opening plane;
+- a systematic near/far scale gradient has been baked into the source without a subject-specific reason;
+- the contents outer silhouette is not clearly stronger than the internal piece boundaries;
+- the contents outer silhouette is as thick/dark as, or stronger than, the wooden masu rim after composition;
+- substantive contents outline pixels are made faint through reduced alpha instead of a lighter opaque RGB color;
+- internal grain/piece boundaries are as thick/dark as the contents outer silhouette, making the pile read as many disconnected outlined objects rather than one mass;
+- shading is glossy, heavily modeled, painterly, or uses deep AO on each individual piece;
+- particle count/detail is high enough to become noisy at roughly 64 px;
+- the generated layer contains any wood, container rim, box, background, UI, text, or decorative shadow;
+- the source or normalized output is not usable as a transparent contents-only layer.
+
+When a candidate fails this gate, regenerate automatically from the same approved reference set, up to three attempts total. Do not show rejected attempts as ordinary candidates. If the same failure persists through all attempts, stop and report the recurring failure class/capability limit.
+
+Do not repair failures by adding more ad-hoc permanent rules. First determine whether the failure comes from a missing/ambiguous reference role, a wrong subject description, the projection normalization, or a capability limit. Only durable causes belong in this Golden Path.
+
+Only after mechanical QA, deterministic projection, agent semantic QA, and the generated review sheet all pass is the candidate shown to the author for the **single remaining human gate: final visual acceptance**.
+
+## Manual composition
+
+The author/compositor places and adjusts the contents against the canonical masu in an image editor.
+
+Typical order:
+
+1. canonical empty masu as the base;
+2. projected contents from `prepare_boxed_resource_candidate.py`;
+3. author-controlled front/upper container masking or overlay where needed.
+
+Position, scale, local erasing/masking, and front-edge overlap are manual visual decisions. A small manual perspective correction is allowed when required by the actual content/contact, but the routine base projection should come from the deterministic normalizer rather than asking ImageGen to rediscover it. Do not encode a new universal cavity clipping mask merely to avoid the final manual contact step.
+
+If a reusable front/upper overlay becomes author-approved and is registered as a fixed component later, it may be added to the fixed-template system. Until then, do not invent or reconstruct such a raster from memory.
+
+## Visual acceptance
+
+Before a final boxed icon is treated as accepted:
+
+- compare it with the approved filled reference at 256 px and about 64 px;
+- confirm the contents and masu share the same apparent perspective;
+- confirm the front/side rim overlap reads naturally;
+- reject top-down contents, pasted-on/flat appearance, cut-off outlines, halos, excessive particle detail, or style drift from AMJ/MO;
+- preserve the canonical masu appearance except for deliberate manual occlusion/contact handling.
+
+After the final composite is accepted, use the general texture pipeline and PNG integrity gate for repository integration.
+
+## Research material
+
+`Docs/Research/BoxedResourceOcclusionAudit.md`, the v4 study manifest/region masks, and related study commands are retained as historical/diagnostic evidence. They may be used when investigating automation again, but they do not add production rules to the current manual-composition workflow.
