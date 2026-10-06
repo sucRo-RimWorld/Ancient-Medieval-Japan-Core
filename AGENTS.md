@@ -1,5 +1,7 @@
 # AMJ Core Agent Instructions
 
+Boxed-resource occlusion correction (2026-10-06): the v3 complementary rear/front raster split is superseded because visual inspection found damaged pixels at the split boundary. Read `Docs/Research/BoxedResourceOcclusionAudit.md`. Do not resume new-resource production with that split. The next model must keep the canonical masu intact as the base/rear layer, render contents/contact artwork above it without a simple cavity/pile clipping mask, and reassert only conservative hard-fixed foreground wood last; the contact zone remains occludable. New-resource production is fail-closed until contrasting-shape and 256px/~64px visual validation pass.
+
 Boxed-resource investigation (2026-10-06): also read `Docs/Research/BoxedResourceOcclusionAudit.md`. The registered Soba identity round trip proves exemplar preservation, not natural composition of different contents. Proposed occlusion-region changes are research candidates only; this audit does not change masters, masks, generation permission, or template activation.
 
 This repository is part of the **Ancient & Medieval Japan (AMJ)** project.
