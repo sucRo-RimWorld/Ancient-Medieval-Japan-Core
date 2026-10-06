@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f3ead9"/>
+      <stop offset="100%" stop-color="#e9ddc8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#paper)"/>
+
+  <!-- Fixed shared ornament: quiet pale paper/cloud shapes only -->
+  <path d="M0 70 C95 18 180 35 225 95 C170 126 92 132 0 112 Z" fill="#e2d2b9" opacity="0.55"/>
+  <path d="M0 690 C90 640 190 650 245 710 C205 755 112 785 0 770 Z" fill="#e2d2b9" opacity="0.45"/>
+
+  <!-- Invariant common-left typography block -->
+  <g transform="translate(86,140)">
+    <text x="0" y="0" font-family="Georgia, Times New Roman, serif" font-size="82" font-weight="600" fill="#303a35">Ancient &amp;</text>
+    <text x="0" y="104" font-family="Georgia, Times New Roman, serif" font-size="92" font-weight="600" fill="#303a35">Medieval</text>
+    <text x="0" y="212" font-family="Georgia, Times New Roman, serif" font-size="98" font-weight="600" fill="#9a5e45">Japan</text>
+
+    <!-- Shared restrained divider / tiny neutral flower -->
+    <line x1="0" y1="282" x2="125" y2="282" stroke="#7c766c" stroke-width="2"/>
+    <g transform="translate(153,282)" fill="#8a8174">
+      <ellipse cx="-9" cy="0" rx="8" ry="3" transform="rotate(20)"/>
+      <ellipse cx="9" cy="0" rx="8" ry="3" transform="rotate(-20)"/>
+      <ellipse cx="0" cy="-7" rx="3" ry="7"/>
+      <circle cx="0" cy="0" r="2.5"/>
+    </g>
+    <line x1="181" y1="282" x2="305" y2="282" stroke="#7c766c" stroke-width="2"/>
+
+    <text x="0" y="355" font-family="Arial, Helvetica, sans-serif" font-size="27" letter-spacing="10" fill="#5f655f">ENVIRONMENT</text>
+  </g>
+
+  <!-- Symbolic addon area; Environment shown only as the schematic example -->
+  <g transform="translate(620,90)">
+    <!-- Completely flat mountain bands -->
+    <path d="M0 260 L170 155 L330 250 L520 95 L760 245 L940 160 L980 310 L0 310 Z" fill="#9aa5a8"/>
+    <path d="M0 330 L150 235 L335 310 L565 205 L760 305 L980 250 L980 390 L0 390 Z" fill="#748489"/>
+    <path d="M0 415 L180 325 L360 390 L540 315 L780 395 L980 345 L980 470 L0 470 Z" fill="#596d68"/>
+
+    <!-- Thin narrow river -->
+    <path d="M610 350 C560 405 650 445 585 500 C525 550 650 590 620 655 C605 690 665 735 720 770"
+          fill="none" stroke="#9eb6bd" stroke-width="16" stroke-linecap="round"/>
+
+    <!-- Simplified representative tree silhouettes -->
+    <g transform="translate(80,430)">
+      <rect x="85" y="115" width="25" height="185" fill="#72634f"/>
+      <circle cx="100" cy="95" r="85" fill="#44564a"/>
+      <circle cx="45" cy="135" r="65" fill="#536352"/>
+      <circle cx="150" cy="140" r="60" fill="#394b42"/>
+    </g>
+
+    <g transform="translate(380,455)">
+      <rect x="90" y="95" width="24" height="210" fill="#8b7d64"/>
+      <circle cx="102" cy="85" r="82" fill="#9b9a6f"/>
+      <circle cx="50" cy="125" r="57" fill="#a8a77d"/>
+      <circle cx="150" cy="125" r="58" fill="#8e9069"/>
+    </g>
+
+    <g transform="translate(720,395)">
+      <rect x="92" y="125" width="24" height="245" fill="#6f6552"/>
+      <polygon points="104,0 20,170 188,170" fill="#33453e"/>
+      <polygon points="104,75 5,255 203,255" fill="#3c4e46"/>
+      <polygon points="104,155 28,330 180,330" fill="#2e4039"/>
+    </g>
+  </g>
+</svg>
