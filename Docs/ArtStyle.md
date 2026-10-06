@@ -1,7 +1,5 @@
 # AMJ Art Style Guide
 
-> Boxed-resource research (2026-10-06): [occlusion audit](Research/BoxedResourceOcclusionAudit.md) records shared lower-container pixels and content-dependent contact boundaries in eleven MO icons. The masu v2 identity PASS does not establish that all different contents can use the exemplar's exact difference shape. The audit itself is historical research; the current v4 contact contract and production block are specified in `GoldenPaths/BoxedResourceIconPipeline.md`. Accepted master and exemplar pixels are unchanged.
-
 This document is the durable visual reference for **Ancient & Medieval Japan (AMJ)** assets.
 
 The style was locked after comparing AMJ cereal/resource assets directly against Medieval Overhaul (MO) wheat and leather/hide textures. The author-approved Awa, Hie, and Kibi plant set from 2026-10-04 is the canonical cereal-plant baseline; the accepted millet-item/straw set remains the resource baseline. The rules and production assets below are the reproducible source of truth for future generation and manual art work.
@@ -12,7 +10,7 @@ This file owns the **AMJ-wide visual language**. Keep operational procedures out
 
 Apply image rules in this order:
 
-1. **Shared AMJ visual language (this file):** simplified silhouette-first forms, strong readable outlines, restrained palette/detail, no photorealism or painterly noise, and readability at game scale.
+1. **Shared AMJ visual language (this file):** simplified silhouette-first forms, restrained palette/detail, no photorealism or painterly noise, and readability at game scale.
 2. **Asset-class style specification:** adds class-specific visual rules and may explicitly define a controlled deviation from non-invariant details such as shading treatment. For example, Environment tree sprites may use restrained internal gradient variation while Core crop/item textures use the flatter budgets below.
 3. **Production Golden Path:** controls source reuse, generation/compositing, export, and validation. It must not redefine the visual style.
 4. **Fixed-template rules:** apply only when visible parts are intentionally reused pixel-exactly.
