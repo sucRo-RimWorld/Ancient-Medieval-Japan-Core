@@ -12,12 +12,17 @@ This document records the general reusable production path for AMJ texture work.
 
 ## 2. Preserve accepted sources
 
-Once the author accepts an image, treat it as a master source.
+Once the author accepts an image, treat it as an **immutable master source**.
 
+- Do not overwrite or destructively resize/crop/recolor the accepted master.
 - Do not recreate an accepted asset from memory or from text alone.
-- Reuse, crop, recolor, resize, mask, or composite the accepted source before considering fresh generation.
+- Reuse, crop, recolor, resize, mask, or composite from a **copy/derived working file** before considering fresh generation.
 - If only one component changes, keep all other accepted components fixed.
 - A newly generated image is not automatically a replacement for an accepted master.
+- Production-size PNGs under `Textures/` are derivatives. They are not the only copy of accepted high-resolution source art.
+- Accepted high-resolution source art belongs under `Art/Sources/`, mirroring the production asset path where practical. Example: a production asset at `Textures/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat_a.png` may keep its authoritative high-resolution source under `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/`.
+- Export operations such as 256×256 conversion must write a **new file** and leave the authoritative source byte-for-byte unchanged.
+- If the authoritative source has not yet been uploaded/committed, do not claim it has been preserved in the repository. Keep the task blocked on obtaining that exact source instead of silently treating a derivative as the master.
 
 ### Do not edit from production-resolution derivatives
 
