@@ -1174,20 +1174,15 @@ Coreでは実装しない。**水田・稲作はWaterworksからも分離し、�
 
 #### Waterworks / 水利Modの基本方針
 
-WaterworksはCore / Grainsとは独立した水利Modとし、自然水からの取水・可視の重力式開渠・暗渠・水門・引湯・外部Mod向け供給判定を所有する。水田・稲作、DBH式の井戸/ポンプ/配管/衛生/飲水、汎用灌漑、消防、水車等は所有しない。
+WaterworksはGrainsとは独立した水利Modであり、正式な詳細設計は `sucRo-RimWorld/Ancient-Medieval-Japan-Waterworks:Docs/Design.md` を正本とする。Grainsは水田・水利を所有しない。
 
-Waterworksの正式な詳細設計は専用リポジトリ **`sucRo-RimWorld/Ancient-Medieval-Japan-Waterworks` の `Docs/Design.md`** を正本とする。本書は所有境界と任意互換方針だけを保持する。
-
-現時点のv1要約:
-- 有効な自然淡水取水口へ接続された4方向ネットワークを、流量ではなく**通水/非通水の二値**で扱う
-- v1必須要素は **自然水取水口 / 素掘り開渠 / 暗渠 / 手動水門**
-- 素掘り開渠は材料不要の掘削Designationで施工し、歩行可能だが移動ペナルティを持つ
-- 暗渠は壁・門・道路・床等の交差用で、自由な地下配管網にはしない
-- 石張り水路はv1必須から外す
-- 通常水と温泉水を区別し、Hot Springs等から任意連携できる
-- DBH / DBH for Medievalは正式な任意互換対象だが、Waterworks開渠をDBH PipeNetへ置換しない
-- DBH for Medieval監査では既存IrrigationCanal / SluiceGate / ManualPump / PrimitiveWell連携がDBH PipeNet / sprinkler / pump基盤上にあることを確認しており、Waterworksの存在意義は**自然水から直接引くポンプ不要の可視開渠**に限定する
-- Waterworksが単なる抽象水APIへ縮退し、可視開渠の建設ループが失われる場合は独立Modとしての存続を再評価する
+現行v1の最小境界:
+- プレイヤーが素掘り水路を掘る
+- 水路の連結成分が川・池等の有効な自然淡水へ上下左右で直接接していれば通水する
+- 通水時は濡れた水路、非通水時は乾いた溝として表示する
+- 水路は埋め戻せる
+- 別個の取水口Building、水門、暗渠、温泉水区分、DBH Adapter等はv1必須ではなく、実際の利用先が必要とした段階でWaterworks側が再評価する
+- Rice CultivationはWaterworksを必須依存にせず、併用時のみ任意接続する
 
 ### 8.2 大豆
 
