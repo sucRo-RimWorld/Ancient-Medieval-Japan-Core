@@ -15,7 +15,7 @@ This directory stores accepted source artwork and authoring files that must surv
 
 ## Inventory / recovery queue
 
-The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 10 already archived and 9 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters.
+The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 11 already archived and 8 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters. G04 now has a separately verified high-resolution original.
 
 ## Current authoritative sources
 
@@ -30,6 +30,7 @@ The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 
 - `Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
 - `Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png`
 - `Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
+- `Things/Plants/Immature/AMJC_Hie/AMJC_Hie_Immature.png`
 
 Do not copy a `Textures/` derivative into this tree merely to make the inventory look complete. Historical accepted assets whose exact higher-resolution/source bytes still survive elsewhere should be migrated here only from those exact bytes. If only the production derivative remains, keep that limitation explicit rather than relabeling the derivative as an original source.
 
@@ -104,9 +105,21 @@ Additional accepted sources should be added to the corresponding mirrored path a
 - SHA-256: `58bc4a98f4557d5df112f97c2094d7cbb5681ea8f46c36246064b10da3c573db`.
 - Production counterpart: `Textures/Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png` (256×256 indexed PNG; SHA-256 `b1348a888a4eb05e5b30a051b112530947cdf5699d663046bfdae39be43becd1`).
 - Provenance: `AMJ-016` author-approved cereal graphics and integration `ddb7a593cd552fc7a37909838b870cbd8fc28436`; the current mature production blob is still the approved integration blob. Visual comparison confirms the same three golden drooping panicles, broad leaves, stems, junctions and silhouette.
-- The initially listed `直立したヒエの植物アイコン.png` (`libfile_b626dec6725c8191bc318e25fa265b58`, green-grained version) differs in maturity and panicle structure and was excluded from G03. It is not archived or assumed to be the final immature source by this action.
+- The initially listed `直立したヒエの植物アイコン.png` (`libfile_b626dec6725c8191bc318e25fa265b58`, green-grained version) differs in maturity and panicle structure and was excluded from G03. It was subsequently verified and archived separately for G04 below.
 - Historical positioning/palette-export steps have not been reconstructed; a direct full-canvas resize is not pixel-identical to the indexed production PNG. Identity is established from visual correspondence and the accepted integration record, without claiming an exact export reproduction.
 - This recovery preserves only the exact original bytes; production textures are unchanged.
+
+### Hie immature plant — 2026-10-07 JST
+
+- Archived file: `Things/Plants/Immature/AMJC_Hie/AMJC_Hie_Immature.png`.
+- Original: `直立したヒエの植物アイコン.png`, Library identity `libfile_b626dec6725c8191bc318e25fa265b58`.
+- Original dimensions: 1254×1254 RGBA; 656,097 bytes. Preserved without resizing, recoloring, or re-encoding.
+- SHA-256: `1d1d8bd67d1bd2c28cbb3e783dab043d07f5e6877eab053a7df869b8ad703538`.
+- Production counterpart: `Textures/Things/Plants/Immature/AMJC_Hie/AMJC_Hie_Immature.png` (256×256 indexed PNG; SHA-256 `8faaa28ae522b5fd1727e1f522042539e3e74ace6131bcd4760fcbfe42ede144`).
+- Provenance: `AMJ-016` and approval integration `ddb7a593cd552fc7a37909838b870cbd8fc28436` record acceptance of the final Hie immature candidate without further posture adjustment. Repair `0262092fa06c4578450af15c5b936fdd80156113` restored the valid PNG from finalization `02c4a193fe0514eba57d5aab69edf8a69145c645`; current production retains their identical blob `ff214627c143f900c1b1c932dbfe249ff373e345`.
+- Visual comparison confirms the same three green-grained branched panicles, broad leaves, stems, junctions and silhouette. This original is distinct from the golden mature source and from the named 256×256 derivative.
+- Historical palette/export steps have not been reconstructed; direct full-canvas resizing does not reproduce the indexed production pixels exactly. This recovery establishes source identity from visual correspondence and retained approval/repair records, without claiming exact export reproduction.
+- Only the exact original bytes are archived; production textures are unchanged.
 
 ## Workshop distribution
 
