@@ -70,7 +70,7 @@ setup diagnostics and report paths. The report includes:
 - source HEAD, existing source fingerprints, and SHA-256 hashes of the staged
   runtime target, compiled test assemblies/features and non-Vanilla providers.
 
-The profile suite requires exactly its six named scenarios, 6/6 passes and
+The profile suite requires exactly its eight named scenarios, 8/8 passes and
 zero skips. Assertions check actual provider presence, fixture/production-Core
 absence, resolved primary crop/recipe/simple-meal contracts, New Village loaded settings and actual Quickstart supplies/research
 for the active profile, loaded wheat/flour/milling/food contracts, and presence/absence of AMJ cold-tolerance extensions. Runtime log checking
@@ -81,7 +81,7 @@ the private-desktop matrix watchdog is forty minutes and terminates its own tree
 
 These are **migration smoke tests**, not the completed release matrix. Subsequent
 implementation must prove actual harvest/Bill cooking behavior, six-grain environmental-choice
-regression, and save compatibility cases. None is inferred from the six smoke
+regression, and save compatibility cases. None is inferred from loaded-contract smoke
 scenarios or from the old fixture suite.
 
 ## Tooling regression
@@ -123,7 +123,7 @@ Grains and MO integrations are optional and owned by the scenario mod. Neither
 mod makes the other a hard dependency. The final name/package/repository and
 save-migration mechanism remain undecided; physical extraction has not occurred.
 
-The current six-scenario profile suites and eight-scenario fixture suite retain
+The current eight-scenario profile suites and eight-scenario fixture suite retain
 New Village only as transitional contracts. During extraction, move the startup
 checks and the Scenario/Faction/PawnKind golden contracts to the new owner; remove
 the dedicated-Scenario presence requirement from Grains in that same change.
@@ -159,3 +159,51 @@ choice, save migration, provider/parent inheritance and graphics require runtime
 verification before changing production About.xml or claiming standalone release.
 
 Repeat the actual-provider XML audit with `python Tests/validate_grains_chain.py --mo-root <MO-root>` against the installed or supplied MO 1.6 sources. This checks source targets/nutrition, not the resolved runtime Patch result.
+
+
+## Environmental and production-job regressions (2026-10-07)
+
+`Tests/validate_grains_environment.py` and `Tests/Fixtures/Grains_Environment.json`
+fix 27 representative cells per Base/MO profile: fertility 0.5/1.0/1.4,
+temperature 10/20/30°C, and 5/10/20 **effective growing days**. See the owning
+balance specification in `Docs/Balance/Crops/GrainsEnvironment.md` for assumptions
+and source provenance. This is an analytical finite-season model, not actual
+weather, resting or frost survival. Regression mutations cover fertility exclusion,
+season length, high-temperature suitability and one-grain dominance.
+
+The seventh Pickle scenario uses loaded crops and the actual
+`PlantUtility.GrowthRateFactorFor_Fertility` / `_Temperature` utilities over the
+same cells. Every grain must win at least one cell; no grain may win >=2/3 of viable
+cells, counting ties as wins. It does not advance a growing plant through a season.
+
+The eighth scenario requests `AmjStageAQuickstart`, independently of New Village.
+`GrainsSimulationSteps.cs` creates mature plants for all six grains (an extra Soba
+plant supplies its x10 processing chain), one capable Plants/Crafting/Cooking-20
+worker, processing table, profile-owned mill and a fuelled Campfire. Existing
+Quickstart pawns are temporarily despawned; only this disposable map is prepared.
+The test never creates harvested ingredients or recipe products. Native designated
+harvest jobs create the sheaves. Eleven native `DoBill` jobs then thresh/hull,
+mill and cook millet, buckwheat and wheat into all three minimum foods. The MO
+wheat milling step uses `DankPyon_CraftFlourBulk` on the actual MO millstone.
+
+Bills come from the loaded recipes, ingredient selection comes from loaded
+`WorkGiver_DoBill` workers, and ingredients/products are counted across map stacks
+and the test worker's carried stack. Each Bill must finish one iteration, consume
+the expected ten ingredient units and produce exactly its declared output counts.
+Harvest and milling/cooking must add no Straw/Hay; MO threshing's declared Straw
+is allowed. The test checks available table recipes and rejects jobs that end
+without their outputs. It does not call product-generation helpers itself.
+
+To avoid reliance on normal game speed or Pickle pause state, the test pauses the
+fresh map and posts batches of at most 64 `TickManager.DoSingleTick()` calls to the
+Unity main thread, yielding between batches. Each job is limited to 20,000 ticks;
+the production scope has a 150-second wall limit within the existing 300-second
+profile process timeout. Cleanup ends the worker's job, removes setup objects,
+restores terrain, parked pawns and the prior speed. Rendering, private desktop,
+provider isolation, source hashes, strict summary and ERROR gate remain required.
+
+**Verification boundary:** source/tooling/static checks can run here. This workspace
+has no installed game/assemblies: the new C# has not been compiled or run against
+RimWorld. Only an actual eight-scenario 8/8, zero-skips, runtime ERROR 0 run of each
+real profile establishes that these job tests work. Mature-plant setup does not
+prove sowing, calendar growth, cold death, mood ingestion or save migration.

@@ -147,7 +147,7 @@ set "CCTO_FIXTURE_OUTPUT=%CCTO_FIXTURE_DIR%\Assemblies\CropColdToleranceOverhaul
 set "QUICKSTART_OUTPUT=%E2E_MOD_DIR%\Assemblies\AncientMedievalJapanCore.E2E.dll"
 set "STEPS_OUTPUT=%E2E_MOD_DIR%\Pickle\Assemblies\AncientMedievalJapanCore.E2E.Steps.dll"
 set "PROFILE_STEPS="
-if not "%PROFILE%"=="fixture" set PROFILE_STEPS="%ROOT%Tests\E2E\GrainsProfileSteps.cs"
+if not "%PROFILE%"=="fixture" set PROFILE_STEPS="%ROOT%Tests\E2E\GrainsProfileSteps.cs" "%ROOT%Tests\E2E\GrainsSimulationSteps.cs"
 
 if not "%PROFILE%"=="fixture" goto buildQuickstart
 

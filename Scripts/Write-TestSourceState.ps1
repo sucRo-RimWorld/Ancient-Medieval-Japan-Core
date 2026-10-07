@@ -66,7 +66,7 @@ $trackedFiles = @(
 
 if ($Profile -ne 'fixture') {
     $trackedFiles = @($trackedFiles | Where-Object { $_ -ne 'Tests\E2E\TestMod\Pickle\Features\stage-a.feature' }) + @(
-        'Tests\E2E\GrainsProfileSteps.cs', "Tests\E2E\Profiles\grains-$Profile.feature",
+        'Tests\E2E\GrainsProfileSteps.cs', 'Tests\E2E\GrainsSimulationSteps.cs', "Tests\E2E\Profiles\grains-$Profile.feature",
         'Scripts\GrainsTestProfiles.ps1', 'Scripts\Stage-GrainsTestProfile.ps1',
         'Scripts\Run-GrainsProfiles.ps1', 'Scripts\Prepare-TestSaveData.ps1', 'build-e2e.bat'
     )
