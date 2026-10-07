@@ -8,6 +8,7 @@ for %%D in (
     "%RIMWORLD_DIR%\Mods\AncientMedievalJapanCore.E2ETarget"
     "%RIMWORLD_DIR%\Mods\AncientMedievalJapanCore.E2E"
     "%RIMWORLD_DIR%\Mods\AncientMedievalJapanCore.MOFixture"
+    "%RIMWORLD_DIR%\Mods\AncientMedievalJapanCore.CCTOFixture"
 ) do (
     if exist "%%~D" (
         rmdir /S /Q "%%~D"

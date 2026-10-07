@@ -2,6 +2,11 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$OutputRoot,
 
+    [ValidateSet('fixture','vanilla','vanilla-ccto','mo','mo-ccto')]
+    [string]$Profile = 'fixture',
+
+    [string]$RimWorldRoot,
+
     [string]$SourceModsConfigPath = "$env:USERPROFILE\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml"
 )
 
@@ -33,6 +38,39 @@ $required = @(
     "rimworks.quickstarts",
     "sucro.ancientmedievaljapan.core.e2e"
 )
+
+if ($Profile -ne 'fixture') {
+    . (Join-Path $PSScriptRoot 'GrainsTestProfiles.ps1')
+    $spec = Get-GrainsTestProfile $Profile
+    if (-not $RimWorldRoot) { throw 'RimWorldRoot is required for real Grains profiles.' }
+    $installed = @{}
+    $scanRoots = @((Join-Path $RimWorldRoot 'Data'), (Join-Path $RimWorldRoot 'Mods'),
+        (Join-Path $RimWorldRoot '../../workshop/content/294100'))
+    foreach ($scanRoot in $scanRoots) {
+        if (-not (Test-Path -LiteralPath $scanRoot)) { continue }
+        foreach ($dir in Get-ChildItem -LiteralPath $scanRoot -Directory) {
+            $aboutPath = Join-Path $dir.FullName 'About/About.xml'
+            if (-not (Test-Path -LiteralPath $aboutPath)) { continue }
+            [xml]$metadata = Get-Content -LiteralPath $aboutPath -Raw -Encoding UTF8
+            $id = ([string]$metadata.ModMetaData.packageId).Trim().ToLowerInvariant()
+            if (-not $id) { continue }
+            if ($installed.ContainsKey($id)) {
+                $installed[$id].Duplicates += $dir.FullName
+            } else {
+                $installed[$id] = [pscustomobject]@{ Xml = $metadata; Root = $dir.FullName; Duplicates = @() }
+            }
+        }
+    }
+    $required = @(Get-GrainsActiveMods $spec $installed)
+    foreach ($id in $required) {
+        if ($installed[$id].Duplicates.Count -gt 0) {
+            throw "Ambiguous installed package $id at $($installed[$id].Root), $($installed[$id].Duplicates -join ', ')"
+        }
+    }
+    New-Item -ItemType Directory -Force -Path $OutputRoot | Out-Null
+    @($required | ForEach-Object { [pscustomobject]@{ PackageId = $_; Root = $installed[$_].Root } }) |
+        ConvertTo-Json -Depth 4 | Set-Content -LiteralPath (Join-Path $OutputRoot 'providers.json') -Encoding UTF8
+}
 
 $configDir = Join-Path $OutputRoot "Config"
 $configPath = Join-Path $configDir "ModsConfig.xml"

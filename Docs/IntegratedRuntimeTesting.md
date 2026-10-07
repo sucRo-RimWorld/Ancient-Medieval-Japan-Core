@@ -1,5 +1,9 @@
 # Core + Environment rendered, isolated-desktop runtime gate
 
+For the four real-provider Grains migration profiles, use
+[`GrainsProfileTesting.md`](GrainsProfileTesting.md) and `run-grains-tests.bat`.
+The existing Core entry point below retains the historical fixture suite.
+
 ## Known-good Windows procedure
 
 Run from the Core repository in a normal user session with Steam running:

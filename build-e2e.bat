@@ -4,6 +4,9 @@ setlocal EnableExtensions EnableDelayedExpansion
 set "RIMWORLD_DIR=%~1"
 if not defined RIMWORLD_DIR set "RIMWORLD_DIR=D:\SteamLibrary\steamapps\common\RimWorld"
 
+set "PROFILE=%~2"
+if not defined PROFILE set "PROFILE=fixture"
+
 set "ROOT=%~dp0"
 set "TARGET_MOD_DIR=%RIMWORLD_DIR%\Mods\AncientMedievalJapanCore.E2ETarget"
 set "E2E_MOD_DIR=%RIMWORLD_DIR%\Mods\AncientMedievalJapanCore.E2E"
@@ -67,6 +70,8 @@ if not defined QUICKSTARTS_DLL (
     exit /b 1
 )
 
+if not "%PROFILE%"=="fixture" goto stageGrains
+
 echo [1/6] Resetting generated AMJ E2E mods...
 for %%D in ("%TARGET_MOD_DIR%" "%E2E_MOD_DIR%" "%MO_FIXTURE_DIR%" "%CCTO_FIXTURE_DIR%") do (
     if exist "%%~D" rmdir /S /Q "%%~D"
@@ -128,9 +133,14 @@ if errorlevel 1 exit /b 1
 copy /Y "%ROOT%Tests\E2E\TestMod\Pickle\Features\*.feature" "%E2E_MOD_DIR%\Pickle\Features\" >nul
 if errorlevel 1 exit /b 1
 
+:stageComplete
 set "CCTO_FIXTURE_OUTPUT=%CCTO_FIXTURE_DIR%\Assemblies\CropColdToleranceOverhaul.dll"
 set "QUICKSTART_OUTPUT=%E2E_MOD_DIR%\Assemblies\AncientMedievalJapanCore.E2E.dll"
 set "STEPS_OUTPUT=%E2E_MOD_DIR%\Pickle\Assemblies\AncientMedievalJapanCore.E2E.Steps.dll"
+set "PROFILE_STEPS="
+if not "%PROFILE%"=="fixture" set PROFILE_STEPS="%ROOT%Tests\E2E\GrainsProfileSteps.cs"
+
+if not "%PROFILE%"=="fixture" goto buildQuickstart
 
 echo [3/6] Building CCTO XML API fixture...
 "%CSC%" /nologo /target:library /optimize+ /out:"%CCTO_FIXTURE_OUTPUT%" ^
@@ -139,6 +149,7 @@ echo [3/6] Building CCTO XML API fixture...
     "%ROOT%Tests\E2E\CCTOFixture\ColdToleranceExtension.cs"
 if errorlevel 1 exit /b 1
 
+:buildQuickstart
 echo [4/6] Building deterministic Quickstarts fixture...
 if exist "%UNITY_CORE%" (
     "%CSC%" /nologo /target:library /optimize+ /out:"%QUICKSTART_OUTPUT%" ^
@@ -167,6 +178,7 @@ if exist "%UNITY_CORE%" (
         /reference:"%NETSTANDARD%" ^
         /reference:"%PICKLE_DLL%" ^
         "%ROOT%Tests\E2E\StageASteps.cs" ^
+        %PROFILE_STEPS% ^
         "%ROOT%Tests\E2E\NewVillageSteps.cs"
 ) else (
     "%CSC%" /nologo /target:library /optimize+ /out:"%STEPS_OUTPUT%" ^
@@ -175,25 +187,34 @@ if exist "%UNITY_CORE%" (
         /reference:"%NETSTANDARD%" ^
         /reference:"%PICKLE_DLL%" ^
         "%ROOT%Tests\E2E\StageASteps.cs" ^
+        %PROFILE_STEPS% ^
         "%ROOT%Tests\E2E\NewVillageSteps.cs"
 )
 if errorlevel 1 exit /b 1
 
 echo [6/6] Verifying generated E2E layout...
-if not exist "%CCTO_FIXTURE_OUTPUT%" exit /b 1
+if "%PROFILE%"=="fixture" if not exist "%CCTO_FIXTURE_OUTPUT%" exit /b 1
 if not exist "%QUICKSTART_OUTPUT%" exit /b 1
 if not exist "%STEPS_OUTPUT%" exit /b 1
-if not exist "%E2E_MOD_DIR%\Pickle\Features\stage-a.feature" exit /b 1
+if "%PROFILE%"=="fixture" if not exist "%E2E_MOD_DIR%\Pickle\Features\stage-a.feature" exit /b 1
+if not "%PROFILE%"=="fixture" if not exist "%E2E_MOD_DIR%\Pickle\Features\grains-%PROFILE%.feature" exit /b 1
 if not exist "%TARGET_MOD_DIR%\Defs\RecipeDefs\Recipes_GrainProcessing.xml" exit /b 1
 if not exist "%TARGET_MOD_DIR%\Textures\Things\Plants\FullGrown\AMJC_Awa\AMJC_Awa_Mature.png" exit /b 1
-if not exist "%TARGET_MOD_DIR%\Patches\E2E_Graphics.xml" exit /b 1
-if not exist "%MO_FIXTURE_DIR%\Defs\AMJ_MO_Prereqs.xml" exit /b 1
-if not exist "%MO_FIXTURE_DIR%\Textures\E2E\Placeholder.png" exit /b 1
+if "%PROFILE%"=="fixture" if not exist "%TARGET_MOD_DIR%\Patches\E2E_Graphics.xml" exit /b 1
+if "%PROFILE%"=="fixture" if not exist "%MO_FIXTURE_DIR%\Defs\AMJ_MO_Prereqs.xml" exit /b 1
+if "%PROFILE%"=="fixture" if not exist "%MO_FIXTURE_DIR%\Textures\E2E\Placeholder.png" exit /b 1
 
 echo.
 echo [OK] AMJ E2E test mods are ready:
 echo      %TARGET_MOD_DIR%
 echo      %E2E_MOD_DIR%
-echo      %MO_FIXTURE_DIR%
-echo      %CCTO_FIXTURE_DIR%
+if "%PROFILE%"=="fixture" echo      %MO_FIXTURE_DIR%
+if "%PROFILE%"=="fixture" echo      %CCTO_FIXTURE_DIR%
+echo      Profile: %PROFILE%
 exit /b 0
+
+:stageGrains
+powershell -NoProfile -ExecutionPolicy Bypass -File "%ROOT%Scripts\Stage-GrainsTestProfile.ps1" ^
+    -RepositoryRoot "%ROOT%." -ModsRoot "%RIMWORLD_DIR%\Mods" -Profile "%PROFILE%"
+if errorlevel 1 exit /b 1
+goto stageComplete
