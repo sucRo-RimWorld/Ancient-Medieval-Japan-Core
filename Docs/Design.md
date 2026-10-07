@@ -961,7 +961,7 @@ DBH for Medieval公式互換:
 - **Dubs Bad Hygieneおよび `DBH for Medieval`（`eldersign.dbhformedieval`）をJapanizationの公式互換対象**とする。DBH / DBH for Medievalはハード依存にはしない
 - 2026-10-07の添付Def監査では、DBH for Medievalが手動ポンプ、簡易浴槽、簡易トイレ、洗浄用具、湯沸かし、簡易浄水器、灌漑水路/水門等と独自研究を追加し、MO存在時にはSteel→`DankPyon_IronIngot`、ComponentIndustrial→`DankPyon_ComponentBasic`等の素材置換やMO風車研究との接続を行うことを確認した
 - Japanization導入時は、これら中世DBH設備の**研究位置・名称/説明・素材構成・外観を日本側の歴史進行へ合わせる**。DBH for MedievalのC#による給水・浴槽・ポンプ等の機能そのものは再実装しない
-- DBH for Medievalの灌漑水路/水門とAMJ Waterworksは責務が重なるため、両方導入時に同じ役割の建築物を無秩序に二重表示しないことを互換要件とする。どちらの設備を表示上の正本にするか、ネットワークを接続するかはWaterworks実装時の実行時監査で確定する
+- DBH for Medievalの `ES_IrrigationCanal` / `ES_SluiceGate` はDBH PipeNet / Sprinkler系であり、Waterworksの自然水面から直接取水する重力式開渠とは**機能上別系統**として共存させる。Japanizationでは名称・説明・外観・研究位置を整理して両者の役割を混同させず、必要な接続はWaterworks側の境界設備/Adapterとして扱う
 - Hot Springs併用時の入浴・給湯接続は、Hot Springs / Waterworksが所有する機能を尊重し、JapanizationはDBH側研究・既存設備の日本化と競合解決を担当する
 
 責務に含めないもの:
