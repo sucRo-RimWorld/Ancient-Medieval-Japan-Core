@@ -1451,7 +1451,7 @@ This item remains open until the Core accepted-image inventory has been audited 
 
 **Requested by:** author  
 **Owner:** AMJ architecture / dependency design  
-**Status:** IN PROGRESS — step 1 harness split implemented and tooling/Windows CI validated; production runtime migration and four-profile game runs pending
+**Status:** IN PROGRESS — steps 1–2 implemented and tooling/Windows CI validated; standalone wheat/milling/art and four-profile game runs pending
 
 The author accepted a shift from a central Core dependency tree toward **independent AMJ mods with official optional integration**. The 2026-10-07 Core/MO implementation audit is now complete and its durable conclusions are recorded in `Docs/Design.md` at commit `aa0481c8c8eba2486f1b5db7a7a28240e8314922`.
 
@@ -1517,3 +1517,15 @@ No runtime Def, About.xml, dependency metadata, or production texture was change
 - Full wheat/flour/milling/food, per-profile New Village actual starts, environmental six-grain choice and save migration regressions remain to be added during implementation.
 
 **Next action:** begin migration step 2: remove Base MO research/material/category/Straw/Scenario references and move the MO differences into conditional compatibility in the order specified in Docs/Design.md. Use the new four-profile harness during migration; build/game verification belongs to an environment with the installed RimWorld/real providers/helpers. About.xml remains last. No background worker or runtime test is currently active.
+
+
+**2026-10-07 Base/MO separation step 2:** PR #2 merged. Implementation `8ed4b04990740ee80ea69c2994479496bf808b21`; main merge `41a10b62a1a0b8feae3771857e64a76a27ecbf20`. Durable implementation/design: runtime XML, `Docs/Design.md`, `Docs/GrainsProfileTesting.md` and `Docs/WorkshopPackaging.md`.
+- Base Defs/localization contain zero unconditional MO identifiers. Base barley/table are research-free, table uses Steel 30, simple spot uses Woody, and Base threshing omits Straw. Base New Village has no starting research, Neolithic clothing, WoodLog 400/Steel 30, steel knives and Pemmican 1080 (54 nutrition proxy).
+- Production `loadFolders.xml` conditionally activates `Compatibility/MedievalOverhaul`. MO-specific wheat recipes, original external wheat patch and RawWheat/recipe translations are isolated there. All 38 pre-split explicit AMJC contracts and original moved patch/override bytes and recipe translation values are verified preserved for MO. This proves explicit XML contracts, not resolved game behavior.
+- All four real-provider suites now have five scenarios including New Village loaded settings and actual Quickstart supplies/research. Real-profile loader/runtime bytes remain unchanged in staging; only legacy fixture staging rewrites its disposable loader condition. The legacy eight-scenario suite remains separate.
+- Local PASS: Stage A, Base/MO New Village, actual supplied MO 1.6 XML references (Python and PowerShell), Base-boundary negative regressions, PowerShell parsing/projection and four-profile tooling, art-rule routing, 26 production PNGs, Workshop filtering plus actual Git archive parity.
+- GitHub PR CI PASS: Stage A run `37558256570` (including Windows PowerShell 5.1 parsing/tooling and new boundary regressions); Workshop payload run `37558256561`. Remote implementation tree exactly matches the locally validated Git tree.
+- **Not run:** RimWorld C# test assembly compilation or real game profiles; no installed game/assemblies in this cloud workspace. Runtime ERROR 0 and successful starts are not claimed.
+- Production About.xml/packageId/name/dependency metadata and texture bytes remain unchanged. Three MO placeholder graphics remain intentionally unresolved; Base wheat/flour/milling/food is not yet present, so this is not standalone-ready.
+
+**Next action:** migration step 3 from the final Grains ownership section: add conditional non-MO fallback wheat/sheaf, AMJC_Wheat thresh convergence, fallback wheat flour plus buckwheat/millet flour, manual millstone, nutrition-conserving milling and research-free minimum flour foods. MO profiles must continue exposing only MO wheat/RawWheat, DankPyon_Flour and DankPyon_Millstone. Extend tests without weakening the preserved old MO contracts. Then replace the three MO placeholder graphics through the authorized art workflow, add environmental/save regressions, and run the real four-profile matrix in an installed-game environment. About.xml stays last. No background worker or game test is active.
