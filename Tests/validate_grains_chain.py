@@ -6,9 +6,9 @@ from amj_profile_xml import ROOT, profile_xml
 SHARED_NAMES = {
     'AMJC_BuckwheatFlour','AMJC_MilletFlour','AMJC_Houtou','AMJC_Sobagaki',
     'AMJC_MilletDumplings','AMJC_AteFlourFood','AMJC_MillBuckwheat','AMJC_MillMillet',
-    'AMJC_CookHoutou','AMJC_CookSobagaki','AMJC_CookMilletDumplings',
+    'AMJC_CookHoutou','AMJC_CookSobagaki','AMJC_CookMilletDumplings','AMJC_DoGrainProcessing',
 }
-FALLBACK_NAMES = {'AMJC_Plant_Wheat','AMJC_RawWheat','AMJC_WheatFlour','AMJC_ManualMillstone','AMJC_MillWheat'}
+FALLBACK_NAMES = {'AMJC_Plant_Wheat','AMJC_RawWheat','AMJC_WheatFlour','AMJC_ManualMillstone','AMJC_MillWheat','AMJC_DoGrainsMilling'}
 
 
 def validate(root=ROOT):
@@ -32,6 +32,15 @@ def validate(root=ROOT):
             stone = defs['AMJC_ManualMillstone']
             assert stone.find('researchPrerequisites') is None
             assert stone.findtext('costList/BlocksGranite') == '30' and stone.findtext('costList/WoodLog') == '20'
+        work = defs['AMJC_DoGrainProcessing']
+        assert work.tag == 'WorkGiverDef' and work.findtext('giverClass') == 'WorkGiver_DoBill'
+        assert work.findtext('workType') == 'Crafting'
+        assert [n.text for n in work.findall('fixedBillGiverDefs/li')] == ['AMJC_GrainProcessingSpot','AMJC_GrainProcessingTable']
+        if profile == 'vanilla':
+            work = defs['AMJC_DoGrainsMilling']
+            assert work.tag == 'WorkGiverDef' and work.findtext('giverClass') == 'WorkGiver_DoBill'
+            assert work.findtext('workType') == 'Crafting'
+            assert [n.text for n in work.findall('fixedBillGiverDefs/li')] == ['AMJC_ManualMillstone']
         for name, count in [('AMJC_ThreshWheat',1), ('AMJC_ThreshWheatBulk',10)]:
             rec = defs[name]
             expected = 'DankPyon_RawWheat' if profile == 'mo' else 'AMJC_RawWheat'

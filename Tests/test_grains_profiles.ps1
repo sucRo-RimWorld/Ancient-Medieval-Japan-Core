@@ -72,15 +72,18 @@ try {
             Assert ([array]::IndexOf($active,$id) -lt [array]::IndexOf($active,'sucro.ancientmedievaljapan.core.e2etarget')) 'Real provider must load before target.'
         }
         $summaryPath = Join-Path $temp 'summary.json'
-        @{total=6;passed=6;failed=0;skipped=0;scenarios=@($spec.Scenarios | ForEach-Object { @{name=$_} })} |
+        @{total=$spec.Scenarios.Count;passed=$spec.Scenarios.Count;failed=0;skipped=0;scenarios=@($spec.Scenarios | ForEach-Object { @{name=$_} })} |
             ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $summaryPath
         & (Join-Path $repo 'Scripts/Validate-GrainsPickleSummary.ps1') -SummaryPath $summaryPath -Profile $profile
+        @{total=6;passed=6;failed=0;skipped=0;scenarios=@($spec.Scenarios | Select-Object -First 6 | ForEach-Object { @{name=$_} })} |
+            ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $summaryPath
+        MustFail { & (Join-Path $repo 'Scripts/Validate-GrainsPickleSummary.ps1') -SummaryPath $summaryPath -Profile $profile } 'Old six-scenario summary was accepted.'
         $statePath = Join-Path $temp 'source-state.txt'
         & (Join-Path $repo 'Scripts/Write-TestSourceState.ps1') -RepositoryRoot $repo -OutputPath $statePath -Profile $profile
         $state = Get-Content -LiteralPath $statePath
         Assert ($state -contains "profile=$profile") 'Source attribution has the wrong profile.'
-        Assert (@($state | Where-Object { $_ -like 'feature=*' }).Count -eq 6) 'Source attribution lists the legacy suite.'
-        @{total=6;passed=6;failed=0;skipped=0;scenarios=@(@{name='wrong suite'})} |
+        Assert (@($state | Where-Object { $_ -like 'feature=*' }).Count -eq $spec.Scenarios.Count) 'Source attribution lists the legacy suite.'
+        @{total=$spec.Scenarios.Count;passed=$spec.Scenarios.Count;failed=0;skipped=0;scenarios=@(@{name='wrong suite'})} |
             ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $summaryPath
         MustFail { & (Join-Path $repo 'Scripts/Validate-GrainsPickleSummary.ps1') -SummaryPath $summaryPath -Profile $profile } 'Unrelated summary was accepted.'
     }

@@ -51,6 +51,8 @@ $trackedFiles = @(
     "BaseWithoutMO\Defs\Buildings_Millstone.xml",
     "BaseWithoutMO\Patches\CCTO_Wheat.xml",
     "Defs\RecipeDefs\Recipes_GrainsMilling.xml",
+    "Defs\WorkGiverDefs\WorkGivers_Grains.xml",
+    "BaseWithoutMO\Defs\WorkGivers_Milling.xml",
     "Defs\RecipeDefs\Recipes_GrainsFood.xml",
     "Defs\ThingDefs_Items\Items_GrainsFlour.xml",
     "Defs\ThingDefs_Items\Items_GrainsFood.xml",
@@ -66,7 +68,7 @@ $trackedFiles = @(
 
 if ($Profile -ne 'fixture') {
     $trackedFiles = @($trackedFiles | Where-Object { $_ -ne 'Tests\E2E\TestMod\Pickle\Features\stage-a.feature' }) + @(
-        'Tests\E2E\GrainsProfileSteps.cs', "Tests\E2E\Profiles\grains-$Profile.feature",
+        'Tests\E2E\GrainsProfileSteps.cs', 'Tests\E2E\GrainsSimulationSteps.cs', "Tests\E2E\Profiles\grains-$Profile.feature",
         'Scripts\GrainsTestProfiles.ps1', 'Scripts\Stage-GrainsTestProfile.ps1',
         'Scripts\Run-GrainsProfiles.ps1', 'Scripts\Prepare-TestSaveData.ps1', 'build-e2e.bat'
     )

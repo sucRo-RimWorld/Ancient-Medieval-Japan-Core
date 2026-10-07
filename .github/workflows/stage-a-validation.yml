@@ -55,6 +55,9 @@ jobs:
       - name: Reject flour-chain balance and provider regressions
         run: python Tests/test_grains_chain.py
 
+      - name: Reject environmental crop-choice regressions
+        run: python Tests/test_grains_environment.py
+
       - name: Validate Stage A crop and grain processing XML
         run: python Tests/validate_stage_a.py
 

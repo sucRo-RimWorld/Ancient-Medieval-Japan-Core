@@ -2080,3 +2080,25 @@ Medieval Overhaulと並べても違和感が少ない、**ベクター画像的�
 - 石臼
 - 桶
 - 作業台
+
+
+### Grains 環境・実ジョブ回帰の追加（2026-10-07）
+
+六穀の有限成長時間比較を `Docs/Balance/Crops/GrainsEnvironment.md` に定義し、
+肥沃度3×温度3×季節3の27セルで成熟穀粒収量と勝者を回帰固定する。
+全六穀に代表的な最大収量条件を残し、有効セルの2/3以上を単一穀物が占めない。
+光量・休眠・労働・霜死・Straw価値を除いた分析モデルであり、リリースの環境ゲート全体は未完。
+既存PlantDefの値・About依存・開始シナリオの分離方針は変更しない。
+
+四プロファイルのPickleは8シナリオへ拡張。ロード済みPlantUtilityの環境係数比較と、
+New Villageに依存しないStage A Quickstart上の六穀の実収穫＋11回の加工・製粉・調理Billを追加する。
+成熟株の配置を開始点とし、収穫物・加工品はテスト側で生成しない。
+現在はC#ソースと起動配線の追加までであり、実ゲームのビルド・実行・ERROR 0は未検証。
+実ジョブ経路と検証境界の正本は `Docs/GrainsProfileTesting.md`。
+
+
+実ジョブの経路確認により、AMJ加工Spot/TableとBase手動石臼にWorkGiverの接続がないことを確認した。
+共有 `AMJC_DoGrainProcessing` と非MO限定 `AMJC_DoGrainsMilling` を追加し、
+CraftingのWorkGiver_DoBillから固定対象へ通常作業を割り当てる。
+レシピのrecipeUsersだけではWorkGiver_DoBillの固定対象一覧へ追加されないため、両方を持つ。
+MO石臼は既存MO WorkGiverを利用し、重複作業Defを追加しない。既存38契約は変更しない。

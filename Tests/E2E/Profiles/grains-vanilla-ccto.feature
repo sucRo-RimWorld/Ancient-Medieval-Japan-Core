@@ -18,3 +18,10 @@ Feature: Grains real-provider migration smoke - vanilla-ccto
 
   Scenario: Grains vanilla-ccto wheat flour and minimum food resolve
     Then the Grains wheat flour and minimum food chains resolve
+
+  Scenario: Grains vanilla-ccto six grains retain environmental niches
+    Then six Grains retain environmental harvest niches
+
+  @quickstart:AmjStageAQuickstart
+  Scenario: Grains vanilla-ccto real harvest and flour food Bills complete
+    Then Grains harvest and flour food Bills complete through real jobs
