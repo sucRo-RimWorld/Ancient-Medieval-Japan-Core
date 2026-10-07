@@ -15,7 +15,7 @@ This directory stores accepted source artwork and authoring files that must surv
 
 ## Inventory / recovery queue
 
-The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 7 already archived and 12 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters.
+The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 8 already archived and 11 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters.
 
 ## Current authoritative sources
 
@@ -25,6 +25,7 @@ The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 
 - `Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/BuckwheatInHull.png`
 - `Workshop/AMJ_WorkshopCover_Template.svg`
 - `Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg`
+- `Workshop/AMJ_WorkshopCover_CommonBase.png`
 - `Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
 - `Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
 
@@ -71,7 +72,17 @@ Additional accepted sources should be added to the corresponding mirrored path a
 - Original dimensions: 960×540 RGB JPEG; 92,308 bytes. Preserved without resizing or re-encoding.
 - SHA-256: `ef662e1eb2e399c594adfb6a4d594f1e2727559a73e380f312638b1bc8585658`, matching `Docs/References/AMJ_WorkshopCover_Manifest.md` and `Docs/GoldenPaths/WorkshopCoverPipeline.md`.
 - Provenance: the author-approved visual reference registered by the deterministic Workshop-cover pipeline. Visually inspected and fully decoded; exact registered source bytes were copied.
-- This file is the accepted visual reference, distinct from the SVG schematic, fixed common base and variable mask. The common base and mask remain pending recovery. This archive action does not create or replace `About/preview.png` or publish a Workshop cover.
+- This file is the accepted visual reference, distinct from the SVG schematic, fixed common base and variable mask. The common base is now archived separately; the variable mask remains pending recovery. This archive action does not create or replace `About/preview.png` or publish a Workshop cover.
+
+### Workshop cover common raster — 2026-10-07 JST
+
+- Archived file: `Workshop/AMJ_WorkshopCover_CommonBase.png`.
+- Original: `AMJ_WorkshopCover_CommonBase.png`, Library identity `libfile_1730eee945f8819198690f7cb988c96c`; registered at `/AMJ/References/AMJ_WorkshopCover_CommonBase.png`.
+- Original dimensions: 960×540 RGB PNG; 149,866 bytes. Preserved without resizing, color conversion, or re-encoding.
+- SHA-256: `a738d175bf1997e95f02456843686f8d2d59571d47849e55d04a957707514362`, matching `Docs/References/AMJ_WorkshopCover_Manifest.md` and `Docs/GoldenPaths/WorkshopCoverPipeline.md`.
+- Provenance: the registered fixed common raster for the deterministic cover compositor. Visually inspected the parchment field, title and common ornaments; original bytes are preserved.
+- Source PNG validation checked chunk boundaries/CRCs, the complete IDAT/zlib stream, RGB scanlines/filters, IEND and full image decoding. The production-only PNG gate permits indexed/RGBA encoding; this immutable RGB source is validated separately without changing its encoding.
+- The variable mask remains pending. This action does not create a cover, replace `About/preview.png`, or publish to Workshop.
 
 ## Workshop distribution
 

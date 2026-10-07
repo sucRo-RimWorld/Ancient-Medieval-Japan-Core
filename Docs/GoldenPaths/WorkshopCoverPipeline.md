@@ -13,6 +13,7 @@ The following author-approved/canonical images are registered in the user's pers
   - file SHA-256: `ef662e1eb2e399c594adfb6a4d594f1e2727559a73e380f312638b1bc8585658`
 - `/AMJ/References/AMJ_WorkshopCover_CommonBase.png`
   - fixed common raster used for composition
+  - repository-preserved exact copy: `Art/Sources/Workshop/AMJ_WorkshopCover_CommonBase.png`
   - 960×540
   - file SHA-256: `a738d175bf1997e95f02456843686f8d2d59571d47849e55d04a957707514362`
 - `/AMJ/References/AMJ_WorkshopCover_VariableMask.png`
@@ -37,7 +38,7 @@ Everything outside those variable regions is forcibly restored from the canonica
 
 1. Read `AGENTS.md`, `main:Docs/Coordination.md`, `Docs/WorkshopCoverStyle.md`, and this file.
 2. Retrieve and visually inspect `Art/Sources/Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg` (exact archived copy of `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`); verify the registered hash above. If it cannot be viewed, stop; do not generate a cover from memory/text alone.
-3. Retrieve/materialize `AMJ_WorkshopCover_CommonBase.png` and `AMJ_WorkshopCover_VariableMask.png` from the Library. Verify their hashes if there is any doubt about identity.
+3. Use `Art/Sources/Workshop/AMJ_WorkshopCover_CommonBase.png` for the fixed common raster; retrieve/materialize `AMJ_WorkshopCover_VariableMask.png` from the Library until its separate archive is completed. Verify both registered hashes above.
 4. Resolve the addon-specific right-side composition from the current user request and any already-approved addon specification. Reuse an existing approved composition when one exists. Do not insert a mandatory extra approval round unless the user explicitly asks for proposal/review-first work.
 5. Generate **only the addon-specific illustration**, preferably as a transparent-background PNG. Do not ask ImageGen to draw the AMJ title, parchment background, divider, ornaments, or addon label.
 6. Compose the final cover with `Scripts/build_workshop_cover.py`. The compositor adds the addon label and forcibly restores every locked common pixel.
@@ -48,7 +49,7 @@ Everything outside those variable regions is forcibly restored from the canonica
 
 ## Example
 
-After materializing the Library template files to local paths:
+After resolving the registered common-base and variable-mask files to local paths:
 
 ```bash
 python Scripts/build_workshop_cover.py \
@@ -74,7 +75,7 @@ This pipeline gives a real deterministic guarantee for the **format**, not for t
 - the addon label occupies one fixed slot and is rendered by the compositor rather than ImageGen;
 - the right-side illustration remains creative/generated content and therefore is not pixel-deterministic.
 
-Thus separate chats/contexts can reproduce the same AMJ cover format as long as they retrieve the same Library base/mask and use the compositor. Direct whole-cover image generation is no longer the production path.
+Thus separate chats/contexts can reproduce the same AMJ cover format as long as they retrieve the same registered base/mask and use the compositor. Direct whole-cover image generation is no longer the production path.
 
 ## Regression check
 
