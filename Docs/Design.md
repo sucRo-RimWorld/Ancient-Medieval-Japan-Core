@@ -573,7 +573,7 @@ Grainsの責務は、**乾田穀物の栽培・収穫・一次加工・製粉・
 
 #### 開始シナリオの独立Mod化（2026-10-07 作者確定）
 
-「新しい村」のScenario、開始用プレイヤーFaction/PawnKind、初期研究・物資は、**開始シナリオ専用の独立Mod**が所有する。Grainsは穀物・一次加工・製粉・最低限粉食を所有し、村の開始条件を含めない。NPC派閥を追加するAMJ Factionsとも別責務とする。新Modの正式名称・packageId・リポジトリは未決定。 移行対象台帳・二つの試作パッケージの生成規則・旧セーブ検証計画は [`Docs/ScenarioExtraction.md`](ScenarioExtraction.md) を正本とする。
+「新しい村」のScenario、開始用プレイヤーFaction/PawnKind、初期研究・物資は、**開始シナリオ専用の独立Mod**が所有する。Grainsは穀物・一次加工・製粉・最低限粉食を所有し、村の開始条件を含めない。NPC派閥を追加するAMJ Factionsとも別責務とする。正式名称は **Ancient & Medieval Japan - Scenarios**（略称AMJ - Scenarios）、packageIdは `sucro.ancientmedievaljapan.scenarios`。作者指定により専用リポジトリ [`Ancient-Medieval-Japan-Scenarios`](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Scenarios) で所有する。Coreリポジトリは作者により `Ancient-Medieval-Japan-Grains` へ改名された。リポジトリ改名だけでは本番ModのpackageId・DefName・About依存を変更しない。 移行対象台帳・二つの試作パッケージの生成規則・旧セーブ検証計画は [`Docs/ScenarioExtraction.md`](ScenarioExtraction.md) を正本とする。
 
 - 開始シナリオModはVanilla単独で成立させる。Grains・MOを必須依存にしない。
 - Grains導入時だけ雑穀等の開始物資と加工経路への接続を適用し、MO導入時だけMO研究・素材・携行食等の差分を適用する。両方導入した構成も開始シナリオMod側の任意互換で扱う。
