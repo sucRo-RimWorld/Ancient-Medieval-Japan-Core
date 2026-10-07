@@ -59,14 +59,24 @@ class BaseBoundaryTests(unittest.TestCase):
         xml = ET.parse(path)
         xml.find('ThingDef[defName="AMJC_Plant_Barley"]/plant/immatureGraphicPath').text = 'Things/Plants/Immature/WheatPlant'
         xml.write(path)
-        with self.assertRaisesRegex(AssertionError, 'Base MO texture reference'):
+        with self.assertRaisesRegex(AssertionError, 'AMJ graphics priority lost'):
             self.validate()
 
-    def test_missing_mo_graphics_restore_rejected(self):
+    def test_mo_graphics_override_rejected(self):
         path = self.root / MO_FOLDER / 'Patches/MedievalOverhaul_StageA_Base.xml'
         xml = ET.parse(path)
-        operation = next(n for n in xml.getroot() if n.findtext('xpath', '').endswith('/plant/immatureGraphicPath'))
-        xml.getroot().remove(operation)
+        xml.getroot().append(ET.fromstring('''<Operation Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AMJC_Plant_Barley"]/plant/immatureGraphicPath</xpath>
+          <value><immatureGraphicPath>Things/Plants/Immature/WheatPlant</immatureGraphicPath></value>
+        </Operation>'''))
+        xml.write(path)
+        with self.assertRaisesRegex(AssertionError, 'AMJ graphics priority lost'):
+            self.validate()
+
+    def test_visual_exception_does_not_hide_gameplay_change(self):
+        path = self.root / 'Defs/ThingDefs_Buildings/Buildings_GrainProcessing.xml'
+        xml = ET.parse(path)
+        xml.find('ThingDef[defName="AMJC_GrainProcessingSpot"]/statBases/MaxHitPoints').text = '999'
         xml.write(path)
         with self.assertRaisesRegex(AssertionError, 'pre-split snapshot'):
             self.validate()

@@ -186,7 +186,7 @@
       <Nutrition>0.2</Nutrition>
     </statBases>
     <graphicData>
-      <!-- TEMP: AMJ Awa art for standalone loading; conditional MO patch preserves historical wheat art. -->
+      <!-- TEMP: AMJ Awa art in all profiles until dedicated barley art is approved. -->
       <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
