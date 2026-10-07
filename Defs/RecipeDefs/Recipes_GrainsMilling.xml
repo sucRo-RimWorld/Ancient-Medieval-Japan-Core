@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Defs>
+  <RecipeDef>
+    <defName>AMJC_MillBuckwheat</defName>
+    <label>mill buckwheat</label>
+    <description />
+    <jobString>Milling grain.</jobString>
+    <workAmount>300</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <allowMixingIngredients>false</allowMixingIngredients>
+    <targetCountAdjustment>10</targetCountAdjustment>
+    <recipeUsers>
+      <li>AMJC_ManualMillstone</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>AMJC_Buckwheat</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>AMJC_Buckwheat</li>
+      </thingDefs>
+      <specialFiltersToDisallow>
+        <li>AllowRotten</li>
+      </specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products>
+      <AMJC_BuckwheatFlour>10</AMJC_BuckwheatFlour>
+    </products>
+  </RecipeDef>
+  <RecipeDef>
+    <defName>AMJC_MillMillet</defName>
+    <label>mill millet</label>
+    <description />
+    <jobString>Milling grain.</jobString>
+    <workAmount>300</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <allowMixingIngredients>false</allowMixingIngredients>
+    <targetCountAdjustment>10</targetCountAdjustment>
+    <recipeUsers>
+      <li>AMJC_ManualMillstone</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>AMJC_Millet</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>AMJC_Millet</li>
+      </thingDefs>
+      <specialFiltersToDisallow>
+        <li>AllowRotten</li>
+      </specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products>
+      <AMJC_MilletFlour>10</AMJC_MilletFlour>
+    </products>
+  </RecipeDef>
+</Defs>

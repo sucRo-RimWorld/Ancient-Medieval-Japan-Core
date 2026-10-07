@@ -1,6 +1,6 @@
 # Grains dependency-migration test profiles
 
-This covers migration steps 1 and 2 of `Docs/Design.md`: separate the harness before changing
+This covers migration steps 1 through 3 of `Docs/Design.md`: separate the harness before changing
 production dependency metadata or runtime ownership. The production `About.xml`
 still requires MO. A successful tooling test is not a successful Grains release.
 
@@ -40,14 +40,14 @@ duplicate package installations and dependency/load-order cycles fail setup.
 `Scripts/Stage-GrainsTestProfile.ps1` for the four real-provider profiles.
 The disposable `AncientMedievalJapanCore.E2ETarget` has the existing test packageId,
 no hard MO dependency, and profile-specific provider load order. Its Defs,
-Patches, Textures, Languages and Compatibility are copied unchanged. Assemblies, versioned 1.6
+Patches, Textures, Languages, Compatibility and BaseWithoutMO are copied unchanged. Assemblies, versioned 1.6
 content and loadFolders are copied if present. Production Core is not activated
 alongside the test copy. The test-mod assembly build is shared with the legacy
 runner; the real profiles neither build nor load the MO/CCTO API fixtures.
 
 Real profiles do not apply `E2E_Graphics.xml`, remove MO references, substitute
 recipes, or manufacture missing provider Defs. Base MO Def references were isolated in step 2. Vanilla
-still has pending wheat/flour/milling content and MO placeholder art.
+now has initial wheat/flour/milling/food XML, with pending runtime/art/prose verification.
 Those gaps must remain visible until runtime migration resolves them.
 
 `build-e2e.bat <RimWorldRoot>` and the existing `run-e2e.bat` / `run-tests.bat`
@@ -70,18 +70,18 @@ setup diagnostics and report paths. The report includes:
 - source HEAD, existing source fingerprints, and SHA-256 hashes of the staged
   runtime target, compiled test assemblies/features and non-Vanilla providers.
 
-The profile suite requires exactly its five named scenarios, 5/5 passes and
+The profile suite requires exactly its six named scenarios, 6/6 passes and
 zero skips. Assertions check actual provider presence, fixture/production-Core
 absence, resolved primary crop/recipe/simple-meal contracts, New Village loaded settings and actual Quickstart supplies/research
-for the active profile, and presence/absence of AMJ cold-tolerance extensions. Runtime log checking
+for the active profile, loaded wheat/flour/milling/food contracts, and presence/absence of AMJ cold-tolerance extensions. Runtime log checking
 fails on **any ERROR**, including provider errors. Both summary and log gates
 run after a launched game even if the process or scenarios already failed.
 Missing fresh output is a failure. The game watchdog is five minutes per profile;
 the private-desktop matrix watchdog is forty minutes and terminates its own tree.
 
 These are **migration smoke tests**, not the completed release matrix. Subsequent
-implementation must add standalone wheat/flour/milling/food contracts, six-grain environmental-choice
-regression, and save compatibility cases. None is inferred from the five smoke
+implementation must prove actual harvest/Bill cooking behavior, six-grain environmental-choice
+regression, and save compatibility cases. None is inferred from the six smoke
 scenarios or from the old fixture suite.
 
 ## Tooling regression
@@ -99,10 +99,11 @@ test assemblies or claim runtime success.
 
 ## Conditional runtime folders and static contracts
 
-Production `loadFolders.xml` loads `/` and activates
-`Compatibility/MedievalOverhaul` only for `DankPyon.Medieval.Overhaul`.
+Production `loadFolders.xml` loads `/`, activates
+`Compatibility/MedievalOverhaul` only for `DankPyon.Medieval.Overhaul`, and activates
+`BaseWithoutMO` only when that provider is absent.
 Real-profile staging preserves the loader and conditional files byte for byte.
-Only the legacy fixture stage changes its disposable loader condition via
+Only the legacy fixture stage changes its disposable loader conditions via
 `Prepare-FixtureLoadFolders.ps1`; production XML never names a fixture.
 Workshop archives must include the loader and all conditional runtime files.
 
@@ -122,7 +123,7 @@ Grains and MO integrations are optional and owned by the scenario mod. Neither
 mod makes the other a hard dependency. The final name/package/repository and
 save-migration mechanism remain undecided; physical extraction has not occurred.
 
-The current five-scenario profile suites and eight-scenario fixture suite retain
+The current six-scenario profile suites and eight-scenario fixture suite retain
 New Village only as transitional contracts. During extraction, move the startup
 checks and the Scenario/Faction/PawnKind golden contracts to the new owner; remove
 the dedicated-Scenario presence requirement from Grains in that same change.
@@ -133,3 +134,28 @@ old Core New Village saves and exactly one provider of every migrated Def when
 old/new packages coexist. Grains standalone must pass without the scenario mod.
 Apply the existing non-interactive rendering and runtime ERROR gates. None of
 these extraction/migration tests is claimed as already passing.
+
+## Step 3 chain validation and outstanding release gates
+
+`python Tests/validate_stage_a.py` includes Base/MO chain validation.
+`python Tests/test_grains_chain.py` rejects nutrition multiplication, extra milling
+products, bread-like storage, cooking research gates, broken MO flour routing and
+duplicate fallback defs. Shared new AMJ contracts are allowed explicitly; the
+original 38-contract hashes are still compared unchanged.
+
+The sixth Pickle scenario checks loaded fallback/provider isolation, wheat
+harvest/thresh definitions, flour nutrition and recipe users, the standard mill
+research gate, CCTO wheat extension, and food input/output/storage/Mood. This is
+loaded-contract coverage, not completed growing/harvesting/milling/cooking Bills.
+C# compilation and real-profile execution remain pending in an installed game.
+
+MO integration removes the standard millstone's research prerequisites so the
+minimum Grains flour loop is research-free. This external patch must be audited
+against actual MO source and the final loaded Def; it is excluded from the
+AMJ-only static projection. New descriptions are blank pending Japanese author
+review before English translation. All new graphics are documented development
+references (existing AMJ or Vanilla); no final image was generated. Environmental
+choice, save migration, provider/parent inheritance and graphics require runtime
+verification before changing production About.xml or claiming standalone release.
+
+Repeat the actual-provider XML audit with `python Tests/validate_grains_chain.py --mo-root <MO-root>` against the installed or supplied MO 1.6 sources. This checks source targets/nutrition, not the resolved runtime Patch result.

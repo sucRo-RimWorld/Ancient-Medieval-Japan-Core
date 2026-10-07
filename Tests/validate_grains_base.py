@@ -8,7 +8,7 @@ from amj_profile_xml import ROOT, MO_FOLDER, profile_xml, contract_signature
 
 def validate():
     # MO identifiers/classes must be absent from Base Defs and localization.
-    for folder in ("Defs", "Languages"):
+    for folder in ("Defs", "Languages", "BaseWithoutMO"):
         for path in sorted((ROOT / folder).rglob("*.xml")):
             document = ET.parse(path).getroot()
             for node in document.iter():
@@ -24,7 +24,7 @@ def validate():
     base = profile_xml("vanilla")
     mo = profile_xml("mo")
     base_recipes = {n.findtext("defName") for n in base.findall("RecipeDef")}
-    for path in (ROOT / "Languages").glob("*/DefInjected/RecipeDef/*.xml"):
+    for path in list((ROOT / "Languages").glob("*/DefInjected/RecipeDef/*.xml")) + list((ROOT / "BaseWithoutMO/Languages").glob("*/DefInjected/RecipeDef/*.xml")):
         for translation in ET.parse(path).getroot():
             assert translation.tag.split(".")[0] in base_recipes, f"Base orphan RecipeDef translation: {translation.tag}"
     names = [n.findtext("defName") or n.get("Name") for n in mo]
@@ -45,7 +45,9 @@ def validate():
         if name and name.startswith("AMJC_"):
             raw = json.dumps(contract_signature(node), ensure_ascii=False, separators=(",", ":"))
             actual[node.tag + ":" + name] = hashlib.sha256(raw.encode()).hexdigest()
-    assert actual == golden["sha256"], "MO-loaded explicit AMJC contracts differ from the pre-split snapshot"
+    from validate_grains_chain import SHARED_NAMES
+    assert set(actual) == set(golden["sha256"]) | {n.tag+":"+n.findtext("defName") for n in mo if n.findtext("defName") in SHARED_NAMES}, "Unknown MO AMJC contract"
+    assert {k: actual[k] for k in golden["sha256"]} == golden["sha256"], "MO-loaded explicit AMJC contracts differ from the pre-split snapshot"
     def get(name):
         matches = [node for node in base if node.findtext("defName") == name]
         assert len(matches) == 1, name
@@ -59,7 +61,7 @@ def validate():
         assert node.find("products/DankPyon_Straw") is None
         if (node.findtext("defName") or "").startswith("AMJC_Thresh"):
             assert len(node.findall("products/*")) == 1
-    assert not any((n.findtext("defName") or "").startswith("AMJC_ThreshWheat") for n in base)
+    assert any(n.findtext("defName") == "AMJC_ThreshWheat" for n in base)
     print("Grains stage-2 Base references 0; 38 pre-split MO explicit Def contracts preserved: PASS")
 
 

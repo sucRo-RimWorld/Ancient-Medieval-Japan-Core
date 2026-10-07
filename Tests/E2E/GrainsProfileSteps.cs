@@ -75,6 +75,91 @@ namespace AncientMedievalJapanCore.E2E
             });
         }
 
+        [Then("the Grains wheat flour and minimum food chains resolve")]
+        public Task FlourChain(PickleContext ctx)
+        {
+            return RuntimeThread.Run(delegate
+            {
+                bool mo = Active("dankpyon.medieval.overhaul");
+                foreach (string fallback in new[] { "AMJC_Plant_Wheat", "AMJC_RawWheat", "AMJC_WheatFlour", "AMJC_ManualMillstone" })
+                    ctx.Assert((DefDatabase<ThingDef>.GetNamedSilentFail(fallback) != null) == !mo,
+                        "Fallback presence must match MO absence: " + fallback);
+                ctx.Assert((DefDatabase<RecipeDef>.GetNamedSilentFail("AMJC_MillWheat") != null) == !mo,
+                    "Only Base must expose the fallback wheat milling recipe.");
+                ThingDef wheat = DefDatabase<ThingDef>.GetNamed(mo ? "DankPyon_Plant_Wheat" : "AMJC_Plant_Wheat");
+                string sheaf = mo ? "DankPyon_RawWheat" : "AMJC_RawWheat";
+                ctx.Assert(wheat.plant.harvestedThingDef.defName == sheaf && wheat.plant.growDays == 12f
+                    && wheat.plant.harvestYield == 28f && wheat.plant.fertilityMin == 0.7f
+                    && wheat.plant.fertilitySensitivity == 0.9f, "Wheat provider must retain the six-grain balance.");
+                if (!mo)
+                {
+                    ctx.Assert(wheat.plant.sowResearchPrerequisites == null || wheat.plant.sowResearchPrerequisites.Count == 0,
+                        "Base wheat must be research-free.");
+                    bool ccto = Active("sucro.cropcoldtoleranceoverhaul");
+                    var extensions = wheat.modExtensions == null ? new System.Collections.Generic.List<DefModExtension>()
+                        : wheat.modExtensions.Where(e => e != null && e.GetType().FullName == "CropColdToleranceOverhaul.ColdToleranceExtension").ToList();
+                    ctx.Assert(extensions.Count == (ccto ? 1 : 0), "Fallback CCTO extension must match the provider.");
+                    if (ccto)
+                        ctx.Assert(Convert.ToSingle(extensions[0].GetType().GetField("coldDeathTemperature").GetValue(extensions[0])) == -6f,
+                            "Fallback wheat must retain the -6 C cold-death value.");
+                }
+                ThingDef inputSheaf = DefDatabase<ThingDef>.GetNamed(sheaf);
+                ctx.Assert(inputSheaf.ingestible.preferability == FoodPreferability.NeverForNutrition,
+                    "Wheat sheaves must not bypass threshing.");
+                foreach (string name in new[] { "AMJC_ThreshWheat", "AMJC_ThreshWheatBulk" })
+                {
+                    RecipeDef rec = DefDatabase<RecipeDef>.GetNamed(name);
+                    int count = name.EndsWith("Bulk") ? 10 : 1;
+                    ctx.Assert(rec.ingredients.Count == 1 && rec.ingredients[0].filter.Allows(inputSheaf)
+                        && rec.ingredients[0].GetBaseCount() == count, "Wheat thresh input differs: " + name);
+                    ctx.Assert(rec.products.Count == (mo ? 2 : 1)
+                        && rec.products.Single(p => p.thingDef.defName == "AMJC_Wheat").count == count,
+                        "Wheat thresh convergence differs: " + name);
+                }
+                ThingDef mill = DefDatabase<ThingDef>.GetNamed(mo ? "DankPyon_Millstone" : "AMJC_ManualMillstone");
+                ctx.Assert(mill.researchPrerequisites == null || mill.researchPrerequisites.Count == 0,
+                    "The standard Grains mill must be research-free.");
+                string[] grains = { "AMJC_Buckwheat", "AMJC_Millet", "AMJC_Wheat" };
+                string[] powders = { "AMJC_BuckwheatFlour", "AMJC_MilletFlour", mo ? "DankPyon_Flour" : "AMJC_WheatFlour" };
+                string[] recipes = { "AMJC_MillBuckwheat", "AMJC_MillMillet", mo ? "DankPyon_CraftFlour" : "AMJC_MillWheat" };
+                for (int index = 0; index < grains.Length; index++)
+                {
+                    RecipeDef rec = DefDatabase<RecipeDef>.GetNamed(recipes[index]);
+                    ThingDef grain = DefDatabase<ThingDef>.GetNamed(grains[index]);
+                    ThingDef powder = DefDatabase<ThingDef>.GetNamed(powders[index]);
+                    ctx.Assert(rec.ingredients.Any(i => i.filter.Allows(grain)) && rec.recipeUsers.Contains(mill),
+                        "Grain must connect to the standard mill: " + grains[index]);
+                    ctx.Assert(rec.products.Count == 1 && rec.products[0].thingDef == powder,
+                        "Milling must yield only the designated powder: " + recipes[index]);
+                    ctx.Assert(Math.Abs(rec.ingredients[0].GetBaseCount() * grain.GetStatValueAbstract(StatDefOf.Nutrition)
+                        - rec.products[0].count * powder.GetStatValueAbstract(StatDefOf.Nutrition)) < 0.001f,
+                        "Milling must conserve nutrition: " + recipes[index]);
+                    ctx.Assert(powder.ingestible.preferability == FoodPreferability.NeverForNutrition,
+                        "Powders must be used by cooking rather than eaten directly.");
+                }
+                string[] foods = { "Sobagaki", "MilletDumplings", "Houtou" };
+                for (int index = 0; index < foods.Length; index++)
+                {
+                    RecipeDef rec = DefDatabase<RecipeDef>.GetNamed("AMJC_Cook" + foods[index]);
+                    ThingDef food = DefDatabase<ThingDef>.GetNamed("AMJC_" + foods[index]);
+                    ThingDef powder = DefDatabase<ThingDef>.GetNamed(powders[index]);
+                    ctx.Assert(rec.ingredients.Count == 1 && rec.ingredients[0].filter.Allows(powder)
+                        && rec.ingredients[0].GetBaseCount() == 0.5f, "Powder meal must require 0.5 nutrition.");
+                    ctx.Assert(rec.products.Count == 1 && rec.products[0].thingDef == food && rec.products[0].count == 1,
+                        "Cooking must yield one designed flour meal.");
+                    ctx.Assert(rec.recipeUsers.Any(u => u.defName == "Campfire") && rec.researchPrerequisite == null
+                        && (rec.researchPrerequisites == null || rec.researchPrerequisites.Count == 0),
+                        "Minimum powder food must be research-free and available at a campfire.");
+                    ctx.Assert(Math.Abs(food.GetStatValueAbstract(StatDefOf.Nutrition) - 0.9f) < 0.001f
+                        && food.ingestible.tasteThought.defName == "AMJC_AteFlourFood", "Food nutrition/thought differs.");
+                    ctx.Assert(food.comps.OfType<CompProperties_Rottable>().Single().daysToRotStart == 2.5f,
+                        "Minimum powder foods must not become long-storage bread.");
+                }
+                ctx.Assert(DefDatabase<ThoughtDef>.GetNamed("AMJC_AteFlourFood").stages[0].baseMoodEffect == 2f,
+                    "The extra flour processing reward must remain +2 mood.");
+            });
+        }
+
         [Then("Grains cold tolerance extensions are present")]
         public void ColdPresent(PickleContext ctx) { new StageASteps().AssertLoadedCropCctoCompatibility(ctx); }
 

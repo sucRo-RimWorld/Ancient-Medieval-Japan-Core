@@ -80,4 +80,4 @@ must be explicitly registered in the validator and documented here before releas
 
 ## Conditional Grains runtime content
 
-`loadFolders.xml` and `Compatibility/MedievalOverhaul/{Defs,Patches,Languages}` are subscriber runtime content. Keep the complete tree in YADA/export archives; the game loader decides whether MO is active. `Tests/Fixtures/MO_PreSplit_Contracts.json` and XML projection/test scripts remain development-only and excluded.
+`loadFolders.xml` and `Compatibility/MedievalOverhaul/{Defs,Patches,Languages}` and `BaseWithoutMO/{Defs,Patches,Languages}` are subscriber runtime content. Keep the complete tree in YADA/export archives; the game loader decides whether MO is active. `Tests/Fixtures/MO_PreSplit_Contracts.json` and XML projection/test scripts remain development-only and excluded.

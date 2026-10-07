@@ -530,3 +530,6 @@ from validate_grains_base import validate as validate_grains_base
 validate_grains_base()
 
 print("AMJ Stage A static validation: PASS")
+
+from validate_grains_chain import validate as validate_chain
+validate_chain()

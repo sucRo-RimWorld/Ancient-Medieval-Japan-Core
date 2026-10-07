@@ -47,7 +47,7 @@ try {
         & (Join-Path $repo 'Scripts/Stage-GrainsTestProfile.ps1') -RepositoryRoot $repo -ModsRoot $mods -Profile $profile
         $target = Join-Path $mods 'AncientMedievalJapanCore.E2ETarget'
         Assert (-not (Test-Path (Join-Path $target 'Patches/E2E_Graphics.xml'))) 'Graphics substitutions leaked into real profile.'
-        foreach ($folder in @('Defs','Patches','Textures','Languages','Compatibility')) {
+        foreach ($folder in @('Defs','Patches','Textures','Languages','Compatibility','BaseWithoutMO')) {
             foreach ($file in Get-ChildItem -LiteralPath (Join-Path $repo $folder) -File -Recurse) {
                 $relative = $file.FullName.Substring($repo.Length + 1)
                 Assert ((Get-FileHash -LiteralPath $file.FullName).Hash -eq (Get-FileHash -LiteralPath (Join-Path $target $relative)).Hash) "Runtime bytes changed: $relative"
@@ -72,21 +72,22 @@ try {
             Assert ([array]::IndexOf($active,$id) -lt [array]::IndexOf($active,'sucro.ancientmedievaljapan.core.e2etarget')) 'Real provider must load before target.'
         }
         $summaryPath = Join-Path $temp 'summary.json'
-        @{total=5;passed=5;failed=0;skipped=0;scenarios=@($spec.Scenarios | ForEach-Object { @{name=$_} })} |
+        @{total=6;passed=6;failed=0;skipped=0;scenarios=@($spec.Scenarios | ForEach-Object { @{name=$_} })} |
             ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $summaryPath
         & (Join-Path $repo 'Scripts/Validate-GrainsPickleSummary.ps1') -SummaryPath $summaryPath -Profile $profile
         $statePath = Join-Path $temp 'source-state.txt'
         & (Join-Path $repo 'Scripts/Write-TestSourceState.ps1') -RepositoryRoot $repo -OutputPath $statePath -Profile $profile
         $state = Get-Content -LiteralPath $statePath
         Assert ($state -contains "profile=$profile") 'Source attribution has the wrong profile.'
-        Assert (@($state | Where-Object { $_ -like 'feature=*' }).Count -eq 5) 'Source attribution lists the legacy suite.'
-        @{total=5;passed=5;failed=0;skipped=0;scenarios=@(@{name='wrong suite'})} |
+        Assert (@($state | Where-Object { $_ -like 'feature=*' }).Count -eq 6) 'Source attribution lists the legacy suite.'
+        @{total=6;passed=6;failed=0;skipped=0;scenarios=@(@{name='wrong suite'})} |
             ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $summaryPath
         MustFail { & (Join-Path $repo 'Scripts/Validate-GrainsPickleSummary.ps1') -SummaryPath $summaryPath -Profile $profile } 'Unrelated summary was accepted.'
     }
     & (Join-Path $repo 'Scripts/Prepare-FixtureLoadFolders.ps1') -TargetRoot $target
     [xml]$fixtureLoader = Get-Content -LiteralPath (Join-Path $target 'loadFolders.xml') -Raw
     Assert ($fixtureLoader.loadFolders.'v1.6'.li[1].IfModActive -eq 'sucro.ancientmedievaljapan.core.mofixture') 'Legacy fixture condition was not isolated.'
+    Assert ($fixtureLoader.loadFolders.'v1.6'.li[2].IfModNotActive -eq 'sucro.ancientmedievaljapan.core.mofixture') 'Legacy fixture failed to exclude fallback content.'
     [xml]$productionLoader = Get-Content -LiteralPath (Join-Path $repo 'loadFolders.xml') -Raw
     Assert ($productionLoader.loadFolders.'v1.6'.li[1].IfModActive -eq 'DankPyon.Medieval.Overhaul') 'Fixture condition leaked into production.'
     . (Join-Path $repo 'Scripts/AmjProfileXml.ps1')

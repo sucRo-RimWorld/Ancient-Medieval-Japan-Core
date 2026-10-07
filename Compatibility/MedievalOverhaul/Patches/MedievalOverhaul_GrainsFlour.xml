@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Patch>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/RecipeDef[defName="AMJC_MillBuckwheat"]/recipeUsers</xpath>
+    <value>
+      <recipeUsers>
+        <li>DankPyon_Millstone</li>
+      </recipeUsers>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/RecipeDef[defName="AMJC_MillMillet"]/recipeUsers</xpath>
+    <value>
+      <recipeUsers>
+        <li>DankPyon_Millstone</li>
+      </recipeUsers>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/RecipeDef[defName="AMJC_CookHoutou"]/ingredients/li/filter/thingDefs/li</xpath>
+    <value>
+      <li>DankPyon_Flour</li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/RecipeDef[defName="AMJC_CookHoutou"]/fixedIngredientFilter/thingDefs/li</xpath>
+    <value>
+      <li>DankPyon_Flour</li>
+    </value>
+  </Operation>
+</Patch>

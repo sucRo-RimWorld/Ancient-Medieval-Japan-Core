@@ -115,6 +115,8 @@ if exist "%ROOT%Textures" (
     if errorlevel 1 exit /b 1
 )
 
+xcopy "%ROOT%BaseWithoutMO" "%TARGET_MOD_DIR%\BaseWithoutMO" /E /I /Y >nul
+if errorlevel 1 exit /b 1
 xcopy "%ROOT%Compatibility" "%TARGET_MOD_DIR%\Compatibility" /E /I /Y >nul
 if errorlevel 1 exit /b 1
 copy /Y "%ROOT%loadFolders.xml" "%TARGET_MOD_DIR%\loadFolders.xml" >nul

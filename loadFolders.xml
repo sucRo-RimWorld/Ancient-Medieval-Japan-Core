@@ -3,5 +3,6 @@
   <v1.6>
     <li>/</li>
     <li IfModActive="DankPyon.Medieval.Overhaul">Compatibility/MedievalOverhaul</li>
+    <li IfModNotActive="DankPyon.Medieval.Overhaul">BaseWithoutMO</li>
   </v1.6>
 </loadFolders>
