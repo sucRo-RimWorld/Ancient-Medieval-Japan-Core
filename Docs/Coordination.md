@@ -68,7 +68,7 @@ Use whichever label best fits the task:
 
 AMJ-common public-description rules were consolidated in `Docs/ModDescriptionGuidelines.md` and referenced from `AGENTS.md`. Japanese public copy should use established Japanese general terms, preserve English mainly for official names/identifiers, avoid internal engine terminology unless technically necessary, distinguish newly added content from reused/reconfigured systems, and prioritize player-visible changes over implementation or artwork provenance. README → Workshop → 2game → About.xml is the required decreasing-information hierarchy, and public-copy changes require cross-surface consistency checks.
 
-The 2game common structure now uses `▼ 特徴` and stale AMJ Core naming in the common description guideline was updated to AMJ Grains where applicable.
+The 2game common structure now uses `▼ 特徴`. The guideline is hosted in the Grains repository; the configured Mod display name remains Ancient & Medieval Japan Core.
 
 
 ### DES-IRONMAKING-001 — standalone ancient / medieval Ironmaking
