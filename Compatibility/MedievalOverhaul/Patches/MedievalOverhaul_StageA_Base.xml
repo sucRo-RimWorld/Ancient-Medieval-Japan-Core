@@ -74,4 +74,21 @@
       <DankPyon_Straw>10</DankPyon_Straw>
     </value>
   </Operation>
+  <!-- Preserve previous MO graphics only inside the MO-active load root. -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="AMJC_Plant_Barley"]/graphicData/texPath</xpath>
+    <value><texPath>Things/Plants/FullGrown/WheatPlant</texPath></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="AMJC_Plant_Barley"]/plant/immatureGraphicPath</xpath>
+    <value><immatureGraphicPath>Things/Plants/Immature/WheatPlant</immatureGraphicPath></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="AMJC_GrainProcessingSpot"]/graphicData/texPath</xpath>
+    <value><texPath>Things/Building/Production/StonecuttingSpot</texPath></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="AMJC_GrainProcessingTable"]/graphicData/texPath</xpath>
+    <value><texPath>Things/Building/Production/Millstone</texPath></value>
+  </Operation>
 </Patch>

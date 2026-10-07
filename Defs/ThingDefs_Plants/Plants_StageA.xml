@@ -186,8 +186,8 @@
       <Nutrition>0.2</Nutrition>
     </statBases>
     <graphicData>
-      <!-- TEMP: Medieval Overhaul wheat plant art until Art/graphics supplies Barley-specific textures. -->
-      <texPath>Things/Plants/FullGrown/WheatPlant</texPath>
+      <!-- TEMP: AMJ Awa art for standalone loading; conditional MO patch preserves historical wheat art. -->
+      <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
       <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <selectable>true</selectable>
@@ -211,7 +211,7 @@
       <minOptimalGrowthTemperature>5</minOptimalGrowthTemperature>
       <maxOptimalGrowthTemperature>22</maxOptimalGrowthTemperature>
       <visualSizeRange>0.5~1.0</visualSizeRange>
-      <immatureGraphicPath>Things/Plants/Immature/WheatPlant</immatureGraphicPath>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Awa</immatureGraphicPath>
       <wildOrder>6</wildOrder>
       <purpose>Food</purpose>
       <sowMinSkill>2</sowMinSkill>

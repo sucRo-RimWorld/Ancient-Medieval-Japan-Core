@@ -5,6 +5,13 @@ import re
 import xml.etree.ElementTree as ET
 from amj_profile_xml import ROOT, MO_FOLDER, profile_xml, contract_signature
 
+MO_GRAPHIC_PATHS = {
+    "Things/Plants/FullGrown/WheatPlant",
+    "Things/Plants/Immature/WheatPlant",
+    "Things/Building/Production/StonecuttingSpot",
+    "Things/Building/Production/Millstone",
+}
+
 
 def validate():
     # MO identifiers/classes must be absent from Base Defs and localization.
@@ -23,6 +30,9 @@ def validate():
 
     base = profile_xml("vanilla")
     mo = profile_xml("mo")
+    for node in base.iter():
+        if node.tag in {"texPath", "immatureGraphicPath"}:
+            assert (node.text or "").strip() not in MO_GRAPHIC_PATHS, "Base MO texture reference: " + str(node.text)
     base_recipes = {n.findtext("defName") for n in base.findall("RecipeDef")}
     for path in list((ROOT / "Languages").glob("*/DefInjected/RecipeDef/*.xml")) + list((ROOT / "BaseWithoutMO/Languages").glob("*/DefInjected/RecipeDef/*.xml")):
         for translation in ET.parse(path).getroot():
@@ -53,6 +63,11 @@ def validate():
         assert len(matches) == 1, name
         return matches[0]
     assert get("AMJC_Plant_Barley").find("plant/sowResearchPrerequisites") is None
+    barley = get("AMJC_Plant_Barley")
+    for element, folder in (("graphicData/texPath", "FullGrown"), ("plant/immatureGraphicPath", "Immature")):
+        stem = barley.findtext(element)
+        assert stem == "Things/Plants/" + folder + "/AMJC_Awa", "Unexpected Base barley placeholder"
+        assert any((ROOT / "Textures" / stem).glob("*.png")), "Missing AMJ barley placeholder family"
     table = get("AMJC_GrainProcessingTable")
     assert table.findtext("costList/Steel") == "30" and table.find("researchPrerequisites") is None
     assert [n.text for n in get("AMJC_GrainProcessingSpot").findall("stuffCategories/li")] == ["Woody"]
@@ -63,7 +78,7 @@ def validate():
             assert len(node.findall("products/*")) == 1
     assert any(n.findtext("defName") == "AMJC_ThreshWheat" for n in base)
     print("Grains Base MO identifier/class references 0; 38 pre-split MO explicit Def contracts preserved: PASS")
-    print("Scope: texture providers, inherited/full game references and runtime are not validated; see Docs/GrainsDependencyAudit.md")
+    print("Known MO texture paths absent from Base: PASS; inherited/full game references and runtime texture resolution are not validated; see Docs/GrainsDependencyAudit.md")
 
 
 if __name__ == "__main__":
