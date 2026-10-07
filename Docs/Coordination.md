@@ -1780,3 +1780,20 @@ Grains now keeps only concise ownership/compatibility pointers for these areas. 
 - Base validator output now explicitly covers MO identifier/class references only and names excluded texture/inheritance/runtime scope. Current Design ownership table now reflects physical Scenario extraction with guarded legacy fallback. No Production runtime XML, packageId, MO About dependency, texture or historical prose changes.
 - Local PASS: Base 4, chain 9, environment 4, extraction 8 methods; Stage A and 26 PNGs. PR CI PASS: Stage A `37646630725` (including Windows tooling), Workshop `37646630503`. API tree exactly matched local tested `8e85e236361da7be3fb2c789f0091c6fa4a4a574`.
 - Next Grains unit: resolve the three Defs' graphics dependency with Grains-owned paths/assets and all displayed states, then execute four real profiles and legacy-save gates. Additional Scenarios engine save adapter work is paused by author priority, not approved as complete. C# compilation/game/rendering/save migration remain unverified here; About MO dependency stays gated. No game/background worker active.
+
+
+### COMPAT-MOJ-OWNERSHIP-001 — Japanization compatibility ownership
+
+**Owner:** Grains compatibility / Project Japanization architecture  
+**Status:** DONE — no Grains implementation change required
+
+Project-level Japanization architecture now explicitly preserves Grains' existing compatibility contract:
+
+- Grains continues to own the minimum optional MO compatibility required for the supported `MO + Grains` profile (MO wheat/flour/Millstone/Straw/category connections where applicable).
+- `AMJ - Medieval Overhaul Japanization` does **not** absorb that compatibility and must not become required for Grains + MO.
+- Japanization owns only additional adaptation caused by its own MO-wide historical research/Def/retexture reconstruction.
+- If both layers touch the same upstream MO area, do not duplicate the same semantic patch; Japanization must preserve/adapt the Grains contract rather than fork it.
+
+**Durable source:** `sucRo-RimWorld/Ancient-Medieval-Japan-Project:Docs/Research/MedievalOverhaulJapanizationIntegrationMatrix.md`, commit `5483cc42744ed2652bf7599272c00225668d9963`.
+
+**Next action:** none in Grains until a concrete Japanization implementation conflicts with an existing Grains MO compatibility path.
