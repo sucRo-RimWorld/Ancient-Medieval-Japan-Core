@@ -2095,3 +2095,10 @@ New Villageに依存しないStage A Quickstart上の六穀の実収穫＋11回�
 成熟株の配置を開始点とし、収穫物・加工品はテスト側で生成しない。
 現在はC#ソースと起動配線の追加までであり、実ゲームのビルド・実行・ERROR 0は未検証。
 実ジョブ経路と検証境界の正本は `Docs/GrainsProfileTesting.md`。
+
+
+実ジョブの経路確認により、AMJ加工Spot/TableとBase手動石臼にWorkGiverの接続がないことを確認した。
+共有 `AMJC_DoGrainProcessing` と非MO限定 `AMJC_DoGrainsMilling` を追加し、
+CraftingのWorkGiver_DoBillから固定対象へ通常作業を割り当てる。
+レシピのrecipeUsersだけではWorkGiver_DoBillの固定対象一覧へ追加されないため、両方を持つ。
+MO石臼は既存MO WorkGiverを利用し、重複作業Defを追加しない。既存38契約は変更しない。

@@ -51,6 +51,8 @@ $trackedFiles = @(
     "BaseWithoutMO\Defs\Buildings_Millstone.xml",
     "BaseWithoutMO\Patches\CCTO_Wheat.xml",
     "Defs\RecipeDefs\Recipes_GrainsMilling.xml",
+    "Defs\WorkGiverDefs\WorkGivers_Grains.xml",
+    "BaseWithoutMO\Defs\WorkGivers_Milling.xml",
     "Defs\RecipeDefs\Recipes_GrainsFood.xml",
     "Defs\ThingDefs_Items\Items_GrainsFlour.xml",
     "Defs\ThingDefs_Items\Items_GrainsFood.xml",

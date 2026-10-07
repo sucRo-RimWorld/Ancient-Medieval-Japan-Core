@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using RimWorks.Pickle;
 using RimWorld;
@@ -64,6 +65,7 @@ namespace AncientMedievalJapanCore.E2E
         public async Task ProductionJobs(PickleContext ctx)
         {
             ProductionScope scope = null;
+            ExceptionDispatchInfo failure = null;
             try
             {
                 await RuntimeThread.Run(delegate { scope = new ProductionScope(ctx); });
@@ -82,10 +84,17 @@ namespace AncientMedievalJapanCore.E2E
                 await scope.Bill(scope.MO ? "DankPyon_CraftFlourBulk" : "AMJC_MillWheat", scope.Mill, "AMJC_Wheat", 10);
                 await scope.Bill("AMJC_CookHoutou", scope.Campfire, scope.MO ? "DankPyon_Flour" : "AMJC_WheatFlour", 10);
             }
-            finally
+            catch (Exception error) { failure = ExceptionDispatchInfo.Capture(error); }
+            // The repository builds with the Framework C# 5 compiler, which
+            // does not permit await inside catch/finally. Preserve the original
+            // failure while awaiting main-thread cleanup outside those blocks.
+            try { if (scope != null) await RuntimeThread.Run(scope.Dispose); }
+            catch (Exception cleanup)
             {
-                if (scope != null) await RuntimeThread.Run(scope.Dispose);
+                if (failure != null) throw new AggregateException(failure.SourceException, cleanup);
+                throw;
             }
+            if (failure != null) failure.Throw();
         }
 
         // This scope is only valid on a fresh AmjStageAQuickstart test map.

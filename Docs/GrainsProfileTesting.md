@@ -207,3 +207,12 @@ has no installed game/assemblies: the new C# has not been compiled or run agains
 RimWorld. Only an actual eight-scenario 8/8, zero-skips, runtime ERROR 0 run of each
 real profile establishes that these job tests work. Mature-plant setup does not
 prove sowing, calendar growth, cold death, mood ingestion or save migration.
+
+
+Production-job source review also found missing work routing for AMJ's two
+processing benches and Base manual mill. Shared `AMJC_DoGrainProcessing` and
+Base-only `AMJC_DoGrainsMilling` now connect those benches to native
+`WorkGiver_DoBill` under Crafting. MO mill routing remains MO-owned. Static
+positive/negative contracts cover giver class and fixed targets; actual jobs are
+still uncompiled/unrun here. The step source preserves asynchronous cleanup while
+remaining compatible with the repository's Framework C# 5 compiler syntax.
