@@ -67,7 +67,7 @@ AMJ ends before Edo. A technology can exist earlier without needing a dedicated 
 |---|---|---|---|---|
 | `DankPyon_Crossbow` | crossbow | **再解釈＋リテクスチャ＋前倒し** | 古代 | 古代日本の弩へ。8世紀伊治城跡の弩機が根拠。西欧中世crossbow研究としては扱わない。 |
 | `DankPyon_HeavyCrossbow` | arbalest | **要追加監査** | 古代候補 | 強弩等への再解釈余地はあるが、MO arbalestの役割・外観を日本側へ対応させる史料監査が必要。 |
-| `DankPyon_Ballista` | ballista | **要追加監査** | 未確定 | 据置大型弩等への対応可能性を監査。確実な日本側技術枝としてはまだ固定しない。 |
+| `DankPyon_Ballista` | ballista | **再解釈＋リテクスチャ候補** | 古代 | 古代律令軍には携行型だけでなく設置型の弩も研究対象として確認できる。MO砲台の性能・サイズを監査し、`弩台` 等の据置弩として成立するものだけ再利用する。 |
 | `DankPyon_Trebuchet` | trebuchet | **非表示候補** | 対象外 | 元寇では大陸側投石器の記録があるが、日本側の標準的な自前技術進行として置く根拠にはならない。 |
 | `DankPyon_RepeaterBallista` | ballista repeater | **非表示候補** | 対象外 | AMJ標準の日本技術枝として維持する根拠が薄い。 |
 | `DankPyon_Alchemy` | alchemy | **分解・再解釈** | 古代～中世 | 西欧/幻想錬金術ノードは維持しない。本草・薬学等に再解釈できる出力だけ残し、Steel/Gunpowder/Tarをここから切り離す。Potion類は個別監査。 |
@@ -136,7 +136,7 @@ These are stronger than the individual item mapping and should guide the next pa
 
 - **Break the MO `Alchemy -> Steel / Tar / Gunpowder` trunk.** Steel belongs with metalworking; gunpowder belongs at the late-Sengoku end; alchemy/fantasy-potion content must be split into historically supportable pharmacology/technical content versus content to hide.
 - **Do not keep `ChainArmor -> PlateArmor` as a mandatory linear path.** Japanese chain protection and late plate-heavy/tōsei-gusoku development are not a single European armor ladder.
-- **Move crossbow technology to the ancient side.** The Japanese `弩` is directly attested archaeologically in an eighth-century state-military context.
+- **Move crossbow technology to the ancient side and split handheld from fixed weapons.** The Japanese `弩` is directly attested archaeologically in an eighth-century state-military context, and research literature distinguishes portable and installed forms. MO currently mixes a handheld crossbow with a Scorpio turret under `DankPyon_Crossbow`, and an arbalest with a Ballista turret under `DankPyon_HeavyCrossbow`; Japanization must not preserve that coupling blindly.
 - **Move water power much earlier than MO's Engineering end branch, while hiding the MO power windmill by default.**
 - **Replace the Western spinning-wheel visual/meaning with spindle/hand-spinning unless a specific historically valid wheel is proven for the target period.**
 - **Do not preserve MO's “Basic / Intermediate / Advanced” agriculture and cooking tiers merely because they exist.** Keep only distinctions that correspond to an actual technique, equipment, material-processing step, or meaningful gameplay choice.
@@ -149,6 +149,10 @@ These sources support the structural decisions above; they do not by themselves 
 
 - **Ancient crossbow / 弩:** 文化遺産オンライン, 「弩機　伊治城跡出土」. The item is dated Nara–Heian and interpreted as a portable crossbow mechanism belonging to an eighth-century frontier garrison.  
   https://online.bunka.go.jp/heritages/detail/430282
+  宮城県の指定文化財解説も同資料を8世紀後半の実戦用携行弩とし、奈良文化財研究所系資料では律令軍の配備、CiNii掲載論文では携行型/設置型の運用が研究対象となっている。  
+  https://www.pref.miyagi.jp/soshiki/bunkazai/kouko10-doki.html  
+  https://repository.nabunken.go.jp/dspace/bitstream/11177/8274/1/BA62154222_2_090_114.pdf  
+  https://cir.nii.ac.jp/crid/1520853832330876416
 - **Spindle technology:** 文化遺産オンライン, 「紡錘車」, Yayoi 2nd–3rd century, and related Yayoi/古墳 finds. This supports early hand-spinning while not proving MO's Western spinning-wheel form.  
   https://online.bunka.go.jp/heritages/detail/593979  
   https://online.bunka.go.jp/heritages/detail/473061
