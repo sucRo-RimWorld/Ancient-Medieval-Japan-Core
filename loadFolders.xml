@@ -4,5 +4,7 @@
     <li>/</li>
     <li IfModActive="DankPyon.Medieval.Overhaul">Compatibility/MedievalOverhaul</li>
     <li IfModNotActive="DankPyon.Medieval.Overhaul">BaseWithoutMO</li>
+    <li IfModNotActive="sucro.ancientmedievaljapan.scenarios">LegacyStartingScenarios</li>
+    <li IfModActive="DankPyon.Medieval.Overhaul" IfModNotActive="sucro.ancientmedievaljapan.scenarios">LegacyStartingScenarios/Compatibility/MedievalOverhaul</li>
   </v1.6>
 </loadFolders>

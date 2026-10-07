@@ -2,7 +2,7 @@
 
 2026-10-07。所有方針の正本は `Docs/Design.md` の「開始シナリオの独立Mod化」。
 独立シナリオModはVanilla単独で成立させ、GrainsとMOは任意互換とする。
-ここでは移行対象と、分離後のパッケージを検証する再現可能な試作を定義する。
+ここでは本番の互換用領域、独立リポジトリとの所有者切替、再現可能な検証手順を定義する。
 正式名は Ancient & Medieval Japan - Scenarios（略称AMJ - Scenarios）、packageIdは `sucro.ancientmedievaljapan.scenarios`。
 作者指定の専用リポジトリは https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Scenarios 。
 開発候補ソースを登録したが、Workshop公開・現行配布物の差替えは行わない。
@@ -12,6 +12,9 @@ Coreリポジトリは作者により https://github.com/sucRo-RimWorld/Ancient-
 ## 移行対象
 
 機械可読台帳は `Tests/Fixtures/ScenarioExtraction/manifest.json`。
+下表の3Def・5翻訳は独立Scenariosの同名相対パスを正本とし、Grainsは
+`LegacyStartingScenarios/` 配下に従来開始・旧セーブ用の互換コピーを維持する。
+台帳の `sourceRoot` はこのGrains互換コピーの入力位置を示す。
 
 | 対象 | 維持する識別子 | 現在の正本 |
 |---|---|---|
@@ -20,7 +23,7 @@ Coreリポジトリは作者により https://github.com/sucRo-RimWorld/Ancient-
 | 開始用PawnKindDef | `AMJC_Villager` | `Defs/PawnKindDefs/PawnKinds_Villager.xml` |
 | 英語・日本語の開始ダイアログ | `AMJC_GameStart_NewVillage` | 両言語の `Keyed/AMJC_Scenarios.xml` |
 | 日本語Def翻訳3ファイル | 上記3つのDefのフィールド | `DefInjected/ScenarioDef`、`FactionDef`、`PawnKindDef` |
-| MO差分2操作 | Scenario全parts置換・PawnKind衣装タグ追加 | `Compatibility/MedievalOverhaul/Patches/MedievalOverhaul_StageA_Base.xml` |
+| MO差分2操作 | Scenario全parts置換・PawnKind衣装タグ追加 | Scenariosの `Compatibility/MedievalOverhaul/Patches/StartingScenarios.xml`／Grainsの同パスを `LegacyStartingScenarios/` 配下へ |
 
 Factionはプレイヤー開始専用であり、NPC派閥を追加しない。
 Scenario→Faction→PawnKind→Factionの参照を一組として移す。
@@ -86,8 +89,10 @@ MOはWoodLog 200＋RawWood 200、IronIngot 30、鉄素材のナイフへ差替�
 | 移行対応Grains＋独立シナリオ | 独立シナリオ | 互換用領域を無効化し、現行契約一致 |
 | 更新していない現行Core＋独立シナリオ | 二重定義になる | 禁止する組合せ。負例で検出 |
 
-現行mainはまだ「更新していない現行Core」である。
-生成試作は移行対応版を別に組み立てたもので、現行Coreとの併用を保証するものではない。
+Grains本番の通常領域から3Def・5翻訳を移動し、MO開始差分2操作を穀物パッチから分割した。
+本番loaderは独立ScenarioのpackageId不在時だけ互換コピーを読み込む。
+MO互換コピーにはMO有効条件とScenario不在条件の両方を付ける。
+改修前のCore/Grainsは引き続き併用不可。改修後も実ゲーム／旧セーブ互換の実測は未完了。
 正式移行ではCore/Grainsを先に移行対応版へ更新し、Grainsを維持したまま独立シナリオを追加する。
 
 参照したゲームコードでは、保存済みFactionはFactionDefを、PawnはPawnKindDefを
@@ -112,6 +117,7 @@ Python 3.9以降、標準ライブラリだけで実行する。
 
 ```text
 python Tests/test_scenario_extraction.py
+python Tests/validate_scenario_pair.py --scenario-root <独立Scenariosリポジトリ>
 python Scripts/prepare_scenario_extraction.py --output <新規・リポジトリ外のフォルダ> --grains-package-id sucro.amj.grains.extractiontest --scenario-package-id sucro.amj.scenarios.extractiontest
 ```
 
@@ -124,15 +130,18 @@ Grainsありの4構成は**全ての明示Def契約**を現行Base/MOと比較�
 Grains物資の無条件ロード、未更新Coreとの重複、本番ID・既存出力の使用を検出する。
 
 未検証の範囲はVanilla/MO継承・全クロスリファレンス・画像・ゲームloader・新規開始・旧セーブ読込。
-試作のLegacyStartingScenarios領域は現行Workshop配布ルートではなく、正式移行時に
-Workshop validatorの許可ルートと配布用アダプタも同時に更新・検証する。
-本番Defは移動せず、既存8シナリオ／ERRORゲートを緩めない。
+LegacyStartingScenariosは本番配布対象であり、Workshop validatorがDef・翻訳・MO Patchを許可する。
+実際のgit archiveと.rimignoreの一致を確認し、通常／fixtureテスト配置にもこの領域をコピーする。
+fixtureのMO条件置換は穀物・旧開始の2項目へ適用し、Scenario不在条件を維持する。
+CIは独立Scenariosのレビュー済みコミット `cbd5e313f9cb0871f7227e447d3faa7497fd962e` を別checkoutし、
+本番の二つのソースで6構成の一意性・全明示契約一致を確認する。試作生成だけの検証にしない。
+既存8シナリオ／ERRORゲートは維持し、テスト所有の移管は次段階とする。
 正式テスト移管ではNewVillageStepsとNewVillage Quickstartだけを新Mod所有へ切り出す。
 GrainsのStage A Quickstartと環境／収穫／Billテストを巻き込まない。
 新Modの4構成開始と旧セーブ／追加／削除のテストも、非表示だが描画を維持しERROR 0を必須とする。
 
 専用リポジトリに3Def・5翻訳・任意MO/Grainsパッチ・静的テストを登録済み。
 独立候補のGrains互換は現行packageIdを参照し、リポジトリ名をMod条件には使わない。
-現在のGrains本番はまだ3Defを通常領域から提供するため、そのまま独立候補を有効化すると重複する。
-次の実装段階は、この試作構造をGrains本番へ適用して、テスト所有も切り替えること。
+Grains本番の3Def・翻訳は条件付き互換領域へ移動済み。
+次の実装段階は、NewVillage実行時テスト所有を切り替えて、旧セーブ・追加・削除の自動検証を実行すること。
 AboutのMO依存解除・旧互換用領域の削除・安全なMod差替えの案内は、対応する実機ゲートが通るまで行わない。

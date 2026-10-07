@@ -26,7 +26,7 @@ class EnvironmentTests(unittest.TestCase):
                                   (4,'harvestYield','200')):
             with self.subTest(field=field,crop=crop), tempfile.TemporaryDirectory() as temp:
                 root=Path(temp)
-                for folder in ('Defs','BaseWithoutMO','Compatibility'):
+                for folder in ('Defs','BaseWithoutMO','Compatibility','LegacyStartingScenarios'):
                     shutil.copytree(ROOT/folder,root/folder)
                 shutil.copyfile(ROOT/'loadFolders.xml',root/'loadFolders.xml')
                 path=root/'Defs/ThingDefs_Plants/Plants_StageA.xml'

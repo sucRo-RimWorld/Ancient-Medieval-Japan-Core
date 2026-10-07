@@ -96,11 +96,11 @@ foreach ($name in $supplies.Keys) {
     $rowPattern = '\| [' + [char]96 + ']' + [regex]::Escape($name) + '[' + [char]96 + '][^|]*\| ' + $supplies[$name] + ' \|'
     Check ([regex]::IsMatch($designSection, $rowPattern)) "Design supply row differs for $name."
 }
-$jp = Load-Xml (Join-Path $RepositoryRoot "Languages/Japanese/DefInjected/ScenarioDef/AMJC_NewVillage.xml")
+$jp = Load-Xml (Join-Path $RepositoryRoot "LegacyStartingScenarios/Languages/Japanese/DefInjected/ScenarioDef/AMJC_NewVillage.xml")
 Check ($jp.LanguageData.'AMJC_NewVillage.label' -eq "新しい村") "Japanese scenario label differs."
 Check (-not [string]::IsNullOrWhiteSpace($jp.LanguageData.'AMJC_NewVillage.scenario.summary')) "Japanese summary missing."
 foreach ($language in @("Japanese", "English")) {
-    $keyed = Load-Xml (Join-Path $RepositoryRoot "Languages/$language/Keyed/AMJC_Scenarios.xml")
+    $keyed = Load-Xml (Join-Path $RepositoryRoot "LegacyStartingScenarios/Languages/$language/Keyed/AMJC_Scenarios.xml")
     Check (-not [string]::IsNullOrWhiteSpace($keyed.LanguageData.AMJC_GameStart_NewVillage)) "$language start text is missing."
 }
 
