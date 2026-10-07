@@ -842,7 +842,7 @@ Current replacement: DESIGN-MOJ-001 / design commit `ea656dcbeef821295acbedbf6a8
 
 **Requested by:** author (2026-10-07 JST)  
 **Owner:** future AMJ - Medieval Overhaul Japanization repository / cross-mod design  
-**Status:** DONE — architecture baseline recorded; dedicated repository and implementation not started
+**Status:** IN PROGRESS — architecture baseline recorded; MO research/retexture inventory started; dedicated repository and implementation not started
 
 The former Japan Only concept is replaced by the formal mod name **`AMJ - Medieval Overhaul Japanization`**.
 
@@ -868,7 +868,16 @@ Japanization compatibility responsibility:
 
 **Durable source:** `Docs/Design.md`, architecture commit `ea656dcbeef821295acbedbf6a81621197219938`; DBH/Waterworks coexistence correction `9fa28b37fe1e55aae3a1d5862b7e1246a8653f6e`.
 
-**Next action:** before implementation, create/choose the dedicated Japanization repository, then begin a complete MO 1.6 research/Def/retexture inventory and a DBH for Medieval overlap matrix. Do not move independent AMJ gameplay systems into Japanization.
+**2026-10-07 initial MO 1.6.2.2 research inventory:** author-provided MO archive contains 51 MO-owned `ResearchProjectDef` entries. MO also patches 16 Vanilla research projects into/repositions them in the Medieval research tab: Devilstrand, PsychoidBrewing, Smithing, CarpetMaking, PassiveCooler, ComplexFurniture, TreeSowing, Cocoa/Fruit tree sowing, Pemmican/Food preservation, Brewing, Stonecutting, RecurveBow/Archery, Greatbow, ComplexClothing/Tailoring, PlateArmor and LongBlades.
+
+First-pass redesign hotspots, not yet final mappings:
+- `Alchemy -> Steel -> Mithril` is a western/fantasy progression and must be disentangled; Ironmaking owns Japanese iron-production content while Japanization owns the MO-side research connection.
+- MO military progression contains crossbow/arbalest/ballista/trebuchet/repeating ballista plus Basic/Military/Noble weapon tiers; these require historical classification rather than simple translation.
+- `TextileSpinning` currently unlocks a western-style spinning wheel and therefore requires a Japan-specific historical audit before reuse/retexture.
+- armor progression `ProtectiveClothing -> ChainArmor -> PlateArmor`, cooking branches, windmill/watermill, royal/rustic architecture and carrier-bird/exploration branches all require explicit keep/reinterpret/retexture/hide decisions.
+- Gunpowder should be assessed as a late-medieval/Sengoku branch rather than remaining downstream of generic Alchemy.
+
+**Next action:** continue the 67-node combined MO+patched-Vanilla research audit, attach historical evidence per branch, and produce a keep / reposition / reinterpret+retexture / hide table before implementation. Create/choose the dedicated Japanization repository before production XML/assets are written. Do not move independent AMJ gameplay systems into Japanization.
 
 ### DOC-010 — Workshop cover common-left drift prevention
 
