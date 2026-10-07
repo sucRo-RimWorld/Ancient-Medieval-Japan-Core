@@ -18,6 +18,7 @@ The following author-approved/canonical images are registered in the user's pers
   - file SHA-256: `a738d175bf1997e95f02456843686f8d2d59571d47849e55d04a957707514362`
 - `/AMJ/References/AMJ_WorkshopCover_VariableMask.png`
   - hard mask defining what is allowed to change
+  - repository-preserved exact copy: `Art/Sources/Workshop/AMJ_WorkshopCover_VariableMask.png`
   - 960×540
   - file SHA-256: `e2bbf3547587eebafabc404f0adf3fdad7ffc29df84b0018b871af31c8689622`
 
@@ -38,7 +39,7 @@ Everything outside those variable regions is forcibly restored from the canonica
 
 1. Read `AGENTS.md`, `main:Docs/Coordination.md`, `Docs/WorkshopCoverStyle.md`, and this file.
 2. Retrieve and visually inspect `Art/Sources/Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg` (exact archived copy of `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`); verify the registered hash above. If it cannot be viewed, stop; do not generate a cover from memory/text alone.
-3. Use `Art/Sources/Workshop/AMJ_WorkshopCover_CommonBase.png` for the fixed common raster; retrieve/materialize `AMJ_WorkshopCover_VariableMask.png` from the Library until its separate archive is completed. Verify both registered hashes above.
+3. Use `Art/Sources/Workshop/AMJ_WorkshopCover_CommonBase.png` for the fixed common raster and `Art/Sources/Workshop/AMJ_WorkshopCover_VariableMask.png` for the variable mask. Verify both registered hashes above.
 4. Resolve the addon-specific right-side composition from the current user request and any already-approved addon specification. Reuse an existing approved composition when one exists. Do not insert a mandatory extra approval round unless the user explicitly asks for proposal/review-first work.
 5. Generate **only the addon-specific illustration**, preferably as a transparent-background PNG. Do not ask ImageGen to draw the AMJ title, parchment background, divider, ornaments, or addon label.
 6. Compose the final cover with `Scripts/build_workshop_cover.py`. The compositor adds the addon label and forcibly restores every locked common pixel.

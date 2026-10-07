@@ -194,4 +194,4 @@ See:
 
 `Docs/References/AMJ_WorkshopCover_Template.svg`
 
-Pixel-level registration is recorded in `Docs/References/AMJ_WorkshopCover_Template.json` and `Docs/References/AMJ_WorkshopCover_Manifest.md`. The SVG is only a human-readable schematic. The actual fixed format comes from the Library common-base PNG plus editable-mask PNG and the deterministic compositor documented in `Docs/GoldenPaths/WorkshopCoverPipeline.md`.
+Pixel-level registration is recorded in `Docs/References/AMJ_WorkshopCover_Template.json` and `Docs/References/AMJ_WorkshopCover_Manifest.md`. The SVG is only a human-readable schematic. The actual fixed format comes from the registered common-base PNG plus editable-mask PNG, both preserved byte-for-byte under `Art/Sources/Workshop/`, and the deterministic compositor documented in `Docs/GoldenPaths/WorkshopCoverPipeline.md`.
