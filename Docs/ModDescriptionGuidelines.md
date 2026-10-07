@@ -95,3 +95,19 @@
 - 対応するRimWorldバージョン・対象数・掲載機能を揃える。版番号・検証記録は管理先で正確に維持し、既存の検証結果を別の試験の証拠に転用しない。
 - GitHub上の説明ファイルの更新と、Steam Workshopの公開ページ反映は別作業として記録する。
 - **Steam Workshop上での実際の公開・本文貼り付け・画像設定・更新操作は作者が手動で行う。** エージェント側の責務はREADME、Workshop用BBCode、日本語/英語説明、必要な公開素材・整合性の準備までとし、Steam側へ反映したとは作者の確認なしに扱わない。
+
+## 古代～中世のAMJ世界を構成する場合の共通推奨
+
+**決定日:** 2026-10-08（日本時間）  
+**対象:** 現在および今後のAMJ各Mod。CCTO等の汎用関連Modを、単独利用時まで一律に中世化対象とはしない。
+
+共通案内:
+
+> AMJとして古代～中世に限定した世界を構成する場合は World Tech Level の Medieval 設定を推奨。
+
+- 各Mod固有の必須依存・任意互換とは分け、「AMJ世界全体を時代限定したい場合」の条件付き推奨として案内する。
+- World Tech Levelを全AMJ Modの必須依存へ追加しない。Grains等を単体利用するための要件とは書かない。
+- READMEを詳細正本として公開説明を準備・更新する際に反映し、Workshop・2game・Aboutとの整合を通常の手順で確認する。短い概要では全互換一覧を機械的に複製しないが、推奨を必須と誤読させない。
+- Medieval設定だけで、中世日本としての歴史・文化的適合や、全ての不適切なイベント除外が保証されるとは書かない。
+- 詳細正本: [Project Architecture](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Architecture.md#era-limited-world-recommendation)。
+- `Ancient & Medieval Japan - World Rules` はProject `Docs/Ideas.md` に保存した未確定案。公開済みMod、実装予定の確約、必須構成として紹介しない。
