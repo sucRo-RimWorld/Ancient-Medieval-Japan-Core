@@ -1644,6 +1644,27 @@ Waterworksのネットワークは、少なくとも**通常水**と**温泉水*
 - 通常水源と温泉水源が同じ開いたネットワークへ接続された場合は、**温泉効果を維持したまま無限に混水できないよう、外部利用上は通常水/混水扱い**とする。温泉側の効果を使いたい場合は水門等で系統を分離する
 - 水源種別を増やす必要が将来生じても、Waterworks本体へ特定ModのDefNameを直書きせず、互換側から登録できる形を優先する
 
+#### DBH / DBH for Medieval 1.6重複監査
+
+2026-10-07時点で、作者提供のDBH for Medieval 1.6相当資産（`Defs.zip` / `DBHforMedieval.dll`）と現行Workshop情報を確認した。結論として、DBH for MedievalはWaterworksの想定する「自然水から引く独立した重力式開渠ネットワーク」の直接代替ではない。
+
+確認できた実装:
+- `ES_IrrigationCanal` は `DubsDirtyPipeBase` を継承し、`DubsBadHygiene.CompProperties_Pipe` を持つ。Pipe modeも `Sewage` を利用しており、独自の自然水流ネットワークではなくDBH配管基盤へ載っている
+- `ES_SluiceGate` は `DubsBadHygiene.CompProperties_Sprinkler` を利用し、`usagePerCell` を持つ。ゲーム上の主用途はDBH水量を消費して指定範囲を灌漑すること
+- `ES_ManualPump` はDBH `CompProperties_Pipe` + `CompProperties_WaterPumpingStation` を使用し、DBH水道網へ水を供給する
+- Primitive Well互換も `CompProperties_WaterInlet` を追加してDBH PipeNetへ接続する構成
+- DLLシンボルにも `PipeNet`、`HygienePipeMapComp`、`IrrigationGrid`、`FindBestIrrigationSource` 等があり、水利機能がDBHネットワーク上に構成されていることと整合する
+- Canal XML自体には「隣接する河川/浅瀬セルを自然水源として直接取り込む」仕組みは見当たらない。現行Workshopコメントでも、浅瀬へ水路を直接接続しても水が満たされないという利用報告があり、開発者説明はSluice Gateの灌漑範囲指定を中心としている
+
+したがって、**DBH for MedievalとWaterworksの責務は次のように分離する。**
+
+- DBH / DBH for Medieval: 井戸・ポンプ・PipeNet・貯水・給排水・スプリンクラー/灌漑設備
+- Waterworks: 河川・小川・浅瀬等の自然水面から直接取水する、ポンプ・圧力・貯水量を前提にしない可視の重力式開渠、暗渠、水門、引湯
+
+WaterworksがDBH配管・井戸・ポンプ・スプリンクラーを再実装することはしない。逆にWaterworksの存在意義は、**DBHの水道網では表現していない自然取水型の開渠そのもの**に限定する。
+
+DBHはWaterworksのハード依存にしないが正式な任意互換対象とする。互換の詳細は実装時に現行DBH 1.6 APIを再監査し、Waterworks開渠そのものをDBH `PipeNet` へ変換するのではなく、必要なら境界設備/Adapterを介して接続する方向を優先する。
+
 #### Waterworks単体の位置づけ
 
 Waterworksは、水田・作物・温泉・水車等の個別生産システムを自前で抱え込むためのModではなく、**見える重力式水路と、その通水状態を複数の姉妹Mod/互換Modが利用できる水利基盤**とする。
