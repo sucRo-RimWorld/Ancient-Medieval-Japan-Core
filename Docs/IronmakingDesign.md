@@ -40,7 +40,7 @@ Grains、Environment、Waterworks、Medieval Overhaul (MO) を必須依存にし
 | 箱形炉製鉄 | 1,100 | 処理量と原料・燃料効率を改善する中間設備 |
 | 中世たたら製鉄 | 1,800 | 炉床・防湿・送風を含む発達した炉。大量処理と良質鋼の選別 |
 
-初期鍛冶と製錬は分ける。鉄を利用できても鉄を自給できるとは限らない。ただしVanillaの既存鍛冶・武器・Steel利用を全面的に研究ロックしない。独自研究はAMJの追加設備・工程を解禁するものとし、MO既存研究も改変しない。
+初期鍛冶と製錬は分ける。鉄を利用できても鉄を自給できるとは限らない。ただしVanillaの既存鍛冶・武器・Steel利用を全面的に研究ロックしない。独自研究はAMJの追加設備・工程を解禁するものとする。**MO単独併用時はMO既存研究をIronmaking側から改変せず、`AMJ - Medieval Overhaul Japanization` 併用時だけJapanizationがMO研究フローを日本史に合わせて再構成し、Ironmaking研究との接続を担当する。**
 
 炉床・防湿・送風の改良はまず中世たたら研究へ含める案とする。独立研究を増やすのは、設備選択に意味が出る場合だけ。研究ツリーを技術史の全工程一覧にはしない。
 
@@ -67,11 +67,11 @@ Grains、Environment、Waterworks、Medieval Overhaul (MO) を必須依存にし
 | 一般鉄材の出口 | Vanilla `Steel` をゲーム上の汎用金属の代理として利用する初稿 | `DankPyon_IronIngot` へ合流する初稿 |
 | 良質鋼 | AMJ特殊素材 | 同じAMJ特殊素材。MO `Steel` を上書きしない |
 | AMJ炉・研究 | Ironmakingが所有 | 同じAMJ炉・研究。MO製鉄は並存 |
-| MOのIron Ingot → Steel | 存在しない | MOが所有する現行工程・研究を保持 |
+| MOのIron Ingot → Steel | 存在しない | MOが所有。MO単独では現行工程を保持し、Japanization併用時の研究位置・前提接続はJapanizationが調整 |
 
 BaseでSteelを出口にするのは「古代の鍛錬鉄が現代の均質鋼と同じ」という歴史主張ではなく、Vanillaの建設・加工へ接続するゲーム上の代理。AMJ独自錬鉄をStuffとして残す案も比較対象だが、単体で使える出口を失わせない。
 
-MOではAMJの一般鉄材から直接Steelを得る標準短絡Recipeを置かず、IronIngot以降のMO研究を保持する。将来のJapan OnlyがMOの工程を除去する場合は、その構成で代替経路が成立するか別途検証する。
+MOではAMJの一般鉄材から直接Steelを得る標準短絡Recipeを置かない。MO単独併用ではIronIngot以降のMO工程を保持する。**Japanization併用時は、MOの `Alchemy -> Steel` 等の研究接続を日本史に合わせて組み替えるが、砂鉄採取・炉・製錬・鍛錬というIronmaking固有ゲームループはIronmakingが所有する。** Japanization側でMO経路を非表示化・再配置する場合も、Ironmaking未導入構成を含めて代替進行が成立するか別途検証する。
 
 玉鋼に相当する良質鋼は一般Steelの全用途・全能力を上回る万能素材にしない。少量・高工数の特殊鍛造素材として扱う。完成品Modがなくても、一般鉄材生産が主要ループとして成立することを必須とする。良質鋼の標準用途は、取引に加えて既存刃物等への限定Recipe接続を検討するが、対応完成品・性能・品質制御は未確定。
 
