@@ -70,10 +70,9 @@ setup diagnostics and report paths. The report includes:
 - source HEAD, existing source fingerprints, and SHA-256 hashes of the staged
   runtime target, compiled test assemblies/features and non-Vanilla providers.
 
-The profile suite requires exactly its eight named scenarios, 8/8 passes and
+The profile suite requires exactly its six grain-only named scenarios, 6/6 passes and
 zero skips. Assertions check actual provider presence, fixture/production-Core
-absence, resolved primary crop/recipe/simple-meal contracts, New Village loaded settings and actual Quickstart supplies/research
-for the active profile, loaded wheat/flour/milling/food contracts, and presence/absence of AMJ cold-tolerance extensions. Runtime log checking
+absence, resolved primary crop/recipe/simple-meal contracts, loaded wheat/flour/milling/food contracts, and presence/absence of AMJ cold-tolerance extensions. Runtime log checking
 fails on **any ERROR**, including provider errors. Both summary and log gates
 run after a launched game even if the process or scenarios already failed.
 Missing fresh output is a failure. The game watchdog is five minutes per profile;
@@ -120,14 +119,9 @@ checks remain separate; actual game tests are required for those boundaries.
 New Village, its starting player Faction/PawnKind, research and supplies will move
 to an independent starting-scenario mod. That mod must work with Vanilla alone;
 Grains and MO integrations are optional and owned by the scenario mod. Neither
-mod makes the other a hard dependency. The final name/package/repository and
-save-migration mechanism remain undecided; physical extraction has not occurred.
+mod makes the other a hard dependency. The owner is Ancient-Medieval-Japan-Scenarios / sucro.ancientmedievaljapan.scenarios. Production legacy copies are guarded; actual save-migration verification remains pending.
 
-The current eight-scenario profile suites and eight-scenario fixture suite retain
-New Village only as transitional contracts. During extraction, move the startup
-checks and the Scenario/Faction/PawnKind golden contracts to the new owner; remove
-the dedicated-Scenario presence requirement from Grains in that same change.
-Keep grain contracts rather than discarding the old snapshot wholesale.
+Current Grains real-provider suites have six grain-only scenarios. Their dedicated Scenario-presence requirement and two village checks are removed. Canonical start checks/Quickstart live in Scenarios (four profiles, three scenarios each); Grains retains LegacyVillageSteps and AmjLegacyVillageQuickstart in the old eight-case fixture for its compatibility copy. Preserve all 38 historical contracts, including legacy start contracts, rather than dropping the golden snapshot.
 
 The scenario owner must test Vanilla alone, Grains, MO and Grains+MO starts, plus
 old Core New Village saves and exactly one provider of every migrated Def when
@@ -176,7 +170,7 @@ The seventh Pickle scenario uses loaded crops and the actual
 same cells. Every grain must win at least one cell; no grain may win >=2/3 of viable
 cells, counting ties as wins. It does not advance a growing plant through a season.
 
-The eighth scenario requests `AmjStageAQuickstart`, independently of New Village.
+The sixth grain-only scenario requests `AmjStageAQuickstart`, independently of New Village.
 `GrainsSimulationSteps.cs` creates mature plants for all six grains (an extra Soba
 plant supplies its x10 processing chain), one capable Plants/Crafting/Cooking-20
 worker, processing table, profile-owned mill and a fuelled Campfire. Existing
@@ -204,7 +198,7 @@ provider isolation, source hashes, strict summary and ERROR gate remain required
 
 **Verification boundary:** source/tooling/static checks can run here. This workspace
 has no installed game/assemblies: the new C# has not been compiled or run against
-RimWorld. Only an actual eight-scenario 8/8, zero-skips, runtime ERROR 0 run of each
+RimWorld. Only an actual six-scenario 6/6, zero-skips, runtime ERROR 0 run of each
 real profile establishes that these job tests work. Mature-plant setup does not
 prove sowing, calendar growth, cold death, mood ingestion or save migration.
 
@@ -225,14 +219,13 @@ remaining compatible with the repository's Framework C# 5 compiler syntax.
 and checks six XML ownership configurations plus guard/order/duplicate regressions.
 It preserves all current explicit contracts whenever Grains is present; standalone
 Scenario supplies use draft RawRice 300 instead of unavailable AMJC grain refs.
-Production scenario Defs/localization and MO starting differences now reside in conditional LegacyStartingScenarios; eight-scenario runtime suites remain unchanged until runtime test ownership transfers. The generator
+Production scenario Defs/localization and MO starting differences now reside in conditional LegacyStartingScenarios; six grain-only real-profile suites now omit canonical village checks; the legacy fixture remains eight. The generator
 requires fresh output and distinct `.extractiontest` IDs, records source/payload
 hashes and does not install, publish or rewrite saves. An unchanged current Core
 cannot coexist with a new provider; the regression explicitly rejects that mix.
 
-Physical XML relocation is implemented. CI also checks the actual separate Scenarios repository at reviewed commit cbd5e313f9cb0871f7227e447d3faa7497fd962e through Tests/validate_scenario_pair.py (six configurations). This proves explicit XML contracts, not game loader behavior or successful old-save migration. At actual
-ownership transfer, move only NewVillage steps/Quickstart/start scenarios to the
-new owner's test suite, keep generic Stage A/environment/Bill tests in Grains,
-and update exact suite names/counts/source attribution together. Both real
+Physical XML relocation is implemented. CI also checks the actual separate Scenarios repository at reviewed commit cbd5e313f9cb0871f7227e447d3faa7497fd962e through Tests/validate_scenario_pair.py (six configurations). This proves explicit XML contracts, not game loader behavior or successful old-save migration. Canonical NewVillage steps/Quickstart/start features are now Scenarios-owned; generic Stage A/environment/Bill tests remain in Grains. Exact suite names/counts/source attribution are updated together. Both real
 four-profile suites and save-migration runs must retain rendering/private desktop
 and ERROR gates before reporting a release-ready separation.
+
+Scenarios build, provider-alias staging, four-profile runner, private-desktop entry point and actual-start assertions are source/tooling only: see the owner Docs/RuntimeTesting.md. They have not compiled or run here; old-save migration automation remains next.

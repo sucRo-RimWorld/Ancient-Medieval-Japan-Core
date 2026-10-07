@@ -75,9 +75,9 @@ try {
         @{total=$spec.Scenarios.Count;passed=$spec.Scenarios.Count;failed=0;skipped=0;scenarios=@($spec.Scenarios | ForEach-Object { @{name=$_} })} |
             ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $summaryPath
         & (Join-Path $repo 'Scripts/Validate-GrainsPickleSummary.ps1') -SummaryPath $summaryPath -Profile $profile
-        @{total=6;passed=6;failed=0;skipped=0;scenarios=@($spec.Scenarios | Select-Object -First 6 | ForEach-Object { @{name=$_} })} |
+        @{total=8;passed=8;failed=0;skipped=0;scenarios=@($spec.Scenarios | ForEach-Object { @{name=$_} }) + @(@{name='removed village definition'},@{name='removed village start'})} |
             ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $summaryPath
-        MustFail { & (Join-Path $repo 'Scripts/Validate-GrainsPickleSummary.ps1') -SummaryPath $summaryPath -Profile $profile } 'Old six-scenario summary was accepted.'
+        MustFail { & (Join-Path $repo 'Scripts/Validate-GrainsPickleSummary.ps1') -SummaryPath $summaryPath -Profile $profile } 'Old eight-scenario combined-owner summary was accepted.'
         $statePath = Join-Path $temp 'source-state.txt'
         & (Join-Path $repo 'Scripts/Write-TestSourceState.ps1') -RepositoryRoot $repo -OutputPath $statePath -Profile $profile
         $state = Get-Content -LiteralPath $statePath

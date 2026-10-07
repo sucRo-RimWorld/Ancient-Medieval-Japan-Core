@@ -28,8 +28,17 @@
     "count": 300,
     "status": "draft only"
   },
-  "testHandoff": [
+  "sourceRoot": "LegacyStartingScenarios",
+  "legacyMoPatch": "LegacyStartingScenarios/Compatibility/MedievalOverhaul/Patches/StartingScenarios.xml",
+  "testOwnerRepository": "sucRo-RimWorld/Ancient-Medieval-Japan-Scenarios",
+  "testOwnerSources": [
     "Tests/E2E/NewVillageSteps.cs",
+    "Tests/E2E/NewVillageQuickstart.cs",
+    "Tests/E2E/Profiles",
+    "Scripts/Run-ScenarioProfiles.ps1"
+  ],
+  "legacyTestHandoff": [
+    "Tests/E2E/LegacyVillageSteps.cs",
     "Tests/E2E/AmjStageAQuickstart.cs",
     "Tests/E2E/Profiles/grains-vanilla.feature",
     "Tests/E2E/Profiles/grains-vanilla-ccto.feature",
@@ -37,7 +46,5 @@
     "Tests/E2E/Profiles/grains-mo-ccto.feature",
     "Tests/validate_new_village.py",
     "Scripts/Validate-NewVillage.ps1"
-  ],
-  "sourceRoot": "LegacyStartingScenarios",
-  "legacyMoPatch": "LegacyStartingScenarios/Compatibility/MedievalOverhaul/Patches/StartingScenarios.xml"
+  ]
 }

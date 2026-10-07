@@ -135,13 +135,16 @@ LegacyStartingScenariosは本番配布対象であり、Workshop validatorがDef
 fixtureのMO条件置換は穀物・旧開始の2項目へ適用し、Scenario不在条件を維持する。
 CIは独立Scenariosのレビュー済みコミット `cbd5e313f9cb0871f7227e447d3faa7497fd962e` を別checkoutし、
 本番の二つのソースで6構成の一意性・全明示契約一致を確認する。試作生成だけの検証にしない。
-既存8シナリオ／ERRORゲートは維持し、テスト所有の移管は次段階とする。
-正式テスト移管ではNewVillageStepsとNewVillage Quickstartだけを新Mod所有へ切り出す。
+NewVillageStepsとNewVillage QuickstartをScenariosへ移管し、4構成×3シナリオのソースと隔離ランナーを用意した。
+Grainsの通常4構成は穀物専用6件。LegacyVillageStepsとAmjLegacyVillageQuickstartは旧fixture8件の互換検証へ残す。
+旧38契約とERRORゲートは維持し、通常Grainsの専用Scenario存在要件は外した。
 GrainsのStage A Quickstartと環境／収穫／Billテストを巻き込まない。
 新Modの4構成開始と旧セーブ／追加／削除のテストも、非表示だが描画を維持しERROR 0を必須とする。
 
 専用リポジトリに3Def・5翻訳・任意MO/Grainsパッチ・静的テストを登録済み。
 独立候補のGrains互換は現行packageIdを参照し、リポジトリ名をMod条件には使わない。
 Grains本番の3Def・翻訳は条件付き互換領域へ移動済み。
-次の実装段階は、NewVillage実行時テスト所有を切り替えて、旧セーブ・追加・削除の自動検証を実行すること。
+実行時テストの所有・起動配線はScenariosへ移管済み。手順とコピー側のprovider別名対応は
+Scenarios `Docs/RuntimeTesting.md` が正本。配置／設定生成の静的・PowerShellテストは実ゲーム開始成功ではない。
+次はゲーム環境で4構成をコンパイル・実行し、旧セーブ・追加・削除の自動検証を実装すること。
 AboutのMO依存解除・旧互換用領域の削除・安全なMod差替えの案内は、対応する実機ゲートが通るまで行わない。

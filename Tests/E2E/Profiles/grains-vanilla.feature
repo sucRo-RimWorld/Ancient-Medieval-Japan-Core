@@ -9,13 +9,6 @@ Feature: Grains real-provider migration smoke - vanilla
   Scenario: Grains vanilla optional cold tolerance resolves
     Then Grains cold tolerance extensions are absent
 
-  Scenario: Grains vanilla New Village definition resolves
-    Then loaded New Village scenario matches the start design
-
-  @quickstart:AmjNewVillageQuickstart
-  Scenario: Grains vanilla New Village starts
-    Then New Village starts with five villagers and the designed supplies
-
   Scenario: Grains vanilla wheat flour and minimum food resolve
     Then the Grains wheat flour and minimum food chains resolve
 

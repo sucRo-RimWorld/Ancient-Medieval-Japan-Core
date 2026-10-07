@@ -70,8 +70,6 @@ namespace AncientMedievalJapanCore.E2E
                             "Base threshing must produce only its AMJ grain: " + recipe.defName);
                 }
                 new StageASteps().AssertSimpleMealAcceptsMillet(ctx);
-                ctx.Require(DefDatabase<ScenarioDef>.GetNamedSilentFail("AMJC_NewVillage") != null,
-                    "New Village must remain present during migration.");
             });
         }
 

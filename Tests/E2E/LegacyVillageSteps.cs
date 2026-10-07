@@ -1,3 +1,4 @@
+// Legacy-provider regression only. Independent start tests belong to AMJ Scenarios.
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using Verse;
 namespace AncientMedievalJapanCore.E2E
 {
     [PickleSteps]
-    public sealed class NewVillageSteps
+    public sealed class LegacyVillageSteps
     {
         private static bool UseMO { get { return LoadedModManager.RunningModsListForReading.Any(m =>
             string.Equals(m.PackageIdPlayerFacing, "dankpyon.medieval.overhaul", StringComparison.OrdinalIgnoreCase)
@@ -34,7 +35,7 @@ namespace AncientMedievalJapanCore.E2E
         }; } }
         private static string KnifeStuff { get { return UseMO ? "DankPyon_IronIngot" : "Steel"; } }
 
-        [Then("loaded New Village scenario matches the start design")]
+        [Then("loaded legacy New Village scenario matches the start design")]
         public void AssertLoadedScenario(PickleContext ctx)
         {
             ScenarioDef definition = DefDatabase<ScenarioDef>.GetNamed("AMJC_NewVillage");
@@ -87,7 +88,7 @@ namespace AncientMedievalJapanCore.E2E
             AssertEarlyProcessing(ctx);
         }
 
-        [Then("New Village starts with five villagers and the designed supplies")]
+        [Then("legacy New Village starts with five villagers and the designed supplies")]
         public Task AssertStartedVillage(PickleContext ctx)
         {
             return RuntimeThread.Run(delegate { AssertStartedVillageOnMainThread(ctx); });
