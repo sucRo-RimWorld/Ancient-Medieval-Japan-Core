@@ -1451,7 +1451,7 @@ This item remains open until the Core accepted-image inventory has been audited 
 
 **Requested by:** author  
 **Owner:** AMJ architecture / dependency design  
-**Status:** IN PROGRESS — Grains final Base/MO ownership boundary finalized; runtime migration not started; next step is test-harness split
+**Status:** IN PROGRESS — step 1 harness split implemented and tooling/Windows CI validated; production runtime migration and four-profile game runs pending
 
 The author accepted a shift from a central Core dependency tree toward **independent AMJ mods with official optional integration**. The 2026-10-07 Core/MO implementation audit is now complete and its durable conclusions are recorded in `Docs/Design.md` at commit `aa0481c8c8eba2486f1b5db7a7a28240e8314922`.
 
@@ -1469,7 +1469,7 @@ Audit result:
 - Keep `sucro.ancientmedievaljapan.core`, the current public Core name, `AMJC_` prefix, and existing AMJC DefNames. Architecturally, however, Core is now treated as an **Agriculture-equivalent independent content mod, not the common required foundation of the AMJ suite**.
 - Existing MO+Core saves should retain current AMJC identifiers and MO-profile behavior through compatibility. Removing MO from an already-running save is a separate migration case and is not considered safe until dedicated runtime tests prove it.
 
-Required migration order (not started):
+Required migration order (step 1 harness implemented; production runtime migration not started):
 1. Split the test harness first so a test-only Vanilla target can load Base XML without changing production About.xml.
 2. Remove unconditional MO refs from Base XML and supply Vanilla/AMJ research/material/scenario paths.
 3. Replace MO placeholder art used by Barley and grain-processing buildings with AMJ-owned production art.
@@ -1506,4 +1506,14 @@ Until that reconciliation is complete, do **not** start changing `About.xml`, pr
 
 No runtime Def, About.xml, dependency metadata, or production texture was changed in this ownership-resolution turn.
 
-**Next action:** begin migration step 1 only: split the test harness so Vanilla + Grains Base can be loaded and validated without changing production About.xml. After that, remove Base MO refs in the order defined in Docs/Design.md. About.xml remains last.
+**2026-10-07 test-harness split:** Step 1 implementation merged through PR #1. Implementation commit `a289fdbbaa07b6c94f0960fc1b1a9f959beb8589`; main merge `88124c347fee85017df8a56b9b53f602eeefa229`. Formal procedure: `Docs/GrainsProfileTesting.md`; `Docs/Design.md` records the implemented tooling boundary.
+- Added `run-grains-tests.bat` with four real-provider profiles: vanilla, vanilla-ccto, mo, mo-ccto. Default execution stays on a private Windows desktop with rendering enabled.
+- The disposable target copies runtime Def/Patch/texture/language bytes unchanged, changes only test metadata, and does not load production Core, MO/CCTO API fixtures or E2E graphics substitutions. Installed hard dependencies are resolved explicitly; missing/duplicate/forbidden providers and cycles fail preparation.
+- Retained the old eight-scenario fixture suite. New three-scenario profile suites are migration smoke contracts, not full Grains release validation.
+- Fresh per-profile SaveData/results, source/provider/payload fingerprints, timeout, named-summary checks and an any-ERROR gate are in place. All requested profiles run sequentially even when an earlier one fails.
+- Verified locally: PowerShell 7.4.6 parsing; four-profile byte-preserving staging/config/summary/source-attribution/negative tests; existing Stage A/New Village, art-rule/PNG and Workshop payload gates.
+- GitHub PR CI PASS: Stage A validation run `37554462337`, including Windows PowerShell 5.1 parsing and the new profile tooling regression; Workshop payload filtering run `37554462325`.
+- **Not run:** C# test-assembly compilation against RimWorld and real game execution, because this cloud workspace has no RimWorld installation. No 4-profile runtime PASS is claimed. Vanilla is still expected to expose current unguarded MO references/art. Production About/Defs/Patches/Textures/Languages remain unchanged.
+- Full wheat/flour/milling/food, per-profile New Village actual starts, environmental six-grain choice and save migration regressions remain to be added during implementation.
+
+**Next action:** begin migration step 2: remove Base MO research/material/category/Straw/Scenario references and move the MO differences into conditional compatibility in the order specified in Docs/Design.md. Use the new four-profile harness during migration; build/game verification belongs to an environment with the installed RimWorld/real providers/helpers. About.xml remains last. No background worker or runtime test is currently active.
