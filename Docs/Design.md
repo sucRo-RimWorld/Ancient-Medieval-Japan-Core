@@ -455,7 +455,7 @@ Scenarioの旧具体値表は移行中のMOプロファイル互換契約とす�
 2. Base XMLからMO研究・素材・カテゴリ・Straw・Scenario参照を除去する。
 3. 非MO小麦Plant/穀束、小麦粉、蕎麦粉、雑穀粉、手動石臼、最低限粉食をGrains Baseへ追加する。
 4. MO互換を条件化し、MO小麦/RawWheat/Flour/Millstone/Strawへ上表どおり収束させる。
-5. MO仮テクスチャをGrains所有Production画像へ置換する。2026-10-08時点で単体用の既存AMJ/Vanilla仮参照とMO時の従来参照は条件分離済み。専用Production画像・実描画は未完了（`GrainsDependencyAudit.md`）。
+5. MO仮テクスチャをGrains所有Production画像へ置換する。2026-10-08の作者指示により、MO有無にかかわらずAMJ側の共有画像設定を優先する。現在は既存AMJ/Vanilla仮参照で、MO時の旧画像復元は廃止した。専用Production画像・実描画は未完了（`GrainsDependencyAudit.md`）。
 6. Vanilla + Grains / Vanilla + Grains + CCTO / MO + Grains / MO + Grains + CCTO の恒久マトリクスに、環境別穀物選択回帰を加えて通す。
 7. 最後にAbout.xml、load order、README/Workshop等の公開説明を同期する。
 

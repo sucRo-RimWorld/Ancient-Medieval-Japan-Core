@@ -3,6 +3,7 @@ import hashlib
 import json
 import re
 import xml.etree.ElementTree as ET
+from copy import deepcopy
 from amj_profile_xml import ROOT, MO_FOLDER, profile_xml, contract_signature
 
 MO_GRAPHIC_PATHS = {
@@ -10,6 +11,21 @@ MO_GRAPHIC_PATHS = {
     "Things/Plants/Immature/WheatPlant",
     "Things/Building/Production/StonecuttingSpot",
     "Things/Building/Production/Millstone",
+}
+
+# Author-approved visual changes only. Historical hashes remain immutable;
+# normalize these exact four fields for the otherwise unchanged MO contract.
+AMJ_GRAPHICS = {
+    "AMJC_Plant_Barley": {
+        "graphicData/texPath": ("Things/Plants/FullGrown/AMJC_Awa", "Things/Plants/FullGrown/WheatPlant"),
+        "plant/immatureGraphicPath": ("Things/Plants/Immature/AMJC_Awa", "Things/Plants/Immature/WheatPlant"),
+    },
+    "AMJC_GrainProcessingSpot": {
+        "graphicData/texPath": ("Things/Building/Production/TableStonecutter", "Things/Building/Production/StonecuttingSpot"),
+    },
+    "AMJC_GrainProcessingTable": {
+        "graphicData/texPath": ("Things/Building/Production/TableStonecutter", "Things/Building/Production/Millstone"),
+    },
 }
 
 
@@ -30,6 +46,12 @@ def validate():
 
     base = profile_xml("vanilla")
     mo = profile_xml("mo")
+    for name, paths in AMJ_GRAPHICS.items():
+        for document in (base, mo):
+            target = document.find('ThingDef[defName="' + name + '"]')
+            assert target is not None, name
+            for element, (expected, historical) in paths.items():
+                assert target.findtext(element) == expected, "AMJ graphics priority lost: " + name + "/" + element
     for node in base.iter():
         if node.tag in {"texPath", "immatureGraphicPath"}:
             assert (node.text or "").strip() not in MO_GRAPHIC_PATHS, "Base MO texture reference: " + str(node.text)
@@ -53,7 +75,10 @@ def validate():
     for node in mo:
         name = node.findtext("defName") or node.get("Name")
         if name and name.startswith("AMJC_"):
-            raw = json.dumps(contract_signature(node), ensure_ascii=False, separators=(",", ":"))
+            normalized = deepcopy(node)
+            for element, (expected, historical) in AMJ_GRAPHICS.get(name, {}).items():
+                normalized.find(element).text = historical
+            raw = json.dumps(contract_signature(normalized), ensure_ascii=False, separators=(",", ":"))
             actual[node.tag + ":" + name] = hashlib.sha256(raw.encode()).hexdigest()
     from validate_grains_chain import SHARED_NAMES
     assert set(actual) == set(golden["sha256"]) | {n.tag+":"+n.findtext("defName") for n in mo if n.findtext("defName") in SHARED_NAMES}, "Unknown MO AMJC contract"
@@ -77,7 +102,7 @@ def validate():
         if (node.findtext("defName") or "").startswith("AMJC_Thresh"):
             assert len(node.findall("products/*")) == 1
     assert any(n.findtext("defName") == "AMJC_ThreshWheat" for n in base)
-    print("Grains Base MO identifier/class references 0; 38 pre-split MO explicit Def contracts preserved: PASS")
+    print("Grains Base MO identifier/class references 0; 38 pre-split MO contracts preserved except 4 approved AMJ-priority texture paths: PASS")
     print("Known MO texture paths absent from Base: PASS; inherited/full game references and runtime texture resolution are not validated; see Docs/GrainsDependencyAudit.md")
 
 
