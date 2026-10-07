@@ -1,0 +1,519 @@
+# Medieval Overhaul Japanization Domestic / Production Audit
+
+## Status
+
+This document is the production, food and domestic follow-up to the 67-node
+research audit for `AMJ - Medieval Overhaul Japanization`.
+
+It records the actual MO 1.6.2.2 Def families gated by cooking, preservation,
+pressing, textile, milling/power and broad domestic research. It is a design
+audit, not an implementation claim.
+
+Audited archive:
+
+- `3219596926.zip`
+- Medieval Overhaul 1.6.2.2
+- SHA-256 `6ed379d7c400db43b3af2a9a7fd6203f7f7e99ca1a670d36b0f73fd1adccc9e3`
+
+## Core conclusion
+
+MO research nodes are often **content bundles**, not coherent historical
+technologies. Japanization therefore cannot preserve the upstream research
+tree and only rename its labels.
+
+Examples from the loaded XML:
+
+- `DankPyon_Presser` mixes apple juice, cheese and paper pressing;
+- `Pemmican` / MO “food preservation” mixes drying racks with packaged
+  rations;
+- `DankPyon_IntermediateCooking` is dominated by Western pies/cakes/quiche,
+  grilled cheese and similar named dishes;
+- `DankPyon_Oven` gates bread together with multiple pies/cakes;
+- `Smithing` also unlocks cooking pots, lamps, furniture and padded helmets;
+- `DankPyon_RusticFurniture` reaches well over one hundred Defs across
+  furniture, production, decoration and other domains;
+- `Stonecutting` reaches castle walls and many fleur-de-lys / Versailles /
+  other Western floor patterns in addition to genuinely generic stoneworking.
+
+Japanization must therefore curate **unlock outputs**, not only research
+prerequisites.
+
+---
+
+## 1. Cooking tiers
+
+### Basic Cooking — 12 directly gated recipes
+
+MO directly gates:
+
+- fried eggs;
+- mashed potatoes;
+- pumpkin fritters;
+- sausage;
+- spice;
+- tallow;
+- bulk versions of the above.
+
+### First-pass treatment
+
+Do not preserve “Basic Cooking” as a package of these exact Western recipes.
+
+- generic egg cooking can remain if its gameplay role is useful;
+- generic animal-fat rendering / tallow can remain as a material process where
+  it serves other MO systems;
+- sausage should not be renamed into a Japanese preserved food merely to retain
+  the Def;
+- potato/pumpkin recipes depend on crop/content history and should be evaluated
+  independently;
+- spice manufacture should be separated from “basic cooking” if it represents
+  a material/process rather than a meal tier.
+
+### Intermediate Cooking — 27 directly gated recipes
+
+The node includes:
+
+- apple pie;
+- bread soup;
+- carrot cake;
+- grilled cheese;
+- hunter's stew;
+- lemon cake;
+- pumpkin pie;
+- pumpkin soup;
+- quiche;
+- sweet pancakes;
+- tomato omelette;
+- bulk variants.
+
+### First-pass treatment
+
+**Do not Japanize this node by translating the dish names.**
+
+Most of the node is a Western recipe bundle. Retain individual recipes only
+when all of the following are true:
+
+1. its ingredient structure can truthfully represent a Japanese dish or generic
+   cooking method;
+2. its equipment/process remains appropriate;
+3. it provides a distinct gameplay choice under AMJ's recipe-count policy.
+
+Otherwise hide the recipe from the standard Japanization profile while keeping
+the upstream Def for compatibility.
+
+### Advanced Cooking — 9 directly gated recipes
+
+- cheese soup;
+- griffon-berry pie;
+- Rox steak;
+- steak with wine;
+- bulk variants.
+
+### First-pass treatment
+
+This is **not a reusable Japanese “advanced cuisine” tier**.
+
+- fantasy griffon/Rox dishes belong with the fantasy-content audit;
+- cheese/wine dishes should not be repainted as Japanese cuisine;
+- the node can be removed from the visible historical progression if no
+  retained recipes justify it.
+
+AMJ's existing design principle remains: special recipes should survive because
+their materials/process/effects create a distinct gameplay decision, not
+because a named historical dish list is large.
+
+---
+
+## 2. Grill / pot / oven / smoker
+
+### Grill
+
+`DankPyon_Grill` gates five recipes:
+
+- grilled cheese bulk;
+- grilled sausages;
+- grilled skewers;
+- bulk variants.
+
+**Direction:** preserve the **direct-fire cooking role**, not the Western recipe
+bundle. The equipment can be Japanized toward an appropriate hearth/grilling
+implementation if its footprint/behavior fits. Western cheese/sausage recipes
+are curated separately.
+
+### Stew Pot
+
+`DankPyon_StewPot` reaches 17 Defs:
+
+- boiled lentils/onion;
+- bone soup;
+- hunter's stew;
+- mushroom soup;
+- pumpkin soup;
+- vegetable pot;
+- winter lentil soup;
+- slop / fondue / ragout pots;
+- bulk versions.
+
+**Direction:** the underlying **pot cooking** role is highly reusable. Keep a
+generic pot-cooking branch, retexture/relabel the MO equipment, and curate the
+recipes individually. Do not preserve “fondue pot” merely as a Japanese pot
+name.
+
+National Museum of Japanese History material notes that the spread of iron
+pots and mortars materially changed medieval daily cooking. This supports a
+meaningful pot/utensil progression without requiring MO's Western stew names.
+
+### Oven
+
+`DankPyon_Oven` gates 25 Defs:
+
+- bread recipes;
+- apple/carrot/lemon/pumpkin/griffon pies and cakes;
+- quiche;
+- rustic and large stone ovens;
+- optional VFE Medieval sweetroll bulk recipes.
+
+**Direction:** remove the oven from the **core ancient/medieval Japanese daily
+cooking line**.
+
+Bread and European/Nanban baked goods entered Japan in the 16th century through
+Portuguese contact, near the end of AMJ's scope. Therefore:
+
+- an oven may be retained only as a **late-Sengoku / Nanban optional branch**
+  if its gameplay value justifies it;
+- it must not remain an early or generic prerequisite for Japanese flour food;
+- Grains' own minimal flour-food loop must not depend on this MO oven;
+- pies/cakes/quiche are not automatically preserved merely because the oven
+  survives.
+
+### Smoker
+
+The MO smoker is a Processor Framework building gated by
+`DankPyon_Smoker` + `DankPyon_RusticFurniture` and processes smoked meat;
+optional compatibility adds smoked fish.
+
+**Direction:** keep as a **candidate generic preservation technique**, but do
+not make it part of Japanization merely because MO has it.
+
+Before final retention:
+
+- compare with Food Drying, which AMJ already prefers for generic drying;
+- confirm smoking adds a distinct preservation/processing choice rather than
+  duplicate labor;
+- keep the existing PF implementation if retained; do not rewrite it in C#.
+
+---
+
+## 3. Food preservation / drying racks
+
+MO repurposes Vanilla `Pemmican` as “food preservation.”
+
+The loaded dependency family includes:
+
+- `DankPyon_DryingRack_Small`;
+- `DankPyon_DryingRack_Big`;
+- packaged-ration recipes, including vegetarian variants.
+
+### Direction
+
+Split the concept:
+
+- **drying racks:** strong reuse candidates; the device/process is generic and
+  already useful to AMJ integrations;
+- **packaged rations:** separate item/recipe audit; do not relabel a packaged
+  ration as a Japanese preserved meal without matching ingredients/process;
+- **Pemmican DefName:** upstream identifier may remain internally, but the
+  public research meaning should no longer imply that Japanese preservation
+  derives from pemmican.
+
+This also keeps Rice Cultivation's optional drying use and Food Drying
+compatibility conceptually separate from generic ration production.
+
+---
+
+## 4. Brewing
+
+Vanilla `Brewing`, as modified by MO, reaches at least:
+
+- ale;
+- cider;
+- mead;
+- grape wine;
+- mulberry/ice/griffon wines;
+- wort / must / apple-juice fermentation recipes.
+
+### Direction
+
+Do **not** rename the MO Western alcohol family into sake.
+
+AMJ Brewing/Sake is an independent gameplay Mod because Japanese brewing has
+its own raw materials and processing design.
+
+For Japanization:
+
+- standard historical profile may hide the Western alcohol production branch
+  or leave only content that is independently justified;
+- Japanization + future AMJ Brewing may connect the MO research UI/material
+  ecosystem conditionally, but Japanization must not absorb Brewing;
+- a late-Sengoku foreign/Nanban alcohol branch is possible only if there is
+  enough independent gameplay value; it is not required for baseline AMJ.
+
+---
+
+## 5. Presser
+
+`DankPyon_Presser` is a particularly mixed node.
+
+The dependency audit finds:
+
+- apple juice / apple-mince processing;
+- cheese / goat cheese / sheep cheese;
+- paper pressing;
+- the actual `DankPyon_Presser` building (“cheese press”).
+
+### Direction
+
+The upstream node should be **split conceptually by output**.
+
+- **paper pressing:** retain/reconnect under papermaking if the MO Paper/Paper
+  Press chain is reused;
+- **fruit pressing:** retain only if a historically/gameplay-relevant Japanese
+  fruit/liquid chain uses it;
+- **cheese pressing:** do not keep as a baseline Japanese technology merely to
+  justify the building;
+- **building visual/name:** if retained for paper/oil/other pressing, retexture
+  and relabel as a generic press rather than a cheese press.
+
+Japanization may reuse the mechanical processor, but output ownership remains
+with the relevant content system.
+
+---
+
+## 6. Milling and agriculture research
+
+### Basic Agriculture
+
+Directly gates:
+
+- `DankPyon_GardeningBox`;
+- `DankPyon_Millstone`.
+
+### Intermediate Agriculture
+
+Directly gates:
+
+- `DankPyon_Post`.
+
+### Advanced Agriculture
+
+No direct loaded Def was found by the current dependency extraction.
+
+### Plowed Soil
+
+Directly gates:
+
+- `DankPyon_PlowedSoil`.
+
+### Direction
+
+This confirms that MO's Basic / Intermediate / Advanced labels are poor
+proxies for a Japanese historical agriculture ladder.
+
+Japanization should:
+
+- preserve the millstone function as a reusable processing tool;
+- move/rename the research according to actual technique rather than “basic
+  agriculture”;
+- keep plowed soil early unless its mechanical bonus requires a later balance
+  gate;
+- audit `GardeningBox` and `Post` by actual function before retaining;
+- remove empty/meaningless tier nodes if their only value disappears after
+  output redistribution.
+
+Grains / Rice Cultivation remain owners of their crops and primary processing.
+Japanization only connects retained MO equipment/research.
+
+---
+
+## 7. Textile spinning
+
+`DankPyon_TextileSpinning` gates:
+
+- cotton -> cloth recipes;
+- wool -> cloth recipes;
+- flax -> linen recipes;
+- bulk versions;
+- `DankPyon_SpinningWheel`.
+
+### Direction
+
+The **fiber-processing function** is reusable; the MO Western spinning-wheel
+presentation is not the default Japanese reference.
+
+- move the concept toward early hand spinning / spindle technology;
+- retexture/rename the equipment if the same processor behavior can represent
+  an appropriate Japanese-period tool;
+- audit cotton, flax/linen and wool separately for Japanese historical fit and
+  external content ownership;
+- do not add extra processing stages solely to make the Japanese version look
+  more detailed than MO.
+
+`DankPyon_Silk` currently directly gates only a silk bed in this extraction,
+which is evidence that the research node is not a coherent sericulture/silk
+technology package. Silk production/history needs a separate output audit
+rather than retaining the node unchanged.
+
+---
+
+## 8. Candle making and lighting
+
+`DankPyon_CandleMaking` directly gates:
+
+- beeswax candle;
+- candles;
+- candle stand;
+- candelabra.
+
+### Direction
+
+Candles can exist in earlier periods through imports/elite/religious use, but
+routine domestic production in Japan is a later question. Existing research
+evidence places domestic candle manufacture by the late Muromachi period.
+
+Therefore:
+
+- if retained, place candle manufacture in a later medieval branch;
+- do not make candles the default early Japanese lighting technology;
+- MO oil-lamp content should be separately audited as a potentially stronger
+  general lighting basis;
+- retexture candelabra/stands when the Western form is visually unsuitable.
+
+---
+
+## 9. Windmill and watermill
+
+Direct dependencies are simple:
+
+- `DankPyon_Windmill` -> `DankPyon_WindMill`;
+- `DankPyon_Watermill` -> `DankPyon_WaterMill`.
+
+### Direction
+
+- **watermill:** strong retain/retexture candidate and should be moved much
+  earlier than MO's Engineering end branch;
+- **power windmill:** hide from the baseline Japanization research tree unless
+  better premodern Japanese evidence is established;
+- **DBH for Medieval:** its wind pump currently connects to the MO windmill
+  research, so Japanization must re-route that DBH unlock if the windmill node
+  is hidden.
+
+This decision concerns power machinery, not decorative wind devices.
+
+---
+
+## 10. Broad overloaded research nodes
+
+### Rustic Furniture
+
+The dependency crawler reaches **131 MO Defs** through
+`DankPyon_RusticFurniture`, including furniture, beds, shelves, tents,
+lighting, decoration, bookshelves, production/support furniture and other
+objects.
+
+This is not a single historical “technology.”
+
+**Direction:** keep the upstream node only as an internal compatibility anchor
+if useful, while Japanization redistributes visible unlocks by actual craft /
+domestic function. Do not force every retained Japaneseized object behind one
+“rustic furniture” research merely because MO did.
+
+### Stonecutting
+
+The crawler reaches **68 MO Defs**, including:
+
+- generic stone/cobble floors;
+- kiln and ice cellar;
+- castle wall / embrasures;
+- Tudor wall;
+- many fleur-de-lys, Versailles, herringbone and other Western decorative
+  floors;
+- reinforced trench;
+- large oven;
+- storage/display piles.
+
+**Direction:** preserve generic stoneworking, but curate the Western
+architecture/decorative outputs separately.
+
+A Japanization patch must not equate:
+
+> “stone can be cut” = “European castle wall, Tudor wall and fleur-de-lys floors
+> are now Japanese.”
+
+### Complex Furniture
+
+The current direct family includes colored rustic beds and a reinforced log
+gate. Treat this as an output bundle, not a technology that needs literal
+translation.
+
+---
+
+## 11. Historical anchors
+
+- National Museum of Japanese History: medieval cooking change associated with
+  the spread of iron pots and mortars; the same material also notes the
+  15th-century arrival of the large saw and plane changes in woodworking.
+  - https://www.rekihaku.ac.jp/assets/upload/column_20210724_pdf_01.pdf
+- National Diet Library reference: Portuguese-derived bread entered Japan in
+  the Tenbun period; another NDL reference on Nanban confectionery places
+  Portuguese breads/sweets in the 16th-century contact context.
+  - https://crd.ndl.go.jp/reference/entry/reference/show?id=1000034821
+  - https://crd.ndl.go.jp/reference/entry/reference/show?id=1000077165
+- Existing research-audit anchors remain applicable for watermills, candles and
+  oil production:
+  - watermill: `日本書紀` traditional 610 transmission / Heian-period use;
+  - domestic candle production: late Muromachi;
+  - egoma-oil production/trade: medieval oil guilds.
+
+These anchors justify structural placement only. They do not automatically
+validate a specific MO recipe as a Japanese historical food.
+
+---
+
+## 12. Ownership boundary
+
+### Japanization owns
+
+- curation of MO recipes/buildings exposed in the Japanized MO profile;
+- MO research prerequisite redistribution;
+- MO-owned retextures/labels/descriptions;
+- hiding Western/fantasy MO recipes where no honest mapping exists;
+- conditional research/material connections to other AMJ Mods.
+
+### Other AMJ Mods keep ownership of their gameplay loops
+
+- **Grains:** dry-field grain crops, primary processing and minimal flour foods;
+- **Rice Cultivation:** rice/paddies and rice primary processing;
+- **Fermentation / Brewing:** Japanese fermentation and alcohol systems;
+- **Preservation / Food Drying compatibility:** independent preservation
+  gameplay where adopted;
+- **Ironmaking:** Japanese iron production;
+- **Waterworks:** gravity-fed water-management network.
+
+Japanization may reuse MO equipment for these systems when both Mods are
+loaded, but it must not turn their independent gameplay into a Japanization hard
+dependency.
+
+## Next audit
+
+Before production XML:
+
+1. build the exact MO cooking RecipeDef -> product -> ingredient -> effect
+   ledger;
+2. determine which recipes remain because they create a distinct AMJ gameplay
+   choice;
+3. audit architecture/furniture output bundles, especially
+   `RusticFurniture`, `Stonecutting` and royal furniture;
+4. audit MO oil lamps and other lighting before fixing the candle progression;
+5. trace Processor Framework processes behind presser, drying rack, smoker,
+   millstone and watermill;
+6. validate optional Grains / DBH for Medieval / future Fermentation/Brewing
+   connections remain conditional.
