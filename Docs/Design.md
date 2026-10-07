@@ -492,11 +492,28 @@ Scenarioの旧具体値表は移行中のMOプロファイル互換契約とす�
 `Docs/GrainsProfileTesting.md` に、実MO / 実CCTOの有無を選ぶ4プロファイルを追加した。
 Production About.xmlを変えずにruntimeファイルをそのままテスト専用コピーへ読み込ませる。
 旧MO/CCTO fixtureの8シナリオとは別に、各構成の読み込み・一次加工・任意CCTOを
-確認する移行用smokeを置く。現時点では製粉・粉食・環境別6穀物選択・各構成の
-New Village実開始は次のstep 2で各プロファイルへ追加したが未実行であり、上表のリリース条件全件を満たした扱いにはしない。
-**2026-10-07 Base分離 step 2:** Base Defs/翻訳からMO研究・素材・カテゴリ・Straw・Scenario・apparel参照を除去した。大麦と加工台はBaseでは研究不要、加工台の金属はSteel 30、簡易加工場はWoodyのみとする。MO併用時は `loadFolders.xml` の IfModActive により `Compatibility/MedievalOverhaul` を読み込み、旧38件の明示AMJC Def/抽象Def契約を保持する。MO小麦脱穀、外部MO小麦PatchとRawWheat翻訳もこの条件付きフォルダへ移した。Base小麦の脱穀Recipeはfallback穀束追加まで非公開とする。
+確認する移行用smokeを置く。step 2でNew Village実開始、step 3で製粉・粉食のロード後契約を追加したが実機未実行であり、環境別6穀物選択を含むリリース条件全件を満たした扱いにはしない。
+**2026-10-07 Base分離 step 2:** Base Defs/翻訳からMO研究・素材・カテゴリ・Straw・Scenario・apparel参照を除去した。大麦と加工台はBaseでは研究不要、加工台の金属はSteel 30、簡易加工場はWoodyのみとする。MO併用時は `loadFolders.xml` の IfModActive により `Compatibility/MedievalOverhaul` を読み込み、旧38件の明示AMJC Def/抽象Def契約を保持する。MO小麦脱穀、外部MO小麦PatchとRawWheat翻訳もこの条件付きフォルダへ移した。step 2時点ではBase小麦の脱穀Recipeを非公開とし、次のstep 3で復帰した。
 
-4構成のPickle featureにNew Villageのロード後設定と実開始を追加した（各5シナリオ）。静的projectionはAMJ所有XMLとBase差分Add/Replaceだけを検証し、RimWorldの継承・全Patch・Def解決・描画の代替ではない。小麦・製粉・粉食、MO仮画像3件の置換、実機4構成、セーブ移行は未完了。Production About.xmlのMO必須依存は維持する。
+4構成のPickle featureにNew Villageのロード後設定と実開始を追加した（各5シナリオ）。静的projectionはAMJ所有XMLとBase差分Add/Replaceだけを検証し、RimWorldの継承・全Patch・Def解決・描画の代替ではない。step 2時点では小麦・製粉・粉食は未実装だった（次のstep 3でXMLを追加）。MO仮画像3件の置換、実機4構成、セーブ移行は未完了。Production About.xmlのMO必須依存は維持する。
+
+**2026-10-07 step 3 小麦・製粉・最低限粉食の初期実装:**
+
+- `loadFolders.xml` はrootと、MO時の `Compatibility/MedievalOverhaul`、非MO時の `BaseWithoutMO` を排他的に読み込む。IfModNotActiveは添付MO 1.6 LoadFolders.xmlの実使用を確認した。Base専用小麦/小麦束/小麦粉/石臼/小麦製粉がMO時に重複しない。
+- 非MO小麦は `AMJC_Plant_Wheat` → `AMJC_RawWheat` →既存 `AMJC_ThreshWheat` / Bulk →既存 `AMJC_Wheat`。12日・収量28・肥沃度最低0.7/感応度0.9、研究なし、束120日、脱穀1:1・Strawなし。最低成長0℃、高温側58℃、最適10～42℃をBaseの明示初期値とする（Vanilla標準値との実機比較は未実施）。CCTO時だけ-6℃固定枯死拡張を付ける。
+- 製粉は `AMJC_MillWheat` / `AMJC_MillBuckwheat` / `AMJC_MillMillet`。可食穀粒10→粉10、各0.05栄養で総栄養0.5を保存、workAmount 300、Crafting。粉は60日保存・直接摂食不可。小麦粉 `AMJC_WheatFlour` はBaseだけ、`AMJC_BuckwheatFlour` / `AMJC_MilletFlour` は両プロファイルで所有する。
+- Base設備は `AMJC_ManualMillstone`（BlocksGranite 30 / WoodLog 20）。MO時は既存 `DankPyon_CraftFlour` でAMJC_Wheat→DankPyon_Flourへ進み、蕎麦/雑穀製粉を `DankPyon_Millstone` に接続する。最低限製粉を研究で止めないためMO石臼のresearchPrerequisitesを条件付きで除去する。MO小麦の既存研究と旧38件のAMJC契約は維持する。MO側の研究除去Patchは実ソースに対する静的参照確認であり、他Modとの実ロード優先順位は未検証。
+- 最低限粉食の初期値は以下。各Recipeは研究・Cooking最低技能なし、Campfire / ElectricStove / FueledStoveで利用可能、workAmount 300、Nutrition換算入力0.5→料理1個0.9、2.5日保存、`AMJC_AteFlourFood` のMood +2（0.5日、stackLimit 1）。MO時だけ餺飥の入力をDankPyon_Flourへ置換する。
+
+| 料理 | ThingDef | RecipeDef | Base入力 | MO入力 |
+|---|---|---|---|---|
+| 餺飥 | `AMJC_Houtou` | `AMJC_CookHoutou` | `AMJC_WheatFlour` | `DankPyon_Flour` |
+| そばがき | `AMJC_Sobagaki` | `AMJC_CookSobagaki` | `AMJC_BuckwheatFlour` | 同左 |
+| 雑穀団子 | `AMJC_MilletDumplings` | `AMJC_CookMilletDumplings` | `AMJC_MilletFlour` | 同左 |
+
+新規説明文は日本語先行レビュー前のため空欄とし、未承認の歴史的説明を英訳・公開していない。旧小麦Recipeの説明/翻訳は保持する。新規画像は生成せず、Base小麦は既存AMJアワ、束・粉は既存AMJ雑穀、石臼・料理はVanillaの開発用画像参照を使う。**これらは完成画ではなく、固有画像・日本語説明レビュー→英訳、実機の継承/参照/Graphic/Bill実行、環境別選択・既存セーブ回帰をリリース前に完了する必要がある。** Production About.xmlのMO必須依存はまだ変更しない。開始シナリオも物理移転前の暫定配置を維持する。
+
+`Tests/validate_grains_chain.py` と変異回帰は入力/出力、栄養保存、研究不要、保存/Mood、MO差替え/非重複を静的確認する。旧38件はそのまま照合し、新規11件の共有Defだけ追加許可する。4構成のPickleに製粉/粉食のロード後契約を加え、各6シナリオとした。ゲーム内でBillを完了した証拠ではなく、実機実行自体も未実施。
 
 #### 外部Modとの競合優先順位
 
@@ -1086,7 +1103,7 @@ R⁴は既存作業台を使って武器・衣服のrepair / clean taint / recyc
 
 #### Base開始条件・物資（2026-10-07）
 
-Baseは初期研究0件、衣服タグNeolithicのみとする。人数・到着・派閥・背景・空研究タグ等は上表と共通。大麦と加工台は研究不要で、Steel 30を使う。小麦のBase栽培・製粉は次工程で追加する。MO併用時は旧3研究、Peasantタグ、上の12物資と鉄製ナイフを条件付き差分で復元する。
+Baseは初期研究0件、衣服タグNeolithicのみとする。人数・到着・派閥・背景・空研究タグ等は上表と共通。大麦と加工台は研究不要で、Steel 30を使う。step 3で小麦のBase栽培・製粉を追加した（実機未検証）。MO併用時は旧3研究、Peasantタグ、上の12物資と鉄製ナイフを条件付き差分で復元する。
 
 | DefName | 数量 | 用途 |
 |---|---:|---|
@@ -1303,7 +1320,7 @@ Grainsは小麦粉・蕎麦粉・雑穀粉を一次加工の出力として所�
 
 - **簡易穀物加工場所 / AMJC_GrainProcessingSpot:** 初期から使える低速の脱穀・殻取り設備。
 - **穀物加工台 / AMJC_GrainProcessingTable:** 同じ脱穀・殻取りRecipeを高速に処理する上位設備。BaseではMO研究・MO素材を要求しない。
-- **Grains手動石臼:** Baseで小麦・ソバ・雑穀を製粉するAMJ所有設備。最低限の製粉経路はMO研究なしで成立させる。実装DefName・最終コストは移行実装時に固定する。
+- **Grains手動石臼:** Baseで小麦・ソバ・雑穀を製粉するAMJ所有設備。最低限の製粉経路はMO研究なしで成立させる。step 3初期実装は `AMJC_ManualMillstone`、BlocksGranite 30 + WoodLog 20、WorkToBuild 500。設備・製粉Recipeに研究前提は置かないが、石材の入手はVanillaの採掘・加工・交易等に依存し、全マップで初日建設できることは保証しない。
 - MO併用時は DankPyon_Millstone を標準石臼として使い、Grains手動石臼は重複表示しない。
 - MOのCraftingSpot手挽き等を残す場合も、未脱穀穀束から直接粉へ飛ばないようGrains工程順を維持する。
 - x10等のBulk Recipeは単品処理より作業量を減らし、大量処理時のBill/Job負荷を抑える。
@@ -1791,7 +1808,7 @@ Grainsの主要実装は、次の順で管理する。
 | Stage | 主題 | 主な内容 | 現在の状態 |
 |---|---|---|---|
 | **Stage A / 現行実装** | 乾田穀物 | アワ・ヒエ・キビ・ソバ・大麦・MO小麦統合、脱穀・殻取り、穀物加工設備、New Village | MO必須版として実装済み |
-| **Grains分離移行** | Vanilla自己完結 | 非MO小麦、小麦粉・蕎麦粉・雑穀粉、手動石臼、最低限粉食、BaseからMO参照除去、MO条件付き互換 | **step 2 Base参照分離実装・実機未検証** |
+| **Grains分離移行** | Vanilla自己完結 | 非MO小麦、小麦粉・蕎麦粉・雑穀粉、手動石臼、最低限粉食、BaseからMO参照除去、MO条件付き互換 | **step 3 小麦・製粉・最低限粉食XML実装・実機未検証** |
 | **回帰固定** | 環境別穀物選択 | Base/MO/CCTO各プロファイルで単一穀物がほぼ全条件の最適解にならないことを自動確認 | 分離移行と同時に追加 |
 
 旧Stage B（豆類）、Stage C（繊維）、Stage D（根菜）はGrainsロードマップから削除する。将来必要なら、それぞれの主要用途と自然な所有Modを決めて別途設計する。

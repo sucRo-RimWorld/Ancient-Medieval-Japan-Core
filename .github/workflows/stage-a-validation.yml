@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Install compositing dependency
-        run: python -m pip install Pillow==12.3.0
+        run: python -m pip install --timeout 60 --retries 5 Pillow==12.3.0
 
       - name: Regression-test fixed template protection
         run: python Tests/test_fixed_template.py
@@ -51,6 +51,9 @@ jobs:
 
       - name: Reject Base MO references and compatibility regressions
         run: python Tests/test_grains_base.py
+
+      - name: Reject flour-chain balance and provider regressions
+        run: python Tests/test_grains_chain.py
 
       - name: Validate Stage A crop and grain processing XML
         run: python Tests/validate_stage_a.py

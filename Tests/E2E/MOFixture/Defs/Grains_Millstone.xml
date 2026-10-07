@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="BenchBase">
+    <defName>DankPyon_Millstone</defName>
+    <label>AMJ test millstone</label>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData><texPath>E2E/Placeholder</texPath><graphicClass>Graphic_Single</graphicClass></graphicData>
+    <size>(1,1)</size>
+    <researchPrerequisites><li>DankPyon_BasicAgriculture</li></researchPrerequisites>
+  </ThingDef>
+</Defs>

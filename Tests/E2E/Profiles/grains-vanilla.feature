@@ -15,3 +15,6 @@ Feature: Grains real-provider migration smoke - vanilla
   @quickstart:AmjNewVillageQuickstart
   Scenario: Grains vanilla New Village starts
     Then New Village starts with five villagers and the designed supplies
+
+  Scenario: Grains vanilla wheat flour and minimum food resolve
+    Then the Grains wheat flour and minimum food chains resolve

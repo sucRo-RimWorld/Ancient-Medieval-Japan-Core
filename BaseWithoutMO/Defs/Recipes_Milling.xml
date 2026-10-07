@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Defs>
+  <RecipeDef>
+    <defName>AMJC_MillWheat</defName>
+    <label>mill wheat</label>
+    <description />
+    <jobString>Milling grain.</jobString>
+    <workAmount>300</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <allowMixingIngredients>false</allowMixingIngredients>
+    <targetCountAdjustment>10</targetCountAdjustment>
+    <recipeUsers>
+      <li>AMJC_ManualMillstone</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>AMJC_Wheat</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>AMJC_Wheat</li>
+      </thingDefs>
+      <specialFiltersToDisallow>
+        <li>AllowRotten</li>
+      </specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products>
+      <AMJC_WheatFlour>10</AMJC_WheatFlour>
+    </products>
+  </RecipeDef>
+</Defs>

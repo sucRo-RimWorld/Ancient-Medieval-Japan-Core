@@ -15,20 +15,26 @@ def profile_xml(profile="mo", root=ROOT):
     assert profile in {"vanilla", "mo"}
     loader = ET.parse(root / "loadFolders.xml").getroot()
     entries = loader.findall("v1.6/li")
-    assert len(entries) == 2 and (entries[0].text or "").strip() == "/"
+    assert len(entries) == 3 and (entries[0].text or "").strip() == "/"
     assert entries[1].text == MO_FOLDER
     assert entries[1].get("IfModActive") == "DankPyon.Medieval.Overhaul"
+    assert entries[2].text == "BaseWithoutMO"
+    assert entries[2].get("IfModNotActive") == "DankPyon.Medieval.Overhaul"
     defs = ET.Element("Defs")
     folders = [root / "Defs"]
     if profile == "mo":
         folders.append(root / MO_FOLDER / "Defs")
+    else:
+        folders.append(root / "BaseWithoutMO/Defs")
     for folder in folders:
         for path in sorted(folder.rglob("*.xml")):
             document = ET.parse(path).getroot()
             assert document.tag == "Defs", path
             defs.extend(deepcopy(list(document)))
     if profile == "mo":
-        patch = ET.parse(root / MO_FOLDER / "Patches/MedievalOverhaul_StageA_Base.xml").getroot()
+        patch = ET.Element("Patch")
+        for name in ("MedievalOverhaul_StageA_Base.xml", "MedievalOverhaul_GrainsFlour.xml"):
+            patch.extend(ET.parse(root / MO_FOLDER / "Patches" / name).getroot())
         for operation in patch.findall("Operation"):
             selector = operation.findtext("xpath")
             assert selector and selector.startswith("/Defs/")

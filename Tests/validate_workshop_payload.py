@@ -44,6 +44,8 @@ def subscriber_file(path):
     parts = p.parts
     if parts[:2] == ("Compatibility", "MedievalOverhaul"):
         parts = parts[2:]
+    elif parts[:1] == ("BaseWithoutMO",):
+        parts = parts[1:]
     if len(parts) > 1 and parts[0] in RUNTIME:
         return p.suffix.lower() in RUNTIME[parts[0]]
     return False
@@ -68,6 +70,8 @@ def self_test():
     runtime = ["About/About.xml", "About/Preview.png", "About/PublishedFileId.txt",
                "Defs/Plants.xml", "Languages/Japanese/Keyed/Mod.xml", "Textures/Plant.png",
                "Assemblies/Mod.dll", "Patches/Compatibility/Mod.xml", "loadFolders.xml", "LICENSE",
+               "BaseWithoutMO/Defs/Wheat.xml", "BaseWithoutMO/Patches/CCTO.xml",
+               "BaseWithoutMO/Languages/Japanese/DefInjected/ThingDef/Wheat.xml",
                "Compatibility/MedievalOverhaul/Defs/Recipes.xml",
                "Compatibility/MedievalOverhaul/Patches/MO.xml",
                "Compatibility/MedievalOverhaul/Languages/Japanese/DefInjected/ThingDef/MO.xml"]

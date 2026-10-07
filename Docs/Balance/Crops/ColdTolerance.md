@@ -19,6 +19,7 @@ AMJC固有作物の耐寒データは、**AMJCが所有・管理する**。CCTO�
 | Crop | Minimum growth temperature | Fixed death threshold / behavior |
 |---|---:|---:|
 | Barley | 0°C | -8°C |
+| Wheat fallback (MO absent) | 0°C | -6°C |
 | Daikon | 0°C | -5°C |
 | Buckwheat | 5°C | -2°C |
 | Barnyard millet | 5°C | -2°C |
@@ -75,3 +76,7 @@ AMJC固有作物の耐寒データは、**AMJCが所有・管理する**。CCTO�
 | Perilla | 8°C | -2 to 0°C |
 | Rice | 10°C | -1 to 0°C |
 | Taro | 10°C | -1 to 0°C |
+
+## 2026-10-07 Base小麦の追加
+
+`AMJC_Plant_Wheat` はMOなし時だけ `BaseWithoutMO/Defs/Plants_Wheat.xml` からロードする。最低成長0℃、CCTO有効時だけ `BaseWithoutMO/Patches/CCTO_Wheat.xml` で固定枯死-6℃を追加する。MO併用時はこのDef/Patchをロードせず、従来どおりCCTO側のMO小麦対応を利用する。静的・配置検証は実装済み、実機温度挙動は未検証。
