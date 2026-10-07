@@ -15,7 +15,7 @@ This directory stores accepted source artwork and authoring files that must surv
 
 ## Inventory / recovery queue
 
-The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 9 already archived and 10 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters.
+The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 10 already archived and 9 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters.
 
 ## Current authoritative sources
 
@@ -28,6 +28,7 @@ The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 
 - `Workshop/AMJ_WorkshopCover_CommonBase.png`
 - `Workshop/AMJ_WorkshopCover_VariableMask.png`
 - `Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
+- `Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png`
 - `Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
 
 Do not copy a `Textures/` derivative into this tree merely to make the inventory look complete. Historical accepted assets whose exact higher-resolution/source bytes still survive elsewhere should be migrated here only from those exact bytes. If only the production derivative remains, keep that limitation explicit rather than relabeling the derivative as an original source.
@@ -94,6 +95,18 @@ Additional accepted sources should be added to the corresponding mirrored path a
 - Provenance: the registered deterministic compositor mask, with 0 meaning protected and 255 meaning editable. All pixels match the registered right-side region `x >= 330` and addon-label rectangle `[66,378,310,426]` (inclusive pixel bounds), with no other editable pixels.
 - Source PNG validation checked chunk boundaries/CRCs, the complete IDAT/zlib stream, grayscale scanlines/filters, IEND and full decoding. The production-only PNG gate permits indexed/RGBA encoding; this immutable grayscale source is validated separately without conversion.
 - All four registered Workshop source roles (SVG, approved reference, common base and variable mask) are now archived. This action does not create or replace a cover or publish to Workshop.
+
+### Hie mature plant — 2026-10-07 JST
+
+- Archived file: `Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png`.
+- Original: `ヒエの穂が揺れる可愛い植物アイコン.png`, Library identity `libfile_81f9f17fbb988191916144a698e3bfa5`.
+- Original dimensions: 1254×1254 RGBA; 909,425 bytes. Preserved without resizing, recoloring, or re-encoding.
+- SHA-256: `58bc4a98f4557d5df112f97c2094d7cbb5681ea8f46c36246064b10da3c573db`.
+- Production counterpart: `Textures/Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png` (256×256 indexed PNG; SHA-256 `b1348a888a4eb05e5b30a051b112530947cdf5699d663046bfdae39be43becd1`).
+- Provenance: `AMJ-016` author-approved cereal graphics and integration `ddb7a593cd552fc7a37909838b870cbd8fc28436`; the current mature production blob is still the approved integration blob. Visual comparison confirms the same three golden drooping panicles, broad leaves, stems, junctions and silhouette.
+- The initially listed `直立したヒエの植物アイコン.png` (`libfile_b626dec6725c8191bc318e25fa265b58`, green-grained version) differs in maturity and panicle structure and was excluded from G03. It is not archived or assumed to be the final immature source by this action.
+- Historical positioning/palette-export steps have not been reconstructed; a direct full-canvas resize is not pixel-identical to the indexed production PNG. Identity is established from visual correspondence and the accepted integration record, without claiming an exact export reproduction.
+- This recovery preserves only the exact original bytes; production textures are unchanged.
 
 ## Workshop distribution
 
