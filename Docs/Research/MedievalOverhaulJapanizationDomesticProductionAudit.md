@@ -517,3 +517,248 @@ Before production XML:
    millstone and watermill;
 6. validate optional Grains / DBH for Medieval / future Fermentation/Brewing
    connections remain conditional.
+
+
+---
+
+## 13. Exact cooking RecipeDef / effect follow-up
+
+The MO 1.6.2.2 XML was re-audited at exact RecipeDef level for the cooking
+research/equipment surface. The important result is that Japanization must
+curate **mechanical effects as well as names, ingredients and graphics**.
+
+### Exact recipe counts in the loaded snapshot
+
+- `DankPyon_BasicCooking`: **12 RecipeDefs**
+- `DankPyon_IntermediateCooking`: **27 RecipeDefs**
+- `DankPyon_AdvancedCooking`: **9 RecipeDefs**
+- `DankPyon_Grill`: **5 RecipeDefs**
+- `DankPyon_StewPot`: **14 RecipeDefs**
+- `DankPyon_Oven`: **23 RecipeDefs** in the current loaded XML surface,
+  including optional VFE Medieval sweetroll bulk recipes; several recipes are
+  counted under both a cooking tier and an equipment prerequisite
+
+### Ingredient/output facts that matter for curation
+
+Basic Cooking is not a coherent Japanese “basic cuisine” tier. It contains:
+
+- fat + salt -> tallow;
+- raw herb -> spice;
+- raw meat + spice -> sausage;
+- eggs -> fried eggs;
+- potato + milk -> mashed potatoes;
+- pumpkin + flour -> pumpkin fritters.
+
+Intermediate Cooking is predominantly a Western/post-contact bundle:
+
+- bread soup;
+- apple pie;
+- lemon cake;
+- hunter's stew based on sausage/cabbage/onion/garlic;
+- grilled cheese;
+- quiche;
+- sweet pancakes;
+- tomato omelette;
+- pumpkin soup/pie;
+- carrot cake.
+
+Advanced Cooking is even less reusable as a baseline Japanese tier:
+
+- cheese soup using ale;
+- steak with wine;
+- Rox steak using ale;
+- griffon-berry pie.
+
+The reusable equipment paths are much narrower than the research labels:
+
+- **Stew pot:** bone soup, lentil soup, mushroom soup, generic vegetable pot,
+  lentil/onion dish, hunter's stew, pumpkin soup.
+- **Grill:** grilled sausage, grilled skewers, grilled cheese.
+- **Oven:** bread plus Western pies/cakes/quiche and optional sweetrolls.
+
+This reinforces the existing rule: preserve a process/equipment Def when it has
+a valid Japanese gameplay role, but curate its recipes individually.
+
+### MO food effects are not cosmetic
+
+Many MO meals apply `IngestionOutcomeDoer_GiveHediff` and therefore have
+significant temporary stat/capacity effects. Representative loaded values:
+
+- `DankPyon_AteFriedEggs`: WorkSpeedGlobal **+5%** plus small
+  Consciousness/Moving/Manipulation offsets, about 12 hours;
+- `DankPyon_AteMashedPotatoes`: hunger-rate offset **-15%** plus small
+  capacity offsets, about 12 hours;
+- `DankPyon_AteGrill`: WorkSpeedGlobal **+5%**;
+- `DankPyon_AteGrillFine`: WorkSpeedGlobal **+10%**;
+- `DankPyon_AteGrillLavish`: WorkSpeedGlobal **+20%**;
+- `DankPyon_AteSoup`: ImmunityGainSpeedFactor **+5%**, about 24 hours;
+- `DankPyon_AteSoupFine`: ImmunityGainSpeedFactor **+10%**;
+- `DankPyon_AteSoupLavish`: ImmunityGainSpeedFactor **+20%**;
+- `DankPyon_AteSweetPancakes`: WorkSpeedGlobal **+15%** plus movement /
+  manipulation offsets;
+- `DankPyon_AteSteakWithWine`: WorkSpeedGlobal **+20%**;
+- `DankPyon_AteRoxSteak` and `DankPyon_AteGriffonBerryPie`: WorkSpeedGlobal
+  **+20%**, ImmunityGainSpeedFactor **+40%**, and multiple large capacity /
+  physiological offsets.
+
+Therefore a retained MO RecipeDef must pass four separate checks:
+
+1. historically/semantically valid ingredients and cooking method;
+2. equipment and research placement;
+3. nutrition/market-value and labor balance;
+4. **Hediff / Thought effect balance** against AMJ's existing rule that cooking
+   buffs are justified by total material/work/research cost, not by recipe tier
+   alone.
+
+Do not keep a strong MO buff merely because the underlying Def was convenient
+to retexture. Conversely, the MO effect system is useful prior art for AMJ's
+own limited special-food buffs and may be reused where the cost/role still
+matches.
+
+### First-pass recipe-family disposition
+
+- **Strong retain candidates:** generic grilled skewers; generic mushroom /
+  vegetable pot; bone soup if the bone-resource loop remains useful; direct-fire
+  cooking and pot-cooking equipment.
+- **Retain only after ingredient/content-owner audit:** fried eggs, spice,
+  rendered fat/tallow, pumpkin dishes, bread.
+- **Hide from baseline or late-Nanban-only candidates:** bread-soup as a
+  European bread derivative, pies, cakes, quiche, grilled cheese, cheese soup,
+  steak with wine.
+- **Hide from the historical baseline:** Rox and griffon-berry dishes.
+- **Do not relabel into Japanese food:** sausage, cheese/wine dishes and
+  Western pastries are not acceptable one-to-one targets merely because their
+  stats are useful.
+
+Bulk RecipeDefs follow the disposition of their single-batch counterpart; they
+do not need independent historical justification.
+
+---
+
+## 14. Architecture / furniture output curation follow-up
+
+The direct research gates confirm that the broad furniture nodes should be
+split by actual object role rather than translated wholesale.
+
+### `DankPyon_RusticFurniture` direct outputs
+
+The current direct-gate set includes:
+
+- cooking tools;
+- baking tools;
+- rustic door, gate and slab door;
+- ice chest;
+- cup-and-dice table;
+- tarocco table;
+- `Rim of War` game table;
+- lamp post and oil lamp;
+- rustic hearth;
+- market tent/stall;
+- water barrel;
+- tavern sign;
+- lectern;
+- rustic oven;
+- stew pot;
+- apiary;
+- mending bench;
+- smoker;
+- ice-block mold.
+
+First-pass curation:
+
+- **retain/retexture:** generic doors/gates, oil lamp, hearth, market stall,
+  water container, stew pot, mending bench;
+- **strong reinterpret candidate:** a generic board-game table can use a
+  historically valid Japanese game such as go rather than preserving a
+  Western fantasy-board presentation; go is well attested in Japan long before
+  and throughout the medieval period;
+- **late/conditional:** baking tools/oven;
+- **hide or separate audit:** tarocco, tavern-specific signage, ice-block mold,
+  smoker, apiary and any object whose actual mechanic cannot honestly map to a
+  Japanese referent;
+- **ice storage:** audit for `氷室`-type reinterpretation rather than assuming
+  a Western ice chest is the correct visible object.
+
+### `Stonecutting` direct outputs
+
+Directly gated objects include:
+
+- Tudor wall;
+- castle wall;
+- reinforced trench;
+- ice cellar;
+- large oven;
+- kiln.
+
+First-pass curation:
+
+- **kiln:** retain/retexture; this is a strong generic craft/infrastructure
+  reuse target;
+- **reinforced trench:** retain only if the loaded behavior can represent
+  Japanese field earthworks/defensive ditching without Western fortification
+  semantics;
+- **ice cellar:** strong reinterpret candidate as a Japanese ice-storage
+  facility if the mechanic fits;
+- **large oven:** late Nanban/conditional at most;
+- **Tudor wall:** never keep under a translated name; either retexture/redefine
+  it as a historically supportable Japanese wall construction with matching
+  stats or hide it;
+- **castle wall:** do not automatically call a freestanding European-style
+  heavy wall `石垣`. Japanese castle stone bases and a RimWorld vertical wall
+  are not mechanically/visually identical; item-level architecture audit is
+  still required.
+
+### `DankPyon_RoyalRusticFurniture` direct outputs
+
+Directly gates royal closet/bookshelf/armchair/throne/tables/end table/dresser,
+royal Tudor bed and royal chest.
+
+This set should **not** be retained as a one-for-one “Japanese royal furniture”
+pack.
+
+- chests/storage and some tables/bookshelves may have valid high-status
+  Japanese counterparts;
+- armchair, throne, end-table, dresser and Tudor-bed forms require much more
+  caution because elite Japanese interiors used a different floor-seating /
+  furnishing system;
+- where no honest counterpart exists, hide the MO object rather than creating a
+  misleading Japanese skin;
+- if a retained function maps cleanly, retexture the existing MO Def rather
+  than adding a duplicate AMJ Def.
+
+Culture Agency material on tatami notes that it began as elite movable
+seat/bedding and spread to room-wide use around the Muromachi period. This
+supports a Japanization strategy based on floor-level furnishings rather than
+simply reskinning every Western high-status chair/bed.
+
+### `ComplexFurniture` direct outputs
+
+The current direct set is small:
+
+- reinforced log gate;
+- red rustic single bed;
+- red rustic double bed.
+
+The reinforced gate is a straightforward retain/retexture candidate. Beds
+should be audited against Japanese bedding presentation; a retexture is
+possible if the footprint/interaction remains honest, but Japanization should
+not create redundant bedding Defs when an external Japanese furniture Mod is
+already the chosen supplier.
+
+---
+
+## Updated next audit
+
+Before production XML:
+
+1. classify the remaining unresolved food/product effects and write the
+   retained-recipe list;
+2. trace Processor Framework processes behind presser, drying rack, smoker,
+   millstone and watermill;
+3. finish lighting: MO oil lamps versus candle progression;
+4. finish furniture/architecture object-level mapping, especially Tudor/castle
+   walls, royal furniture, ice storage, games and market/tavern assets;
+5. validate optional Grains / DBH for Medieval / future Fermentation/Brewing
+   connections remain conditional;
+6. add automated static ledgers so an MO update cannot silently add Western
+   recipes/furniture behind a retained Japanization research node.
