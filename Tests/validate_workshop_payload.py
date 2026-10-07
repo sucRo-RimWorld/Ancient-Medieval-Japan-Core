@@ -44,6 +44,10 @@ def subscriber_file(path):
     parts = p.parts
     if parts[:2] == ("Compatibility", "MedievalOverhaul"):
         parts = parts[2:]
+    elif parts[:3] == ("LegacyStartingScenarios", "Compatibility", "MedievalOverhaul"):
+        parts = parts[3:]
+    elif parts[:1] == ("LegacyStartingScenarios",):
+        parts = parts[1:]
     elif parts[:1] == ("BaseWithoutMO",):
         parts = parts[1:]
     if len(parts) > 1 and parts[0] in RUNTIME:
@@ -74,7 +78,10 @@ def self_test():
                "BaseWithoutMO/Languages/Japanese/DefInjected/ThingDef/Wheat.xml",
                "Compatibility/MedievalOverhaul/Defs/Recipes.xml",
                "Compatibility/MedievalOverhaul/Patches/MO.xml",
-               "Compatibility/MedievalOverhaul/Languages/Japanese/DefInjected/ThingDef/MO.xml"]
+               "Compatibility/MedievalOverhaul/Languages/Japanese/DefInjected/ThingDef/MO.xml",
+               "LegacyStartingScenarios/Defs/Scenarios/Village.xml",
+               "LegacyStartingScenarios/Languages/Japanese/Keyed/Scenario.xml",
+               "LegacyStartingScenarios/Compatibility/MedievalOverhaul/Patches/StartingScenarios.xml"]
     kept, leaks, lost = audit(unwanted + runtime, rules)
     assert kept == sorted(runtime) and not leaks and not lost
     assert audit(["NewDeveloperFolder/data.json"], rules)[1]

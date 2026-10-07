@@ -2,7 +2,7 @@
 function Get-AmjProfileXml([string]$RepositoryRoot, [string]$Profile = 'mo') {
     if ($Profile -notin @('vanilla','mo')) { throw "Unknown XML profile: $Profile" }
     [xml]$doc = '<Defs/>'
-    $folders = @((Join-Path $RepositoryRoot 'Defs'))
+    $folders = @((Join-Path $RepositoryRoot 'Defs'), (Join-Path $RepositoryRoot 'LegacyStartingScenarios/Defs'))
     if ($Profile -eq 'mo') { $folders += Join-Path $RepositoryRoot 'Compatibility/MedievalOverhaul/Defs' }
     else { $folders += Join-Path $RepositoryRoot 'BaseWithoutMO/Defs' }
     foreach ($folder in $folders) {
@@ -19,6 +19,8 @@ function Get-AmjProfileXml([string]$RepositoryRoot, [string]$Profile = 'mo') {
             [xml]$patch = Get-Content -LiteralPath (Join-Path $RepositoryRoot ("Compatibility/MedievalOverhaul/Patches/$name")) -Raw -Encoding UTF8
             $operations += @($patch.Patch.Operation)
         }
+        [xml]$legacyPatch = Get-Content -LiteralPath (Join-Path $RepositoryRoot 'LegacyStartingScenarios/Compatibility/MedievalOverhaul/Patches/StartingScenarios.xml') -Raw -Encoding UTF8
+        $operations += @($legacyPatch.Patch.Operation)
         foreach ($operation in $operations) {
             $targets = @($doc.SelectNodes([string]$operation.xpath))
             if ($targets.Count -ne 1) { throw "Expected one AMJ-owned patch target: $($operation.xpath)" }

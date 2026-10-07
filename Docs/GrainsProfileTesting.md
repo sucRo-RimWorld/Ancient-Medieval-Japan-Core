@@ -218,20 +218,19 @@ still uncompiled/unrun here. The step source preserves asynchronous cleanup whil
 remaining compatible with the repository's Framework C# 5 compiler syntax.
 
 
-## Starting-scenario extraction prototype
+## Starting-scenario extraction and legacy compatibility
 
 `Docs/ScenarioExtraction.md` is the owning extraction/migration procedure.
 `python Tests/test_scenario_extraction.py` builds two disposable test packages
 and checks six XML ownership configurations plus guard/order/duplicate regressions.
 It preserves all current explicit contracts whenever Grains is present; standalone
 Scenario supplies use draft RawRice 300 instead of unavailable AMJC grain refs.
-Production packages and eight-scenario runtime suites are unchanged. The generator
+Production scenario Defs/localization and MO starting differences now reside in conditional LegacyStartingScenarios; eight-scenario runtime suites remain unchanged until runtime test ownership transfers. The generator
 requires fresh output and distinct `.extractiontest` IDs, records source/payload
 hashes and does not install, publish or rewrite saves. An unchanged current Core
 cannot coexist with a new provider; the regression explicitly rejects that mix.
 
-This establishes a reproducible candidate structure, not physical production
-extraction, game loader behavior or successful old-save migration. At actual
+Physical XML relocation is implemented. CI also checks the actual separate Scenarios repository at reviewed commit cbd5e313f9cb0871f7227e447d3faa7497fd962e through Tests/validate_scenario_pair.py (six configurations). This proves explicit XML contracts, not game loader behavior or successful old-save migration. At actual
 ownership transfer, move only NewVillage steps/Quickstart/start scenarios to the
 new owner's test suite, keep generic Stage A/environment/Bill tests in Grains,
 and update exact suite names/counts/source attribution together. Both real

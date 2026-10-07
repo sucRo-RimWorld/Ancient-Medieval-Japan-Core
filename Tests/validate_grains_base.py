@@ -8,7 +8,7 @@ from amj_profile_xml import ROOT, MO_FOLDER, profile_xml, contract_signature
 
 def validate():
     # MO identifiers/classes must be absent from Base Defs and localization.
-    for folder in ("Defs", "Languages", "BaseWithoutMO"):
+    for folder in ("Defs", "Languages", "BaseWithoutMO", "LegacyStartingScenarios/Defs", "LegacyStartingScenarios/Languages"):
         for path in sorted((ROOT / folder).rglob("*.xml")):
             document = ET.parse(path).getroot()
             for node in document.iter():

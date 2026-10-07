@@ -1,1 +1,6 @@
 TestResults/
+
+# Disposable checkout of reviewed independent owner for paired CI
+Tests/Fixtures/ScenarioOwner/
+__pycache__/
+*.pyc

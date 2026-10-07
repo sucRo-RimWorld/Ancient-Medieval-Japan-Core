@@ -61,6 +61,16 @@ jobs:
       - name: Validate independent scenario extraction prototypes
         run: python Tests/test_scenario_extraction.py
 
+      - name: Check out independent Scenarios owner at reviewed commit
+        uses: actions/checkout@v5
+        with:
+          repository: sucRo-RimWorld/Ancient-Medieval-Japan-Scenarios
+          ref: cbd5e313f9cb0871f7227e447d3faa7497fd962e
+          path: Tests/Fixtures/ScenarioOwner
+
+      - name: Validate actual separate repository pair
+        run: python Tests/validate_scenario_pair.py --scenario-root Tests/Fixtures/ScenarioOwner
+
       - name: Validate Stage A crop and grain processing XML
         run: python Tests/validate_stage_a.py
 

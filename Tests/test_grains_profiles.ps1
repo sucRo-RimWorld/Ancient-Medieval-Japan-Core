@@ -47,7 +47,7 @@ try {
         & (Join-Path $repo 'Scripts/Stage-GrainsTestProfile.ps1') -RepositoryRoot $repo -ModsRoot $mods -Profile $profile
         $target = Join-Path $mods 'AncientMedievalJapanCore.E2ETarget'
         Assert (-not (Test-Path (Join-Path $target 'Patches/E2E_Graphics.xml'))) 'Graphics substitutions leaked into real profile.'
-        foreach ($folder in @('Defs','Patches','Textures','Languages','Compatibility','BaseWithoutMO')) {
+        foreach ($folder in @('Defs','Patches','Textures','Languages','Compatibility','BaseWithoutMO','LegacyStartingScenarios')) {
             foreach ($file in Get-ChildItem -LiteralPath (Join-Path $repo $folder) -File -Recurse) {
                 $relative = $file.FullName.Substring($repo.Length + 1)
                 Assert ((Get-FileHash -LiteralPath $file.FullName).Hash -eq (Get-FileHash -LiteralPath (Join-Path $target $relative)).Hash) "Runtime bytes changed: $relative"
@@ -91,6 +91,10 @@ try {
     [xml]$fixtureLoader = Get-Content -LiteralPath (Join-Path $target 'loadFolders.xml') -Raw
     Assert ($fixtureLoader.loadFolders.'v1.6'.li[1].IfModActive -eq 'sucro.ancientmedievaljapan.core.mofixture') 'Legacy fixture condition was not isolated.'
     Assert ($fixtureLoader.loadFolders.'v1.6'.li[2].IfModNotActive -eq 'sucro.ancientmedievaljapan.core.mofixture') 'Legacy fixture failed to exclude fallback content.'
+    Assert ($fixtureLoader.loadFolders.'v1.6'.li[4].IfModActive -eq 'sucro.ancientmedievaljapan.core.mofixture') 'Legacy scenario MO patch condition was not isolated.'
+    foreach ($index in @(3,4)) {
+        Assert ($fixtureLoader.loadFolders.'v1.6'.li[$index].IfModNotActive -eq 'sucro.ancientmedievaljapan.scenarios') 'Independent scenario exclusion guard was lost.'
+    }
     [xml]$productionLoader = Get-Content -LiteralPath (Join-Path $repo 'loadFolders.xml') -Raw
     Assert ($productionLoader.loadFolders.'v1.6'.li[1].IfModActive -eq 'DankPyon.Medieval.Overhaul') 'Fixture condition leaked into production.'
     . (Join-Path $repo 'Scripts/AmjProfileXml.ps1')

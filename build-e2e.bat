@@ -116,6 +116,7 @@ if exist "%ROOT%Textures" (
 )
 
 xcopy "%ROOT%BaseWithoutMO" "%TARGET_MOD_DIR%\BaseWithoutMO" /E /I /Y >nul
+xcopy "%ROOT%LegacyStartingScenarios" "%TARGET_MOD_DIR%\LegacyStartingScenarios" /E /I /Y >nul
 if errorlevel 1 exit /b 1
 xcopy "%ROOT%Compatibility" "%TARGET_MOD_DIR%\Compatibility" /E /I /Y >nul
 if errorlevel 1 exit /b 1

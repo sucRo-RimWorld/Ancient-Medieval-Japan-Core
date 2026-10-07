@@ -122,19 +122,23 @@ class ExtractionTests(unittest.TestCase):
             self.assertEqual(hashlib.sha256((self.output/path).read_bytes()).hexdigest(),expected)
         manifest = json.loads((ROOT/'Tests/Fixtures/ScenarioExtraction/manifest.json').read_text())
         for path in manifest['localization']:
-            self.assertEqual((self.scenario/path).read_bytes(),(ROOT/path).read_bytes())
-            self.assertEqual((self.grains/LEGACY/path).read_bytes(),(ROOT/path).read_bytes())
+            self.assertEqual((self.scenario/path).read_bytes(),(ROOT/manifest['sourceRoot']/path).read_bytes())
+            self.assertEqual((self.grains/LEGACY/path).read_bytes(),(ROOT/manifest['sourceRoot']/path).read_bytes())
             self.assertFalse((self.grains/path).exists())
         for typ,item in manifest['definitions'].items():
             self.assertFalse((self.grains/item['path']).exists())
-            self.assertEqual((self.grains/LEGACY/item['path']).read_bytes(),(ROOT/item['path']).read_bytes())
+            self.assertEqual((self.grains/LEGACY/item['path']).read_bytes(),(ROOT/manifest['sourceRoot']/item['path']).read_bytes())
         self.assertFalse(ET.parse(self.scenario/'About/About.xml').findall('modDependencies/li'))
         self.assertFalse(ET.parse(self.grains/'About/About.xml').findall('modDependencies/li'))
 
     def test_original_core_cannot_be_combined_with_new_provider(self):
         # An unchanged old Core still owns the names. Do not promise that mix.
+        # Removing the new guards emulates the pre-migration provider inventory.
+        path = self.grains/'loadFolders.xml';loader = ET.parse(path)
+        for node in loader.findall('v1.6/li')[3:]:del node.attrib['IfModNotActive']
+        loader.write(path)
         with self.assertRaisesRegex(AssertionError,'Duplicate'):
-            project([ROOT,self.scenario],[SCENARIO_ID,MO_ID])
+            project([self.grains,self.scenario],[GRAINS_ID,SCENARIO_ID,MO_ID])
 
     def test_duplicate_definitions_if_legacy_guard_is_lost(self):
         path = self.grains/'loadFolders.xml';doc = ET.parse(path)

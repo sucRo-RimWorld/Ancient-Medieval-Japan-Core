@@ -1,10 +1,19 @@
 {
   "schemaVersion": 1,
-  "status": "extraction prototype; production ownership remains transitional",
+  "status": "guarded production legacy provider; independent Scenarios repository owns new starts",
   "definitions": {
-    "ScenarioDef": {"name": "AMJC_NewVillage", "path": "Defs/Scenarios/Scenarios_NewVillage.xml"},
-    "FactionDef": {"name": "AMJC_PlayerVillage", "path": "Defs/FactionDefs/Factions_PlayerVillage.xml"},
-    "PawnKindDef": {"name": "AMJC_Villager", "path": "Defs/PawnKindDefs/PawnKinds_Villager.xml"}
+    "ScenarioDef": {
+      "name": "AMJC_NewVillage",
+      "path": "Defs/Scenarios/Scenarios_NewVillage.xml"
+    },
+    "FactionDef": {
+      "name": "AMJC_PlayerVillage",
+      "path": "Defs/FactionDefs/Factions_PlayerVillage.xml"
+    },
+    "PawnKindDef": {
+      "name": "AMJC_Villager",
+      "path": "Defs/PawnKindDefs/PawnKinds_Villager.xml"
+    }
   },
   "localization": [
     "Languages/English/Keyed/AMJC_Scenarios.xml",
@@ -14,7 +23,11 @@
     "Languages/Japanese/DefInjected/PawnKindDef/AMJC_Villager.xml"
   ],
   "moPatch": "Compatibility/MedievalOverhaul/Patches/MedievalOverhaul_StageA_Base.xml",
-  "standaloneGrainCandidate": {"defName": "RawRice", "count": 300, "status": "draft only"},
+  "standaloneGrainCandidate": {
+    "defName": "RawRice",
+    "count": 300,
+    "status": "draft only"
+  },
   "testHandoff": [
     "Tests/E2E/NewVillageSteps.cs",
     "Tests/E2E/AmjStageAQuickstart.cs",
@@ -24,5 +37,7 @@
     "Tests/E2E/Profiles/grains-mo-ccto.feature",
     "Tests/validate_new_village.py",
     "Scripts/Validate-NewVillage.ps1"
-  ]
+  ],
+  "sourceRoot": "LegacyStartingScenarios",
+  "legacyMoPatch": "LegacyStartingScenarios/Compatibility/MedievalOverhaul/Patches/StartingScenarios.xml"
 }

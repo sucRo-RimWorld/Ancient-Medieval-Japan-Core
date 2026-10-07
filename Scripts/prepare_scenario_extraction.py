@@ -51,11 +51,12 @@ def build(output, grains_id, scenario_id, source=ROOT):
     for folder in ('About','Defs','Patches','Textures','Languages','Compatibility','BaseWithoutMO','Assemblies','1.6'):
         if (source/folder).exists(): shutil.copytree(source/folder,grains/folder)
     paths = [v['path'] for v in manifest['definitions'].values()] + manifest['localization']
+    source_root = source/manifest.get('sourceRoot','')
     for relative in paths:
-        assert (source/relative).is_file(),relative
+        assert (source_root/relative).is_file(),relative
         for target in (grains/LEGACY/relative, scenario/relative):
-            target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source/relative,target)
-        (grains/relative).unlink()
+            target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source_root/relative,target)
+        if (grains/relative).exists(): (grains/relative).unlink()
     # Split the existing MO compatibility by owned target, preserving grain ops.
     patch = ET.parse(source/manifest['moPatch']).getroot()
     owned = ET.Element('Patch');remaining = ET.Element('Patch')
@@ -63,6 +64,9 @@ def build(output, grains_id, scenario_id, source=ROOT):
         xpath = op.findtext('xpath') or ''
         dest = owned if xpath.startswith('/Defs/ScenarioDef[') or xpath.startswith('/Defs/PawnKindDef[') else remaining
         dest.append(deepcopy(op))
+    if 'legacyMoPatch' in manifest:
+        assert len(owned) == 0,'Scenario ops must stay outside grain-owned patch'
+        owned = ET.parse(source/manifest['legacyMoPatch']).getroot()
     assert len(owned) == 2,'Scenario patch inventory changed; review extraction'
     write_xml(grains/manifest['moPatch'],remaining)
     write_xml(grains/LEGACY/'Compatibility/MedievalOverhaul/Patches/StartingScenarios.xml',owned)
@@ -79,8 +83,11 @@ def build(output, grains_id, scenario_id, source=ROOT):
     write_xml(scenario/'Compatibility/Grains/Patches/StartingGrains.xml',compat)
     # Positive + negative loader conditions are conjunctive (LoadFolder.ShouldLoad).
     loader = ET.parse(source/'loadFolders.xml').getroot();version = loader.find('v1.6')
-    ET.SubElement(version,'li',{'IfModNotActive':scenario_id}).text = LEGACY
-    ET.SubElement(version,'li',{'IfModActive':MO,'IfModNotActive':scenario_id}).text = LEGACY+'/Compatibility/MedievalOverhaul'
+    if len(version) == 5:
+        for node in list(version)[3:]:node.set('IfModNotActive',scenario_id)
+    else:
+        ET.SubElement(version,'li',{'IfModNotActive':scenario_id}).text = LEGACY
+        ET.SubElement(version,'li',{'IfModActive':MO,'IfModNotActive':scenario_id}).text = LEGACY+'/Compatibility/MedievalOverhaul'
     write_xml(grains/'loadFolders.xml',loader)
     loader = ET.Element('loadFolders');version = ET.SubElement(loader,'v1.6')
     ET.SubElement(version,'li').text = '/'
@@ -104,7 +111,7 @@ def build(output, grains_id, scenario_id, source=ROOT):
     for id_ in (MO,grains_id):ET.SubElement(after,'li').text = id_
     ET.SubElement(about,'description').text = 'Disposable independent-scenario test. Not a release; safe removal is unverified.'
     write_xml(scenario/'About/About.xml',about)
-    audit_paths = paths + [manifest['moPatch'],'loadFolders.xml','About/About.xml','Tests/Fixtures/ScenarioExtraction/manifest.json','Scripts/prepare_scenario_extraction.py']
+    audit_paths = [(Path(manifest.get('sourceRoot',''))/p).as_posix() for p in paths] + ([manifest['legacyMoPatch']] if 'legacyMoPatch' in manifest else []) + [manifest['moPatch'],'loadFolders.xml','About/About.xml','Tests/Fixtures/ScenarioExtraction/manifest.json','Scripts/prepare_scenario_extraction.py']
     report = {'status':'prototype only; no game run or save migration', 'grainsPackageId':grains_id,
               'scenarioPackageId':scenario_id,'standaloneGrainCandidate':manifest['standaloneGrainCandidate'],
               'sourceHashes':{p:hashlib.sha256((source/p).read_bytes()).hexdigest() for p in audit_paths}}

@@ -98,8 +98,8 @@ def validate(mo_root=None, core_defs=None, profile="mo"):
     assert dialog.findtext("textKey") == "AMJC_GameStart_NewVillage"
     assert dialog.findtext("closeSound") == "GameStartSting"
     for lang in ("English", "Japanese"):
-        assert load(ROOT / f"Languages/{lang}/Keyed/AMJC_Scenarios.xml").findtext("AMJC_GameStart_NewVillage")
-    jp = load(ROOT / "Languages/Japanese/DefInjected/ScenarioDef/AMJC_NewVillage.xml")
+        assert load(ROOT / f"LegacyStartingScenarios/Languages/{lang}/Keyed/AMJC_Scenarios.xml").findtext("AMJC_GameStart_NewVillage")
+    jp = load(ROOT / "LegacyStartingScenarios/Languages/Japanese/DefInjected/ScenarioDef/AMJC_NewVillage.xml")
     assert jp.findtext("AMJC_NewVillage.label") == "新しい村"
     assert jp.findtext("AMJC_NewVillage.description")
     assert jp.findtext("AMJC_NewVillage.scenario.summary")
@@ -107,7 +107,7 @@ def validate(mo_root=None, core_defs=None, profile="mo"):
         ("FactionDef", "AMJC_PlayerVillage", ("label", "description", "pawnSingular", "pawnsPlural")),
         ("PawnKindDef", "AMJC_Villager", ("label",)),
     ):
-        jp = load(ROOT / f"Languages/Japanese/DefInjected/{typ}/{name}.xml")
+        jp = load(ROOT / f"LegacyStartingScenarios/Languages/Japanese/DefInjected/{typ}/{name}.xml")
         for field in fields:
             assert jp.findtext(f"{name}.{field}"), f"Missing Japanese {name}.{field}"
 
