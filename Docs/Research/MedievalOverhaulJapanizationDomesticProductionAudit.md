@@ -762,3 +762,188 @@ Before production XML:
    connections remain conditional;
 6. add automated static ledgers so an MO update cannot silently add Western
    recipes/furniture behind a retained Japanization research node.
+
+
+---
+
+## 15. Processor Framework process tracing
+
+The current MO processors were traced at ProcessDef + building level.
+
+### Presser / paper press
+
+The generic `DankPyon_Presser` is visually/verbally a cheese press and embeds
+four PF processes directly:
+
+- cow-milk cheese;
+- goat cheese;
+- sheep cheese;
+- apple pressing.
+
+Paper is **not** merely another process on the same building. MO has a separate
+`DankPyon_Press_Paper` building with its own
+`DankPyon_Press_PaperProcess`, converting paper mixture to paper over one
+game day.
+
+Implication:
+
+- do not keep the cheese-press building just because papermaking is useful;
+- Japanization can retain/retexture the dedicated paper press independently;
+- cheese/apple pressing remain separate content decisions;
+- if a future AMJ oil/fruit process wants a press, its owning Mod may reuse a
+  compatible MO processor conditionally, but Japanization does not invent that
+  gameplay loop.
+
+### Drying racks
+
+MO drying racks run Processor Framework processes for:
+
+- ordinary dried meat;
+- human meat;
+- insect meat;
+- optional fish integrations.
+
+The normal meat process is weather-sensitive:
+
+- 2.5 game days;
+- 0.8 base efficiency;
+- faster with more sun/wind;
+- rain and snow can reduce progress to zero;
+- output efficiency can scale from ingredient Nutrition.
+
+This is a strong reusable **generic preservation mechanic**. The equipment and
+process behavior are more reusable than MO's packaged-ration research bundle.
+
+Japanization should therefore keep drying-rack compatibility available while
+curating the actual accepted ingredients/outputs by profile. Rice Cultivation
+or other AMJ Mods may add their own conditional PF processes without becoming
+Japanization dependencies.
+
+### Smoker
+
+The smoker embeds three baseline PF processes:
+
+- ordinary smoked meat;
+- smoked human meat;
+- smoked insect meat;
+
+plus optional fish compatibility.
+
+The normal process:
+
+- takes 1 game day;
+- requires fuel;
+- uses a hot ideal temperature range;
+- is affected by rain/snow;
+- outputs a dedicated smoked-meat item.
+
+The loaded `efficiency` is **0.10**, unlike the drying rack's 0.8, so this is
+not mechanically interchangeable with generic drying. Before retention, audit
+the actual input/output nutrition and spoilage values to determine whether the
+smoker creates a meaningful high-loss/fast-preservation tradeoff or is simply
+an upstream balance artifact.
+
+Do not retain human/insect smoked-meat outputs as a historical-Japan feature;
+those remain normal RimWorld content-policy/gameplay choices and should not
+drive the Japanization technology tree.
+
+### Millstone
+
+`DankPyon_Millstone` is **not** a PF processor. It is a normal
+`Building_WorkTable` with Bills, unlocked by MO Basic Agriculture.
+
+This is advantageous for AMJ:
+
+- Grains can continue to own its own Base milling recipes;
+- MO-loaded profiles can map compatible recipes to the MO millstone without
+  importing Processor Framework semantics;
+- Japanization only needs to reposition/relabel/retexture the MO equipment and
+  manage research visibility.
+
+### Watermill
+
+The MO watermill directly embeds two PF processes:
+
+1. `DankPyon_WaterMillProcess`
+   - any `DankPyon_Cereal` -> `DankPyon_Flour`;
+   - 0.25 game day;
+   - efficiency 1.0;
+   - bonus Hay output;
+2. `DankPyon_WaterLumberMillProcess`
+   - MO raw-wood category -> `WoodLog`;
+   - 0.25 game day;
+   - efficiency 2.0.
+
+Thus MO's “watermill” is actually a combined **grain mill + sawmill**.
+
+Japanization should not automatically preserve that combined scope merely
+because water power itself is historically valid in Japan.
+
+First-pass direction:
+
+- retain the water-powered building and water-placement mechanics as a strong
+  reuse candidate;
+- evaluate grain milling and wood sawing as independent process toggles;
+- Grains may connect its grain categories/recipes conditionally;
+- woodworking/sawing must be checked against Japanese tool chronology and
+  balance before the 2x raw-wood conversion is retained;
+- do not make Waterworks a requirement for the MO watermill. If later
+  interoperability is valuable, add it as an optional boundary.
+
+### Windmill
+
+The MO windmill embeds the same conceptual dual role—automated grinding and
+sawing—but uses MO windmill-specific placement/airflow logic.
+
+Since the power windmill itself is outside the baseline Japanization
+technology path, its processor convenience is **not** a reason to keep the
+building visible. DBH for Medieval unlocks that currently depend on
+`DankPyon_Windmill` need an alternative research connection.
+
+---
+
+## 16. Lighting follow-up
+
+MO already contains several lighting families before candle research:
+
+- rustic torch lamp;
+- wall oil lamp;
+- lamp post;
+- rustic oil lamp.
+
+Candle research separately gates candle/candle-stand/candelabra families.
+
+This means Japanization does **not** need candles merely to preserve a
+pre-electric lighting progression.
+
+First-pass direction:
+
+- use oil/torch lighting as the baseline premodern branch where the loaded
+  mechanics and fuel inputs fit;
+- retexture clearly Western lamp-post/wall fixtures to historically supportable
+  Japanese forms only when the same placement/behavior remains honest;
+- keep candle manufacture as a later-medieval optional branch rather than a
+  basic-lighting prerequisite;
+- candelabra and other strongly Western forms should be hidden or independently
+  mapped, not translated wholesale;
+- do not automatically turn every oil lamp into an andon: paper-framed andon
+  form, fuel, freestanding/wall placement and light behavior must match before
+  that label/graphic is used.
+
+---
+
+## Revised next audit
+
+Before production XML:
+
+1. inspect smoker input/output nutrition, spoilage and value to decide whether
+   its fast/high-loss tradeoff is worth keeping;
+2. audit the exact watermill lumber process against woodworking chronology and
+   AMJ resource balance;
+3. finish object-level lighting mapping;
+4. finish furniture/architecture object mapping and retained-output lists;
+5. compare weapon stats/material costs before final MO Def -> Japanese weapon
+   mappings;
+6. resolve Carrier Birds, Heavy Crossbow, Tar, Smoker and Carpet Making;
+7. create static update ledgers so upstream MO changes cannot silently re-open
+   hidden Western/fantasy outputs.
