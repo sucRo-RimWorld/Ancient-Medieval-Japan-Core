@@ -551,11 +551,18 @@ Before production XML or texture work:
 7. Retexture the **complete loaded graphic-state family** of each retained target
    under `Docs/RetextureImplementationGuidelines.md`.
 
+## Faction / PawnKind follow-up
+
+The faction/loadout dependency audit is maintained in
+[MedievalOverhaulJapanizationFactionLoadoutAudit.md](MedievalOverhaulJapanizationFactionLoadoutAudit.md).
+It records hard `apparelRequired` references, weapon/apparel tags, and MO faction
+presentation consequences. Military Def hiding/retexture decisions are not
+implementation-ready until that loadout audit's generation gate is satisfied.
+
 ## Next audit
 
 The next Def-level pass should cover:
 
-- MO faction pawn-kind/loadout references to the military Defs above;
 - exact weapon stats/material costs to choose the surviving Japanese mappings;
 - cooking/food research outputs;
 - domestic/production buildings;
