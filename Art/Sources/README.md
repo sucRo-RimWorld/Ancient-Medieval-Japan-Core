@@ -15,7 +15,7 @@ This directory stores accepted source artwork and authoring files that must surv
 
 ## Inventory / recovery queue
 
-The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 6 already archived and 13 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters.
+The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 7 already archived and 12 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters.
 
 ## Current authoritative sources
 
@@ -24,6 +24,7 @@ The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 
 - `Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png`
 - `Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/BuckwheatInHull.png`
 - `Workshop/AMJ_WorkshopCover_Template.svg`
+- `Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg`
 - `Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
 - `Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
 
@@ -62,6 +63,15 @@ Additional accepted sources should be added to the corresponding mirrored path a
 - Production counterparts: `Textures/Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/BuckwheatInHull_{a,b,c}.png` (256×256). All three are byte-identical to the registered normalized representative `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png` (SHA-256 `0f81aa92460154d2b1ae50de14d7360be5e44ff46f8c81bdd113b6e19143d752`).
 - Provenance: approved filled exemplar in the boxed-resource pipeline and the 2026-10-05 Soba in-hull integration recorded under `AMJ-009`. The source was visually checked, and full-canvas Pillow RGBA LANCZOS resize to 256×256 reproduces all production pixels exactly (0 different RGBA pixels).
 - This recovery archives only the accepted original. Production textures and the historical diagnostic template/masks are unchanged.
+
+### Approved Core Workshop cover reference — 2026-10-07 JST
+
+- Archived file: `Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg`.
+- Original: `AMJ_WorkshopCover_Core_Approved_Reference.jpg`, Library identity `libfile_f0ec7d3c94f88191ab304f0fbdb13946`; registered at `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`.
+- Original dimensions: 960×540 RGB JPEG; 92,308 bytes. Preserved without resizing or re-encoding.
+- SHA-256: `ef662e1eb2e399c594adfb6a4d594f1e2727559a73e380f312638b1bc8585658`, matching `Docs/References/AMJ_WorkshopCover_Manifest.md` and `Docs/GoldenPaths/WorkshopCoverPipeline.md`.
+- Provenance: the author-approved visual reference registered by the deterministic Workshop-cover pipeline. Visually inspected and fully decoded; exact registered source bytes were copied.
+- This file is the accepted visual reference, distinct from the SVG schematic, fixed common base and variable mask. The common base and mask remain pending recovery. This archive action does not create or replace `About/preview.png` or publish a Workshop cover.
 
 ## Workshop distribution
 

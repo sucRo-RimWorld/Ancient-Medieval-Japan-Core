@@ -4,10 +4,11 @@ This is the deterministic production path for Ancient & Medieval Japan Workshop 
 
 ## Canonical persistent visual assets
 
-The following author-approved/canonical images are stored in the user's persistent Library and must be retrieved from there in a new chat:
+The following author-approved/canonical images are registered in the user's persistent Library. Retrieve a verified exact-byte repository copy when listed below; otherwise retrieve the registered Library original:
 
 - `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`
   - author-approved visual reference
+  - repository-preserved exact copy: `Art/Sources/Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg`
   - 960×540
   - file SHA-256: `ef662e1eb2e399c594adfb6a4d594f1e2727559a73e380f312638b1bc8585658`
 - `/AMJ/References/AMJ_WorkshopCover_CommonBase.png`
@@ -35,7 +36,7 @@ Everything outside those variable regions is forcibly restored from the canonica
 ## Required workflow
 
 1. Read `AGENTS.md`, `main:Docs/Coordination.md`, `Docs/WorkshopCoverStyle.md`, and this file.
-2. Retrieve and visually inspect `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`. If it cannot be viewed, stop; do not generate a cover from memory/text alone.
+2. Retrieve and visually inspect `Art/Sources/Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg` (exact archived copy of `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`); verify the registered hash above. If it cannot be viewed, stop; do not generate a cover from memory/text alone.
 3. Retrieve/materialize `AMJ_WorkshopCover_CommonBase.png` and `AMJ_WorkshopCover_VariableMask.png` from the Library. Verify their hashes if there is any doubt about identity.
 4. Resolve the addon-specific right-side composition from the current user request and any already-approved addon specification. Reuse an existing approved composition when one exists. Do not insert a mandatory extra approval round unless the user explicitly asks for proposal/review-first work.
 5. Generate **only the addon-specific illustration**, preferably as a transparent-background PNG. Do not ask ImageGen to draw the AMJ title, parchment background, divider, ornaments, or addon label.

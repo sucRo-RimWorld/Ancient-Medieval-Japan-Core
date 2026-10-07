@@ -1410,6 +1410,7 @@ staged output; Environment's candidate builder gates the actual subscriber files
   - `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png`
   - `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/BuckwheatInHull.png`
   - `Art/Sources/Workshop/AMJ_WorkshopCover_Template.svg`
+  - `Art/Sources/Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg`
   - `Art/Sources/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
   - `Art/Sources/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
 - Workshop packaging rules already exclude the whole root `Art/` tree, so these development masters are not subscriber payload.
@@ -1451,6 +1452,9 @@ This item remains open until the Core accepted-image inventory has been audited 
 
 
 **Single-asset closeout — G13 (2026-10-07 JST):** Archived only the accepted BuckwheatInHull original at `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/BuckwheatInHull.png` (1254×1254 RGBA, 869,790 bytes; SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`). Recovered exact registered Library source `libfile_5a34c43373188191a48e3796290482af`; its SHA/dimensions match the visual_reference record in `Docs/References/AMJ_Masu_Template.json`. Visually inspected the source against production. Full-canvas RGBA LANCZOS resize to 256×256 produces 0 different RGBA pixels versus all a/b/c production slots; each production slot also matches the registered normalized representative SHA. Original bytes/dimensions were preserved, without production edits or regeneration. Exact-copy comparison, source PNG integrity, all 26 production PNGs and Workshop exclusion checks PASS. README/Inventory record **19 roles / 6 archived / 13 pending** (game 14/4/10, common/Workshop 5/2/3); the boxed-resource Golden Path now points to the preserved high-resolution filled reference. This turn stops after this one image; no background recovery worker is active. Overall ART-SOURCE-ARCHIVE-023 remains IN PROGRESS. **Next smallest unit:** W02 approved Core Workshop cover reference — recover the registered JPG, verify its manifest identity/hash and 960×540 dimensions, then archive only that file and report before further moves.
+
+
+**Single-asset closeout — W02 (2026-10-07 JST):** Archived only the author-approved Core Workshop cover reference at `Art/Sources/Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg` (960×540 RGB JPEG, 92,308 bytes; SHA-256 `ef662e1eb2e399c594adfb6a4d594f1e2727559a73e380f312638b1bc8585658`). Recovered registered original `libfile_f0ec7d3c94f88191ab304f0fbdb13946`; its SHA/dimensions match the Workshop-cover manifest and Golden Path. Visually inspected and fully decoded the JPG; exact-copy/hash checks PASS. No re-encoding, production texture/preview change, generation or Workshop publication. All 26 production PNGs and Workshop exclusion checks PASS. README/Inventory now record **19 roles / 7 archived / 12 pending** (game 14/4/10, common/Workshop 5/3/2); the cover manifest and Golden Path identify the archived reference while keeping the common base/mask pending. This turn stops after this one image; no background recovery worker is active. Overall ART-SOURCE-ARCHIVE-023 remains IN PROGRESS. **Next smallest unit:** W03 fixed Workshop common base — recover the registered 960×540 PNG, verify manifest SHA-256 `a738d175bf1997e95f02456843686f8d2d59571d47849e55d04a957707514362`, then archive only that image and report.
 
 ### ARCH-MODULAR-001 — Minimal dependencies / optional AMJ integration (2026-10-07 JST)
 
