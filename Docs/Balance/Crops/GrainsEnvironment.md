@@ -1,4 +1,6 @@
-# 六穀の環境比較回帰
+# 現行六穀の環境比較回帰（陸稲統合前）
+
+> 2026-10-08のGrains再監査で、Vanilla `Plant_Rice` を陸稲としてGrainsへ含める方針を確定した。本書の六穀Fixtureは現行実装の回帰基準として維持するが、Production陸稲Patchと最終値の確定後は七穀比較へ拡張する。六穀PASSだけでは最終Grainsリリースゲートを満たさない。
 
 2026-10-07。実装値の正本は各PlantDefと `Docs/Balance/Crops/Millet_Cultivation_Balance.md`。
 この比較は既存値を変更せず、有限の成長時間で成熟収穫できる量を固定する。

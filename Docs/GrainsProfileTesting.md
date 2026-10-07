@@ -229,3 +229,18 @@ four-profile suites and save-migration runs must retain rendering/private deskto
 and ERROR gates before reporting a release-ready separation.
 
 Scenarios build, provider-alias staging, four-profile runner, private-desktop entry point and actual-start assertions are source/tooling only: see the owner Docs/RuntimeTesting.md. They have not compiled or run here; old-save migration automation remains next.
+
+## Upland rice scope extension (2026-10-08 audit)
+
+Grains now owns the Vanilla `Plant_Rice` crop as **upland rice (陸稲)** and keeps `RawRice` as the shared edible-rice Def. This is a confirmed design boundary, not a claim that the Production patch is already implemented.
+
+The current real-provider suite remains the existing six named grain scenarios until the implementation lands; do not change expected counts or fabricate a seven-crop PASS ahead of the source change. Before standalone release, extend the existing environment/job coverage so it proves all of the following:
+
+- the loaded `Plant_Rice` is the Grains upland-rice definition/patch in both Vanilla and MO profiles;
+- upland rice is sowable on normal ground and the Vanilla `Hydroponic` sow tag is removed if the final implementation adopts the audited candidate;
+- a native harvest produces Vanilla `RawRice`, which remains accepted by ordinary meals;
+- CCTO profiles retain CCTO's existing `Plant_Rice` minimum-growth / cold-death behavior without a duplicate Grains cold-tolerance extension;
+- the analytical and loaded-Def environment regressions are extended from six crops to seven and still reject a single crop dominating the representative cells;
+- the real-profile matrix exercises at least one native upland-rice sow/harvest path and retains the strict runtime ERROR gate.
+
+Future Rice Cultivation integration is not part of the Grains standalone matrix. That owner must test its water-rice crop converging on `RawRice` or the then-current Grains rice-processing path when Grains is present, without duplicating the Grains milling/food chain.

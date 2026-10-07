@@ -340,11 +340,11 @@ MO導入時は、既存の農業・研究・設備・素材を可能な限り再
 
 ##### Agriculture / Waterworks / Rice Cultivation境界
 
-- Agriculture / 現Coreは、畑作作物、畑作物の一次加工、Vanilla料理へ到達する最低限の食材経路を所有する。
-- WaterworksはCore非依存のまま、自然取水・開渠・暗渠・分水・温泉引湯等の**水利基盤だけ**を自己完結して所有する。
-- Rice CultivationはWaterworks非依存の独立Modとして、水田・稲・籾・米・稲作固有の一次加工を所有する。Waterworksなしでも単体の簡易な水田成立条件で遊べるようにする。
-- Waterworks + Rice Cultivation併用時だけ、Rice Cultivation側の水田をWaterworksの有効な水路ネットワークへ接続する公式互換を行う。WaterworksをRice Cultivationの必須依存にはしない。
-- MO Drying Rack等を使う稲作上の任意工程はRice Cultivation側の互換責務であり、Agriculture / Waterworksの依存解除条件には含めない。
+- Grainsは、畑作穀物に加えてVanilla `Plant_Rice` を**陸稲**として再定義し、穀物の収穫後加工・製粉までを所有する。`RawRice` はVanilla Defを再利用し、新しい陸稲専用米Defを増やさない。
+- WaterworksはGrains非依存のまま、自然取水・開渠・暗渠・分水・温泉引湯等の**水利基盤だけ**を自己完結して所有する。
+- 将来のRice Cultivationは、水田・水管理・水稲Plant・田植え等の**水田固有の栽培システム**を所有する。米の収穫後加工・製粉を重複所有せず、Grains併用時はGrains側の既存米／穀物加工経路へ合流させる。
+- Waterworks + Rice Cultivation併用時だけ、水田をWaterworksの有効な水路ネットワークへ接続する公式互換を行う。GrainsはWaterworksを要求しない。
+- Rice Cultivationの単独時フォールバック、稲架掛け等の水稲固有工程、Waterworksとの接続詳細は、専用所有先ができるまではProject側で管理し、Grainsに重複設計を置かない。
 
 ##### 紙・塩・Processor Framework
 
@@ -370,15 +370,17 @@ MO併用の既存セーブでは、現在参照されているMO Defを急にAMJ
 6. Vanilla / MO × CCTO有無の自動マトリクスをすべて通し、runtime ERROR 0を確認する。
 7. **最後に** About.xmlのMO必須依存・load orderとREADME/Workshop等の公開説明を一括変更する。About.xmlだけを先行変更しない。
 
+**2026-10-08追加ゲート:** About.xmlのMO必須解除より前に、`Plant_Rice` の陸稲化、七穀環境回帰、Vanilla/MO両プロファイルでの実播種・実収穫、CCTO併用時の既存Rice耐寒設定との共存を完了する。六穀だけの従来PASSは最終リリース判定に使わない。
+
 ##### 自動テスト・サポートマトリクス
 
 最低限、依存解除実装前に次の4プロファイルを常設する。
 
 | プロファイル | 主な自動確認 |
 |---|---|
-| Vanilla + Grains | 未解決MO Def/class 0、Stage A作物、一次加工、製粉・最低限粉食、Vanilla simple meal受入、New Village、runtime ERROR 0 |
+| Vanilla + Grains | 未解決MO Def/class 0、Stage A作物＋陸稲、一次加工、製粉・最低限粉食、Vanilla simple meal受入、runtime ERROR 0 |
 | Vanilla + Grains + CCTO | 上記 + AMJC crop cold-tolerance extension |
-| MO + Grains | MO小麦/Flour/Cereal/Straw等の互換Patch、重複小麦・小麦粉・石臼経路なし、New Village MO差分、runtime ERROR 0 |
+| MO + Grains | MO小麦/Flour/Cereal/Straw等の互換Patch、重複小麦・小麦粉・石臼経路なし、陸稲のAMJ設定維持、runtime ERROR 0 |
 | MO + Grains + CCTO | MO互換とCCTO互換の同時適用、Stage A回帰、runtime ERROR 0 |
 
 静的XML検証は全プロファイルの前段に置き、Pickleで実ロード後のDef・Recipe・Scenario・Vanilla meal受入・MO互換・runtime ERRORを確認する。RimTest Reduxは、今後C#の移行補助や独立ロジックを追加した場合の単体/ロジック試験を優先し、現行のXML中心実装で無理に代替しない。人間の手動確認は、Production画像/UI/操作感など自動化できない項目に限定する。
@@ -404,7 +406,8 @@ Fermentation / Brewingは、GrainsやMOをハード依存にしない設計を�
 | 建築材料 | Vanilla / Grains所有のStuff・Thingだけで建設可能 | RawWood / IronIngot等への材料置換・追加は条件付き互換 | **BaseはVanilla/Grains** |
 | New Village Scenario | **独立Scenarios Modが所有**。Grainsの旧版互換コピーはScenarios不在時だけ読み込む | ScenariosがGrains/MO導入時の物資・研究差分を任意互換として所有 | **Grainsの最終責務から除外。物理分離済み、実ゲーム・旧セーブ移行は未検証** |
 | CCTO | なくてもGrains作物は成立 | CCTO存在時だけ既存互換Patch | **任意互換** |
-| 米・水田 | 所有しない | 所有しない | **Waterworks / Rice Cultivation** |
+| 陸稲 / `RawRice` | Vanilla `Plant_Rice` / `RawRice` を再利用し、Plantを陸稲としてAMJ向けに上書きする | 同じAMJ側設定を維持 | **Grains**。新規陸稲Plant/米ThingDefは増やさない |
+| 水田・水稲 | 所有しない | 所有しない | **Rice Cultivation**。Waterworksは任意の水供給基盤のみ |
 | 豆類 | 所有しない | 所有しない | **Grains外。将来所有先を用途と合わせて決定** |
 | 繊維・紡績・製紙 | 所有しない | Grains-MO互換にも置かない | **Grains外。将来のMaterials/Textiles等で決定** |
 | 根菜・一般野菜 | 所有しない | 所有しない | **Grains外。将来所有先を決定** |
@@ -417,7 +420,7 @@ Fermentation / Brewingは、GrainsやMOをハード依存にしない設計を�
 - MOあり: MO小麦Plant → DankPyon_RawWheat（小麦束）→ 脱穀 → AMJC_Wheat → DankPyon_Flour。
 - 同一プロファイルでAMJ小麦PlantとMO小麦Plant、AMJ小麦粉とMO小麦粉を標準経路として並存させない。
 - 既存MO+Coreセーブで参照されているMO小麦/RawWheatと AMJC_Wheat の関係は維持する。Core更新と同時にMOを既存セーブから外す移行は別ケースとして扱う。
-- MO小麦の成長・肥沃度等はGrainsの6穀物バランスに合わせて条件付きPatchし、供給元がMOであることを理由に未調整値へ戻さない。
+- MO小麦の成長・肥沃度等はGrainsの穀物バランスに合わせて条件付きPatchし、供給元がMOであることを理由に未調整値へ戻さない。
 
 **Strawの固定ルール**
 - Grains単体ではStraw ThingDefを所有しない。
@@ -516,11 +519,12 @@ Vanilla Expanded Frameworkなども、必要な機能が小さい限り必須依
 
 ### 2.9 Grainsと別Modの境界
 
-Grainsの責務は、**乾田穀物の栽培・収穫・一次加工・製粉・最低限の粉食を一つのゲームループとして成立させること**に限定する。
+Grainsの責務は、**乾田穀物（陸稲を含む）の栽培・収穫と、穀物の一次加工・製粉・最低限の穀物食を一つのゲームループとして成立させること**に限定する。
 
 #### Grainsに入れる基準
 
 - アワ・ヒエ・キビ・ソバ・大麦・小麦
+- Vanilla `Plant_Rice` を再利用して表現する陸稲と、その収穫物 `RawRice`
 - 穀束・殻付き中間物・可食穀粒
 - 脱穀・殻取り・製粉と、その最小設備
 - 小麦粉・蕎麦粉・雑穀粉
@@ -531,7 +535,7 @@ Grainsの責務は、**乾田穀物の栽培・収穫・一次加工・製粉・
 
 #### Grainsに入れない基準
 
-- 水田・稲・籾・米・稲作水利
+- 水田・水稲栽培・田植え等の水田固有工程・稲作水利
 - 小豆・大豆等の豆類
 - 大麻・カラムシ等の繊維作物、紡績、製紙
 - 里芋・大根等の根菜・一般野菜
@@ -788,6 +792,7 @@ Grainsの存在意義は「日本の穀物Defを増やすこと」ではなく�
 | 大麦 | 日常主食＋将来の加工用途 | 寒冷寄り。粒食可能。後に麦味噌・麦茶へ拡張 |
 | 小麦 | 製粉・粉食向け | 粒食より加工価値を重視 |
 | 蕎麦 | 短期・痩せ地向け | 成長が速く肥沃度依存が小さい。霜には弱め |
+| 陸稲（Vanilla `Plant_Rice`） | 水田を使わない米作 | VanillaのRiceを別作物として増やさず陸稲へ再定義する。最終的な成長・収量役割は既存6作物との七穀回帰で確定する |
 
 ### 4.2 作物の差別化軸
 
@@ -856,6 +861,21 @@ Stage Aの穀物は、加工前後の保存性も作物選択と備蓄判断に�
 - MO `DankPyon_Flour` の保存期間はAMJ共通粉基準に合わせて60日へ調整する。
 
 この確定表は「一種類の最適作物」を作らないための基準である。短期・痩せ地はソバ/キビ、標準～肥沃な畑で収穫回数を抑える雑穀はアワ、寒冷側はヒエ/大麦、肥沃地で長期高収量・粉食は小麦、という役割差を維持する。
+
+### 4.2.2 陸稲（Vanilla Rice）の再定義
+
+GrainsではVanillaの `Plant_Rice` を削除・複製せず、**陸稲として上書きして利用する**。収穫物は既存の `RawRice` を維持する。これにより既存料理・他ModのVanilla米参照・CCTOの `Plant_Rice` 対応を活かしつつ、水田を必要としない米作をGrains側へ置ける。
+
+固定方針:
+- 新規の `AMJC_UplandRice` PlantDefや陸稲専用米ThingDefは作らない。
+- `Plant_Rice` の表示名・説明・画像・栽培値はAMJの陸稲として監査対象にする。
+- Vanillaの `Hydroponic` sowTagは中世日本の陸稲表現には不要なので、Grains側で除去する実装候補とする。最終Patchは実機の播種可否回帰とセットで入れる。
+- `RawRice` は通常の米として再利用する。陸稲と将来の水稲で最終食材を無意味に分けない。
+- CCTO導入時はCCTOが既に `Plant_Rice` へ設定する最低生育10℃・固定枯死-1℃を利用し、Grains側に重複したColdToleranceExtensionを追加しない。
+- Vanilla Riceの現行3日成長・収量6をそのまま確定値とはしない。既存6作物を含む七穀環境回帰で、陸稲が単一の序盤最適解へ戻らない数値を決める。
+- 米粉等の製粉物は具体的用途ができた時だけ追加する。その場合のRecipe・設備・バランス所有はGrainsとする。
+
+将来のRice Cultivationは水田・水稲栽培を追加し、Grains併用時には `RawRice` またはその時点のGrains米加工経路へ合流させる。水稲側で同目的の精米・製粉体系を二重実装しない。
 
 ### 4.3 低肥沃度環境との接続
 
@@ -971,6 +991,7 @@ Grainsは小麦粉・蕎麦粉・雑穀粉を一次加工の出力として所�
 | 大麦 | 可食穀粒として既存食事へ | 同左。Generic Flour/Ale参加は意図がある場合だけ互換 |
 | 小麦 | AMJC_Wheatを既存食事・Grains製粉へ | AMJC_WheatをMO製粉へ接続し DankPyon_Flour を得る |
 | ソバ | 可食穀粒として既存食事へ。蕎麦粉へ製粉 | 同左。MO generic flourへ統合しない |
+| 米（陸稲） | Vanilla `RawRice` として既存食事へ。米粉等は用途が確定した場合だけGrainsで追加 | 同左 |
 | 雑穀粉 | Grains粉食へ | 同左 |
 | 蕎麦粉 | そばがき等のGrains粉食へ | 同左 |
 | 小麦粉 | Grains所有のフォールバック粉 | DankPyon_Flour を標準小麦粉として利用 |
@@ -979,7 +1000,7 @@ Grainsは小麦粉・蕎麦粉・雑穀粉を一次加工の出力として所�
 - Vanilla + Grainsだけでも「栽培できるが食べられない」「粉を作れるが用途がない」状態を作らない。
 - アワ・ヒエ・キビは栽培中だけ別PlantDefとし、収穫後は共通雑穀チェーンへ統合する。
 - 蕎麦粉・雑穀粉は小麦粉と別ThingDefを維持し、材料由来の料理差を表現する。
-- 米・豆・根菜・繊維はこの表の対象外でありGrains所有ではない。
+- 水田・水稲栽培はGrains外。陸稲とVanilla `RawRice` の穀物側接続はGrainsが扱う。豆・根菜・繊維はGrains所有ではない。
 - MOカテゴリへの登録は、具体的なMO Recipeへ参加させたい場合だけ条件付きで行う。
 
 ## 6. MO併用プロファイル設計
@@ -1009,73 +1030,23 @@ Grains Baseの主要ループはMO ResearchDefを必要としない。MO併用�
 - MO全研究ツリーの全面改変はGrainsの責務にしない。
 - 繊維・製紙・水利等、Grains外の研究統合は各所有Modが担当する。
 
-### 6.3 稲作任意工程（Rice Cultivation設計・暫定引き継ぎ）
+### 6.3 Rice Cultivationとの所有境界
 
-以下は**Rice Cultivation所有**の暫定引き継ぎであり、Waterworksの仕様ではない。このWaterworks作業ではこれ以上詳細化しない。
+Grainsは**陸稲と穀物の収穫後加工・製粉**を所有し、将来のRice Cultivationは**水田・水管理・水稲栽培**を所有する。Rice Cultivationの詳細設計は専用所有先ができるまではProject側を正本とし、本書ではGrainsとの接続境界だけを固定する。
 
-現時点で確定している最小事項:
-- 稲作はWaterworksなしでも単体成立させる
-- 稲の加工は雑穀と**同じ加工段階の型**を参考にするが、雑穀と同じThingDefへ統合しない
-- 稲架掛けは必須工程ではなく任意ボーナス扱いとする
-- **稲架掛け米は通常米とは別ThingDefとして維持する**
-- 稲架、途中状態、歩留まり、保存性、必要時間、MO Drying Rack等との互換はRice Cultivation側で別途決める
+- GrainsはVanilla `Plant_Rice` を陸稲として再定義し、`RawRice` を通常の米として再利用する。
+- 水田Terrain、水深・給排水、苗代・田植え、水稲Plant等の水田固有ロジックはGrainsに入れない。
+- Rice Cultivation + Grainsでは、水稲の収穫結果を `RawRice` またはその時点のGrains米加工経路へ合流させる。同目的の米・米粉・精米設備・製粉RecipeをRice Cultivation側で重複定義しない。
+- GrainsはRice Cultivationを必須依存にしない。Rice Cultivation単独時の簡易収穫経路と、稲架掛け・藁・保存差等の水稲固有設計はRice Cultivation側で決める。
+- WaterworksはRice Cultivationへ任意に水を供給する基盤であり、Grainsの陸稲・製粉ループには介入しない。
 
-### 6.4 稲から米への一次加工と保存性（Rice Cultivation設計・暫定引き継ぎ）
-
-稲作は、他の殻付き穀物と**加工段階の構造だけを揃え、同じアイテムへ統合しない**。雑穀の `穀束 → 殻付き穀粒 → 可食穀粒` に対応して、稲作は独立した `稲束 → 籾 → 米` のThingDef列を持つ。籾は殻付き中間状態として独立ThingDefにし、玄米は独立ThingDefにせず、籾摺りから日常食用の米までを1工程へ抽象化する。**稲架掛け由来の米は通常の米とは別ThingDefとして維持する**が、その具体的な性能・工程はRice Cultivation側で別途検討する。
-
-この変更により、籾には「すぐ食べられない代わりに殻付き状態で保存できる」というゲーム上の役割が生じる。工程を増やす目的は史実工程の網羅ではなく、**加工労働と保存状態のトレードオフを作ること**とする。
-
-基本フロー:
-
-- 通常系は `稲束 → 籾 + Straw → 米` の段階構造とする
-- 稲架掛け系は通常系と同じ基本段階を使いつつ、**最終的な稲架掛け米を通常米とは別ThingDef**として扱う。途中状態・歩留まり・設備はRice Cultivation側で別途確定する
-
-保存性は加工状態の差として扱う。
-
-- **未加工・不可食の「稲」**を長期保存側に置く
-- **殻付きの「籾」**を独立した保存状態として置く
-- 籾摺り・日常精米をまとめた**可食の「米」**は殻付き状態より保存期間を短くする
-- 将来の米粉は米よりさらに短くし、穀束 → 殻付き穀粒 → 可食穀粒 → 粉の段階差を維持する
-- 保存期間の具体値、稲架掛け米の保存性ボーナス、途中状態の要否はRice Cultivation側で再確定する。Waterworks側では数値を所有しない
-
-日常食用の通常米については、**うるち米・もち米をRice Cultivationでは別ThingDefに分けず、「米」へ抽象化する。** ただし稲架掛け米は通常米とは別ThingDefとして扱う。
-
-将来、餅・団子・菓子等の具体的な料理機能を実装する場合も、もち米専用ThingDefを前提にせず、通常の「米」からRecipeとして用途を表現する。米を粉にする場合も、現実には米粉・道明寺粉・白玉粉など製法・粒度・原料米が異なるが、ゲーム上の用途差が小さい限り**1つの「米粉」**へまとめる。
-
-これはMOの小麦粉が強力粉・薄力粉等を分けていないのと同じ抽象化方針とする。素材を分ける基準は現実の分類数ではなく、**別在庫として管理させるだけのゲーム上の選択・性能差があるか**とする。
-
-将来の酒造では、この日常食用の米からさらに任意の追加精米・選別を行い、酒造用精白米を得る別工程を設けてよい。この追加加工はRice Cultivationの日常食用米を作る工程とは別物とする。**AMJの古代〜中世範囲では酒造専用品種のPlantDefを追加せず、同じ「米」から選別・精米して酒造向け原料を得る形へ抽象化する。** 酒造Addonでは必要に応じて、通常の酒造用米と、より多くの精米・選別・原料ロスを要求する上位の酒造用米を**別ThingDef**として持たせてよい。これは汎用的な食材品質システムではなく、酒造工程そのものの差として扱う。
-
-酒造用精白米および上位の酒造用米は、**食べようと思えば通常の植物性食材として食べられ、一般料理にも使用可能**とする。ただし料理Ingredientとしての価値は通常の「米」と同じ**生野菜1相当**に留め、追加精米・選別を理由に栄養・料理価値・Mood等を上げない。酒造用米を作る段階で原料ロスと追加作業が発生するため、一般料理へ回すのは意図的にコストパフォーマンスが悪い選択となる。
-
-米糠はRice Cultivationでは独立アイテム化しない。Fermentation Addon等で糠漬けなど明確な用途が生じた時点で追加を検討する。
-
-### 6.5 稲藁・MO藁体系の統合方針（Rice Cultivation設計・暫定引き継ぎ）
-
-稲専用の最終素材として「Rice Straw」を別Def化することは原則避け、MO側の共通 `Straw` 体系へ統合する。
-
-想定フロー:
-
-- 通常系と稲架掛け系の双方で、稲作固有のThingDef列を維持する。通常米と稲架掛け米は別ThingDefとし、藁のDef統合・歩留まり差・途中状態はRice Cultivation側で確定する
-
-ゲーム上は、史実上の工程をすべて分解するのではなく、**脱穀と殻取りだけを別の判断として残し、玄米以降の細分化は省略する**。
-
-目的:
-
-- 稲藁専用Defの増殖を避ける
-- 小麦・稲など異なる穀物由来の藁を、ゲーム上同じ基礎素材として扱う
-- MO既存レシピとの接続をそのまま利用する
-- 稲架掛けを任意ボーナスとして成立させる。具体設備はRice Cultivation側で決め、MO Drying Rackを必須前提にしない
-
-実装前に現行環境のDefName・Recipe/Processor経路を監査し、MOの実装方法に合わせて接続する。
-
-### 6.6 Def・カテゴリの所有方針
+### 6.4 Def・カテゴリの所有方針
 
 GrainsはBase主要ループに必要なDefを自分で所有し、MO併用時だけ同等資産の供給元を条件付きでMOへ差し替える。
 
 **Grainsが常時所有**
 - アワ・ヒエ・キビ・ソバ・大麦
+- Vanilla `Plant_Rice` の陸稲化Patchと、`RawRice` への穀物側接続
 - 各穀束・殻付き中間物・可食穀粒
 - AMJC_Wheat
 - 雑穀粉・蕎麦粉
@@ -1104,7 +1075,7 @@ GrainsはBase主要ループに必要なDefを自分で所有し、MO併用時�
 - 根菜・一般野菜
 - 塩・粘土等、Grains主要ループ外の横断資源
 
-### 6.7 MO 1.6基盤資産の所有監査
+### 6.5 MO 1.6基盤資産の所有監査
 
 | 分野 | MO側の正本 | Grains側の扱い |
 |---|---|---|
@@ -1285,6 +1256,7 @@ Grainsの主要実装は、次の順で管理する。
 |---|---|---|---|
 | **Stage A / 現行実装** | 乾田穀物 | アワ・ヒエ・キビ・ソバ・大麦・MO小麦統合、脱穀・殻取り、穀物加工設備、New Village | MO必須版として実装済み |
 | **Grains分離移行** | Vanilla自己完結 | 非MO小麦、小麦粉・蕎麦粉・雑穀粉、手動石臼、最低限粉食、BaseからMO参照除去、MO条件付き互換 | **step 3 小麦・製粉・最低限粉食XML実装・実機未検証** |
+| **陸稲統合** | Vanilla Riceの中世日本化 | `Plant_Rice` を陸稲として再定義、`RawRice` 再利用、Hydroponic除去候補、七穀バランス・CCTO・実収穫回帰 | **設計監査完了・Production XML未実装** |
 | **回帰固定** | 環境別穀物選択 | Base/MO/CCTO各プロファイルで単一穀物がほぼ全条件の最適解にならないことを自動確認 | 分離移行と同時に追加 |
 
 旧Stage B（豆類）、Stage C（繊維）、Stage D（根菜）はGrainsロードマップから削除する。将来必要なら、それぞれの主要用途と自然な所有Modを決めて別途設計する。
@@ -1297,7 +1269,7 @@ Grainsの主要実装は、次の順で管理する。
 履歴と再検討条件はProjectの [DeferredPlantsAndProcessing.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/DeferredPlantsAndProcessing.md) を正本とする。
 ### Grainsに入れない / 旧Coreで保留した農作物・植物
 
-未所属・保留・不採用候補の詳細台帳はProjectの [DeferredPlantsAndProcessing.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/DeferredPlantsAndProcessing.md) へ移管した。Grainsの実装範囲は本書4章の乾田穀物に限定する。
+未所属・保留・不採用候補の詳細台帳はProjectの [DeferredPlantsAndProcessing.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/DeferredPlantsAndProcessing.md) へ移管した。Grainsの実装範囲は本書4章の乾田穀物・陸稲と、それらの収穫後加工・製粉に限定する。
 ### 冬季加工の拡張候補
 
 Grains外の保存・発酵候補としてProjectの [DeferredPlantsAndProcessing.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/DeferredPlantsAndProcessing.md) へ移管済み。
@@ -1431,6 +1403,8 @@ Medieval Overhaulと並べても違和感が少ない、**ベクター画像的�
 
 
 ### Grains 環境・実ジョブ回帰の追加（2026-10-07）
+
+**2026-10-08陸稲再監査:** 以下の六穀回帰は現行実装の基準として維持するが、最終Grains範囲は陸稲を加えた七穀である。陸稲のProduction Patchと値が確定した時点でFixture・Pickle環境比較・実収穫を七穀へ拡張し、六穀PASSだけでリリース完了とはしない。
 
 六穀の有限成長時間比較を `Docs/Balance/Crops/GrainsEnvironment.md` に定義し、
 肥沃度3×温度3×季節3の27セルで成熟穀粒収量と勝者を回帰固定する。

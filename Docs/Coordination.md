@@ -1812,3 +1812,15 @@ Project-level Japanization architecture now explicitly preserves Grains' existin
 - Historical fixture unchanged. Validator first requires the four current AMJ paths in both projections, then normalizes exactly those fields in a comparison copy for historical hashes. All remaining fields of the 38 contracts stay checked. Added negative regression for gameplay mutation of a visually changed bench; MO-image override is rejected instead of requiring restoration.
 - Local PASS: Base 7, chain 9, environment 4, extraction 8, actual paired repositories six XML configurations, Stage A, PNG 26, Workshop 75-file payload and PowerShell four-profile tooling. PR CI PASS: Stage A `37651940611`, Workshop `37651940498`. API and merge tree equal local tested `6a5ad1bd4e740fc499b0537958dac088bb1d391f`.
 - Next: dedicated production art and real four-profile rendering/Bill/ERROR/save gates. MO materials/research/Straw/provider compatibility retained; packageId and DefNames unchanged; About MO dependency stays gated. Runtime/C# compilation/real save migration not executed here; no game/background worker active.
+
+### ARCH-UPLAND-RICE-001 — Grains owns upland rice; paddy rice stays separate
+
+**Requested by:** author (2026-10-08 JST)  
+**Owner:** Grains design / Agriculture XML / Testing  
+**Status:** IN PROGRESS — ownership re-audit complete; Production implementation and seven-crop runtime gates pending
+
+Author-confirmed boundary: Grains owns dry-field cereals **including upland rice**, reusing Vanilla `Plant_Rice` / `RawRice` rather than creating a duplicate AMJ rice crop/item. Grains also owns grain post-harvest processing and milling. Future Rice Cultivation owns paddy/water management and water-rice cultivation; with Grains present, water rice must converge on the Grains rice/grain-processing path rather than duplicate milling or edible-rice Defs. Waterworks remains an optional water-supply layer for Rice Cultivation and is not part of the Grains loop.
+
+Audit result: the current design still assigned water field, rice plant, paddy rice, edible rice and first-stage rice processing wholesale to Rice Cultivation, while runtime/test balance was fixed to six grains. Those statements are superseded by the updated Design boundary. CCTO already patches Vanilla `Plant_Rice`, so Grains should reuse that Def and must not add a duplicate cold-tolerance extension. Current six-grain environment and Pickle gates remain valid historical/current-implementation regressions but are insufficient for final release after this scope expansion.
+
+**Next smallest unit:** implement the `Plant_Rice` upland-rice Patch without adding a new Plant/RawRice Def, settle its seven-crop balance against the existing six grains, remove Hydroponic sowability if runtime compatibility confirms the audited design, update Japanese-first labels/descriptions/art, extend static/Pickle environment + native harvest tests to seven crops, then run the real four-profile matrix before removing the Production MO dependency. Do not modify Rice Cultivation internals in this repository.
