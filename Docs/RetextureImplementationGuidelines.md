@@ -6,7 +6,7 @@ It complements the ownership/design rule in `Docs/Design.md §8.5.1`. Art direct
 
 ## 1. Purpose
 
-AMJ retextures are not an optional cosmetic pack layered independently from gameplay ownership. When an AMJ module owns a gameplay or environment domain, that module may also own the Vanilla / Medieval Overhaul (MO) graphics needed to make that domain visually coherent.
+AMJ retextures are not an optional cosmetic pack layered independently from gameplay ownership. AMJ-owned Defs and Vanilla prerequisite assets normally follow gameplay/environment ownership. **Medieval Overhaul is the explicit exception:** MO-owned assets that are changed specifically to present MO as ancient-to-medieval Japan are owned centrally by `AMJ - Medieval Overhaul Japanization`, so multiple AMJ feature Mods do not compete to overwrite the same MO graphics.
 
 The technical goals are:
 
@@ -112,12 +112,14 @@ The **loaded Def is authoritative**, not a memorized list of files from an older
 
 ### 3.4 Optional parent Mods
 
-For an optional prerequisite such as MO:
+For an optional prerequisite:
 
 - keep AMJ replacement textures in the owning AMJ module;
 - isolate the Def patch in a clearly named compatibility/retexture patch;
 - guard it with the parent package ID using `MayRequire`, `PatchOperationFindMod`, or a conditional load folder;
 - never copy or edit the parent Mod's distributed image file in place.
+
+For **MO specifically**, the owning module for MO-to-Japan visual conversion is `AMJ - Medieval Overhaul Japanization`. Other AMJ Mods may patch MO gameplay for their own compatibility, but should not ship a competing Japanization retexture for the same MO target. AMJ-owned Def art remains with the Mod that owns that Def.
 
 Use a conditional `loadFolders.xml` directory when a substantial compatibility set benefits from being completely absent unless the parent is active. For small isolated patches, guarded XML is sufficient.
 
