@@ -20,7 +20,7 @@ Before generating contents, open and compare against:
 
 - empty masu master: `Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.png`;
 - approved filled reference: `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`;
-- high-resolution reference when available: Library `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png`;
+- preserved high-resolution filled reference: `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/BuckwheatInHull.png` (1254×1254; original identity/hash documented in `Art/Sources/README.md`);
 - a subject-specific visual reference for the material being generated (rice for rice, soybeans for soybeans, etc.); for the accepted dehulled-buckwheat source, use `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png`.
 
 Reference roles are deliberately separated:

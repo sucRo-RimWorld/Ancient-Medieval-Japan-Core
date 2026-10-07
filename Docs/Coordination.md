@@ -1408,6 +1408,7 @@ staged output; Environment's candidate builder gates the actual subscriber files
   - `Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.png`
   - `Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.xcf`
   - `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png`
+  - `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/BuckwheatInHull.png`
   - `Art/Sources/Workshop/AMJ_WorkshopCover_Template.svg`
   - `Art/Sources/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
   - `Art/Sources/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
@@ -1419,7 +1420,6 @@ staged output; Environment's candidate builder gates the actual subscriber files
 - The Core archive is not complete. Audit all previously accepted Core image assets for an exact pre-resize / authoring source that still survives outside `Art/Sources/`.
 - Priority audit families include the currently shipped Soba/Buckwheat and Millet assets, including:
   - `Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat/`
-  - `Textures/Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/`
   - `Textures/Things/Item/Resource/AMJC_Millet/RawMillet/`
   - `Textures/Things/Item/Resource/AMJC_Millet/MilletInHull/`
   - `Textures/Things/Item/Resource/AMJC_Millet/Millet/`
@@ -1448,6 +1448,9 @@ This item remains open until the Core accepted-image inventory has been audited 
 
 
 **Single-asset closeout — G08 (2026-10-07 JST):** Recovered and archived only the accepted Soba immature original at `Art/Sources/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png` (1448×1086 RGBA, 545,958 bytes; SHA-256 `194e4b67ea25ab77d73a07f973bbbf7bfaba4ededbda9eb1366c08bc7a2e75b4`). Exact source identity: `黒背景の芽吹く植物アイコン(1).png`, Library `libfile_3f5c688ff0088191b57c3583709cbf94`. The AMJ-009-ART-SOBA-PLANT recovery record and integration `c7d5d2c229119aac717de80718ff7c2bdb92a00d` provide provenance; visual comparison confirms the production's three shoots/bud clusters, leaves and stem junctions. The unsuffixed extra-shoot composition was excluded. The historical palette/export recipe was not reconstructed, so this does not claim exact pixel-identical derivation. Source bytes and original dimensions are preserved; production textures are unchanged. Exact-copy comparison, source PNG integrity, all 26 production PNGs and Workshop exclusion checks PASS. README and Inventory now record **19 roles / 5 archived / 14 pending** (game 14/3/11, common/Workshop 5/2/3). This turn stops after this one image as requested; no background recovery worker is active. Overall ART-SOURCE-ARCHIVE-023 remains IN PROGRESS. **Next smallest unit:** G13 BuckwheatInHull — obtain its registered 1254×1254 source, verify the manifest SHA-256 and accepted identity, then archive only that image and report.
+
+
+**Single-asset closeout — G13 (2026-10-07 JST):** Archived only the accepted BuckwheatInHull original at `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/BuckwheatInHull.png` (1254×1254 RGBA, 869,790 bytes; SHA-256 `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`). Recovered exact registered Library source `libfile_5a34c43373188191a48e3796290482af`; its SHA/dimensions match the visual_reference record in `Docs/References/AMJ_Masu_Template.json`. Visually inspected the source against production. Full-canvas RGBA LANCZOS resize to 256×256 produces 0 different RGBA pixels versus all a/b/c production slots; each production slot also matches the registered normalized representative SHA. Original bytes/dimensions were preserved, without production edits or regeneration. Exact-copy comparison, source PNG integrity, all 26 production PNGs and Workshop exclusion checks PASS. README/Inventory record **19 roles / 6 archived / 13 pending** (game 14/4/10, common/Workshop 5/2/3); the boxed-resource Golden Path now points to the preserved high-resolution filled reference. This turn stops after this one image; no background recovery worker is active. Overall ART-SOURCE-ARCHIVE-023 remains IN PROGRESS. **Next smallest unit:** W02 approved Core Workshop cover reference — recover the registered JPG, verify its manifest identity/hash and 960×540 dimensions, then archive only that file and report before further moves.
 
 ### ARCH-MODULAR-001 — Minimal dependencies / optional AMJ integration (2026-10-07 JST)
 

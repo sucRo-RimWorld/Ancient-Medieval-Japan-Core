@@ -15,13 +15,14 @@ This directory stores accepted source artwork and authoring files that must surv
 
 ## Inventory / recovery queue
 
-The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 5 already archived and 14 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters.
+The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 6 already archived and 13 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters.
 
 ## Current authoritative sources
 
 - `Shared/Containers/AMJ_Masu_Empty_Master.png`
 - `Shared/Containers/AMJ_Masu_Empty_Master.xcf`
 - `Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png`
+- `Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/BuckwheatInHull.png`
 - `Workshop/AMJ_WorkshopCover_Template.svg`
 - `Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
 - `Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
@@ -51,6 +52,16 @@ Additional accepted sources should be added to the corresponding mirrored path a
 - Production counterpart: `Textures/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png` (256×256).
 - Provenance: the accepted-source recovery recorded in `AMJ-009-ART-SOBA-PLANT` and the production integration commit `c7d5d2c229119aac717de80718ff7c2bdb92a00d`. Visual comparison confirms the same three shoots/bud clusters, leaves, stem junctions, colors and silhouette. The unsuffixed `黒背景の芽吹く植物アイコン.png` has additional shoots and a different composition and was excluded.
 - The historical palette/export recipe has not been reconstructed; visual and recorded provenance establish the recovered candidate, without claiming an exact pixel-identical direct resize. This recovery preserves the original bytes only and does not change production files.
+
+### Buckwheat in hull — 2026-10-07 JST
+
+- Archived file: `Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/BuckwheatInHull.png`.
+- Original: `AMJ_BoxedResource_BuckwheatInHull_Ideal.png`, Library identity `libfile_5a34c43373188191a48e3796290482af`; registered at `/AMJ/References/AMJ_BoxedResource_BuckwheatInHull_Ideal.png`.
+- Original dimensions: 1254×1254 RGBA; 869,790 bytes. Preserved without resizing, recoloring, or re-encoding.
+- SHA-256: `cd1dce01d4847289edef107d513cd73de10e8291d6d0acb421bd9c9aa672f6f6`, matching `Docs/References/AMJ_Masu_Template.json` → `visual_reference` and the retained accepted-reference records.
+- Production counterparts: `Textures/Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/BuckwheatInHull_{a,b,c}.png` (256×256). All three are byte-identical to the registered normalized representative `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png` (SHA-256 `0f81aa92460154d2b1ae50de14d7360be5e44ff46f8c81bdd113b6e19143d752`).
+- Provenance: approved filled exemplar in the boxed-resource pipeline and the 2026-10-05 Soba in-hull integration recorded under `AMJ-009`. The source was visually checked, and full-canvas Pillow RGBA LANCZOS resize to 256×256 reproduces all production pixels exactly (0 different RGBA pixels).
+- This recovery archives only the accepted original. Production textures and the historical diagnostic template/masks are unchanged.
 
 ## Workshop distribution
 
