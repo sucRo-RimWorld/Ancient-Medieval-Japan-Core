@@ -432,7 +432,7 @@ Fermentation / Brewingは、GrainsやMOをハード依存にしない設計を�
 | Straw | **AMJ Straw ThingDefを作らない。** Base脱穀では茎葉残渣を非アイテム化 | 脱穀時だけ DankPyon_Straw を副産物として追加。収穫時Hay・製粉時Hay/Strawは出さない | **MO時のみMO所有資産を利用** |
 | 作物・加工研究 | Base主要ループからMO ResearchDef参照を除去。最低限の栽培・一次加工・手動製粉はMO研究なしで成立 | MO研究との接続は条件付き互換。MO研究がないとGrains主要ループが止まる構成にしない | **BaseはGrains/MO非依存** |
 | 建築材料 | Vanilla / Grains所有のStuff・Thingだけで建設可能 | RawWood / IronIngot等への材料置換・追加は条件付き互換 | **BaseはVanilla/Grains** |
-| New Village Scenario | 既存 AMJC_NewVillage / Faction / PawnKindをセーブ互換のため当面同package内に保持し、BaseからMO研究・物資・apparel tagを除去 | MOらしい開始差分が必要な場合だけ条件付きPatch | **Grains主要機能ではない互換保持コンテンツ** |
+| New Village Scenario | **開始シナリオ専用の独立Modへ分離する**。既存DefNameを維持する移行設計が完了するまで現packageに暫定保持 | 開始シナリオModがGrains/MO導入時の物資・研究差分を任意互換として所有 | **Grainsの最終責務から除外。物理移行は未実施** |
 | CCTO | なくてもGrains作物は成立 | CCTO存在時だけ既存互換Patch | **任意互換** |
 | 米・水田 | 所有しない | 所有しない | **Waterworks / Rice Cultivation** |
 | 豆類 | 所有しない | 所有しない | **Grains外。将来所有先を用途と合わせて決定** |
@@ -464,7 +464,7 @@ Base側から次の無条件参照を0にする。
 - MO小麦 / RawWheat / Flour / MillstoneへのBase直接参照
 - MO由来のProduction仮テクスチャ
 
-Scenarioの旧具体値表はMOプロファイルの互換契約とする。Baseの具体値はCore標準Scenario節に併記する。Grains移行では既存Scenario/Faction/PawnKindのDefNameを維持しつつ、Base定義をVanilla/Grains参照だけへ置換し、MO差分だけを条件付き互換へ移す。Scenario自体を別Modへ物理分離する判断は、既存セーブ参照を壊さない移行方法を別途設計してから行う。
+Scenarioの旧具体値表は移行中のMOプロファイル互換契約とする。Baseの具体値はCore標準Scenario節に併記する。step 2では同package内でBaseとMO差分を分離済み。2026-10-07の作者決定により、最終所有先は開始シナリオ専用の独立Modとする。物理移行は下記の移行条件を満たしてから実施し、現行Defの存在をGrainsの恒久責務と解釈しない。
 
 **Grainsの存在意義を守る恒久回帰**
 
@@ -548,12 +548,27 @@ Grainsの責務は、**乾田穀物の栽培・収穫・一次加工・製粉・
 - 採集一般、山菜、きのこ、果樹
 - 発酵、酒造、塩蔵、一般乾燥保存
 - 一般水利、温泉
+- 開始シナリオ、開始用Faction/PawnKind、初期研究・物資
 - 建築、衣服、武具、派閥、背景、イベント
 - 将来Addonが使うかもしれないという理由だけの共通素材
 
 旧Stage B（豆類）・C（繊維）・D（根菜）はGrainsロードマップから外す。内容自体を永久不採用としたわけではなく、主要ゲームループと自然な所有先が確定した時点で別機能として再評価する。
 
-既存公開CoreのNew Village Scenario/Faction/PawnKindはGrainsの主要責務ではないが、公開済みDefNameを既存セーブが参照するため直ちに削除・移動しない。当面は同package内の互換保持コンテンツとしてMO依存だけを除去する。
+#### 開始シナリオの独立Mod化（2026-10-07 作者確定）
+
+「新しい村」のScenario、開始用プレイヤーFaction/PawnKind、初期研究・物資は、**開始シナリオ専用の独立Mod**が所有する。Grainsは穀物・一次加工・製粉・最低限粉食を所有し、村の開始条件を含めない。NPC派閥を追加するAMJ Factionsとも別責務とする。新Modの正式名称・packageId・リポジトリは未決定。
+
+- 開始シナリオModはVanilla単独で成立させる。Grains・MOを必須依存にしない。
+- Grains導入時だけ雑穀等の開始物資と加工経路への接続を適用し、MO導入時だけMO研究・素材・携行食等の差分を適用する。両方導入した構成も開始シナリオMod側の任意互換で扱う。
+- Grains側から開始シナリオModへの必須依存も設けない。穀物を使うために専用開始を選ぶ必要はない。
+- 今回は所有方針の確定であり、物理移行は未実施。step 2のScenario/Base/MO差分とテストは移行中の契約として現パッケージに残す。Vanillaだけの新Mod開始物資の具体値は移行設計で決め、現在のAMJC物資を無条件で持ち込まない。
+
+**物理移行の前提・完了条件**
+1. `AMJC_NewVillage`、`AMJC_PlayerVillage`、`AMJC_Villager` と関連翻訳・開始ダイアログ・互換Patch・Quickstart/テストの移転対象を監査する。既存DefNameを維持し、旧パッケージとの同時導入でも各Defの供給者を1つにする。
+2. 旧Coreで開始した既存セーブの読込、Grains単独、新シナリオMod単独、両方導入を検証する。旧Coreを外す／新Modを加える場合の移行手順と、互換保持Defが必要かを実装・実機検証で決める。安全な削除・差替えを未検証のまま保証しない。
+3. 新規開始の恒久テストは開始シナリオModへ移す。Vanilla単独、Grains併用、MO併用、Grains+MO併用を検証し、既存セーブ回帰とruntime ERROR gateを適用する。Grainsの恒久テストから専用Scenarioの存在要求を外すのは物理移行と同時とする。
+4. 現行38件のMO契約snapshotは削除して回避せず、移転したScenario/Faction/PawnKindの契約を移転先で継承し、穀物側の契約と分けて維持する。
+5. 所有先・依存・セーブ互換の実装に合わせて双方のAbout/README/Workshop/2gameとテスト手順を同期する。現時点の公開説明を分離済みへ書き換えない。
 
 #### 詳細設計前の先行Mod監査
 
@@ -1028,7 +1043,7 @@ R⁴は既存作業台を使って武器・衣服のrepair / clean taint / recyc
 
 ### Core標準Scenario
 
-> **Grains移行注記:** step 2でBaseと条件付きMO差分を実装した。以下のAlpha表はMO併用時の既存互換契約、Base物資表はMOなし構成の契約とする。Scenario/Faction/PawnKindの既存DefNameを維持する。ScenarioはGrainsの主要機能ではない。
+> **Grains移行注記:** 作者承認により最終所有先は開始シナリオ専用の独立Modとする（上の独立Mod化節）。物理移行までは現パッケージに暫定保持。step 2でBaseと条件付きMO差分を実装した。以下のAlpha表はMO併用時の既存互換契約、Base物資表はMOなし構成の契約とする。Scenario/Faction/PawnKindの既存DefNameを維持する。ScenarioはGrainsの主要機能ではない。
 
 現行公開CoreのScenarioは **「新しい村」 / New Village**（`AMJC_NewVillage`）とする。様々な事情で元の共同体を離れた一般の人々が、新しい土地で小さな村を興す。武将・大名・特権階級の開始にはしない。
 
@@ -1093,7 +1108,7 @@ Pemmicanは初期携行食のゲーム上の代理であり、日本中世の同
 
 #### 責務と互換
 
-- Scenario・開始用プレイヤーFaction/PawnKindはCoreが所有する。NPC派閥群を追加するAMJ Factionsとは別責務。
+- 最終所有者は開始シナリオ専用の独立Mod。現CoreによるScenario・開始用プレイヤーFaction/PawnKindの供給は移行までの暫定措置。NPC派閥群を追加するAMJ Factionsとは別責務。
 - Vanilla/MOの既存Scenario・Faction・研究タグ・PawnKindは書き換えない。AMJCのScenario以外の開始条件を変更しない。
 - AMJ Backgroundsなしで動作する。導入時のAMJ背景優先生成は将来の互換作業で扱い、Alphaでは実装済みとしない。
 - 日本風の衣装・固有背景・種族選択を強制しない。標準PawnKindは人間であり、HAR種族別開始の対応はこのScenarioの完了条件に含めない。
@@ -1102,9 +1117,9 @@ Pemmicanは初期携行食のゲーム上の代理であり、日本中世の同
 
 #### 自動テスト
 
-静的検証は人数・到着方法・初期研究3件・研究タグの空集合・物資/素材・日本語表示と設計の一致を確認する。ローカル検証では実際のRimWorld 1.6/MO 1.6の参照Def・ScenarioBase・PlayerFactionBase・BasePlayerPawnKindも確認する。
+静的検証は人数・到着方法・初期研究（Base 0件 / MO 3件）・研究タグの空集合・物資/素材・日本語表示と設計の一致を確認する。ローカル検証では実際のRimWorld 1.6/MO 1.6の参照Def・ScenarioBase・PlayerFactionBase・BasePlayerPawnKindも確認する。
 
-Pickleには読み込み後のScenario/Faction/PawnKind検証と、実Scenarioを選択する `AmjNewVillageQuickstart` による開始検証を追加する。後者は5人の生成・開始派閥・研究3件のみの完了・開始物資数量/素材・未研究で利用できる簡易加工経路を確認する。物資の定義数量は厳密一致、生成済みマップでは別途生成される品を許容して必要量以上の存在を確認する。既存5件と合わせた7件および隔離ログERRORゲートを使用する。MOは既存方針どおり軽量XML fixtureで参照を供給するため、これをMO全体の統合テスト成功とは扱わない。実ゲーム開始テストの成功が確認されるまでAMJ-015はIN PROGRESSを維持する。
+Pickleには読み込み後のScenario/Faction/PawnKind検証と、実Scenarioを選択する `AmjNewVillageQuickstart` による開始検証を追加する。後者は5人の生成・開始派閥・プロファイル別初期研究のみの完了・開始物資数量/素材・未研究で利用できる簡易加工経路を確認する。物資の定義数量は厳密一致、生成済みマップでは別途生成される品を許容して必要量以上の存在を確認する。移行中の旧fixture suiteは8件、実providerの4プロファイルは各5件であり、隔離ログERRORゲートを使用する。物理分離時には開始検証を開始シナリオModへ移し、Grains単独にScenarioを要求しない。MOは既存方針どおり軽量XML fixtureで参照を供給するため、これをMO全体の統合テスト成功とは扱わない。実ゲーム開始テストの成功が確認されるまでAMJ-015はIN PROGRESSを維持する。
 
 調査基盤は添付MO 1.6の `Defs/Scenarios`、`Defs/FactionDefs/Factions_Player.xml`、`Defs/PawnKindDefs_Humanlikes/PawnKinds_Player.xml` とRimWorld Dataの1.6形式（OdysseyのsurfaceLayerを含む）である。Quickstarts/Pickleの接続仕様は各開発元のソースで確認する。手動確認は日本語UIと開始の遊び心地に限定する。
 

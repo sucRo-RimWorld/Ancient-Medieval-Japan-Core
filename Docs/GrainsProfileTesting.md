@@ -113,3 +113,23 @@ The golden fixture records source commit and hashes. `amj_profile_xml.py` and
 patches. They do not simulate external MO wheat patches, XML inheritance, loaded
 Def references, localization resolution or texture loading. Existing wheat-patch
 checks remain separate; actual game tests are required for those boundaries.
+
+## Approved Scenario ownership boundary (2026-10-07)
+
+New Village, its starting player Faction/PawnKind, research and supplies will move
+to an independent starting-scenario mod. That mod must work with Vanilla alone;
+Grains and MO integrations are optional and owned by the scenario mod. Neither
+mod makes the other a hard dependency. The final name/package/repository and
+save-migration mechanism remain undecided; physical extraction has not occurred.
+
+The current five-scenario profile suites and eight-scenario fixture suite retain
+New Village only as transitional contracts. During extraction, move the startup
+checks and the Scenario/Faction/PawnKind golden contracts to the new owner; remove
+the dedicated-Scenario presence requirement from Grains in that same change.
+Keep grain contracts rather than discarding the old snapshot wholesale.
+
+The scenario owner must test Vanilla alone, Grains, MO and Grains+MO starts, plus
+old Core New Village saves and exactly one provider of every migrated Def when
+old/new packages coexist. Grains standalone must pass without the scenario mod.
+Apply the existing non-interactive rendering and runtime ERROR gates. None of
+these extraction/migration tests is claimed as already passing.
