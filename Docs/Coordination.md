@@ -890,7 +890,25 @@ Cross-document reconciliation completed:
 - retexture ownership reconciliation: `710c573a8b35bb0f0665e5ec51a4120a7ecc2de8`
 - Ironmaking boundary reconciliation: `5128ed760a701cba20cf9017b7e3e04284a56369`
 
-**Next action:** trace the actual MO ThingDefs / RecipeDefs unlocked by the military and equipment nodes and produce a Def-by-Def Japanization mapping. High-priority unresolved rows are Carrier Birds, Heavy Crossbow/Ballista, Tar, Smoker, Carpet Making and Oven. Create/choose the dedicated Japanization repository before production XML/assets are written.
+**2026-10-07 Def-level follow-up completed for military/loadouts and domestic production:**
+- military mapping now traces the actual MO equipment families behind crossbow/siege, protection/chain/plate/adorned armor, bows, polearms, maces, blades, gunpowder, Smithing and tailoring;
+- full dependency traversal shows `ProtectiveClothing` gates 17 MO Defs, `ChainArmor` 23, and Vanilla `PlateArmor` 23 MO Defs including multi-prerequisite adorned items. Japanization therefore curates retained Defs rather than inventing one Japanese equivalent for every Western variant;
+- MO crossbow research currently couples handheld crossbows with fixed Scorpio/Ballista turrets. The audit separates portable `弩` from installed `弩` candidates and keeps Trebuchet/Repeater outside the baseline historical path;
+- PawnKind audit confirms MO directly requires Western gear through `apparelRequired` and selects Western weapon/apparel tags. Japanization must patch MO PawnKind/Faction loadouts together with Def visibility/retexture; hiding player recipes alone is insufficient;
+- faction boundary is now durable: Japanization owns MO-owned FactionDef/PawnKind presentation/loadout consistency, while AMJ Factions owns new Japanese historical faction/social gameplay;
+- domestic/production audit confirms MO research nodes are cross-domain bundles: `Presser` mixes apple/cheese/paper, `Pemmican` mixes drying racks/rations, `Oven` mixes bread with Western pies/cakes, `RusticFurniture` reaches 131 MO Defs and `Stonecutting` reaches 68. Japanization must redistribute/curate actual unlock outputs rather than translate research labels wholesale;
+- Oven is now a late-Sengoku/Nanban optional candidate rather than core Japanese flour-food infrastructure; Grains must not depend on it. Drying racks, pot cooking, millstone and watermill remain strong reuse candidates; Western recipe bundles remain item-level curation targets.
+
+**Result / commits:**
+- military Def mapping: `Docs/Research/MedievalOverhaulJapanizationMilitaryMapping.md`, commit `e081364ae4924c1b04a823343ed0f3a8f39a8366`
+- military-audit cross-link: `89a75fe5d40a3e5124c014a8b59e2c5e33ef3c66`
+- faction/loadout audit: `Docs/Research/MedievalOverhaulJapanizationFactionLoadoutAudit.md`, commit `e85670db253638b41d12954121f1534b2feabadd`
+- military -> faction cross-link: `3d86824b3ada798c0d5dffd794704e86a9e871ad`
+- Design faction/loadout ownership boundary: `283b7aaadfea3bacec2683e438302f41733354e6`
+- domestic/production audit: `Docs/Research/MedievalOverhaulJapanizationDomesticProductionAudit.md`, commit `282db3d3d75f9e928033ad309b102815c931b597`
+- research-audit domestic cross-link: `48bd4e2ecf0cc51fee8c1d5751fb0e79a6a2b291`
+
+**Next action:** continue with the exact cooking RecipeDef/product/ingredient/effect ledger and with architecture/furniture output curation. Separately compare weapon stats/material costs before fixing exact MO Def -> Japanese weapon labels. High-priority unresolved areas remain Carrier Birds, Heavy Crossbow, Tar, Smoker and Carpet Making. Create/choose the dedicated Japanization repository before production XML/assets are written.
 
 ### DOC-010 — Workshop cover common-left drift prevention
 
