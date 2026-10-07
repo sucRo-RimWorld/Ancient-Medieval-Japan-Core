@@ -622,26 +622,11 @@ VanillaのThought / Trait / drug attitude / room・家具期待等を前近代�
 
 Project側の現行候補は仮称 `AMJ - Premodern Culture`。詳細は Project `Docs/Ideas.md`、`Docs/Roadmap.md`、`Docs/Research/VanillaPremodernCultureThoughtAudit.md` を参照する。Japanization側では、将来同Modが成立した場合のMO家具・食事・酒等との任意互換境界だけを扱う。
 
-MO 1.6.2.2の研究ツリー全67ノード（MO独自51 + MOが移動/再構成するVanilla 16）の初回分類、史料アンカー、未解決監査項目は [Research/MedievalOverhaulJapanizationResearchAudit.md](Research/MedievalOverhaulJapanizationResearchAudit.md) を詳細正本とする。研究・武器・料理等の個別分類は同文書の監査を経て実装へ落とし込み、チャット上の一時分類だけでXMLを変更しない。
+MO 1.6.2.2の研究ツリー全67ノード（MO独自51 + MOが移動/再構成するVanilla 16）の初回分類、史料アンカー、未解決監査項目は [Project MedievalOverhaulJapanizationResearchAudit.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/MedievalOverhaulJapanizationResearchAudit.md) を詳細正本とする。研究・武器・料理等の個別分類は同文書の監査を経て実装へ落とし込み、チャット上の一時分類だけでXMLを変更しない。
 
 ### 2.10 MOの研究フローを古代～中世日本史へ再構成する
 
-Medieval Overhaulの研究順は西欧中世を主軸にしたゲーム的抽象化であり、Japanization導入時にはその順序を日本側の技術史へそのまま従属させない。**`AMJ - Medieval Overhaul Japanization` がMO全体の研究フロー再構成を所有する。**
-
-基本原則:
-- AMJの対象は古代～中世であり、江戸・近世の完成形を標準研究Tierへ持ち込まない
-- 「強い設備ほど後半」だけで並べず、日本での技術成立時期、必要な前提技術、素材加工、ゲーム上の導線を合わせて研究位置を決める
-- MO既存の素材・加工段階・設備が日本でも意味を持つ場合はDefを維持して研究位置を変更し、不要な複製を作らない
-- 西欧固有の研究名・前提関係は、日本側で同等の技術的意味が成立する場合に名称/説明と接続を置換する
-- 日本側に対応する意味がなく、除去しても進行が成立する研究・解禁経路は非表示化/切断対象にできる
-- World Tech LevelはIndustrial以降等を包括的に制限する外部層として扱い、Japanizationの研究再構成とは分担する
-
-AMJ各独立Modは、自分が所有する機能の研究・解禁条件を引き続き所有する。Japanizationはそれらを吸収せず、MO併用時に必要な接続だけを提供する。たとえばIronmakingは日本製鉄そのものを所有し、JapanizationはMO鍛冶・金属加工研究との接続やMO側の不要/不適切な経路整理を担当する。
-
-作物・農業についても、作物固有の性能値はGrains / Rice Cultivation等の所有Modで先に決め、Japanizationの研究Tierへ合わせるために性能を逆算しない。研究位置を決める際は、日本での利用・栽培時代、栽培技術、収穫後加工、MO既存設備との接続、ゲーム上の進行導線を合わせて判断する。
-
----
-
+MO全体の研究再構成はGrainsの責務外で、AMJ - Medieval Overhaul Japanizationが所有する。専用リポジトリ作成前の詳細設計はProjectの [MedievalOverhaulJapanizationCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/MedievalOverhaulJapanizationCandidate.md) を正本とする。Grainsは自分が所有する作物・加工の研究解禁と、MO併用時の条件付き接続だけを管理する。
 ## 3. Grains本体（他AMJ Modなし）の位置づけ
 
 現CoreはAMJ Mod群すべての共通基盤ではなく、**乾田穀物の選択と一次加工を扱うGrains系独立コンテンツMod**として再編する。
@@ -1381,15 +1366,7 @@ Hilliness補正についてはバイオームとは独立したワールド側�
 Grains以外の将来機能に関わる評価待ち候補はProjectの [ExistingModAudit.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/ExistingModAudit.md) に移管済み。Grainsの具体的な互換対象として採用された時点で、本節ではなく対応するGrains互換設計へ戻す。
 ### Faction / Background系の互換方針
 
-- 既存の和風Faction Modは、AMJ Factionsの競合相手ではなく**代替供給元・互換対象**として扱う
-- AMJ Eventsから利用できるよう、時代・役割が合うFactionを機能カテゴリへ接続する
-- HAR種族のFaction / Backstoryは、Race固有制約を尊重しながらAMJ Backgrounds / Eventsへ接続する
-- 江戸以降・近代・SF要素が強い外部和風Factionの採用可否は、そのFaction互換やAMJ Factions / Events側で判断する。Japanizationは外部Faction一般の選別を担当しない
-
-互換は文化統合ではなく、**素材・設備・カテゴリの重複回避と競合解決**を目的とする。直接競合する領域ではAMJ側を最終優先し、非重複要素は可能な限り共存させる。ReGrowth 2は特にJapanese Environmentの設計参考として扱い、依存先にはしない。
-
----
-
+Faction / Background / Eventsの横断互換はGrainsの責務外。専用リポジトリ作成前の詳細方針はProjectの [SocietyModulesCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/SocietyModulesCandidate.md) を正本とする。Grains固有Defとの直接競合が発生した場合だけ、本リポジトリに互換仕様を追加する。
 ## 12. グラフィック方針
 
 ### 12.1 目標
