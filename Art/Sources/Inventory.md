@@ -6,15 +6,15 @@
 
 | 範囲 | 保存対象点数 | Art/Sources 保存済み | 未保存・要照合 |
 | --- | ---: | ---: | ---: |
-| ゲーム用の植物・アイテム画像 | 14 | 6 | 8 |
+| ゲーム用の植物・アイテム画像 | 14 | 7 | 7 |
 | 共通の枡・Workshop表紙素材 | 5 | 5 | 0 |
-| 合計 | 19 | 11 | 8 |
+| 合計 | 19 | 12 | 7 |
 
 - ゲーム用 `Textures/` は26 PNG。SHA-256でまとめると14種類で、6アイテム群の `_a/_b/_c` は各群で同一バイト。各群は1点と数える。共有Defからの参照数は加算しない。
-- 「19点」は保存対象の種類・役割の数。「8点」は元画像の照合・回収が残る対象数であり、回収可能な元ファイル8枚が確定したという意味ではない。
-- 雑穀の殻付き・精製後は同じ歴史的素材シートの候補に含まれる。そのシートが両画像の正本と確定すれば、2対象を1ファイルで保存できる。したがって現一覧の未保存対象は、全対象の元画像が回収できる場合、共通シートを使えば7ファイル、個別の正本を使えば8ファイルが目安。未回収や別の共有元が判明した場合は再集計する。
+- 「19点」は保存対象の種類・役割の数。「7点」は元画像の照合・回収が残る対象数であり、回収可能な元ファイル7枚が確定したという意味ではない。
+- 雑穀の殻付き・精製後は同じ歴史的素材シートの候補に含まれる。そのシートが両画像の正本と確定すれば、2対象を1ファイルで保存できる。したがって現一覧の未保存対象は、全対象の元画像が回収できる場合、共通シートを使えば6ファイル、個別の正本を使えば7ファイルが目安。未回収や別の共有元が判明した場合は再集計する。
 - 空枡の `.xcf` は保存済みの編集ファイル1件として別記し、同じ枡を画像2点とは数えない。SVGはベクタ元画像として1点。
-- 初回は棚卸しのみ。その後、G08ソバ未熟株、G13殻付きソバ、W02承認済みCore表紙参照、W03表紙共通ラスター、W04表紙可変マスク、G03ヒエ成熟株、G04ヒエ未熟株を1枚ずつ照合・保存し、件数を更新した。新しい画像の生成・本番テクスチャ変更は行っていない。
+- 初回は棚卸しのみ。その後、G08ソバ未熟株、G13殻付きソバ、W02承認済みCore表紙参照、W03表紙共通ラスター、W04表紙可変マスク、G03ヒエ成熟株、G04ヒエ未熟株、G05キビ成熟株を1枚ずつ照合・保存し、件数を更新した。新しい画像の生成・本番テクスチャ変更は行っていない。
 
 ## ゲーム用14種類
 
@@ -26,7 +26,7 @@
 | G02 | アワ未熟株 | `Things/Plants/Immature/AMJC_Awa/AMJC_Awa_Immature.png` | 未保存・縮小前の正本未確認 | `AMJC_Awa_Immature.png` は実測256×256。高解像度元画像扱いにしない | 同上 |
 | G03 | ヒエ成熟株 | `Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png` | 保存済み | `Art/Sources/Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png`、1254×1254 RGBA。`ヒエの穂が揺れる可愛い植物アイコン.png` をAMJ-016採用記録・現本番と照合。SHA-256 `58bc4a98f4557d5df112f97c2094d7cbb5681ea8f46c36246064b10da3c573db` | 保存完了 |
 | G04 | ヒエ未熟株 | `Things/Plants/Immature/AMJC_Hie/AMJC_Hie_Immature.png` | 保存済み | `Art/Sources/Things/Plants/Immature/AMJC_Hie/AMJC_Hie_Immature.png`、1254×1254 RGBA。`直立したヒエの植物アイコン.png` をAMJ-016承認・修復履歴・現本番と照合。SHA-256 `1d1d8bd67d1bd2c28cbb3e783dab043d07f5e6877eab053a7df869b8ad703538` | 保存完了 |
-| G05 | キビ成熟株 | `Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png` | 未保存・候補あり | `黄金のキビ穂アイコン.png` 等を最終採用版と照合 | 同上 |
+| G05 | キビ成熟株 | `Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png` | 保存済み | `Art/Sources/Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png`、1254×1254 RGBA。`黄金のキビ穂アイコン.png` をAMJ-016承認・修復履歴・現本番と照合。SHA-256 `53af394e4bcef8b9f45fe97237a05c9c7606fef71bdacc3e743fc64644d831e2` | 保存完了 |
 | G06 | キビ未熟株 | `Things/Plants/Immature/AMJC_Kibi/AMJC_Kibi_Immature.png` | 未保存・縮小前の正本未確認 | `AMJC_Kibi_Immature.png` は実測256×256。元の生成・編集入力を確認 | 同上 |
 | G07 | ソバ成熟株 | `Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png` | 保存済み | `Art/Sources/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`、1247×1261。保存コミット `575308e842b160b44b25cfd4b3ec0065edcd3f56` | 保存完了 |
 | G08 | ソバ未熟株 | `Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png` | 保存済み | `Art/Sources/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`、1448×1086。三株構成の `黒背景の芽吹く植物アイコン(1).png` を記録・目視照合。SHA-256 `194e4b67ea25ab77d73a07f973bbbf7bfaba4ededbda9eb1366c08bc7a2e75b4` | 保存完了 |
@@ -72,7 +72,7 @@ W02–W04は `Docs/References/AMJ_WorkshopCover_Manifest.md` と `Docs/GoldenPat
 | キビ未熟候補 | `libfile_c169bab639f88191aeb7cc400e8743d8` | 実測256×256。同上 |
 | ヒエ成熟正本 | `libfile_81f9f17fbb988191916144a698e3bfa5` | 実測1254×1254 RGBA、909,425 bytes。採用コミット・三本の黄金色の垂れ穂と葉/茎構成を現本番と照合。元バイト保存済み。歴史的配置・パレット書き出し手順の完全再現は未確認 |
 | ヒエ未熟正本（旧G03候補） | `libfile_b626dec6725c8191bc318e25fa265b58` | `直立したヒエの植物アイコン.png`、実測1254×1254 RGBA、656,097 bytes。G03から除外後、G04の採用構成と一致する三本の緑色穂・葉・茎を照合。現本番は承認版のPNG修復で復元された最終化コミットのblobと一致。元バイト保存済み。歴史的パレット書き出しの完全再現は未確認 |
-| キビ成熟候補 | `libfile_cd4a791d96048191bde27c7f903d5dd9` | メタデータ上の候補 |
+| キビ成熟正本 | `libfile_cd4a791d96048191bde27c7f903d5dd9` | `黄金のキビ穂アイコン.png`、実測1254×1254 RGBA、940,212 bytes。枝分かれした黄金色の穂・葉・茎を現本番と照合。本番は承認版のPNG修復で復元された最終化コミットのblobと一致。元バイト保存済み。歴史的パレット書き出しの完全再現は未確認 |
 | ソバ未熟候補 / `(1)` | `libfile_9ec7d48ed7b8819187bd2d476617ae7e` / `libfile_3f5c688ff0088191b57c3583709cbf94` | 両方1448×1086 RGBAを実見。`(1)` の三株構成が本番と一致し保存済み。無印の追加株を含む別構成は除外。歴史的書き出し手順の完全再現は未確認 |
 | 雑穀束候補 | `libfile_ea9499a650bc8191ae5d7beac47a0c6d` | 最終輪郭版の照合待ち |
 | ソバ束の旧候補 / 後の候補 | `libfile_f0aec464d0f08191bda2ffe3df6d5c15` / `libfile_4156e957eed48191b6bcdab3b1f8b571` | 直近の最終採用・修正との照合待ち |

@@ -15,7 +15,7 @@ This directory stores accepted source artwork and authoring files that must surv
 
 ## Inventory / recovery queue
 
-The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 11 already archived and 8 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters. G04 now has a separately verified high-resolution original.
+The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 12 already archived and 7 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters. G04 now has a separately verified high-resolution original.
 
 ## Current authoritative sources
 
@@ -29,6 +29,7 @@ The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 
 - `Workshop/AMJ_WorkshopCover_VariableMask.png`
 - `Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
 - `Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png`
+- `Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png`
 - `Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
 - `Things/Plants/Immature/AMJC_Hie/AMJC_Hie_Immature.png`
 
@@ -120,6 +121,18 @@ Additional accepted sources should be added to the corresponding mirrored path a
 - Visual comparison confirms the same three green-grained branched panicles, broad leaves, stems, junctions and silhouette. This original is distinct from the golden mature source and from the named 256×256 derivative.
 - Historical palette/export steps have not been reconstructed; direct full-canvas resizing does not reproduce the indexed production pixels exactly. This recovery establishes source identity from visual correspondence and retained approval/repair records, without claiming exact export reproduction.
 - Only the exact original bytes are archived; production textures are unchanged.
+
+### Kibi mature plant — 2026-10-07 JST
+
+- Archived file: `Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png`.
+- Original: `黄金のキビ穂アイコン.png`, Library identity `libfile_cd4a791d96048191bde27c7f903d5dd9`.
+- Original dimensions: 1254×1254 RGBA; 940,212 bytes. Preserved without resizing, recoloring, or re-encoding.
+- SHA-256: `53af394e4bcef8b9f45fe97237a05c9c7606fef71bdacc3e743fc64644d831e2`.
+- Production counterpart: `Textures/Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png` (256×256 indexed PNG; SHA-256 `f78fec6a28703a275644b171966dbbe8961923d459d56c239e4ba00f4bd966c5`).
+- Provenance: `AMJ-016` and approval integration `ddb7a593cd552fc7a37909838b870cbd8fc28436` record the accepted cereal set. PNG repair `0262092fa06c4578450af15c5b936fdd80156113` restored the valid finalization `02c4a193fe0514eba57d5aab69edf8a69145c645` blob; current production retains their identical blob `d05e47f1a8f9804d163c236e9ec93b84b0c3abea`.
+- Visual comparison confirms the same open branched golden panicles, broad leaves, stems, junctions and silhouette.
+- Historical positioning/palette-export steps have not been reconstructed; direct full-canvas LANCZOS resizing does not reproduce the indexed production pixels exactly. Source identity is established from visual correspondence and retained approval/repair records, without claiming exact export reproduction.
+- This recovery archives only the exact original bytes; production textures are unchanged.
 
 ## Workshop distribution
 
