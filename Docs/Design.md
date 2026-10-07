@@ -253,7 +253,7 @@ Grains移行後はVanilla + Grainsで、乾田穀物の栽培 → 一次加工 �
 
 Base XMLにはMO DefNameへの無条件参照を残さない。MO固有PatchはMO存在時だけ適用する。About.xmlのMO必須解除は、runtime移行とBase/MO自動テストが完了した最後に行う。
 
-Japan Onlyは責務上MOの既知Defを除去・非表示化するレイヤーなので、Japan Only自身はMO必須を維持する。
+`AMJ - Medieval Overhaul Japanization` はMO本体を古代～中世日本向けに再構成するPatch + Retextureレイヤーであり、責務上MO必須を維持する。World Tech Levelは中世限定世界を作るための強い推奨Modとし、Japanization自身では包括的なTech Level制限を再実装しない。
 
 #### AMJ Mod間の依存方針
 
@@ -329,7 +329,7 @@ MO導入時は、既存の農業・研究・設備・素材を可能な限り再
 - MO更新時はMO互換プロファイルを自動テスト対象として維持する
 - Food Drying、DBH、Edo等の他の任意Modも同じく条件付き互換として扱う
 
-Japan Onlyは例外で、MO本体の既知Defを対象にすること自体が存在理由なのでMO必須を維持する。
+`AMJ - Medieval Overhaul Japanization` は例外で、MO本体の研究・Def・Recipe・資産を日本化すること自体が存在理由なのでMO必須を維持する。Grains等の独立AMJ ModはJapanizationを必須依存にしない。
 
 用語:
 - **Vanillaプロファイル** — RimWorld + Grains（MO依存解除後の目標）
@@ -639,7 +639,7 @@ AMJの各Addon・姉妹Modは、詳細設計へ入る前に**同一目的・部�
   - **きのこ独自追加の代替候補 / 任意互換・推奨併用候補**として記録する（2026-10-04）。MO + More Mushroomsで正常に動き、日本側で必要な種類・採集経路を満たせる場合は、同じきのこのPlantDef・食材・画像をAMJで重複実装せず、互換Patchを優先する。
   - 採用は未確定。公開紹介で示された種類・通常栽培・水耕栽培・野生発生の詳細は、現行1.6の実Defとロード後の状態で再確認する。packageId・DefName・対象種別・数値は未監査であり、現時点では固定しない。
   - 互換候補は、古代～中世日本向けの種ごとの栽培可否、水耕栽培の無効化、必要な野生採取化、MO食材カテゴリ・料理・研究との整合とする。人工栽培を一律に認めず、時代根拠を調べて決める。
-  - 通常AMJでは非日本的な種類を一律削除しない既存方針を維持する。Japan Onlyの対象はMO由来要素に限り、外部Modの種選別・除去はJapan Onlyへ持ち込まない。元Modの主要内容を大半無効化してまで前提化しない。
+  - 通常AMJでは非日本的な種類を一律削除しない既存方針を維持する。Japanizationの日本化対象は原則としてMO本体と明示的な公式互換対象に限り、外部Modの種選別・除去を汎用的に持ち込まない。元Modの主要内容を大半無効化してまで前提化しない。
   - 耐寒性はCCTOでの対応候補、自然発生地域はJapanese Environmentでの任意互換候補、採集・食材接続はHunting & Gathering側の候補とする。これらは責務分担案であり、各リポジトリでの採用・実装・対応完了を意味しない。
   - まず実ソース監査とMO併用のロード・Def・収穫・食材利用の自動確認を行い、既存Defで満たせない不足部分だけ独自追加を再検討する。公開Alpha / Core Stage A〜Eの追加要件にはしない。
 - **Food Drying**（https://steamcommunity.com/sharedfiles/filedetails/?id=3664822476）
@@ -674,9 +674,9 @@ AMJの各Addon・姉妹Modは、詳細設計へ入る前に**同一目的・部�
 - **ReGrowth 2**（https://steamcommunity.com/sharedfiles/filedetails/?id=2260097569）
   - Japanese Environmentの季節植生・バイオーム・天候表現の参考実装とし、必須依存にはしない既存方針を維持する。
 - **Rimedieval**（https://steamcommunity.com/sharedfiles/filedetails/?id=2516523040）
-  - 中世化そのものと、MOから西洋要素を外すJapan Onlyの責務は異なるため、Japan Onlyの代替ではない。
+  - World Tech Level等による包括的な中世制限と、MO自体を日本史に合わせて再構成するJapanizationの責務は異なるため、RimedievalはJapanizationの代替ではない。
   - 広範囲を自動Patchする侵襲的な方式で、1.6でもMO/VFE系を含むPatch競合報告がある。AMJ実プレイ環境でも互換不具合が多く外した経緯があるため、**前提・推奨・主要実装参考にはしない**。
-  - Japan OnlyはRimedieval型の包括的自動制限ではなく、MOの既知Defを対象にした限定的な除去・非表示化Patchを優先する。AMJ側Defや外部Mod資産の置換は担当しない。
+  - JapanizationはRimedieval型の全Mod包括フィルタではなく、MOの既知Def/研究/Recipe/資産と明示的な公式互換対象を狙ってPatchする。無関係な外部Mod資産を自動選別・置換しない。
 
 #### 先行Mod監査の現時点結論（2026-10）
 
@@ -711,7 +711,7 @@ AMJの各Addon・姉妹Modは、詳細設計へ入る前に**同一目的・部�
 | Events | **独自実装価値が高い** | 流民、落ち武者、徴発、水争い、戦乱の余波等の一般社会イベントが主題に直結する |
 | Japanese Iron Resources | **供給分布の将来候補へ縮小・保留** | 最低限の砂鉄採取・一次製錬はIronmakingが所有。既存鉱床の地域化だけを別途再評価 |
 | Ironmaking（旧Japanese Ironworking） | **独立Modのコンセプト確定** | Vanilla単体で鉄器加工から中世たたらまで。詳細初稿は Docs/IronmakingDesign.md |
-| Japan Only | **独自実装継続** | 包括中世化やリテクスチャではなく、MO既知Defの西洋要素を除去・非表示化する限定レイヤー |
+| AMJ - Medieval Overhaul Japanization | **独自実装継続** | MO必須のPatch + Retexture層。MOの研究・加工・設備・装備等を古代～中世日本向けへ再構成し、World Tech Levelとは責務分離 |
 | 宗教建築 / Religion | **先行実装しない** | 装飾だけでは弱く、祭祀・寺社社会等のゲームシステム成立時に必要設備を追加する |
 この監査は一度行えば終わりではなく、各Addonの詳細設計開始時に1.6の現行Mod状況を再確認する。先行Modが存在するだけで計画を縮小せず、**AMJの存在理由まで満たす場合にのみ代替・前提化する**。
 
@@ -849,7 +849,7 @@ RimWorldでは山体そのものは岩盤・厚い岩屋根として表現され
 - HAR種族も主要対象とし、種族固有Backstory制約を尊重したうえで、互換可能なRaceへAMJ背景カテゴリを追加する
 - HAR種族を全面上書きせず、種族側の固有背景・禁止条件を優先する
 - Traitsは原則としてVanilla / 既存Modのものを再利用する。時代を問わない性格特性を大量に再実装しない
-- Drug系Trait等、表示名だけを酒関連へ変えると実際の挙動と不一致になるものは、単純な名称変更を行わない。対象がMO由来DrugであればJapan Onlyで除去対象にできるが、名称変更や代替Drugの提供は別責務とし、挙動と一致する場合のみ別途再設計を検討する
+- Drug系Trait等、表示名だけを酒関連へ変えると実際の挙動と不一致になるものは、単純な名称変更を行わない。対象がMO由来DrugであればJapanizationで非表示化・再配置対象にできるが、日本の別Drugへ見せかける置換は挙動が一致する場合だけ採用する。独自Drug追加は該当機能Modの責務とする
 
 #### AMJ Clothing / 一般生活者の衣服Mod
 
@@ -864,7 +864,7 @@ AMJ独自衣服を作る条件:
 - 麻・藁等の材料、保温/耐暑、作業性、製作難度等によって既存衣服と異なるゲーム上の役割がある
 - **「既存和服Modではなぜ不足するのか」を一文で説明できる**
 
-条件を満たす要素がまとまるまでは独立AMJ Clothingを必須ロードマップにしない。Japan OnlyはMO西洋衣服の除去だけを担当し、代替衣服の追加・リテクスチャ・置換先選定は担当しない。必要な衣服はAMJ Clothingまたは対応済み外部和服Mod側で扱う。
+条件を満たす要素がまとまるまでは独立AMJ Clothingを必須ロードマップにしない。MO既存衣服でゲーム上の役割を維持したまま日本化できるものはJapanizationの名称/説明/リテクスチャ対象にできる。新しい衣服Defや独自ゲーム上の役割が必要な場合はAMJ Clothingまたは対応済み外部和服Mod側で扱う。
 
 #### AMJ Factions / 派閥Mod
 
@@ -883,7 +883,7 @@ AMJ Factions側の候補:
 - 役割の例は `Village`、`LocalWarrior`、`Daimyo`、`Religious`、`Outlaw`、`Trader` 等
 - 既存の和風Faction Modは重要な任意互換対象とし、互換Patchでそれぞれを適切な役割へ接続する
 - AMJ Factionsを入れていない環境でも、対応済み外部FactionがあればAMJ Eventsが利用できる構造を目標とする
-- 外部Factionの時代・技術水準がAMJ対象範囲から大きく外れる場合は、AMJ Events等の互換側で利用可否を判断する。Japan Onlyは外部Factionの採用・除外を担当しない
+- 外部Factionの時代・技術水準がAMJ対象範囲から大きく外れる場合は、AMJ Events等の互換側で利用可否を判断する。JapanizationはMO本体のFaction表現をPatch対象にできるが、外部Faction一般の採用・除外は担当しない
 
 AMJ Factionsの役割は「Eventsを動かすための必須ライブラリ」ではなく、**外部和風Faction Modを導入していなくてもAMJ時代の社会構成を提供する標準Factionパック**とする。
 
@@ -929,90 +929,67 @@ AMJ Factionsの役割は「Eventsを動かすための必須ライブラリ」�
 
 AMJ EventsはAMJ Factionsを必須にせず、対応する外部和風Faction、Vanilla/MO派閥、AMJ Factionsのいずれからでも、条件を満たす対象を取得できる疎結合構造を優先する。
 
-#### AMJ Japan Only / MO西洋要素除去レイヤー
+#### AMJ - Medieval Overhaul Japanization / MO日本化レイヤー
 
-**Japan OnlyはMedieval Overhaulを必須前提とし、MO由来の西洋要素を除去・非表示化する限定レイヤー**とする。日本風への置換、リテクスチャ、日本側コンテンツの追加は責務に含めない。
+旧 `Japan Only` 方針は置き換え、正式名を **`AMJ - Medieval Overhaul Japanization`** とする。
 
-Japan Only自身がMOの機能を再実装したり、AMJ全Modを束ねたりすることは目的にしない。**MOは技術基盤としてそのまま残し、Japan OnlyはMO由来の西洋要素を取り除くことだけを担当する。**
+本Modは**Medieval Overhaulを必須前提とする、MO Patch + MO Retextureの公式AMJ統合レイヤー**である。単に西洋要素を削除するのではなく、MOが持つ中世の素材・加工段階・設備・生産システムを可能な限り再利用しながら、研究進行・名称/説明・Recipe/素材接続・表示資産を古代～中世日本として一貫するよう再構成する。
 
 基本構成:
-- 通常AMJ: `RimWorld + MO + AMJ各Mod`
-- MO西洋要素除去を併用: `RimWorld + MO + Japan Only + AMJ各Mod`
-- Japan OnlyはMOを必須依存とし、MOより後、Japan Only対応のAMJ各Modより前に読み込む
-- MO本体を残すことで、外部ModのMO packageId判定・MO Def参照・既存MO互換Patchを可能な限り維持する
+- MOなしで遊べる各AMJ Modは、従来どおり独立した主要ゲームループを持つ
+- MOを利用する日本化構成: `RimWorld + Medieval Overhaul + AMJ - Medieval Overhaul Japanization + 任意のAMJ Mod`
+- JapanizationはMOを必須依存とするが、Grains / Rice Cultivation / Waterworks / Hot Springs / Ironmaking等からJapanizationを必須依存にはしない
+- **World Tech Levelは、中世を越えるVanilla/他Mod要素をTech Levelで制限するための強い推奨Mod**とする。JapanizationはWorld Tech Levelの包括的制限機能を再実装せず、World Tech Level自体もJapanizationの必須依存にはしない
+- MO本体のpackageId・既存Defを可能な限り維持し、MO互換Modとの接続を壊さずにPatchする
 
-責務:
-- MO由来の西洋的な作物・建築・衣服・装備・研究・派閥等のうち、対象と定めたものを無効化・非表示化して通常進行や建築メニュー等から外す
-- MOの基礎機能・Framework接続・カテゴリ・設備等、除去対象でない部分はそのまま利用する
-- Mithril等、日本のみの歴史環境では扱わないMO固有の幻想的・西洋的進行経路を通常進行から外す
-- MO要素を除去する際、外部のMO互換Modが参照するDefやRecipeを不用意に壊さない。必要に応じて互換Patchを用意する。ただし代替Def・代替画像の提供はJapan Onlyの責務にしない
+Patch側の責務:
+- **MO全体の研究フローを、日本の古代～中世における技術発展とゲーム上の進行へ合わせて再構成する**
+- 研究名・説明・前提関係・Tech Level・解禁設備/Recipeを必要に応じて変更する
+- MOの素材加工段階（例: 鉱石→インゴット、原皮→革、原料→糸/布、穀物→粉等）は、日本側でも意味が成立するものを積極的に再利用する
+- 日本の対象時代・文化に合わないMO要素は、単純削除だけでなく、同等のゲーム上の役割を保てる場合は名称・説明・Recipe・研究位置・外観を日本向けへ置換する
+- Mithril等、日本の歴史環境として扱わない幻想的・西洋的な進行経路は、他の進行を壊さないことを確認したうえで通常進行から外す
+- MO互換Modが参照する既存Defを不用意に削除せず、非表示化・研究経路変更・Patchによる意味の置換を優先する
+
+Retexture側の責務:
+- MO本体が所有する武器・防具・設備・建築等について、**ゲーム上の役割が日本の器物へ無理なく対応する場合は既存Defを維持したまま日本向けテクスチャへ差し替える**
+- 武器・防具は、性能・Recipe・戦闘上の役割を変える必要がないものを原則としてリテクスチャ + 名称/説明Patchで日本化し、同等品のThingDefを重複追加しない
+- 形だけ差し替えると実際の機能や歴史的意味と矛盾する対象は、リテクスチャだけで別物に見せかけず、Patch内容または所有責務を再検討する
+- **MO所有資産のAMJ日本化リテクスチャはJapanizationへ集約**し、Grains等の各AMJ Modから同じMO texPathを競合上書きしない
+- AMJ独自Defの画像は引き続き、そのDefを所有するAMJ Modが所有する
+
+DBH for Medieval公式互換:
+- **Dubs Bad Hygieneおよび `DBH for Medieval`（`eldersign.dbhformedieval`）をJapanizationの公式互換対象**とする。DBH / DBH for Medievalはハード依存にはしない
+- 2026-10-07の添付Def監査では、DBH for Medievalが手動ポンプ、簡易浴槽、簡易トイレ、洗浄用具、湯沸かし、簡易浄水器、灌漑水路/水門等と独自研究を追加し、MO存在時にはSteel→`DankPyon_IronIngot`、ComponentIndustrial→`DankPyon_ComponentBasic`等の素材置換やMO風車研究との接続を行うことを確認した
+- Japanization導入時は、これら中世DBH設備の**研究位置・名称/説明・素材構成・外観を日本側の歴史進行へ合わせる**。DBH for MedievalのC#による給水・浴槽・ポンプ等の機能そのものは再実装しない
+- DBH for Medievalの灌漑水路/水門とAMJ Waterworksは責務が重なるため、両方導入時に同じ役割の建築物を無秩序に二重表示しないことを互換要件とする。どちらの設備を表示上の正本にするか、ネットワークを接続するかはWaterworks実装時の実行時監査で確定する
+- Hot Springs併用時の入浴・給湯接続は、Hot Springs / Waterworksが所有する機能を尊重し、JapanizationはDBH側研究・既存設備の日本化と競合解決を担当する
 
 責務に含めないもの:
-- 最低限の砂鉄供給・製鉄 → Ironmaking。既存鉱床の地域化・希少化は将来の資源分布Mod候補として別途再評価
+- 砂鉄供給・新しい日本製鉄ゲームループ → Ironmaking
 - 日本の気候・地形・植生 → Japanese Environment
 - 日本のFaction追加 → AMJ Factions
 - 日本固有イベント → AMJ Events
 - Backstory追加 → AMJ Backgrounds
-- 一般生活者の衣服追加 → 原則として既存和服Mod互換を優先し、不足分だけAMJ側で補完する
-- 発酵・酒造・漁業・保存等の独立ゲームループ
+- Grains / Rice Cultivation / Waterworks / Hot Springs / 発酵 / 酒造 / 保存等の独立ゲームループそのもの
+- 外部Mod全般を日本要素だけに選別する汎用フィルタ
 
-Japan Onlyの除去によって通常進行が破綻しないことを確認してから対象を外す。日本側の代替が必要な場合、その提供はCore・各Addon・外部和風Mod等の責務とする。**Japan Only自身の責務は一貫して「MO由来の西洋要素の除去・非表示化」に限定する。**
+Japanizationは**「MOを中世日本へ変換する層」**であって、新しいCoreではない。AMJ各Modの独立性を維持したまま、MOを採用する構成だけを深く統合する。
 
-### 2.10 MOの技術段階を日本史へそのまま適用しない
+### 2.10 MOの研究フローを古代～中世日本史へ再構成する
 
-Medieval Overhaulの研究順は、西欧中世を主軸にしたゲーム的抽象化として扱い、日本側の技術史をそのまま従属させない。
+Medieval Overhaulの研究順は西欧中世を主軸にしたゲーム的抽象化であり、Japanization導入時にはその順序を日本側の技術史へそのまま従属させない。**`AMJ - Medieval Overhaul Japanization` がMO全体の研究フロー再構成を所有する。**
 
-Vanilla/MOの西欧文化要素そのものは残すが、**AMJが扱う農業・食料・一次加工・関連研究の範囲では、MO既存要素もリバランス対象に含める**。
+基本原則:
+- AMJの対象は古代～中世であり、江戸・近世の完成形を標準研究Tierへ持ち込まない
+- 「強い設備ほど後半」だけで並べず、日本での技術成立時期、必要な前提技術、素材加工、ゲーム上の導線を合わせて研究位置を決める
+- MO既存の素材・加工段階・設備が日本でも意味を持つ場合はDefを維持して研究位置を変更し、不要な複製を作らない
+- 西欧固有の研究名・前提関係は、日本側で同等の技術的意味が成立する場合に名称/説明と接続を置換する
+- 日本側に対応する意味がなく、除去しても進行が成立する研究・解禁経路は非表示化/切断対象にできる
+- World Tech LevelはIndustrial以降等を包括的に制限する外部層として扱い、Japanizationの研究再構成とは分担する
 
-リバランスでは、原則として既存Def・表示・資産を維持しつつ、
-- growDays
-- 収量
-- 肥沃度条件・感応度
-- 栽培Skill
-- 保存期間
-- 研究前提・解禁位置
-- 加工工程・作業量
-- IngredientCategory / ThingCategory接続
+AMJ各独立Modは、自分が所有する機能の研究・解禁条件を引き続き所有する。Japanizationはそれらを吸収せず、MO併用時に必要な接続だけを提供する。たとえばIronmakingは日本製鉄そのものを所有し、JapanizationはMO鍛冶・金属加工研究との接続やMO側の不要/不適切な経路整理を担当する。
 
-などを必要に応じて調整する。
-
-これは西欧要素の排除ではなく、**AMJ追加作物とMO既存作物が同じ農業環境で不自然な上位互換・下位互換にならないようにするための統合バランス調整**である。
-
-ただしMO全体の研究ツリーを置換するのではなく、Coreが扱う農業・繊維・水・一次加工など、関係する範囲を中心に限定する。
-
-特に繊維植物については、MOの「亜麻＝中級農業」を日本の大麻・苧麻などへそのまま適用しない。一方、**収穫後の一次加工の抽象度はMO亜麻に揃え**、大麻・カラムシだけへ余分な中間工程を追加しない。
-
-日本列島では縄文期から大麻・苧麻系を含む靭皮繊維の利用が確認・推定されているため、日本Coreでは一部の繊維資源を新石器～初期農業段階から利用可能にする方向を検討する。
-
-ただし「出土・利用が確認される」ことと「完全に栽培化された畑作物である」ことは区別する。必要に応じて、
-
-- 最初は野生採取
-- 初期研究後に栽培可能
-
-という二段階も検討する。
-
-研究段階は、作物の基本性能を研究Tierに合わせて後付け調整するのではなく、**作物そのものの農業バランスを先に確定してから一括で決める**。
-
-作物については原則として、
-1. growDays
-2. 収量
-3. 最低栽培可能肥沃度・肥沃度感応度
-4. 成長温度・耐寒性
-5. 研究段階・解禁条件
-6. 必要栽培Skill
-7. 保存期間
-8. 一次加工・加工研究
-
-の順で検討する。
-
-研究段階を決める際は、単純な「強い作物ほど後半」という配置にせず、
-- 日本における利用・栽培の時代背景
-- 栽培そのものに必要な技術
-- 収穫後の加工に必要な技術
-- MO既存研究との接続
-- ゲーム上の進行導線
-
-を合わせて判断する。
+作物・農業についても、作物固有の性能値はGrains / Rice Cultivation等の所有Modで先に決め、Japanizationの研究Tierへ合わせるために性能を逆算しない。研究位置を決める際は、日本での利用・栽培時代、栽培技術、収穫後加工、MO既存設備との接続、ゲーム上の進行導線を合わせて判断する。
 
 ---
 
@@ -1035,7 +1012,7 @@ Core自身は鉄鉱床・砂鉄等の**供給量や生成分布を変更しな�
 - 刃物・金具等、機能上鉄が必要な箇所へ重点的に鉄を使う
 - 同じ役割を持つMO側の西洋的設備・工程とAMJ側ルートが併存する場合、**AMJを導入しているならAMJ側ルートを選ぶことに資源上の意味がある**バランスを許容する
 - 通常AMJ環境ではMO側ルートを強制削除せず、鉄消費・材料構成・工程差によってAMJ側を自然な選択肢にする
-- Japan Onlyでは、除去しても進行が成立するMO側の西洋的ルートだけを無効化・非表示化できる。日本側代替の追加・置換そのものは別Modの責務とする
+- Japanizationでは、MO側の西洋的ルートを日本の同等技術へ再解釈できる場合は研究/名称/外観を置換し、対応する意味がなく除去しても進行が成立する場合は無効化・非表示化できる。独立した日本側ゲームループの追加は各所有Modの責務とする
 - 最低限の砂鉄供給・製鉄はIronmakingが所有する。既存鉱床の希少化・大規模地域分布変更はCoreでもIronmaking導入時の標準変更でもなく、将来の資源分布Mod候補として保留する
 - **修理・再利用そのものは日本固有要素ではないためCoreの責務にしない**。既存の汎用修理Mod（R⁴等）または必要時のみ独立したRepair & Reuse機能枠で扱う
 - **AMJの資源バランスはRepair & Reuseなしでも成立させる**。同Modによる修理・素材回収を前提に、鉄・布・革等の供給量やAMJレシピを不足側へ追い込まない
@@ -1791,8 +1768,8 @@ AMJでいう**リテクスチャ**は、AMJ独自Defの画像制作だけを指�
 
 #### 他Modとの境界
 
-- **Japan Onlyはリテクスチャを所有しない。** Japan OnlyはMO由来の西洋要素の除去・非表示化だけを担当する。
-- 専用Retexture Modは標準構成では作らない。複数AMJ Modが同一資産を必要とし1所有Modへ整理できない、横断的な外観パックとして独立導入価値が生じる等の理由が出た場合だけ再検討する。
+- **MO本体の日本化リテクスチャは `AMJ - Medieval Overhaul Japanization` が所有する。** AMJ独自Defの画像は各所有Modが引き続き所有し、同一MO資産を複数AMJ Modから競合上書きしない。
+- 汎用の専用Retexture Modは標準構成では作らない。ただしJapanizationはMO全体を日本化するPatch Modであり、その責務の一部としてMO Retextureを同梱する明示的な例外とする。
 - 外部Modそのものの配布物を改変・再配布するのではなく、AMJが権利上問題のない独自テクスチャを持ち、必要なPatchから参照させる。
 
 #### 開発順
@@ -1821,8 +1798,8 @@ MO 1.6で再利用する主な要素:
 AMJ独自追加の原則:
 - 「日本らしい見た目」だけでは新Defを増やさない
 - 酒造設備、発酵容器、稲作設備等はArchitectureへ集約せず、その機能を所有するSake / Fermentation / Rice Cultivation等へ入れる
-- その設備が既存前提資産を再利用し、AMJ追加設備との画風差が目立つ場合は、**その機能を所有するModが必要なリテクスチャも所有する**
-- MO既存資産のリテクスチャはJapan Onlyの責務に含めない。**原則として、その資産をAMJ内で機能上所有するModが担当し、同一資産を複数Modから上書きしない。** 専用Retexture Modへの分離は上記の例外条件を満たす場合だけ再検討する
+- AMJ独自Defの設備画像は、その機能を所有するModが所有する。MO既存設備を日本化する場合はJapanization側のRetextureへ集約する
+- MO既存資産を日本向けへ変更するリテクスチャは**Japanizationが正本**とする。各AMJ Modは同一MO texPathを独自に上書きせず、必要な日本化要望をJapanization側へ集約する。Japanization未導入でも各AMJ Mod自身の主要ゲームループは成立させる
 - 和紙は新しい汎用Paper Defを増やすより、MO既存PaperをAMJの麻・カラムシ等の原料へ接続し、対応する既存障子等へ互換Patchすることを優先する
 
 #### 高床建築の扱い
@@ -1976,7 +1953,7 @@ Famine Foodについては将来、採集・困窮食フェーズで任意互換
 - AMJ Backgrounds / 背景
 - AMJ Factions / 派閥
 - AMJ Events / 生活・社会イベント
-- AMJ Japan Only / MO西洋要素除去レイヤー
+- AMJ - Medieval Overhaul Japanization / MO日本化（MO Patch + MO Retexture）
 - Hunting & Gathering / 狩猟採集
 - 発酵
 - 酒造
@@ -2006,7 +1983,7 @@ Famine Foodについては将来、採集・困窮食フェーズで任意互換
 - 完成品武具と汎用修理・再利用は別責務。鉄資源を少なくすること自体ではなく、生産・資源配分の選択を目的とする。
 - 高殿たたら・永代たたら・天秤鞴・近世完成型の大鍛冶体系を最終Tierへ持ち込まない。
 
-Japan OnlyはMO由来の除去対象経路を無効化・非表示化する責務だけを持つ。Ironmaking側代替の追加やリテクスチャはJapan Onlyへ移さず、除去後の進行成立は別途検証する。
+JapanizationはMO側の製鉄・鍛冶研究や装備外観を日本史に合わせて再構成できるが、砂鉄供給・炉・製錬・鍛錬等の日本製鉄ゲームループはIronmakingが所有する。IronmakingのDefをJapanizationへ移さず、併用時は研究接続と重複経路を互換Patchで整理する。
 
 ---
 
@@ -2070,7 +2047,7 @@ Hilliness補正についてはバイオームとは独立したワールド側�
 - 既存の和風Faction Modは、AMJ Factionsの競合相手ではなく**代替供給元・互換対象**として扱う
 - AMJ Eventsから利用できるよう、時代・役割が合うFactionを機能カテゴリへ接続する
 - HAR種族のFaction / Backstoryは、Race固有制約を尊重しながらAMJ Backgrounds / Eventsへ接続する
-- 江戸以降・近代・SF要素が強い外部和風Factionの採用可否は、そのFaction互換やAMJ Factions / Events側で判断する。Japan Onlyは外部Factionの選別を担当しない
+- 江戸以降・近代・SF要素が強い外部和風Factionの採用可否は、そのFaction互換やAMJ Factions / Events側で判断する。Japanizationは外部Faction一般の選別を担当しない
 
 互換は文化統合ではなく、**素材・設備・カテゴリの重複回避と競合解決**を目的とする。直接競合する領域ではAMJ側を最終優先し、非重複要素は可能な限り共存させる。ReGrowth 2は特にJapanese Environmentの設計参考として扱い、依存先にはしない。
 
