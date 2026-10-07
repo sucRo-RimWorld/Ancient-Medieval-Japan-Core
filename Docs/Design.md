@@ -976,6 +976,29 @@ DBH for Medieval公式互換:
 
 Japanizationは**「MOを中世日本へ変換する層」**であって、新しいCoreではない。AMJ各Modの独立性を維持したまま、MOを採用する構成だけを深く統合する。
 
+#### Vanilla生活文化・心情はJapanizationへ抱え込まない
+
+RimWorld Vanilla自体は遠未来の宇宙社会を基準にした生活常識・価値判断を多数含むため、MOだけを日本化しても前近代日本として不自然な心情・社会反応が残る可能性がある。**VanillaのThought / Trait / drug attitude / room・家具期待等を日本史へ合わせる作業は、MO固有PatchであるJapanizationの責務には含めない。**
+
+別途、仮称 **`AMJ - Premodern Culture`** のような独立Mod候補として監査する。名称・公開形態は未確定。
+
+分離基準:
+- MO固有のThought / Hediff / Defに由来する文化表現 → Japanizationで監査可能
+- VanillaのThoughtDef / TraitDef / Need / social opinion / room・furniture expectation等を変更する → 別Mod候補
+- 生理的・普遍的な不快（極端な暑寒、飢餓、痛み、依存症状等）は、文化差を理由に機械的に削除しない
+- 文化依存の評価（食卓必須、床で寝ること自体の侮蔑、個室前提、薬物・飲酒への社会評価等）は歴史監査対象とする
+- Ideology DLC前提にせず、DLCなしでも成立する設計を優先する
+
+初回監査対象には少なくとも以下を含める:
+- 食事: `AteWithoutTable` とTable/Chair前提の食事行動
+- 睡眠・居住: `SleptOnGround`, `SleepDisturbed`, bedroom/barracks/privacy/comfort関連Thought
+- 温熱: `SleptInCold` / `SleptInHeat` の効果と説明（生理的不快は残しつつ、heater/air conditioning前提の文言は再考）
+- 薬物・酒: `DrugDesire` 系Trait（chemical fascination / chemical interest / teetotaler）、酩酊への社会Thought、Vanilla薬物の時代外れな入手・文化的位置づけ
+- 娯楽・家具・美観: 高い椅子/テーブル、個室、家具量を当然視する心情が前近代日本の生活様式と一致するか
+- 倫理・社会: Vanillaの遠未来社会前提の社会Thoughtのうち、時代・制度差が大きいものは個別監査する
+
+詳細監査の正本は `Docs/Research/VanillaPremodernCultureThoughtAudit.md` とする。
+
 MO 1.6.2.2の研究ツリー全67ノード（MO独自51 + MOが移動/再構成するVanilla 16）の初回分類、史料アンカー、未解決監査項目は [Research/MedievalOverhaulJapanizationResearchAudit.md](Research/MedievalOverhaulJapanizationResearchAudit.md) を詳細正本とする。研究・武器・料理等の個別分類は同文書の監査を経て実装へ落とし込み、チャット上の一時分類だけでXMLを変更しない。
 
 ### 2.10 MOの研究フローを古代～中世日本史へ再構成する
