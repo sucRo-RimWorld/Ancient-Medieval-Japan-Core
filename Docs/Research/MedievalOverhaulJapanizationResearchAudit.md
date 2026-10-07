@@ -173,6 +173,14 @@ These sources support the structural decisions above; they do not by themselves 
 - **Foreign siege weapons at the Mongol invasions:** NDL Reference Collaborative Database describes `石弓（投石器）` among weapons brought by the Yuan forces. This is evidence for encounter with such weapons, not evidence that a trebuchet should be a standard Japanese domestic research branch.  
   https://crd.ndl.go.jp/reference/detail?page=ref_view&id=1000187318
 
+## Def-level military mapping
+
+The military/equipment follow-up is now maintained in
+[MedievalOverhaulJapanizationMilitaryMapping.md](MedievalOverhaulJapanizationMilitaryMapping.md).
+It records the actual MO Defs gated by the crossbow/siege, armor, bow, polearm,
+mace, blade, gunpowder, Smithing and tailoring research families. Its Def-level
+mapping takes precedence over any earlier node-only shorthand in this document.
+
 ## Remaining item-level audits before XML design
 
 The 67-node table is not enough to implement safely. Before production patches:
