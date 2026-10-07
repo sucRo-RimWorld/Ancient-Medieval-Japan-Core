@@ -8,6 +8,10 @@ Before starting work in this repository:
 2. Read the authoritative coordination log at `main:Docs/Coordination.md`.
 3. Check for OPEN / IN PROGRESS items owned by the current workstream before starting new work.
 
+## VE-first overlap audit
+
+Before designing a new substantial AMJ feature or proposing a separate Mod, audit the Vanilla Expanded (VE) family first for functional overlap and prior art, using `sucRo-RimWorld/Ancient-Medieval-Japan-Project/Docs/Research/ExistingModAudit.md` as the canonical criteria. VE is a comparison priority, not the AMJ design baseline or an automatic dependency: evaluate historical/cultural fit, dependency footprint, unrelated attached content, retention ratio and reuse value before choosing use-as-is, optional compatibility, patch/retexture, prior-art-only, or AMJ implementation.
+
 ## Context reconstruction / source hierarchy
 
 For every new chat or agent session working on AMJ or a related mod, rebuild context from repository sources instead of treating accumulated chat history as the primary source of truth:
