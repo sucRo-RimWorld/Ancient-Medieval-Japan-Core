@@ -24,6 +24,10 @@ Store information according to this hierarchy:
 - Permanent operating rules that should govern future work -> `AGENTS.md`.
 - Do not leave a durable decision only in chat history or only in `Docs/Coordination.md`.
 
+## Unowned idea staging
+
+When a new AMJ idea may become a separate Mod but does not yet have an owning repository, **do not develop its evolving design in this repository**. Record the concept/research/roadmap state in `sucRo-RimWorld/Ancient-Medieval-Japan-Project` until the author creates/selects an owner repository. Keep only a concise compatibility or ownership-boundary pointer here when it materially affects Grains.
+
 ## Cross-chat / cross-agent coordination
 
 Do not use the user as a messenger between chats, agents, or workstreams.
