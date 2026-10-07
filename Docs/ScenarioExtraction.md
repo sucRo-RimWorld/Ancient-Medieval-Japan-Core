@@ -3,7 +3,11 @@
 2026-10-07。所有方針の正本は `Docs/Design.md` の「開始シナリオの独立Mod化」。
 独立シナリオModはVanilla単独で成立させ、GrainsとMOは任意互換とする。
 ここでは移行対象と、分離後のパッケージを検証する再現可能な試作を定義する。
-正式なMod名・packageId・専用リポジトリは未確定。公開・現行配布物の差替えは行わない。
+正式名は Ancient & Medieval Japan - Scenarios（略称AMJ - Scenarios）、packageIdは `sucro.ancientmedievaljapan.scenarios`。
+作者指定の専用リポジトリは https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Scenarios 。
+開発候補ソースを登録したが、Workshop公開・現行配布物の差替えは行わない。
+Coreリポジトリは作者により https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Grains へ改名された。
+本番packageId `sucro.ancientmedievaljapan.core` とAMJC DefNamesは維持する。
 
 ## 移行対象
 
@@ -127,5 +131,8 @@ Workshop validatorの許可ルートと配布用アダプタも同時に更新�
 GrainsのStage A Quickstartと環境／収穫／Billテストを巻き込まない。
 新Modの4構成開始と旧セーブ／追加／削除のテストも、非表示だが描画を維持しERROR 0を必須とする。
 
-次の実装段階は正式IDと専用保存先を確定し、この試作構造を本番へ適用して、テスト所有も切り替えること。
+専用リポジトリに3Def・5翻訳・任意MO/Grainsパッチ・静的テストを登録済み。
+独立候補のGrains互換は現行packageIdを参照し、リポジトリ名をMod条件には使わない。
+現在のGrains本番はまだ3Defを通常領域から提供するため、そのまま独立候補を有効化すると重複する。
+次の実装段階は、この試作構造をGrains本番へ適用して、テスト所有も切り替えること。
 AboutのMO依存解除・旧互換用領域の削除・安全なMod差替えの案内は、対応する実機ゲートが通るまで行わない。
