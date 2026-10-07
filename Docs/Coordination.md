@@ -1723,25 +1723,22 @@ No runtime Def, About.xml, dependency metadata, or production texture was change
 ### DESIGN-CULTURE-001 — Vanilla premodern culture / Thought audit
 
 **Requested by:** author (2026-10-07 JST)  
-**Owner:** future standalone culture workstream / cross-mod design  
-**Status:** IN PROGRESS — initial audit started; implementation and final Mod name not decided
+**Owner:** `sucRo-RimWorld/Ancient-Medieval-Japan-Project` until a dedicated Mod repository exists  
+**Status:** ARCHIVED HERE — migrated to Project
 
-Author identified that MO Japanization alone cannot normalize all cultural assumptions because RimWorld Vanilla itself is a far-future/spacer society. In particular, mood/social rules around table dining, floor sleeping, private rooms, drugs/alcohol and furniture expectations may remain historically wrong even after MO is fully Japanized.
+The candidate was initially discovered while auditing Japanization, but the author established the project-wide rule that **ideas must live in the Project repository before they are split into standalone Mods**.
 
-Boundary decision:
-- do **not** let `AMJ - Medieval Overhaul Japanization` expand into a general Vanilla-culture overhaul;
-- Vanilla ThoughtDef / TraitDef / Need / social-opinion / room/furniture expectation changes belong to a separate Mod candidate;
-- working name only: `AMJ - Premodern Culture`; final name/publication not decided;
-- preserve physiological effects where appropriate, but audit culturally contingent value judgments and triggers;
-- Ideology must not be required for the baseline culture correction.
+Current boundary:
+- Japanization still does not own general Vanilla Thought/Trait/Need/social-culture changes;
+- Grains no longer stores the evolving Premodern Culture design or audit;
+- Grains keeps only the compatibility/ownership boundary pointer in `Docs/Design.md`;
+- detailed idea, roadmap status and research now live in `Ancient-Medieval-Japan-Project`.
 
-Initial high-priority examples:
-- `AteWithoutTable`: current Vanilla source mirror gives -3 mood and equates no Table with eating from the ground; valid Japanese floor-seated dining should not automatically trigger this;
-- `SleptOnGround`: current source mirror gives -4 and describes ground sleeping as animal-like; distinguish bare ground from proper floor bedding/futon/tatami;
-- `SleepDisturbed`: current wording assumes a private room as the natural solution; keep disturbance costs if mechanically justified but audit privacy assumptions;
-- `SleptInCold` / `SleptInHeat`: physiological discomfort may remain while heater/air-conditioning-oriented text is rewritten;
-- `DrugDesire` / intoxication social effects: audit availability, substance class, physiology, personal disposition and social judgment separately rather than treating all pleasurable chemicals as one timeless category.
+Migration:
+- Project idea/roadmap staging rule: Project `AGENTS.md`
+- Project candidate record: `Docs/Ideas.md`, `Docs/Roadmap.md`
+- Project detailed audit: `Docs/Research/VanillaPremodernCultureThoughtAudit.md`
+- Grains boundary cleanup: `Docs/Design.md` commit `ce2e300048a8922d3145bba7fb7ace0b0ece2a0d`
+- Grains duplicate research file removed: commit `1e40b22cdd7fed4f638ee09cbcae5cddd5578c20`
 
-**Durable sources:** `Docs/Design.md`, boundary commit `3b244add98eded240c5dd623dc29b99ac572c2aa`; `Docs/Research/VanillaPremodernCultureThoughtAudit.md`, initial audit commit `9c47d1ca07e7b61e770674cc77aa011f4bd5631d`.
-
-**Next action:** inventory the full Vanilla 1.6 Thought/ThoughtWorker/Trait/Job trigger surface for dining, sleep, room impressiveness/comfort, drugs/alcohol and recreation before deciding whether the standalone Mod is worth implementation. Do not patch production XML/C# from this initial audit alone.
+**Next action:** continue this idea only from the Project repository until the author decides it warrants a dedicated Mod repository.
