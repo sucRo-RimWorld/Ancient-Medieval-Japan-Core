@@ -22,8 +22,8 @@ namespace AncientMedievalJapanCore.E2E
         }
     }
 
-    // Select the production Scenario; do not replace its pawn/items/research parts.
-    public sealed class AmjNewVillageQuickstart : AbstractQuickstart
+    // Select the retained legacy Scenario; do not replace its pawn/items/research parts.
+    public sealed class AmjLegacyVillageQuickstart : AbstractQuickstart
     {
         public override TaggedString description
         {

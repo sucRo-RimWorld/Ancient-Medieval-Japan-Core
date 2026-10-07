@@ -18,8 +18,6 @@ function Get-GrainsTestProfile([string]$Name) {
             "Grains $Name loads the requested real providers",
             "Grains $Name primary grain loop resolves",
             "Grains $Name optional cold tolerance resolves",
-            "Grains $Name New Village definition resolves",
-            "Grains $Name New Village starts",
             "Grains $Name wheat flour and minimum food resolve",
             "Grains $Name six grains retain environmental niches",
             "Grains $Name real harvest and flour food Bills complete"

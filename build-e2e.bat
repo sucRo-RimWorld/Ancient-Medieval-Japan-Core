@@ -189,7 +189,7 @@ if exist "%UNITY_CORE%" (
         /reference:"%PICKLE_DLL%" ^
         "%ROOT%Tests\E2E\StageASteps.cs" ^
         %PROFILE_STEPS% ^
-        "%ROOT%Tests\E2E\NewVillageSteps.cs"
+        "%ROOT%Tests\E2E\LegacyVillageSteps.cs"
 ) else (
     "%CSC%" /nologo /target:library /optimize+ /out:"%STEPS_OUTPUT%" ^
         /reference:"%ASSEMBLY_CSHARP%" ^
@@ -198,7 +198,7 @@ if exist "%UNITY_CORE%" (
         /reference:"%PICKLE_DLL%" ^
         "%ROOT%Tests\E2E\StageASteps.cs" ^
         %PROFILE_STEPS% ^
-        "%ROOT%Tests\E2E\NewVillageSteps.cs"
+        "%ROOT%Tests\E2E\LegacyVillageSteps.cs"
 )
 if errorlevel 1 exit /b 1
 
