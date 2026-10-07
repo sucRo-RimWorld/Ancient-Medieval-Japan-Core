@@ -908,7 +908,18 @@ Cross-document reconciliation completed:
 - domestic/production audit: `Docs/Research/MedievalOverhaulJapanizationDomesticProductionAudit.md`, commit `282db3d3d75f9e928033ad309b102815c931b597`
 - research-audit domestic cross-link: `48bd4e2ecf0cc51fee8c1d5751fb0e79a6a2b291`
 
-**Next action:** continue with the exact cooking RecipeDef/product/ingredient/effect ledger and with architecture/furniture output curation. Separately compare weapon stats/material costs before fixing exact MO Def -> Japanese weapon labels. High-priority unresolved areas remain Carrier Birds, Heavy Crossbow, Tar, Smoker and Carpet Making. Create/choose the dedicated Japanization repository before production XML/assets are written.
+**2026-10-07 cooking/effect + architecture/furniture follow-up:** exact cooking XML was re-audited and the domestic-production research source now records recipe counts, ingredient/output families and MO food Hediff behavior. Key result: Japanization must curate effects as well as names. Representative retained-upstream effects range from +5/+10/+20% WorkSpeed on grill tiers and +5/+10/+20% ImmunityGain on soup tiers up to +20% WorkSpeed +40% Immunity plus multiple capacity offsets on some lavish/fantasy meals. These values are not automatically retained when recipes are Japanized.
+
+Architecture/furniture direct-output curation is also recorded:
+- RusticFurniture direct gates include cooking/baking tools, doors/gates, oil lighting, hearth, market stall, water barrel, game tables, lectern, oven, stew pot, apiary, mending bench, smoker and ice-related equipment;
+- Stonecutting directly gates Tudor/castle walls, reinforced trench, ice cellar, large oven and kiln;
+- RoyalRusticFurniture directly gates Western royal closet/bookshelf/armchair/throne/tables/dresser/Tudor bed/chest;
+- ComplexFurniture directly gates reinforced log gate plus colored rustic beds.
+The current rule is to retain/retexture only honest functional mappings, not create a one-to-one “Japanese skin” for every Western furniture form. Go/floor-level furnishing/tatami history provides stronger Japanese references than Western card tables/thrones/chairs.
+
+**Durable source:** `Docs/Research/MedievalOverhaulJapanizationDomesticProductionAudit.md`, commit `4db54ad06cf0777a332c3ce5975327a41e572bcc`.
+
+**Next action:** trace Processor Framework processes behind presser/drying rack/smoker/millstone/watermill, complete lighting (oil lamps vs candles), and finish object-level furniture/architecture mapping. Separately compare weapon stats/material costs before fixing exact MO Def -> Japanese weapon labels. High-priority unresolved areas remain Carrier Birds, Heavy Crossbow, Tar, Smoker and Carpet Making. Create/choose the dedicated Japanization repository before production XML/assets are written.
 
 ### DOC-010 — Workshop cover common-left drift prevention
 
