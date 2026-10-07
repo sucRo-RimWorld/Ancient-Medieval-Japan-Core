@@ -60,6 +60,23 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### DES-IRONMAKING-001 — standalone ancient / medieval Ironmaking
+
+**Requested by:** author (2026-10-07 JST)  
+**Owner:** future Ironmaking design / compatibility  
+**Status:** IN PROGRESS — confirmed concept and detailed draft recorded; implementation/repository/runtime not started
+
+**Durable sources:** `Docs/IronmakingDesign.md` (new concept, ownership, candidate research/resource/equipment/recipe tables, supplied MO XML audit and sources), commit `f4f8f5a33eb66e54ce163bdf2f591a0189724ae7`; `Docs/Design.md` architecture/cost/publication/owner reconciliation, commit `8b985abdfa1139ae8cf4a893ceae2415a9f28709`.
+
+Author-confirmed scope: independent ironmaking from early iron working through primitive furnaces and box-furnace development to medieval tatara; Edo/early-modern completion is excluded. Grains/MO/Environment/Waterworks must not become mandatory suite dependencies. Previous MO-required Iron Resources primary-smelting ownership and deferred Ironworking policy are superseded; global ore-distribution changes remain a future separately evaluated candidate.
+
+Detailed names, research costs, production quantities, Steel-as-Base-general-metal proxy, MO Coal reuse, extraction mechanism and equipment choices are **draft proposals**, not accepted balance/implementation. MO snapshot identifies charcoal-pile output as the same `DankPyon_Coal` used by mined coal, and IronIngot→Steel as an MO-owned chain. Historical sources distinguish medieval furnace development from later equipment and later “tamahagane” naming.
+
+**Verification completed:** eight relevant attached-MO XML assertions match; candidate yield/fuel calculations match the table; design-link and superseded-owner checks pass. No production Defs, About metadata, DLL or PNG was changed. Old tatara / new 1.6 patch / Rice civilization actual source files were not available; no third-party copying permission or full runtime support is inferred. DBHforMedieval DLL was not decompiled. No RimWorld runtime/build/compatibility/save PASS claimed.
+
+**Next smallest unit:** settle standalone sand-iron supply and usable general-metal endpoint, compare the initial furnace/Bill/fuel abstraction and review candidate balance. Then create/choose an owning Ironmaking repository, migrate this formal design and its handoff there, and implement/test only charcoal→small furnace→bloom→general metal before later furnaces. Keep research/balance proposals distinct from author-confirmed concept; no publishing/repository creation or background worker has been started.
+
+
 ### DES-WATERWORKS-SPLIT-001 — Waterworks / Rice Cultivation responsibility split
 
 **Requested by:** author (2026-10-07 JST)  
