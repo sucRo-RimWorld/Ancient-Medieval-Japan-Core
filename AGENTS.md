@@ -111,6 +111,16 @@ The test harness must capture an isolated runtime log and fail the overall test 
 
 Any new RimWorld runtime-test harness added to this repository must include this mod-origin ERROR gate from the start. Static-only validation does not fabricate a runtime-log result; add the gate when runtime automation is introduced.
 
+## Public description writing rule (AMJ common)
+
+Public-facing descriptions must follow `Docs/ModDescriptionGuidelines.md`.
+
+- Japanese public copy uses established Japanese terms for general concepts; keep English primarily for official Mod names, proper names, identifiers, and necessary technical names.
+- Prioritize player-visible changes and installation/compatibility decisions. Do not present implementation provenance, custom/AI artwork, or internal code technique as a feature by itself.
+- Avoid internal engine terms such as `WorldGen`, `TileMutatorDef`, and `River / Coast mutator` in Workshop, 2game, or About copy unless technically necessary; rewrite them in user-facing language.
+- Distinguish new content from reuse, compatibility, and distribution changes.
+- When public wording changes, audit README, Workshop Japanese/English, 2game Japanese, and About.xml together.
+
 ## Mod naming rule (AMJ common)
 
 AMJ Core, Environment, CCTO and future related Mods must not use ASCII `:` or full-width `：` in Mod names. Use ` - ` when a separator is needed. Apply this to `About/About.xml` `<name>` and the corresponding Workshop title / formal README name; check it when creating, renaming or preparing a Mod for publication. YADA uses the display name for an upload staging directory, and an ASCII colon causes that step to fail on Windows. Display-name corrections must preserve `packageId` and existing Workshop IDs.
