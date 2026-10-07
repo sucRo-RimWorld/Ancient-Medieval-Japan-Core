@@ -82,6 +82,18 @@ Every committed production PNG must pass `python Tests/validate_png_assets.py`. 
 
 The GitHub Actions `validate-png-assets` job is a prerequisite for Stage A validation. For binary writes made through automation or Git/GitHub APIs, treat the committed/checked-out bytes as authoritative: do not report the image write as successful until the repository-side PNG integrity gate passes. A valid PNG signature, dimensions, or successful viewer open is not sufficient.
 
+## GitHub preflight / CI error hygiene (AMJ common)
+
+Follow the project-wide canonical rule in `sucRo-RimWorld/Ancient-Medieval-Japan-Project/AGENTS.md`.
+
+- Before a remote write that can trigger GitHub Actions, inspect the relevant workflow triggers, path filters, required checks, and repository-specific validation path.
+- Run deterministic syntax/structure/XML/packaging/script checks before pushing whenever the current environment can do so. Treat GitHub Actions as a regression gate, not the first parser/debug pass.
+- Do not use repeated commits, PR pushes, API writes, or Actions runs as an exploratory debugger, and do not publish obviously broken intermediate states merely to learn from CI.
+- If CI fails, stop stacking further remote changes on that workstream. Inspect the failing workflow/job/log, identify the concrete cause, validate the correction, then submit one focused fix instead of speculative variants.
+- Where appropriate, use narrow branch/path triggers and `concurrency` / `cancel-in-progress` to avoid duplicate or superseded runs. Do not disable meaningful checks merely to suppress notifications.
+- Documentation-only or coordination-only changes should not trigger heavy runtime/build workflows unless those files are part of the validated contract.
+- Before weakening or excluding a workflow trigger, verify that release, runtime, packaging, and regression coverage remain protected.
+
 ## 自動テスト優先方針（AMJ共通）
 
 AMJおよび関連Modでは、RimTest Redux・Pickleを積極的に用いた自動テストを優先し、人間による手動テストを最小限にする。
