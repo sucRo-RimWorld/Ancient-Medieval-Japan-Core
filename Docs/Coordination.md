@@ -90,9 +90,11 @@ Confirmed boundary:
 - Waterworks + Rice Cultivation may have official optional integration so paddies can consume Waterworks network state; Waterworks itself does not own paddy logic.
 - For the already-discussed rice processing handoff, “same as grains” means the **same stage pattern, not the same ThingDefs**. Rice keeps its own item chain. The author also confirmed that rice produced via haza-kake remains a separate item from normal rice. Exact rice-processing details are not to be expanded in the Waterworks workstream.
 
-**Durable source:** `Docs/Design.md`, ownership split commit `f594c340fad0ee067e7ce07778e68856822402fb`; rice-handoff cleanup / Waterworks-only scope refinement `10b13764427dd2abdac916eab1deeba9d07bc6df`.
+**Durable source:** `Docs/Design.md`, ownership split commit `f594c340fad0ee067e7ce07778e68856822402fb`; rice-handoff cleanup / Waterworks-only scope refinement `10b13764427dd2abdac916eab1deeba9d07bc6df`; v1 binary-network baseline `68ce78db90830fe065399f3385475e36ba0507c6`; Waterworks scope/source-semantics refinement `da34186c6bee44774fbe0a70ac1432af77376796`.
 
-**Next action:** continue only the Waterworks specification in the present workstream. Start a separate Rice Cultivation workstream/repository design later and transfer the rice-specific provisional notes there.
+**Current Waterworks v1 baseline:** use a four-direction connected, binary wet/dry network. Any open connected component with at least one valid intake is supplied; no per-cell flow, pressure, gradient, consumption or attenuation in v1. T/cross junctions branch automatically; an optional water gate cuts connectivity. Required v1 elements are natural intake, dug open canal, culvert, and gate. Stone-lined canal remains optional and hydraulically identical in v1. Normal water and hot-spring water are distinguishable; mixing ordinary water into a hot-spring component removes hot-spring-qualified supply until the systems are separated. Waterworks is intentionally an infrastructure/visual layer rather than absorbing rice, generic irrigation, firefighting, hygiene, or water-powered production merely to create standalone economic value.
+
+**Next action:** continue only the Waterworks specification in the present workstream. Next design items are intake placement/source validity, dug-canal construction/removal semantics, and culvert placement/crossing rules. Start a separate Rice Cultivation workstream/repository design later and transfer the rice-specific provisional notes there.
 
 
 ### DES-HOTSPRING-001 — standalone Hot Springs baseline and Waterworks boundary
