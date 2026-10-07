@@ -863,10 +863,10 @@ DBH for Medieval compatibility is a formal target, optional rather than a hard d
 Japanization compatibility responsibility:
 - align DBH for Medieval research placement, labels/descriptions, material costs and visuals with the Japanese historical progression;
 - reuse DBH for Medieval's C# behavior rather than reimplementing pumps, hot-water storage, baths or plumbing;
-- when Waterworks is also present, do not leave duplicate canal/sluice roles unresolved. Exact authoritative visible building/network bridging remains an implementation/runtime audit for Waterworks/Japanization;
+- DBH for Medieval's `ES_IrrigationCanal` / `ES_SluiceGate` use the DBH PipeNet / Sprinkler path and are not the same system as Waterworks' gravity-fed natural-water canals. Keep both roles distinct; any bridge belongs at the Waterworks boundary/Adapter rather than suppressing one as a duplicate;
 - respect Hot Springs/Waterworks ownership of AMJ-specific bathing, hot-spring and water-management loops.
 
-**Durable source:** `Docs/Design.md`, commit `ea656dcbeef821295acbedbf6a81621197219938`.
+**Durable source:** `Docs/Design.md`, architecture commit `ea656dcbeef821295acbedbf6a81621197219938`; DBH/Waterworks coexistence correction `9fa28b37fe1e55aae3a1d5862b7e1246a8653f6e`.
 
 **Next action:** before implementation, create/choose the dedicated Japanization repository, then begin a complete MO 1.6 research/Def/retexture inventory and a DBH for Medieval overlap matrix. Do not move independent AMJ gameplay systems into Japanization.
 
