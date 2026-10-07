@@ -1,7 +1,7 @@
 # AMJ関連Modの説明フォーマット
 
 **決定日:** 2026-10-04（日本時間）  
-**対象:** AMJ Core・Environment・CCTOおよび今後の関連Mod
+**対象:** AMJ Grains・Environment・CCTOおよび今後の関連Mod
 
 ## 基準と改善方針
 
@@ -11,6 +11,18 @@
 
 **Workshopの本文は日本語を先に書く。** READMEを公開内容の詳細な正本、設計書を内部根拠として参照しながら、READMEの内容を日本語として自然に要約したWorkshop説明を完成させ、その確定した日本語版を英訳する。英語版で独自に説明を追加・削除せず、両言語で実質的な内容を一致させる。
 
+## 公開説明の記述ルール（AMJ共通）
+
+- **日本語説明では、定着した一般語を日本語で書く。** `Vanilla` → `バニラ`、`Biome` → `バイオーム`、`WorldGen` → `世界生成`、`runtime` → `実行時` のように、一般概念を不用意に英語のまま混在させない。
+- 英語表記を残すのは、正式なMod名・固有名詞・略称・ファイル名・API/Def名など識別上必要な名称を基本とする。公式英語名を併記する意味がある場合は、初出で日本語名の後ろに括弧書きしてよい（例: `痩せた土壌（Thin Soil）`）。
+- **公開説明はプレイヤーから見える変更と導入判断に必要な情報を優先する。** 制作手法、画像の出自、AI生成か手描きか、独自コードを使ったこと、内部実装の工夫などは、それ自体をアピールポイントにしない。
+- 画像や季節差分などを掲載する場合も、「独自グラフィックを実装」「自作画像を使用」のような制作主体の主張ではなく、ゲーム上どの植物・状態・機能を表しているかを説明する。
+- `WorldGen`、`TileMutatorDef`、`River / Coast mutator`、内部クラス名、Def名などの**実装用語は、互換性や技術的制約の説明に本当に必要な場合を除き、Workshop・2game・Aboutの本文へ出さない。** 「既存の世界生成を活用」「バニラの河川・海岸生成と互換」のように利用者向けの表現へ置き換える。
+- **新規追加と既存要素の再利用・分布変更を区別する。** 新しいバイオーム、地形、植物などは「追加」と明記し、既存の河川・海岸・天候・土壌等を再利用または再配分する場合は、追加したように読める表現を避ける。
+- 情報量は **README（詳細）→ Workshop（導入判断向け要約）→ 2game（さらに短い要約）→ About.xml（最短の概要）** の順に絞る。下位の説明だけに新しい仕様や売り文句を追加しない。
+- 日本語Workshop・2gameは日本語として自然な用語に整えたうえで確定し、英語Workshopはその内容を翻訳する。英語版だけで機能を追加・削除しない。
+- 公開説明を変更したときは、README、Workshop日英、2game日本語、About.xmlを横断して、用語・追加要素・互換性・セーブ条件・実装済み/予定の区別が一致しているか確認する。
+
 基準資料:
 - [CCTO README（公開内容の正本）](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/README.md)
 - [CCTO Workshop説明](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/WorkshopDescription.md)
@@ -18,11 +30,11 @@
 
 ## 2game向け説明（AMJ共通）
 
-**対象:** AMJ Core・Environment・CCTOおよび今後の関連Mod。
+**対象:** AMJ Grains・Environment・CCTOおよび今後の関連Mod。
 
 - 公開説明の準備・更新には2game向け日本語説明も含める。管理元は各リポジトリの `Docs/2GameDescription-ja.txt`、掲載方針は `Docs/2GamePresentation.md` とする。2game掲載前でも説明を準備し、掲載ページIDは確認後に記録する。
 - READMEを詳細な公開内容の正本とし、2gameはWorkshopよりさらに短い要約とする。機能・依存関係・セーブ互換性・実装済みと予定の区別を一致させる。細かな版番号やテスト件数は本文へ転記しない。
-- 形式の基準はCCTOの[掲載方針](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/2GamePresentation.md)と[日本語説明](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/2GameDescription-ja.txt)。構成は短い要約 → `▼ 主な機能` → `▼ バランス方針` → `▼ 対応範囲` → `▼ 対応・互換性` → `▼ セーブ互換性` → `▼ 今後の予定`。
+- 形式の基準はCCTOの[掲載方針](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/2GamePresentation.md)と[日本語説明](https://github.com/sucRo-RimWorld/RimWorld-Crop-Cold-Tolerance-Overhaul/blob/main/Docs/2GameDescription-ja.txt)。構成は短い要約 → `▼ 特徴` → `▼ バランス方針` → `▼ 対応範囲` → `▼ 対応・互換性` → `▼ セーブ互換性` → `▼ 今後の予定`。
 - 本文は常体、1文1情報を基本とする。箇条書きは短い句または1文で書く。見出し記号は `▼` に統一し、後ろに半角スペースを入れる。`◆`、Workshop用BBCode、Markdown装飾は使わない。
 - 名前を出す関連MODには直接リンクを付ける。2game掲載済みなら同サイトの詳細ページURLを使い、未掲載・ID未確認なら所有元GitHubまたは確認済みWorkshopページを使う。IDを推測しない。同じ長いURLを毎回繰り返さず、初出または依存関係欄でリンクする。
 - 各MOD自身のGitHubリポジトリへ本文から1回以上誘導し、詳細な値・設計意図をREADMEへ案内する。
@@ -34,7 +46,7 @@
 
 **決定日:** 2026-10-06（日本時間）
 
-- AMJ Core・Environment・CCTOおよび今後の関連Modの名称には、半角コロン `:`・全角コロン `：` を使用しない。区切りが必要な場合は ` - ` を使う（例: `Ancient & Medieval Japan - Environment`）。
+- AMJ Grains・Environment・CCTOおよび今後の関連Modの名称には、半角コロン `:`・全角コロン `：` を使用しない。区切りが必要な場合は ` - ` を使う（例: `Ancient & Medieval Japan - Environment`）。
 - `About/About.xml` の `<name>` を基準とし、Workshopタイトル、README等で正式名称を記載する場合も同じ名称に揃える。新規Mod作成・改名・公開準備時に確認する。
 - 理由: YADAのWorkshopアップロード前処理ではMod表示名が一時ディレクトリ名に使われるため、Windowsで無効な半角コロンを含むとコピー作成が例外停止する。全角コロンも名称表記の統一と再発防止のため禁止する。
 - この規則はMod名称を対象とする。説明本文の句読点、URL、コード記法に現れるコロンは対象外。表示名の修正だけで `packageId` や既存Workshop IDを変更しない。
@@ -71,7 +83,7 @@
 
 現在の扱い:
 - **CCTO:** 既存PlantDefと挙動へのPatchで、独自の保存クラス・コンポーネントを追加しないため共通の安全表記を使用。読み込み後に既存植物にも新しい温度ルールが適用される。枯死済みの植物は削除しても復元されない。他Modの必須依存がある場合は維持する。実装確認に基づく判断であり、追加・削除専用の実機試験を実施済みとは記載しない。
-- **AMJ Core:** 追加・削除の安全性は未検証。独自作物・収穫物・加工品等を含むため、一律の安全表記は使用しない。
+- **AMJ Grains:** 追加・削除の安全性は未検証。独自作物・収穫物・加工品等を含むため、一律の安全表記は使用しない。
 - **AMJ Environment:** ワールド・地形生成を確認するには新規ゲームで使用する。独自BiomeDef・TerrainDefを使用したセーブからの削除は推奨しない。既存セーブへの追加の安全性は未検証。
 
 ## 正本・同期・確認
