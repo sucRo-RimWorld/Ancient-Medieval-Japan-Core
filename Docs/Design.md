@@ -1555,7 +1555,7 @@ Coreでは実装しない。**水田・稲作はWaterworksからも分離し、�
 
 WaterworksはCore / Grainsとは独立した水利Modとし、自然水からの取水・可視の重力式開渠・暗渠・水門・引湯・外部Mod向け供給判定を所有する。水田・稲作、DBH式の井戸/ポンプ/配管/衛生/飲水、汎用灌漑、消防、水車等は所有しない。
 
-Waterworks専用リポジトリ作成前の正式な詳細設計は **`Docs/WaterworksDesign.md`** を正本とする。Waterworksリポジトリ作成後は同文書を移管し、本書には所有境界と任意互換方針だけを残す。
+Waterworksの正式な詳細設計は専用リポジトリ **`sucRo-RimWorld/Ancient-Medieval-Japan-Waterworks` の `Docs/Design.md`** を正本とする。本書は所有境界と任意互換方針だけを保持する。
 
 現時点のv1要約:
 - 有効な自然淡水取水口へ接続された4方向ネットワークを、流量ではなく**通水/非通水の二値**で扱う
