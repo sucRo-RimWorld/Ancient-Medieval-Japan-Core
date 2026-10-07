@@ -20,22 +20,10 @@
           <def>PlayerPawnsArriveMethod</def>
           <method>Standing</method>
         </li>
-        <li Class="ScenPart_StartingResearch">
-          <def>StartingResearch</def>
-          <project>DankPyon_Lumber</project>
-        </li>
-        <li Class="ScenPart_StartingResearch">
-          <def>StartingResearch</def>
-          <project>DankPyon_RusticFurniture</project>
-        </li>
-        <li Class="ScenPart_StartingResearch">
-          <def>StartingResearch</def>
-          <project>DankPyon_BasicCooking</project>
-        </li>
         <li Class="ScenPart_StartingThing_Defined">
           <def>StartingThing_Defined</def>
-          <thingDef>DankPyon_MealRations</thingDef>
-          <count>60</count>
+          <thingDef>Pemmican</thingDef>
+          <count>1080</count>
         </li>
         <li Class="ScenPart_StartingThing_Defined">
           <def>StartingThing_Defined</def>
@@ -55,16 +43,11 @@
         <li Class="ScenPart_StartingThing_Defined">
           <def>StartingThing_Defined</def>
           <thingDef>WoodLog</thingDef>
-          <count>200</count>
+          <count>400</count>
         </li>
         <li Class="ScenPart_StartingThing_Defined">
           <def>StartingThing_Defined</def>
-          <thingDef>DankPyon_RawWood</thingDef>
-          <count>200</count>
-        </li>
-        <li Class="ScenPart_StartingThing_Defined">
-          <def>StartingThing_Defined</def>
-          <thingDef>DankPyon_IronIngot</thingDef>
+          <thingDef>Steel</thingDef>
           <count>30</count>
         </li>
         <li Class="ScenPart_StartingThing_Defined">
@@ -86,7 +69,7 @@
           <def>StartingThing_Defined</def>
           <thingDef>MeleeWeapon_Knife</thingDef>
           <count>2</count>
-          <stuff>DankPyon_IronIngot</stuff>
+          <stuff>Steel</stuff>
         </li>
         <li Class="ScenPart_StartingThing_Defined">
           <def>StartingThing_Defined</def>

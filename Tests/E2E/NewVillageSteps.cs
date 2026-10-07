@@ -13,16 +13,26 @@ namespace AncientMedievalJapanCore.E2E
     [PickleSteps]
     public sealed class NewVillageSteps
     {
-        private static readonly string[] StartingResearch = {
-            "DankPyon_Lumber", "DankPyon_RusticFurniture", "DankPyon_BasicCooking"
-        };
+        private static bool UseMO { get { return LoadedModManager.RunningModsListForReading.Any(m =>
+            string.Equals(m.PackageIdPlayerFacing, "dankpyon.medieval.overhaul", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(m.PackageIdPlayerFacing, "sucro.ancientmedievaljapan.core.mofixture", StringComparison.OrdinalIgnoreCase)); } }
 
-        private static readonly Dictionary<string, int> Supplies = new Dictionary<string, int> {
+        private static string[] StartingResearch { get { return UseMO ? new[] {
+            "DankPyon_Lumber", "DankPyon_RusticFurniture", "DankPyon_BasicCooking"
+        } : new string[0]; } }
+
+        private static Dictionary<string, int> Supplies { get { return UseMO ? new Dictionary<string, int> {
             { "DankPyon_MealRations", 60 }, { "AMJC_Millet", 200 }, { "AMJC_RawMillet", 100 },
             { "MedicineHerbal", 20 }, { "WoodLog", 200 }, { "DankPyon_RawWood", 200 },
             { "DankPyon_IronIngot", 30 }, { "Cloth", 80 }, { "Silver", 150 },
             { "Bow_Short", 2 }, { "MeleeWeapon_Knife", 2 }, { "MeleeWeapon_Club", 1 }
-        };
+        } : new Dictionary<string, int> {
+            { "Pemmican", 1080 }, { "AMJC_Millet", 200 }, { "AMJC_RawMillet", 100 },
+            { "MedicineHerbal", 20 }, { "WoodLog", 400 }, { "Steel", 30 },
+            { "Cloth", 80 }, { "Silver", 150 }, { "Bow_Short", 2 },
+            { "MeleeWeapon_Knife", 2 }, { "MeleeWeapon_Club", 1 }
+        }; } }
+        private static string KnifeStuff { get { return UseMO ? "DankPyon_IronIngot" : "Steel"; } }
 
         [Then("loaded New Village scenario matches the start design")]
         public void AssertLoadedScenario(PickleContext ctx)
@@ -40,7 +50,7 @@ namespace AncientMedievalJapanCore.E2E
             PawnKindDef kind = faction.basicMemberKind;
             ctx.Assert(kind.race == ThingDefOf.Human, "The standard village start must use Human.");
             ctx.Assert(Convert.ToSingle(ReadMember(kind, "techHediffsChance")) == 0f, "Villager generation must not add technology implants.");
-            ctx.Assert(kind.apparelTags.Contains("Neolithic") && kind.apparelTags.Contains("DankPyon_Peasant"), "Villagers must have baseline and MO ordinary-clothing options.");
+            ctx.Assert(kind.apparelTags.Contains("Neolithic") && kind.apparelTags.Contains("DankPyon_Peasant") == UseMO, "Villager clothing must match the active profile.");
 
             ScenPart pawns = parts.Single(p => p is ScenPart_ConfigPage_ConfigureStartingPawns);
             ctx.Assert(Convert.ToInt32(ReadMember(pawns, "pawnCount")) == 5, "Start must select five villagers.");
@@ -50,16 +60,16 @@ namespace AncientMedievalJapanCore.E2E
 
             string[] projects = parts.OfType<ScenPart_StartingResearch>()
                 .Select(p => ((ResearchProjectDef)ReadMember(p, "project")).defName).OrderBy(x => x).ToArray();
-            ctx.Assert(projects.SequenceEqual(StartingResearch.OrderBy(x => x)), "Exactly the three life-foundation research projects must be granted.");
+            ctx.Assert(projects.SequenceEqual(StartingResearch.OrderBy(x => x)), "Starting research must match the active profile.");
 
             List<ScenPart_StartingThing_Defined> items = parts.OfType<ScenPart_StartingThing_Defined>().ToList();
-            ctx.Assert(items.Count == Supplies.Count, "Start must contain the twelve designed supply parts.");
+            ctx.Assert(items.Count == Supplies.Count, "Start must contain exactly the designed supply parts.");
             foreach (KeyValuePair<string, int> supply in Supplies)
             {
                 ScenPart item = items.Single(p => ((ThingDef)ReadMember(p, "thingDef")).defName == supply.Key);
                 ctx.Assert(Convert.ToInt32(ReadMember(item, "count")) == supply.Value, "Starting quantity differs: " + supply.Key);
                 ThingDef stuff = (ThingDef)ReadMember(item, "stuff");
-                string expectedStuff = supply.Key == "MeleeWeapon_Knife" ? "DankPyon_IronIngot"
+                string expectedStuff = supply.Key == "MeleeWeapon_Knife" ? KnifeStuff
                     : supply.Key == "MeleeWeapon_Club" ? "WoodLog" : null;
                 ctx.Assert((stuff == null ? null : stuff.defName) == expectedStuff, "Starting material differs: " + supply.Key);
                 if (stuff != null)
@@ -71,6 +81,9 @@ namespace AncientMedievalJapanCore.E2E
             }
             ctx.Assert(!parts.Any(p => p is ScenPart_StartingAnimal || p is ScenPart_ScatterThingsAnywhere
                 || p is ScenPart_ScatterThingsNearPlayerStart), "Village must not add animals or scattered supplies.");
+            if (!UseMO)
+                ctx.Assert(Math.Abs(DefDatabase<ThingDef>.GetNamed("Pemmican").GetStatValueAbstract(StatDefOf.Nutrition) * 1080f - 54f) < 0.001f,
+                    "Base starting provisions must provide 54 nutrition.");
             AssertEarlyProcessing(ctx);
         }
 
@@ -94,7 +107,7 @@ namespace AncientMedievalJapanCore.E2E
             string[] finished = DefDatabase<ResearchProjectDef>.AllDefsListForReading
                 .Where(p => p.IsFinished).Select(p => p.defName).OrderBy(x => x).ToArray();
             ctx.Assert(finished.SequenceEqual(StartingResearch.OrderBy(x => x)),
-                "The actual research manager must finish only the three designed start projects.");
+                "The actual research manager must finish only the designed profile start projects.");
 
             List<Thing> available = map.listerThings.AllThings.ToList();
             foreach (Pawn pawn in pawns)
@@ -107,7 +120,7 @@ namespace AncientMedievalJapanCore.E2E
                 ctx.Assert(count >= supply.Value, "Actual start is missing supplies: " + supply.Key + " (" + count + ")");
             }
             ctx.Assert(available.Count(t => t.def.defName == "MeleeWeapon_Knife"
-                && t.Stuff != null && t.Stuff.defName == "DankPyon_IronIngot") >= 2, "Both knives must actually spawn in iron.");
+                && t.Stuff != null && t.Stuff.defName == KnifeStuff) >= 2, "Both knives must spawn in the designed material.");
             ctx.Assert(available.Any(t => t.def.defName == "MeleeWeapon_Club" && t.Stuff == ThingDefOf.WoodLog),
                 "The club must actually spawn in wood.");
 

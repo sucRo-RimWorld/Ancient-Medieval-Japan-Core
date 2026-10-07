@@ -77,12 +77,14 @@ foreach ($texture in Get-ChildItem -LiteralPath (Join-Path $RepositoryRoot "Text
     }
 }
 $about = Load-Xml (Join-Path $RepositoryRoot "About\About.xml")
-$plants = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Plants\Plants_StageA.xml")
-$items = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Items\Items_StageA_Grains.xml")
-$buildings = Load-Xml (Join-Path $RepositoryRoot "Defs\ThingDefs_Buildings\Buildings_GrainProcessing.xml")
-$recipes = Load-Xml (Join-Path $RepositoryRoot "Defs\RecipeDefs\Recipes_GrainProcessing.xml")
+. (Join-Path $PSScriptRoot "AmjProfileXml.ps1")
+$moProfileXml = Get-AmjProfileXml $RepositoryRoot
+$plants = $moProfileXml
+$items = $moProfileXml
+$buildings = $moProfileXml
+$recipes = $moProfileXml
 $cctoPatch = Load-Xml (Join-Path $RepositoryRoot "Patches\Compatibility\CCTO_StageA.xml")
-$wheatPatch = Load-Xml (Join-Path $RepositoryRoot "Patches\MedievalOverhaul_StageA_Wheat.xml")
+$wheatPatch = Load-Xml (Join-Path $RepositoryRoot "Compatibility\MedievalOverhaul\Patches\MedievalOverhaul_StageA_Wheat.xml")
 
 Assert-Text (Node-Text $about "/ModMetaData/packageId" "About.xml packageId") "sucro.ancientmedievaljapan.core" "About.xml packageId"
 if ($null -eq $about.SelectSingleNode("/ModMetaData/modDependencies/li[packageId='DankPyon.Medieval.Overhaul']")) { Fail "About.xml must require Medieval Overhaul." }

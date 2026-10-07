@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Defs>
+  <RecipeDef Name="AMJC_WheatProcessingBase" Abstract="True">
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <workSkillLearnFactor>0.1</workSkillLearnFactor>
+    <allowMixingIngredients>false</allowMixingIngredients>
+    <recipeUsers>
+      <li>AMJC_GrainProcessingSpot</li>
+      <li>AMJC_GrainProcessingTable</li>
+    </recipeUsers>
+  </RecipeDef>
+  <RecipeDef ParentName="AMJC_WheatProcessingBase">
+    <defName>AMJC_ThreshWheat</defName>
+    <label>thresh wheat</label>
+    <description>Thresh a harvested wheat sheaf to separate edible grain from the straw.</description>
+    <jobString>Threshing wheat.</jobString>
+    <workAmount>15</workAmount>
+    <targetCountAdjustment>1</targetCountAdjustment>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DankPyon_RawWheat</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>DankPyon_RawWheat</li>
+      </thingDefs>
+      <specialFiltersToDisallow>
+        <li>AllowRotten</li>
+      </specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products>
+      <AMJC_Wheat>1</AMJC_Wheat>
+      <DankPyon_Straw>1</DankPyon_Straw>
+    </products>
+  </RecipeDef>
+  <RecipeDef ParentName="AMJC_WheatProcessingBase">
+    <defName>AMJC_ThreshWheatBulk</defName>
+    <label>thresh wheat x10</label>
+    <description>Thresh ten harvested wheat sheaves in one batch.</description>
+    <jobString>Threshing wheat in bulk.</jobString>
+    <workAmount>120</workAmount>
+    <targetCountAdjustment>10</targetCountAdjustment>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DankPyon_RawWheat</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>DankPyon_RawWheat</li>
+      </thingDefs>
+      <specialFiltersToDisallow>
+        <li>AllowRotten</li>
+      </specialFiltersToDisallow>
+    </fixedIngredientFilter>
+    <products>
+      <AMJC_Wheat>10</AMJC_Wheat>
+      <DankPyon_Straw>10</DankPyon_Straw>
+    </products>
+  </RecipeDef>
+</Defs>

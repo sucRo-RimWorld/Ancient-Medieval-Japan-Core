@@ -417,7 +417,7 @@ Fermentation / Brewingは、GrainsやMOをハード依存にしない設計を�
 
 ##### Grains再編後の最終 Base / MO 所有境界（2026-10-07）
 
-この節は ARCH-MODULAR-001 のGrains再編確定版である。上記の旧Agriculture監査、後段の旧Stage B〜Dロードマップ、MO前提の一次加工記述と矛盾する場合は、Grains移行ターゲットについてはこの節を優先する。現行MO必須版の具体値・Scenario表は、実装移行が始まるまで現行実装スナップショットとして残す。
+この節は ARCH-MODULAR-001 のGrains再編確定版である。上記の旧Agriculture監査、後段の旧Stage B〜Dロードマップ、MO前提の一次加工記述と矛盾する場合は、Grains移行ターゲットについてはこの節を優先する。旧MO必須版の具体値はMO条件付き互換で保持する。下記のBase/MO表と実装進捗に従う。
 
 | 領域 | Base（Vanilla + Grains） | MO併用時 | 最終所有判断 |
 |---|---|---|---|
@@ -464,7 +464,7 @@ Base側から次の無条件参照を0にする。
 - MO小麦 / RawWheat / Flour / MillstoneへのBase直接参照
 - MO由来のProduction仮テクスチャ
 
-現行Scenarioの具体値表は現行MO必須版の実装スナップショットとする。Grains移行では既存Scenario/Faction/PawnKindのDefNameを維持しつつ、Base定義をVanilla/Grains参照だけへ置換し、MO差分だけを条件付き互換へ移す。Scenario自体を別Modへ物理分離する判断は、既存セーブ参照を壊さない移行方法を別途設計してから行う。
+Scenarioの旧具体値表はMOプロファイルの互換契約とする。Baseの具体値はCore標準Scenario節に併記する。Grains移行では既存Scenario/Faction/PawnKindのDefNameを維持しつつ、Base定義をVanilla/Grains参照だけへ置換し、MO差分だけを条件付き互換へ移す。Scenario自体を別Modへ物理分離する判断は、既存セーブ参照を壊さない移行方法を別途設計してから行う。
 
 **Grainsの存在意義を守る恒久回帰**
 
@@ -493,8 +493,10 @@ Base側から次の無条件参照を0にする。
 Production About.xmlを変えずにruntimeファイルをそのままテスト専用コピーへ読み込ませる。
 旧MO/CCTO fixtureの8シナリオとは別に、各構成の読み込み・一次加工・任意CCTOを
 確認する移行用smokeを置く。現時点では製粉・粉食・環境別6穀物選択・各構成の
-New Village実開始の恒久回帰は未追加であり、上表のリリース条件全件を満たした扱いにはしない。
-runtime XML・依存メタデータの移行と、RimWorld本体での4構成検証は引き続き必要である。
+New Village実開始は次のstep 2で各プロファイルへ追加したが未実行であり、上表のリリース条件全件を満たした扱いにはしない。
+**2026-10-07 Base分離 step 2:** Base Defs/翻訳からMO研究・素材・カテゴリ・Straw・Scenario・apparel参照を除去した。大麦と加工台はBaseでは研究不要、加工台の金属はSteel 30、簡易加工場はWoodyのみとする。MO併用時は `loadFolders.xml` の IfModActive により `Compatibility/MedievalOverhaul` を読み込み、旧38件の明示AMJC Def/抽象Def契約を保持する。MO小麦脱穀、外部MO小麦PatchとRawWheat翻訳もこの条件付きフォルダへ移した。Base小麦の脱穀Recipeはfallback穀束追加まで非公開とする。
+
+4構成のPickle featureにNew Villageのロード後設定と実開始を追加した（各5シナリオ）。静的projectionはAMJ所有XMLとBase差分Add/Replaceだけを検証し、RimWorldの継承・全Patch・Def解決・描画の代替ではない。小麦・製粉・粉食、MO仮画像3件の置換、実機4構成、セーブ移行は未完了。Production About.xmlのMO必須依存は維持する。
 
 #### 外部Modとの競合優先順位
 
@@ -1026,7 +1028,7 @@ R⁴は既存作業台を使って武器・衣服のrepair / clean taint / recyc
 
 ### Core標準Scenario
 
-> **Grains移行注記:** 以下は現行MO必須版の実装・テストに対応するScenarioスナップショットである。既存DefNameは互換のため維持するが、Grains移行後はBaseからMO研究・物資・apparel tagを除去し、必要なMO差分だけ条件付き互換へ移す。ScenarioはGrainsの主要機能ではない。
+> **Grains移行注記:** step 2でBaseと条件付きMO差分を実装した。以下のAlpha表はMO併用時の既存互換契約、Base物資表はMOなし構成の契約とする。Scenario/Faction/PawnKindの既存DefNameを維持する。ScenarioはGrainsの主要機能ではない。
 
 現行公開CoreのScenarioは **「新しい村」 / New Village**（`AMJC_NewVillage`）とする。様々な事情で元の共同体を離れた一般の人々が、新しい土地で小さな村を興す。武将・大名・特権階級の開始にはしない。
 
@@ -1066,6 +1068,26 @@ R⁴は既存作業台を使って武器・衣服のrepair / clean taint / recyc
 | `Bow_Short` | 2 | 採集以外の食料調達・自衛 |
 | `MeleeWeapon_Knife`（鉄インゴット製） | 2 | 簡単な近接武器 |
 | `MeleeWeapon_Club`（WoodLog製） | 1 | 簡単な近接武器 |
+
+#### Base開始条件・物資（2026-10-07）
+
+Baseは初期研究0件、衣服タグNeolithicのみとする。人数・到着・派閥・背景・空研究タグ等は上表と共通。大麦と加工台は研究不要で、Steel 30を使う。小麦のBase栽培・製粉は次工程で追加する。MO併用時は旧3研究、Peasantタグ、上の12物資と鉄製ナイフを条件付き差分で復元する。
+
+| DefName | 数量 | 用途 |
+|---|---:|---|
+| `Pemmican` | 1080 | Vanilla携行食で初期栄養54を確保 |
+| `AMJC_Millet` | 200 | 即時調理用雑穀 |
+| `AMJC_RawMillet` | 100 | 初期一次加工用 |
+| `MedicineHerbal` | 20 | 治療 |
+| `WoodLog` | 400 | 木材と原木の備蓄400を単一Vanilla素材へ置換 |
+| `Steel` | 30 | Vanilla金属備蓄 |
+| `Cloth` | 80 | 布備蓄 |
+| `Silver` | 150 | 交易 |
+| `Bow_Short` | 2 | 食料調達・自衛 |
+| `MeleeWeapon_Knife`（Steel製） | 2 | 近接武器 |
+| `MeleeWeapon_Club`（WoodLog製） | 1 | 近接武器 |
+
+Pemmicanは初期携行食のゲーム上の代理であり、日本中世の同名食を主張しない。MO食糧60×Nutrition 0.9 = 54に、Vanilla Pemmican 1080×0.05 = 54を合わせる。耐久・嗜好・市場価値まで等価とはしない。ペミカン研究は与えず、ロード後の栄養値はruntime assertionで検証する。実機の開始体験・食糧日数は未検証とする。
 
 物資は全て開始地点へ `ScenPart_StartingThing_Defined` で与え、追加の全域散布や隠れた初期物資は設けない。建築済み設備・コンポーネント・石材・追加鎧は与えない。持ち込んだ食料だけで初回収穫や冬越しが保証される量にはせず、早期の採集・狩猟・作付けを必要とする。寒冷地・冬開始など、どの環境でも成立することは保証しない。
 
@@ -1754,7 +1776,7 @@ Grainsの主要実装は、次の順で管理する。
 | Stage | 主題 | 主な内容 | 現在の状態 |
 |---|---|---|---|
 | **Stage A / 現行実装** | 乾田穀物 | アワ・ヒエ・キビ・ソバ・大麦・MO小麦統合、脱穀・殻取り、穀物加工設備、New Village | MO必須版として実装済み |
-| **Grains分離移行** | Vanilla自己完結 | 非MO小麦、小麦粉・蕎麦粉・雑穀粉、手動石臼、最低限粉食、BaseからMO参照除去、MO条件付き互換 | **設計確定・runtime未着手** |
+| **Grains分離移行** | Vanilla自己完結 | 非MO小麦、小麦粉・蕎麦粉・雑穀粉、手動石臼、最低限粉食、BaseからMO参照除去、MO条件付き互換 | **step 2 Base参照分離実装・実機未検証** |
 | **回帰固定** | 環境別穀物選択 | Base/MO/CCTO各プロファイルで単一穀物がほぼ全条件の最適解にならないことを自動確認 | 分離移行と同時に追加 |
 
 旧Stage B（豆類）、Stage C（繊維）、Stage D（根菜）はGrainsロードマップから削除する。将来必要なら、それぞれの主要用途と自然な所有Modを決めて別途設計する。

@@ -15,7 +15,7 @@ foreach ($path in @($target, $test)) {
     if (Test-Path -LiteralPath $path) { Remove-Item -LiteralPath $path -Recurse -Force }
     New-Item -ItemType Directory -Force -Path (Join-Path $path 'About') | Out-Null
 }
-foreach ($folder in @('Defs','Patches','Textures','Languages','Assemblies','1.6')) {
+foreach ($folder in @('Defs','Patches','Textures','Languages','Compatibility','Assemblies','1.6')) {
     $source = Join-Path $RepositoryRoot $folder
     if (Test-Path -LiteralPath $source) { Copy-Item -LiteralPath $source -Destination $target -Recurse }
 }

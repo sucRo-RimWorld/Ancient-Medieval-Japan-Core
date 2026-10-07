@@ -77,3 +77,7 @@ files must not be excluded merely because they are text.
 
 Future versioned runtime directories, new asset types or legally required notices
 must be explicitly registered in the validator and documented here before release.
+
+## Conditional Grains runtime content
+
+`loadFolders.xml` and `Compatibility/MedievalOverhaul/{Defs,Patches,Languages}` are subscriber runtime content. Keep the complete tree in YADA/export archives; the game loader decides whether MO is active. `Tests/Fixtures/MO_PreSplit_Contracts.json` and XML projection/test scripts remain development-only and excluded.
