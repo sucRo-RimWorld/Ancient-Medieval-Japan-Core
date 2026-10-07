@@ -66,7 +66,7 @@ Use whichever label best fits the task:
 **Owner:** future Ironmaking design / compatibility  
 **Status:** IN PROGRESS — confirmed concept and detailed draft recorded; implementation/repository/runtime not started
 
-**Durable sources:** `Docs/IronmakingDesign.md` (new concept, ownership, candidate research/resource/equipment/recipe tables, supplied MO XML audit and sources), commit `f4f8f5a33eb66e54ce163bdf2f591a0189724ae7`; `Docs/Design.md` architecture/cost/publication/owner reconciliation, commit `8b985abdfa1139ae8cf4a893ceae2415a9f28709`.
+**Current durable source:** `sucRo-RimWorld/Ancient-Medieval-Japan-Project:Docs/Research/IronmakingDesign.md` (migrated under the pre-split staging rule; Project commit `f610761b8d9313f0114fdbdfb98898381946d54e`). Historical Grains design commits remain provenance only.
 
 Author-confirmed scope: independent ironmaking from early iron working through primitive furnaces and box-furnace development to medieval tatara; Edo/early-modern completion is excluded. Grains/MO/Environment/Waterworks must not become mandatory suite dependencies. Previous MO-required Iron Resources primary-smelting ownership and deferred Ironworking policy are superseded; global ore-distribution changes remain a future separately evaluated candidate.
 
@@ -1742,3 +1742,16 @@ Migration:
 - Grains duplicate research file removed: commit `1e40b22cdd7fed4f638ee09cbcae5cddd5578c20`
 
 **Next action:** continue this idea only from the Project repository until the author decides it warrants a dedicated Mod repository.
+
+
+### META-PRESPLIT-MIGRATION-001 — move unowned designs to Project
+
+**Requested by:** author (2026-10-07 JST)  
+**Owner:** Grains/design boundary  
+**Status:** DONE — detailed unowned designs removed from Grains authority
+
+Under the AMJ Project pre-split staging rule, detailed designs/research for future standalone modules with no owner repository were migrated to `sucRo-RimWorld/Ancient-Medieval-Japan-Project` at Project commit `f610761b8d9313f0114fdbdfb98898381946d54e`.
+
+Migrated areas include Hot Springs; Fermentation/Brewing/Sake/Preservation; containers/pottery; Hunting & Gathering/Coastal Gathering; Backgrounds/Clothing/Factions/Events; Medieval Overhaul Japanization and its detailed audits; Repair/Reuse; deferred plants/processing; architecture/religion boundaries; and Ironmaking.
+
+Grains now keeps only concise ownership/compatibility pointers for these areas. Historical commits remain provenance, not current design authority. Environment/Waterworks/CCTO candidates were not moved because their implementation owner is already clear.

@@ -266,41 +266,10 @@ Base XMLにはMO DefNameへの無条件参照を残さない。MO固有PatchはM
 
 #### Hot Springs / 温泉 Addon
 
-Hot Springsは**Core / Agriculture非依存の独立Addon**とする。温泉そのものの生成・現地整備・入浴・湯治を所有し、遠隔地からの引湯設備や一般水利ネットワークはWaterworks側へ分離する。
-
-基本仕様:
-- VanillaのSteam Geyser相当の自然生成枠を、**2×2の天然温泉**へ置き換える方向を基本とする。
-- 天然温泉は丘陵・山岳ほど出現しやすくする。具体的な生成率はマップ生成テストで調整する。
-- 2×2の天然温泉同士は**隣接生成可能**とし、複数単位が接して大きな温泉地に見える配置を許容する。
-- **天然温泉は未整備の状態でも利用可能**とする。ただし自動入浴対象にはせず、プレイヤーがポーンを選択して天然温泉を右クリックし、優先指示 **「湯治する」** を選んだ場合に利用する。整備済み温泉は通常の自動利用対象にもできる。
-- 2×2の1単位は最大4人の同時利用を基本案とし、隣接する複数単位はそれぞれ利用枠を持てる構成を優先する。
-- 温泉の主要テーマは**湯治**とする。入浴直後のHP直接回復ではなく、一定時間の負傷自然治癒速度上昇を主効果とし、心情バフと娯楽回復を併用する。
-- 感染症・疾病を直接治療する万能効果や、標準での免疫獲得速度上昇は持たせない。具体的な倍率・持続時間・Mood値は実装時のバランステストで確定する。
-
-自発的な湯治:
-- 寝たきりではなく**自力歩行可能な負傷者**は、条件を満たす整備済み温泉を自発的な湯治候補にできる。
-- 緊急治療、未処置の重大な出血、医療上の高優先行動、Downed状態等は湯治より優先する。
-- 自動利用対象は、整備済み・自動利用許可・Allowed Area内・空きあり・到達可能で、かつ実際の経路コスト/移動時間が許容範囲内の温泉に限る。
-- 遠隔地の温泉へ負傷者が勝手に長距離移動しないよう、**直線距離ではなく実経路ベースの上限**を設ける。閾値は実機テストで確定する。
-- 天然温泉・整備済み温泉の双方に右クリック優先指示 **「湯治する」** を持たせる。プレイヤーが明示的に指示した場合は自動利用用の距離上限を無視できる。ただし到達可能性、Allowed Area / 禁止区域、Downed、重大な出血や緊急治療など通常の安全条件は尊重する。
-
-Waterworksとの責務分担:
-- Hot Springs: 天然温泉の生成、現地整備、入浴Job、湯治効果。
-- Waterworks: 温泉源からの取湯、引湯路、遠隔地への供給、人工浴槽等への給湯、河川・浅瀬等を含む一般水利。**水田・稲作そのものは所有しない。**
-- Hot Springs単独では現地利用まで成立させ、Waterworks導入時に遠隔引湯を追加できる疎結合を基本とする。
-
-互換方針:
-- **Dubs Bad Hygiene (DBH) は正式互換の必須対象**とする。これはDBHをHot Springsのハード依存にする意味ではなく、DBH導入環境で温泉入浴が衛生需要と正しく連携することをリリース要件にする、という意味である。
-- 既存温泉Modとはまず共存を保証し、既存建物・Job・効果をAMJ側で無断置換しない。
-- Standalone Hot Spring系については、AMJ天然温泉を既存Mod側の有効な源泉として扱えるかを実装時に現行Def/C#で監査し、可能なら条件付き互換Patchを提供する。互換のために既存温泉をAMJ建物へ自動変換したり、両ModのJob・バフを完全統合したりはしない。
-- 互換テストでは、Hot Springs単独、DBH併用、既存温泉Mod併用、DBH+既存温泉Mod併用を主要プロファイルとして扱う。
-
+GrainsはHot Springsを所有しない。専用リポジトリ作成前の詳細設計・互換方針はProjectの [HotSpringsCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/HotSpringsCandidate.md) を正本とする。Grains側には、Grainsを必須依存にしないという所有境界だけを残す。
 #### 大豆の所有と外部大豆Mod
 
-AMJ側で大豆を実装する場合、その大豆を**AMJの公式大豆資源の正本**とし、発酵等の公式相互連携はそのDefを基準にする。
-
-既存の大豆追加Modとの同時使用は公式互換対象外とする。これは「必ずクラッシュする」という意味ではなく、重複作物・ThingDef・栽培条件・収量・栄養・Recipe・加工経路・バランス競合をAMJ側で吸収しないという意味である。外部大豆ModをAMJ大豆へ自動統合・置換する互換レイヤーは原則として作らない。
-
+大豆はGrainsの所有外。未所属の大豆・加工候補と外部Mod比較はProjectの [DeferredPlantsAndProcessing.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/DeferredPlantsAndProcessing.md) と [ExistingModAudit.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/ExistingModAudit.md) を参照する。Grainsは将来Addon向けの大豆Defを先行所有しない。
 #### Core実装識別子
 
 実装開始時点の識別子は以下で固定する。packageIdやDefName prefixは外部Patch・セーブ・互換Modから参照されるため、公開後は原則変更しない。
@@ -590,133 +559,10 @@ Grainsの責務は、**乾田穀物の栽培・収穫・一次加工・製粉・
 
 #### 詳細設計前の先行Mod監査
 
-AMJの各Addon・姉妹Modは、詳細設計へ入る前に**同一目的・部分重複・基盤Framework・互換候補となる既存Modを一度調査する**。目的は「似たModがあるからAMJ側を削る」ことではなく、**AMJでその機能を作る理由まで既存Modが満たしているか**を確認し、不要な再実装と不要な前提依存の両方を避けることである。
-
-監査では、次の順序で判断する。
-
-1. **時代範囲:** AMJの対象は新石器相当～戦国末期であり、江戸時代は対象外とする。江戸を主題とするModは、技術参考・任意互換対象にはなり得るが、古代～中世の建築・衣服・背景・生活文化の代替としては扱わない。
-2. **生活層・主題:** 武士・大名・城郭・都市文化が充実しているだけではAMJの代替にならない。農民・職人・猟師・漁師・流民・下級武士等を含む一般生活者と、小規模な農村・山村の生活基盤を満たすかを見る。
-3. **ゲーム設計:** AMJが避ける「単純なOP化」「料理/Bill/中間素材の過剰追加」「意味のない工程・在庫分裂」「一資源だけで多用途が完結する万能化」がないかを見る。
-4. **残せる割合:** 既存Modを前提化してAMJ側からPatchする場合、元Modの主要機能・主要コンテンツを十分残したまま利用できるかを見る。元Modの売りとなる料理・加工・設備・研究等を大量に削除・無効化しなければAMJ設計に合わない場合は、原則として前提化しない。
-5. **固有基盤の価値:** C#システム、汎用Framework、独自UI、広い互換基盤等、依存を増やしてでも再利用する価値がある固有実装が残るかを見る。単にThingDef・RecipeDef・画像の一部を使いたいだけなら、独自実装を優先する。
-6. **文化非依存の汎用機能:** 修理・リサイクル・一般的な釣り等、日本固有でない汎用システムは、AMJが再実装するより既存Modをそのまま利用・推奨・任意互換できないかを先に検討する。
-7. **作者・利用者から見た自然さ:** 技術的にPatch可能でも、元Modの主要内容をAMJ側で大半無効化する構成は避ける。公開時に「なぜこのModが前提なのか」が明確で、元Modの設計を素材集のように扱わない依存関係を優先する。
-
-監査後の分類は以下を基本とする。
-
-- **前提採用:** 元Modの主要機能をそのまま大きく活用できる
-- **任意統合 / 互換:** 元Mod導入時だけAMJ資源・カテゴリ・工程を接続する
-- **汎用機能の代替候補:** AMJで新規開発せず既存Modへ任せられる可能性が高い
-- **実装参考:** 技術・UI・Def構成等のみ参考にし、依存しない
-- **比較 / 反面教師:** AMJが解消したい問題点を確認する対象
-- **前提化不適:** AMJ化するには元Modの主要内容を大量削除・置換する必要がある
-- **独自実装継続:** AMJの時代・生活層・ゲーム設計を満たす既存Modが見つからない、または既存Modでは責務が異なる
-
-現時点で確認済みの代表例:
-
-- **Soybean Products**（https://steamcommunity.com/sharedfiles/filedetails/?id=3586634388）
-  - 大豆加工・料理の比較対象。
-  - 大豆を中心に多数の加工品・料理・効果を持つ方向は、AMJの「工程・Recipeを意味のあるものだけに絞る」「一作物を万能化しない」方針と大きく異なる。
-  - AMJ向けにすると主要なBill・料理・加工物を大量に削ることになるため、**前提化不適**。大豆加工は必要最小限をAMJ側で独自設計する。
-- **〖ZP〗Rice cultivating civilization**（https://steamcommunity.com/sharedfiles/filedetails/?id=3046830338）
-  - 稲作・加工・料理・酒造・たたら製鉄等の比較・実装参考。
-  - AMJは同Modへの不満点を含めて稲作を再設計しており、総合Modとしての主要部分を大量に削らなければAMJの責務分離・料理数・労働量・資源設計に合わない。
-  - よって**前提化不適**。稲作はRice Cultivation側の独自設計を維持する。
-- **Edo Themed Expansion / Edo Themed Backstories / UNAGI Japanese Assortment**
-  - 江戸期を主題とするため、AMJの建築・衣服・背景の代替判定からは外す。
-  - 必要に応じて実装参考・通常AMJでの任意互換対象とする。
-- **R⁴: Rimworld Reduce, Reuse, and Recycle**（https://steamcommunity.com/sharedfiles/filedetails/?id=3695601023）
-  - 修理・穢れ除去・リサイクルという文化非依存の汎用機能を既存作業台へ追加するため、AMJ独自 Repair & Reuse の**代替候補**。
-  - 新規Repair & Reuse開発は、R⁴を実プレイして不足点を確認するまで保留する。
-- **Simple Mending**（https://steamcommunity.com/sharedfiles/filedetails/?id=3657705987）
-  - 修理に機能を絞った既存Modとして比較対象に追加する。現状はリサイクルを担当しない。
-  - 将来Repair & Reuseを再検討する場合、修理をSimple Mending等の既存Modへ任せ、素材回収・リサイクルだけを独立機能として扱う分割案も候補にする。
-  - R⁴の代替として直ちに採用する決定ではなく、独自実装の必要性と責務分離を判断するための参考Modとして記録する。
-- **Vanilla Fishing Expanded**（https://steamcommunity.com/sharedfiles/filedetails/?id=1914064942） / **Fish Traps**（https://steamcommunity.com/sharedfiles/filedetails/?id=2594468074）
-  - 一般的な釣りJob・水域Fishing zone・漁網/罠は先行実装が存在する。
-  - Coastal Gathering詳細設計では一般的な釣りを再実装せず、日本側の独自価値を沿岸採集・貝・海藻・貝塚・淡水/汽水/海水差・保存連携等へ置く。
-- **More Mushrooms**（https://steamcommunity.com/sharedfiles/filedetails/?id=3813323629）
-  - **きのこ独自追加の代替候補 / 任意互換・推奨併用候補**として記録する（2026-10-04）。MO + More Mushroomsで正常に動き、日本側で必要な種類・採集経路を満たせる場合は、同じきのこのPlantDef・食材・画像をAMJで重複実装せず、互換Patchを優先する。
-  - 採用は未確定。公開紹介で示された種類・通常栽培・水耕栽培・野生発生の詳細は、現行1.6の実Defとロード後の状態で再確認する。packageId・DefName・対象種別・数値は未監査であり、現時点では固定しない。
-  - 互換候補は、古代～中世日本向けの種ごとの栽培可否、水耕栽培の無効化、必要な野生採取化、MO食材カテゴリ・料理・研究との整合とする。人工栽培を一律に認めず、時代根拠を調べて決める。
-  - 通常AMJでは非日本的な種類を一律削除しない既存方針を維持する。Japanizationの日本化対象は原則としてMO本体と明示的な公式互換対象に限り、外部Modの種選別・除去を汎用的に持ち込まない。元Modの主要内容を大半無効化してまで前提化しない。
-  - 耐寒性はCCTOでの対応候補、自然発生地域はJapanese Environmentでの任意互換候補、採集・食材接続はHunting & Gathering側の候補とする。これらは責務分担案であり、各リポジトリでの採用・実装・対応完了を意味しない。
-  - まず実ソース監査とMO併用のロード・Def・収穫・食材利用の自動確認を行い、既存Defで満たせない不足部分だけ独自追加を再検討する。公開Alpha / Core Stage A〜Eの追加要件にはしない。
-- **Food Drying**（https://steamcommunity.com/sharedfiles/filedetails/?id=3664822476）
-  - 汎用乾燥は既存Modを優先し、AMJ Coreで重複実装しない既存方針を維持する。
-  - **優先度Aの任意互換対象**とするが、互換Patchは「AMJ食材だから一律に追加」せず、Food Drying側に意味の合う乾燥先がある食材だけを接続する。
-  - Stage Aの雑穀・大麦・小麦・ソバは、可食化後の時点で乾燥穀粒として60～90日の保存性を持つ。Food Drying 1.6の既存乾燥品（Dried Rice / Corn / Potatoes / Fruit / Fungus等）へ置換すると作物同一性や再水和先を壊すため、**最初の公開Alphaではこれら穀類にFood Drying Patchを追加しない**。
-  - 山菜・きのこ・果実・根菜等、乾燥によって新しい保存判断が生じるAMJ食材を実装した段階で、対象食材ごとに互換を追加する。
-- **Salted Meat**（https://steamcommunity.com/sharedfiles/filedetails/?id=2606419180）
-  - 塩蔵の先行例だが、独自塩・干し魚・ソーセージ等まで含む。AMJではMO `DankPyon_Salt` を正本とするため、そのままの前提候補ではなく、Salt Preservation詳細設計時の比較・実装参考とする。
-- **Sake Brewery / Simple Sake / T's Samurai Faction**
-  - 現行の主要な先行例は、単一の日本酒Recipeまたは米→醪→酒の比較的単純な経路が中心で、古代～中世の濁酒・澄酒・諸白までを時代/工程として段階化した直接代替は今回の調査では確認できない。
-  - T's Samurai Factionは酒造を持つが侍Faction総合Modの一機能であり、Sake Addonの前提候補にはしない。
-  - Sake / Morohaku Addonは独自設計を継続し、既存Modは工程・温度管理・UIの比較対象とする。
-- **[SYR] Processor Framework (Continued)**（https://steamcommunity.com/sharedfiles/filedetails/?id=3210544395）
-  - 発酵・熟成等の時間経過加工に使える汎用基盤。現行MO環境ではMO経由で導入されるが、FermentationをMO非依存にする場合は**Fermentation自身が必要性を評価し、採用するなら直接の前提として宣言する**。推移的依存には頼らない。
-  - Fermentation / Sake詳細設計では、内容Modを前提化して大量削除するより、こうしたFrameworkを直接基盤として必要工程だけ独自定義する案を優先比較する。
-- **Medieval Kingdoms: Shogunate**（https://steamcommunity.com/sharedfiles/filedetails/?id=3632552850）
-  - 中世日本Factionの直接比較対象。氏族・兵種・文化・宗教側の先行実装として調査する。
-  - AMJ Factionsの村落共同体・在地勢力・寺社・交易等の社会構成や、AMJ Eventsの一般社会イベントまで同一責務ではないため、現段階では代替確定とせず任意互換・実装参考候補とする。
-- **Custom Base Framework（CBF）**（https://steamcommunity.com/sharedfiles/filedetails/?id=3813689040）
-  - **AMJ Factions / 日本式NPC集落の将来基盤候補**として記録する（2026-10-06）。Factions・集落の詳細設計時に最優先で再評価する候補であり、現段階の採用・必須依存・互換対応済みを意味しない。
-  - Workshop説明では、再利用可能な建物pieceと集落planから地形に合わせたNPC拠点を生成し、道路・畑・家畜囲いを配置する。ゲーム内エディタから建物・集落・住民等のXMLをModへ出力でき、MO向けの村・市場町・要塞等も同梱する。RimWorld 1.6 / Harmonyが必要で、MO等の追加コンテンツは任意とされる。
-  - 生成エンジンをCBFへ任せ、AMJは日本式の建物・集落構成・住民・生産・防衛・Lootを定義する分担を比較する。既存の西欧系集落をそのまま日本化したり、CBF内部コードを複製したりする前提にはしない。
-  - 再評価条件・依存境界は下記「AMJ Factions / 派閥Mod」の集落生成候補を正本とする。公開直後の候補であり、現行API・実ソース・利用条件・MO併用の実行時挙動は未監査。
-- **Vanilla Factions Expanded - Medieval 2**（https://steamcommunity.com/sharedfiles/filedetails/?id=3444347874）
-  - AMJの必須依存や総合中世コンテンツの取り込み対象ではなく、**AMJ Eventsの主要な先行研究元**として扱う。
-  - 使えるイベントのゲームループだけを抽出し、日本史・AMJのFaction役割・生活者視点へ再設計する。西欧固有の城・紋章・Faction設定・専用経済をそのまま移植しない。
-  - 優先研究対象は、敵勢力の集結地を期限内に叩かなければ後に大規模襲撃へ発展する仕組み、Faction間の小競り合いへ介入する仕組み、行商・市場・交易のイベント化である。
-  - Heraldry/物々交換等の独立システムはEventsの初期責務へ含めず、家紋・本格交易などが必要になった段階でFactions等の別責務として再検討する。
-- **Tasty Armory - Sengoku**（https://steamcommunity.com/sharedfiles/filedetails/?id=3494429497）
-  - AMJ対象末期に含まれる戦国後期装備の直接比較対象。武具Addonでは既存装備を重複追加する前に互換・棲み分けを検討する。
-- **ReGrowth 2**（https://steamcommunity.com/sharedfiles/filedetails/?id=2260097569）
-  - Japanese Environmentの季節植生・バイオーム・天候表現の参考実装とし、必須依存にはしない既存方針を維持する。
-- **Rimedieval**（https://steamcommunity.com/sharedfiles/filedetails/?id=2516523040）
-  - World Tech Level等による包括的な中世制限と、MO自体を日本史に合わせて再構成するJapanizationの責務は異なるため、RimedievalはJapanizationの代替ではない。
-  - 広範囲を自動Patchする侵襲的な方式で、1.6でもMO/VFE系を含むPatch競合報告がある。AMJ実プレイ環境でも互換不具合が多く外した経緯があるため、**前提・推奨・主要実装参考にはしない**。
-  - JapanizationはRimedieval型の全Mod包括フィルタではなく、MOの既知Def/研究/Recipe/資産と明示的な公式互換対象を狙ってPatchする。無関係な外部Mod資産を自動選別・置換しない。
-
+AMJ横断の先行Mod監査・比較候補はProjectの [ExistingModAudit.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/ExistingModAudit.md) を正本とする。GrainsにはGrains自身の依存・互換・実装判断だけを残す。
 #### 先行Mod監査の現時点結論（2026-10）
 
-**時代差の許容基準:**
-- **機能・生産工程・資源利用・社会制度・研究進行**は、時代差がゲーム上の選択や進行に直結するため、AMJの新石器相当～戦国末期という対象範囲を厳密に見る
-- **建物・家具・衣服など主に外観を担う要素**は、役割・素材感・生活層が大きく外れず、AMJの農村・前近代日本として見た目が破綻しない範囲なら、江戸期等の多少の時代差を許容して既存Modを優先利用する
-- 外観要素については、年代差だけを理由に既存Modを排除して同等品をAMJで再実装しない
-- ただし、明確に都市上流文化・近代的意匠・AMJの生活層から外れる要素は標準採用せず、任意併用に留める
-
-公開Modとしては、**「既存の有名Modでなぜ足りないのか」をゲームプレイ上の差として説明できない領域は新規開発しない。** 見た目や名称だけの差は互換・リテクスチャ・既存Mod利用を優先する。
-
-| 領域 | 現時点の判断 | AMJ側の存在理由 / 対応 |
-|---|---|---|
-| Grains / 乾田穀物 | **独自実装継続** | アワ・ヒエ・キビ・ソバ・大麦・小麦を、環境で使い分ける乾田穀物と一次加工・製粉として再設計する。豆・繊維・根菜はGrains外 |
-| Waterworks水利 | **独自実装継続** | 自然取水・開渠・暗渠・分水・温泉引湯等の一般水利を独立ゲームループとして設計する |
-| Rice Cultivation / 水田稲作 | **独立Modへ分離** | 水田・稲・籾・米・稲作一次加工を所有し、Waterworksなしでも簡易条件で単体成立させる。併用時のみ水路灌漑へ接続する |
-| 大豆加工 | **独自設計継続** | 類似Modは多いが、万能資源化・Recipe過多を避ける思想が主要先行Modと合わない |
-| 酒造 | **高優先度で独自実装** | 古代～戦国末期の濁酒・澄酒・麹利用・諸白等を段階的発展として扱う直接代替が薄い |
-| 発酵 | **独自実装継続** | Processor Frameworkを再利用し、麹・味噌・醤油・酢等を必要な粒度だけ構成する |
-| 乾燥 | **既存優先** | 一般食品はFood Drying互換。稲架掛け等の稲作固有工程はRice Cultivation側で別途設計する |
-| 建築・家具 | **大型独立Addonなし** | MO + Erin's Japanese Furniture + Thin Walls等で大半が成立する |
-| 衣服 | **大型独立Modは保留** | UNAGI / T's / Tasty Armory等で主要な和服・戦国装備が既にある |
-| 武具 | **大型独立Addonなし** | Tasty Armory - Sengoku、T's等を優先し、必要な欠落品だけ補完する |
-| 修理・再利用 | **R⁴を先に利用評価** | 汎用システムを重複実装しない |
-| 一般的な釣り | **既存Mod優先** | Vanilla Fishing Expanded / Fish Trapsへ任せる |
-| 沿岸採集・貝塚 | **独自候補維持** | 貝・海藻・貝塚・汽水/海水差へ責務を絞る |
-| 塩蔵 | **小規模Addon候補維持** | MO Saltを正本にし、独自塩や不要な料理群を増やさず保存へ絞る |
-| Japanese Environment | **独自姉妹Mod候補維持** | 日本的な地形・気候条件を農業・保存判断へ接続する |
-| Hunting & Gathering | **軽量独自候補維持・きのこは互換優先候補** | 新Jobを増やさず、日本の山裾・谷・森林の野生資源を通常採集へ載せる。More Mushroomsで満たせるきのこは重複実装を避け、MO併用確認後に任意互換を検討する |
-| Backgrounds | **小規模独自候補維持** | generic medieval / Edo系では埋まらないpre-Edoの一般生活者を扱う |
-| Factions | **候補維持・後順位** | Shogunate等の氏族Factionを尊重し、村落・在地勢力・寺社・アウトロー・交易等の不足だけ補う。日本式NPC集落生成はCBFを将来基盤候補として再評価する |
-| Events | **独自実装価値が高い** | 流民、落ち武者、徴発、水争い、戦乱の余波等の一般社会イベントが主題に直結する |
-| Japanese Iron Resources | **供給分布の将来候補へ縮小・保留** | 最低限の砂鉄採取・一次製錬はIronmakingが所有。既存鉱床の地域化だけを別途再評価 |
-| Ironmaking（旧Japanese Ironworking） | **独立Modのコンセプト確定** | Vanilla単体で鉄器加工から中世たたらまで。詳細初稿は Docs/IronmakingDesign.md |
-| AMJ - Medieval Overhaul Japanization | **独自実装継続** | MO必須のPatch + Retexture層。MOの研究・加工・設備・装備等を古代～中世日本向けへ再構成し、World Tech Levelとは責務分離 |
-| 宗教建築 / Religion | **先行実装しない** | 装飾だけでは弱く、祭祀・寺社社会等のゲームシステム成立時に必要設備を追加する |
-この監査は一度行えば終わりではなく、各Addonの詳細設計開始時に1.6の現行Mod状況を再確認する。先行Modが存在するだけで計画を縮小せず、**AMJの存在理由まで満たす場合にのみ代替・前提化する**。
-
-
-
+横断的な結論と未所属候補はProjectの [ExistingModAudit.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/ExistingModAudit.md) へ移管済み。Grains固有の現行互換方針は本書のFood Drying・MO統合・互換優先度の各節を正本とする。
 #### Mod構成そのものを設定として扱う
 
 AMJ群では、巨大なSettings画面で多数の機能をON/OFFさせるより、**導入するModそのものによって機能構成を決める**設計を優先する。
@@ -736,70 +582,10 @@ Addonの基本的な役割は、Coreで粗く抽象化している生活・生�
 
 #### 基礎Addon
 
-Core外であっても、多くの日本側要素から利用され、Coreと密接に連携するAddonは「基礎Addon」として扱える。
-
-最初の候補は **Salt Preservation / 塩蔵 Addon** とする。
-
-位置づけ:
-- **AMJ Coreは必須にしない。** Coreの作物がなくても、依存先環境で利用可能な肉・野菜等を使って塩蔵機能そのものが成立する構成を優先する
-- 現行案では塩そのものはMO既存の `DankPyon_Salt` を正本として直接利用し、AMJ独自のSalt ThingDefは作らない。Vanilla単体対応のためだけに別Salt体系を複製するかは、独立化コストを見て別途判断する
-- Coreの作物・魚肉とMO塩を利用し、主に塩そのものによる保存加工を追加する
-- 海水製塩等を実装する場合も、最終出力は `DankPyon_Salt` とする
-- 塩漬け・塩蔵など、発酵を主目的としない保存処理を担当する
-- Core本体を肥大化させず、導入時には自然に一体化して見える
-- 後続Addonが必要に応じて素材カテゴリや設備を利用できる
-- ただしSalt Preservationを導入しなくても、Core + MOだけで農業・一次加工は成立する
-
-このため「実質Coreに近い」が、塩蔵加工を不要とするプレイヤーには外せる構成を維持する。
-
-**Fermentation / Brewing Addonも、規模の大きい第二の基盤Addonとして扱う。** 麹・発酵設備・温度管理・大豆/麦の発酵加工・酢等を担当し、料理機能やSakeなど複数の後続機能から利用される。Coreへ統合せず、**AMJ Coreも必須にしない方向を基本とする。** 単体時はVanilla等で利用できる米・穀物・野菜等から成立する最低限の発酵経路を持ち、AMJ導入時のみAMJ米・大豆・雑穀等へ接続して内容を拡張する。発酵系を不要とするプレイヤーは丸ごとOFFにできる構成を維持する。
-
-Fermentation側の実装思想もCoreと同じく、**史実上の工程をすべてThingDef・Recipeへ分解するのではなく、ゲーム上の選択や在庫管理に意味がある段階だけを残して簡略化する**。麹・味噌・醤油・酢など、後続Addonや別用途から参照される資源は独立させる一方、用途のない一時的な中間状態や、別在庫として管理させても選択が増えない工程はProcess内へ抽象化する。
-
-糠漬けのように発酵が本質となる保存食は塩蔵Addonへ含めず、Fermentation Addon側で扱う。
-
+Salt Preservation、Fermentation / Brewing、Sake等の専用リポジトリ作成前の詳細設計はProjectの [FermentationBrewingPreservationCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/FermentationBrewingPreservationCandidate.md) を正本とする。Grainsはそれらを必須依存にしない。
 #### AMJ容器（甕）— 既存Mod・時代考証監査後の方針
 
-甕は古代～中世日本で重要な貯蔵・加工容器だが、**同じ1個の甕をゲーム上で「通常貯蔵 → 封蔵 → 発酵」に状態切替して使い回す共通システムは採用しない方向**とする。StorageとProcessorを1つのThingDefへ統合するためだけの独自C#・Job/UI・内部コンテナ実装は、初期設計から外す。
-
-理由:
-- 古代の大型甕には大容量の**貯蔵専用器**としての実例があり、中世には甕・壺・擂鉢などの国産陶器が生活必需品として広範囲に流通した。
-- 一方、16世紀の酒屋等では多数の大甕を並べた埋甕遺構が確認され、甕が酒造・液体貯蔵にも用いられている。用途として貯蔵と醸造の双方が存在することは確かだが、ゲーム上で「同じ物体を必ず転用する」必要性はない。
-- 鎌倉末～室町期には結桶・結樽が普及し、液体の貯蔵・運搬・加工容器の一部は木製容器へ移る。したがってAMJ後半の発酵・酒造をすべて陶製甕へ固定するのも避ける。
-- 中世陶器は12世紀以降に農村・都市へ広く流通し、15世紀には量産技術も発達する。甕を「希少な一点物」として扱うより、製作・焼成・運搬に相応の工数がかかる日用品として扱う方が適切である。
-
-責務分離:
-- **Storage用甕:** Core側で必要性が残る場合のみ、通常Storageとして独立ThingDef化する。Vanilla/MO/Adaptive Storage系で十分な場合は重複実装せず、それらをCoreの収納責務として採用する場合は互換PatchとCore所有リテクスチャを優先する。
-- **発酵甕:** Fermentation / Brewing側が独立Processor設備として所有する。Storage用甕を消費・変形させる前提にはしない。
-- **保存用の封甕:** Salt Preservation等でゲーム上の意味が成立する場合だけ、そのAddon側の独立設備として追加する。同一甕のモード切替を前提にしない。
-- **Sake等の後続Addon:** 時代・工程に応じて発酵甕、桶、結樽等を使い分ける。共通化するのは必要に応じて画像・材質・制作ルールであり、ThingDefそのものを無理に共有しない。
-
-材質・コスト:
-- 粘土の正本は既存方針どおりMOの `DankPyon_Clay` とし、AMJ独自Clayを追加しない。
-- 現行MO 1.6ではDigging Spotから20 clayを600 workで採取でき、raw clayのMarketValueも1.2であるため、**粘土そのものを希少資源として甕の使い回しを強制する設計根拠は弱い**。
-- 大型甕の歴史的コストは、原料粘土の希少性より、成形・乾燥・焼成・燃料・失敗率・運搬にある。必要なバランス負荷はClay消費量を極端に高くするのではなく、WorkToBuild / WorkToMake、窯・研究前提、焼成工程等で表現する。
-- 甕を壊して毎回粘土へ完全還元するような循環も標準仕様にはしない。
-
-時代表現:
-- AMJの対象は新石器相当～戦国末期なので、**中世備前・常滑風の大甕を新石器段階からそのまま使わせない**。
-- 早期にStorage甕を実装する場合は、土器系の素朴な貯蔵容器として扱う。中世の焼締大甕や埋甕、結桶・結樽は後段の研究・機能側で表現する。
-- 1つの画像・説明文で全時代を代表させる場合は、特定の中世窯業様式へ寄せすぎず、時代横断の抽象化であることを明確にする。
-
-既存Mod監査:
-- Adaptive Primitive / Neolithic系には通常Storageとしてのpot/basket実装があり、**Storage用甕だけなら独自システムは不要**。
-- Epochs - Potteryのpot/big potは現行1.6ソースでは装飾Furnitureであり、Storage代替ではないが、陶器制作工程・画像の比較対象になる。
-- MOにはbarrel / chest / sack / grain storage等が多数あり、汎用中世Storageの重複追加は避ける。
-- Processor Frameworkを採用する場合、Fermentation側の直接依存として扱う。MO経由の推移的依存を前提にせず、発酵甕は独自の多用途コンテナ基盤ではなく、必要なProcessor設備として実装する案を優先する。
-
-歴史監査の主な根拠:
-- 奈良文化財研究所「官衙・集落と大甕」: 大型須恵器甕を大容量の貯蔵専用器として扱う。
-- 国立歴史民俗博物館「焼き物が語る中世社会史」: 12世紀半ば以降、甕・壺等の貯蔵・調理具が農村・都市へ広く流通。
-- 奈良文化財研究所系展示資料「近世奈良の開幕」: 16世紀前半を含む中世遺跡の埋甕群を酒造・液体貯蔵に関わる遺構として紹介。
-- 常滑焼・備前焼の公的資料: 中世に甕専用窯や大型甕の生産が成立し、醸造・都市生活等へ供給。
-- 結桶・結樽は鎌倉末頃に出現し室町期に普及したとされるため、後期中世では木製容器との併存・置換を前提にする。
-
-**設計結論:** 初期実装で「共通甕状態機械」は作らない。Storage甕と発酵甕は別建物でよく、粘土の再利用制約も設けない。独自実装は、既存Storage/Processorで表現できない日本固有のゲーム上の差が確認できる部分だけに限定する。
-
+容器・甕・陶器の横断設計はProjectの [ContainersPotteryCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/ContainersPotteryCandidate.md) へ移管済み。Grainsは汎用容器システムを所有せず、必要な収納・加工設備は各機能の所有Modで判断する。
 #### Japanese Environment / 日本環境Mod
 
 日本の気候・地形・河川・海岸線・バイオーム・野生植生・季節景観は、AMJ Coreへ統合せず、**独立姉妹Mod `Ancient-Medieval-Japan-Environment`** が所有する。
@@ -814,168 +600,22 @@ Environment固有の詳細数値・世界生成仕様はCore側へ重複記載�
 
 #### Hunting & Gathering / 狩猟採集Mod
 
-RimWorldでは山体そのものは岩盤・厚い岩屋根として表現され、Pawnが「山へ登って採集する」地形操作は標準ゲームループに存在しない。この制約を無理に破らず、**山野採集は同一マップ内の山裾・谷筋・森林・岩場周辺にある到達可能な自然地形での採集**として表現する。
-
-初期方針:
-- Mountainous / Large Hills等のHillinessを、山野資源の出現量・種類の補正に使う
-- 自然薯、山菜、きのこ、木の実等は耕作地ではなく、自然土壌・森林・岩盤に近い開けたセル等へ野生資源として出現させる
-- きのこはMore Mushrooms（Workshop `3813323629`）の任意互換を先に評価する。MO併用で必要な種類・野生採取・食材利用が成立する場合は、同種のDef・画像を独自追加せず、栽培可否・食材接続等の限定Patchで対応する。採用条件・他Modとの責務分担は上記先行Mod監査の記録を参照する
-- 「山らしさ」は登攀システムではなく、**平地が少ない代わりに採集資源へアクセスしやすい**土地特性として表現する
-- 採集そのものは可能な限り通常の収穫Designation / Plant採集Jobを利用し、新しい操作体系を増やさない
-- 山中へ入る表現のためだけに、無限資源を生む抽象的な採集建築物を置かない
-- World Map上の採集遠征・一時サイトは、同一マップ表現だけでは遊びが不足すると判明した場合の後段候補とし、初期実装には含めない
-- Japanese Environment導入時は、Hilliness・森林構成・谷/湿地等の地域条件を利用して出現分布を細かくする
-
-このため「山野」は山頂や断崖そのものを指すのではなく、**集落から徒歩で利用する周囲の山林・山裾・谷筋をゲーム上へ圧縮した概念**として扱う。
-
+未所属の狩猟採集・山野資源・沿岸採集設計はProjectの [HuntingGatheringCoastalCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/HuntingGatheringCoastalCandidate.md) を正本とする。Grainsは採集システムを所有しない。
 #### AMJ Backgrounds / 背景Mod
 
-古代～中世日本の一般の人々を表すBackstory群は、**AMJ Coreとは独立して導入できる姉妹Mod**として分離する方向とする。
-
-対象例:
-- 農村・山村の農民
-- 水田農家・畑作農家
-- 木こり・炭焼き・猟師
-- 漁師・沿岸採集民
-- 鍛冶・木工・陶工等の職人
-- 行商・旅職人
-- 寺社に関係する下働き・職人
-- 戦乱・飢饉・災害・逃散等で共同体を離れた者
-- 主家を失った下級武士・従者
-
-方針:
-- 名前・年齢・Traits等まで固定せず、**社会的な出自だけを時代に合わせる**
-- 背景の生成モードは、可能なら **AMJ背景のみ / AMJ背景優先 / 通常背景と混合** を選べる構成にする
-- HAR種族も主要対象とし、種族固有Backstory制約を尊重したうえで、互換可能なRaceへAMJ背景カテゴリを追加する
-- HAR種族を全面上書きせず、種族側の固有背景・禁止条件を優先する
-- Traitsは原則としてVanilla / 既存Modのものを再利用する。時代を問わない性格特性を大量に再実装しない
-- Drug系Trait等、表示名だけを酒関連へ変えると実際の挙動と不一致になるものは、単純な名称変更を行わない。対象がMO由来DrugであればJapanizationで非表示化・再配置対象にできるが、日本の別Drugへ見せかける置換は挙動が一致する場合だけ採用する。独自Drug追加は該当機能Modの責務とする
-
+未所属の背景Mod候補はProjectの [SocietyModulesCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/SocietyModulesCandidate.md) を正本とする。GrainsはBackstoryを所有しない。
 #### AMJ Clothing / 一般生活者の衣服Mod
 
-**大型の独立Clothing Modとしての開発はいったん保留し、既存和服Modとの互換を優先する。**
-
-現行1.6では、UNAGI Japanese Assortmentがsimple kimono、農民向けhokkāmuri、和風帽子・haori等を、T's Samurai Factionがstraw hat、straw coat、gi、kimono、yukata、haori等を、Tasty Armory - Sengokuがlate Sengokuの衣服・足軽/侍装備を既に提供する。
-
-したがって「小袖・笠・普段着を追加する」だけでは独自性が弱い。AMJ Core側の大麻・カラムシ等は、既存衣服が通常のtextile/stuffカテゴリを受け付ける範囲で素材互換を優先し、見た目まで重複実装しない。
-
-AMJ独自衣服を作る条件:
-- 既存1.6和服Modに古代～中世の一般生活者として明確に欠ける衣服がある
-- 麻・藁等の材料、保温/耐暑、作業性、製作難度等によって既存衣服と異なるゲーム上の役割がある
-- **「既存和服Modではなぜ不足するのか」を一文で説明できる**
-
-条件を満たす要素がまとまるまでは独立AMJ Clothingを必須ロードマップにしない。MO既存衣服でゲーム上の役割を維持したまま日本化できるものはJapanizationの名称/説明/リテクスチャ対象にできる。新しい衣服Defや独自ゲーム上の役割が必要な場合はAMJ Clothingまたは対応済み外部和服Mod側で扱う。
-
+未所属の一般生活者衣服候補と既存和服Mod比較はProjectの [SocietyModulesCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/SocietyModulesCandidate.md) を正本とする。Grainsは衣服Defを所有しない。
 #### AMJ Factions / 派閥Mod
 
-中世日本向けFaction群は、**独立Modとして分離**する。AMJ Eventsの必須前提にはせず、既存の和風Faction Modもイベントの供給元として利用できる設計を目指す。
-
-AMJ Factions側の候補:
-- 村落共同体
-- 国人・地侍等の在地武装勢力
-- 大名勢力
-- 寺社勢力
-- 山賊・野伏等の非正規武装集団
-- 必要に応じて交易・行商系集団
-
-互換設計:
-- AMJ Eventsは特定のAMJ FactionDef名へ固定依存せず、**Factionの機能上の役割**を見てイベント対象を選べる構造を優先する
-- 役割の例は `Village`、`LocalWarrior`、`Daimyo`、`Religious`、`Outlaw`、`Trader` 等
-- 既存の和風Faction Modは重要な任意互換対象とし、互換Patchでそれぞれを適切な役割へ接続する
-- AMJ Factionsを入れていない環境でも、対応済み外部FactionがあればAMJ Eventsが利用できる構造を目標とする
-- 外部Factionの時代・技術水準がAMJ対象範囲から大きく外れる場合は、AMJ Events等の互換側で利用可否を判断する。JapanizationはMO本体のFaction表現をPatch対象にできるが、外部Faction一般の採用・除外は担当しない
-
-AMJ Factionsの役割は「Eventsを動かすための必須ライブラリ」ではなく、**外部和風Faction Modを導入していなくてもAMJ時代の社会構成を提供する標準Factionパック**とする。
-
-ただし、**Medieval Kingdoms: Shogunate** や **T's Samurai Faction** 等の既存1.6和風Faction Modがすでに氏族・武装勢力・侍社会の大部分を提供するため、AMJ Factionsは後順位とする。詳細設計へ進むのは、村落共同体・在地社会・寺社勢力・アウトロー・行商等について既存Modでは埋まらない役割がまとまって確認できた場合に限る。
-
-##### 日本式NPC集落生成の将来候補 — Custom Base Framework
-
-**位置づけ:** CBF（Workshop `3813689040`）を、Factions / 集落の詳細設計開始時に最優先で再評価する外部Framework候補とする。集落専用の配布単位（Settlements等）を分けるかは未決定であり、この記録だけで新Addonの作成やFactionsの着手・優先度引き上げを決めない。
-
-**分担案:**
-- CBF: 地形に応じた建物pieceの配置、地区・道路・畑・家畜囲い等の集落生成と編集・XML出力。
-- AMJ: 新石器相当～戦国末期に合う日本式建物piece、集落plan、素材・地表、住民と兵種、生産・防衛・Loot。既存MO / 和風Modの建築・家具を優先し、大型建築Addonを新設しない既存方針を維持する。
-- 既存和風Factionとの接続は、氏族・兵種・Factionを重複実装せず、対象Factionへの集落plan・役割互換を先に検討する。
-
-**候補例:** 小規模農村・山村、街道沿いの集落・市場、寺社中心の集落、在地勢力の館、城柵・砦。城下町・宿泊拠点等は必要になった段階で対象時期・生活層を個別監査し、江戸期の宿場制度や西欧の教会・要塞都市をそのまま取り込まない。これらは制作候補であり実装範囲の確定ではない。
-
-**採用前の再評価:**
-1. 現行版の安定性・保守状況、packageId、Def/API、XML出力形式、依存Modとコード・同梱データ・画像の利用条件を確認する。過去の紹介文だけを転載・改変許可の根拠にしない。
-2. MO、採用する和風建築 / Faction、AMJ Environmentの地形・バイオーム、他の拠点 / Map生成Modとの競合と生成所有権を監査する。
-3. Factionの実際の技術水準とplan選択、産業以降の設備・装備の混入、守備兵の挙動・規模・負荷、既存saveへの追加条件を確認する。
-4. 小規模農村から試作し、Def参照・生成完了・建物配置・進入経路・住民 / Loot・runtime ERRORを可能な範囲で自動検証する。見た目・遊び心地は必要最小限の手動確認とする。
-
-採用する場合も、CBFへの依存は集落機能を所有するModに限定する。Core / Environmentへ必須依存を追加せず、AMJ EventsのFaction役割ベース・疎結合方針を維持する。利用価値と競合解決が確認できるまでは、対応済み・推奨Modや現在の公開条件として扱わない。
-
+未所属のFaction・集落生成候補はProjectの [SocietyModulesCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/SocietyModulesCandidate.md) と [ExistingModAudit.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/ExistingModAudit.md) を正本とする。GrainsはNPC派閥を所有しない。
 #### AMJ Events / 生活・社会イベントMod
 
-古代～中世日本の一般社会で起きる来訪・移動・小競り合い・交易・戦乱の余波等は、**AMJ Eventsとして独立Mod化**する。
-
-イベント設計は殺伐さそのものを目的にせず、RimWorldらしい選択を増やすことを重視する。
-
-候補:
-- **落ち武者・敗走者:** 襲って装備を得る、追い払う、匿う、仲間として受け入れる等の選択肢を持たせる
-- **流民・逃散者:** 食料負担と引き換えに加入候補となる
-- **旅人・行商・漂泊職人:** 自動的なTrader/Enemyではなく、素性や目的が不確かな来訪者として扱える
-- **徴発:** 近隣勢力から食料・物資・労働等を要求される
-- **敵勢力の集結地 / 陣:** 近隣に出現した敵勢力を期限内に先制攻撃するか、放置して後のより大きな襲撃を迎え撃つかを選ばせる。VFE Medieval 2のSiege Campをゲームループ参考とし、日本側の陣・砦・賊の集結地等へ再設計する
-- **Faction間の小競り合い:** 友好・中立勢力と敵対勢力の戦闘サイトへ介入し、支援・不介入等を選べるようにする。VFE Medieval 2のSkirmishを先行研究とし、AMJ Factionsを必須にせず役割ベースで対象Factionを取得する
-- **定期市・行商・市場:** 取引そのものを全面的な純物々交換へ置き換えず、地域・相手・時代によって欲しがる品や交換条件が変わるイベントとして検討する
-- **水争い / 水喧嘩:** WaterworksとRice Cultivation等の水利用連携が実装された後、農業へ直接影響する社会イベントとして検討する
-- **戦乱の余波:** 追手、避難者、敗走兵等が村へ流れ込む
-
-マップ上に存在しない隣村との境界争い等、RimWorldの1マップ完結構造では実感しにくい題材は優先度を下げる。
-
-AMJ EventsはAMJ Factionsを必須にせず、対応する外部和風Faction、Vanilla/MO派閥、AMJ Factionsのいずれからでも、条件を満たす対象を取得できる疎結合構造を優先する。
-
+未所属の生活・社会イベント候補はProjectの [SocietyModulesCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/SocietyModulesCandidate.md) を正本とする。GrainsはイベントModの実装仕様を保持しない。
 #### AMJ - Medieval Overhaul Japanization / MO日本化レイヤー
 
-旧 `Japan Only` 方針は置き換え、正式名を **`AMJ - Medieval Overhaul Japanization`** とする。
-
-本Modは**Medieval Overhaulを必須前提とする、MO Patch + MO Retextureの公式AMJ統合レイヤー**である。単に西洋要素を削除するのではなく、MOが持つ中世の素材・加工段階・設備・生産システムを可能な限り再利用しながら、研究進行・名称/説明・Recipe/素材接続・表示資産を古代～中世日本として一貫するよう再構成する。
-
-基本構成:
-- MOなしで遊べる各AMJ Modは、従来どおり独立した主要ゲームループを持つ
-- MOを利用する日本化構成: `RimWorld + Medieval Overhaul + AMJ - Medieval Overhaul Japanization + 任意のAMJ Mod`
-- JapanizationはMOを必須依存とするが、Grains / Rice Cultivation / Waterworks / Hot Springs / Ironmaking等からJapanizationを必須依存にはしない
-- **World Tech Levelは、中世を越えるVanilla/他Mod要素をTech Levelで制限するための強い推奨Mod**とする。JapanizationはWorld Tech Levelの包括的制限機能を再実装せず、World Tech Level自体もJapanizationの必須依存にはしない
-- MO本体のpackageId・既存Defを可能な限り維持し、MO互換Modとの接続を壊さずにPatchする
-
-Patch側の責務:
-- **MO全体の研究フローを、日本の古代～中世における技術発展とゲーム上の進行へ合わせて再構成する**
-- 研究名・説明・前提関係・Tech Level・解禁設備/Recipeを必要に応じて変更する
-- MOの素材加工段階（例: 鉱石→インゴット、原皮→革、原料→糸/布、穀物→粉等）は、日本側でも意味が成立するものを積極的に再利用する
-- 日本の対象時代・文化に合わないMO要素は、単純削除だけでなく、同等のゲーム上の役割を保てる場合は名称・説明・Recipe・研究位置・外観を日本向けへ置換する
-- Mithril等、日本の歴史環境として扱わない幻想的・西洋的な進行経路は、他の進行を壊さないことを確認したうえで通常進行から外す
-- MO互換Modが参照する既存Defを不用意に削除せず、非表示化・研究経路変更・Patchによる意味の置換を優先する
-- MOのPawnKind / FactionDefが西欧装備・称号・紋章等を直接要求する場合は、**Japanization側でMO所有の装備表・表示を同時にPatchし、日本化後に西欧装備がNPC生成から再流入しないようにする**。ただし新しい日本史Factionの社会構造・集落・専用機能はAMJ Factionsの責務とする
-
-Retexture側の責務:
-- MO本体が所有する武器・防具・設備・建築等について、**ゲーム上の役割が日本の器物へ無理なく対応する場合は既存Defを維持したまま日本向けテクスチャへ差し替える**
-- 武器・防具は、性能・Recipe・戦闘上の役割を変える必要がないものを原則としてリテクスチャ + 名称/説明Patchで日本化し、同等品のThingDefを重複追加しない
-- 形だけ差し替えると実際の機能や歴史的意味と矛盾する対象は、リテクスチャだけで別物に見せかけず、Patch内容または所有責務を再検討する
-- **MO所有資産のAMJ日本化リテクスチャはJapanizationへ集約**し、Grains等の各AMJ Modから同じMO texPathを競合上書きしない
-- AMJ独自Defの画像は引き続き、そのDefを所有するAMJ Modが所有する
-
-DBH for Medieval公式互換:
-- **Dubs Bad Hygieneおよび `DBH for Medieval`（`eldersign.dbhformedieval`）をJapanizationの公式互換対象**とする。DBH / DBH for Medievalはハード依存にはしない
-- 2026-10-07の添付Def監査では、DBH for Medievalが手動ポンプ、簡易浴槽、簡易トイレ、洗浄用具、湯沸かし、簡易浄水器、灌漑水路/水門等と独自研究を追加し、MO存在時にはSteel→`DankPyon_IronIngot`、ComponentIndustrial→`DankPyon_ComponentBasic`等の素材置換やMO風車研究との接続を行うことを確認した
-- Japanization導入時は、これら中世DBH設備の**研究位置・名称/説明・素材構成・外観を日本側の歴史進行へ合わせる**。DBH for MedievalのC#による給水・浴槽・ポンプ等の機能そのものは再実装しない
-- DBH for Medievalの `ES_IrrigationCanal` / `ES_SluiceGate` はDBH PipeNet / Sprinkler系であり、Waterworksの自然水面から直接取水する重力式開渠とは**機能上別系統**として共存させる。Japanizationでは名称・説明・外観・研究位置を整理して両者の役割を混同させず、必要な接続はWaterworks側の境界設備/Adapterとして扱う
-- Hot Springs併用時の入浴・給湯接続は、Hot Springs / Waterworksが所有する機能を尊重し、JapanizationはDBH側研究・既存設備の日本化と競合解決を担当する
-
-責務に含めないもの:
-- 砂鉄供給・新しい日本製鉄ゲームループ → Ironmaking
-- 日本の気候・地形・植生 → Japanese Environment
-- 新しい日本史Faction・社会構造・集落機能の追加 → AMJ Factions。MO既存Faction / PawnKindのJapanizationと装備整合はJapanization側
-- 日本固有イベント → AMJ Events
-- Backstory追加 → AMJ Backgrounds
-- Grains / Rice Cultivation / Waterworks / Hot Springs / 発酵 / 酒造 / 保存等の独立ゲームループそのもの
-- 外部Mod全般を日本要素だけに選別する汎用フィルタ
-
-Japanizationは**「MOを中世日本へ変換する層」**であって、新しいCoreではない。AMJ各Modの独立性を維持したまま、MOを採用する構成だけを深く統合する。
-
+JapanizationはGrainsの機能ではない。専用リポジトリ作成前の設計正本はProjectの [MedievalOverhaulJapanizationCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/MedievalOverhaulJapanizationCandidate.md)、詳細監査はProject `Docs/Research/MedievalOverhaulJapanization*.md` とする。GrainsはMOとの自分自身の互換Patchだけを所有する。
 #### Vanilla生活文化・心情はJapanizationへ抱え込まない
 
 VanillaのThought / Trait / drug attitude / room・家具期待等を前近代日本へ合わせる構想は、MO固有PatchであるJapanizationの責務外とする。**独立Modとして切り出される前の構想・監査は `sucRo-RimWorld/Ancient-Medieval-Japan-Project` が正本**であり、Grainsでは詳細仕様を保持しない。
@@ -1034,17 +674,7 @@ Core自身は鉄鉱床・砂鉄等の**供給量や生成分布を変更しな�
 
 ### Repair & Reuse / 修理・再利用Mod（仮）
 
-**独自開発は保留する。現時点ではR⁴: Rimworld Reduce, Reuse, and Recycleを汎用機能の代替候補として優先し、Simple Mendingを修理専用の比較対象として記録する。**
-
-R⁴は既存作業台を使って武器・衣服のrepair / clean taint / recycleを追加し、Billと地面上Designationの双方を持つため、AMJが当初想定した中核機能と大きく重なる。一方、Simple Mendingは現状リサイクルを扱わず修理側に機能を絞っているため、将来の責務分離を考える際の別方向の先行例になる。
-
-- Grains、Ironmaking等は**修理Modなしでも成立**するようバランスを組む
-- まず通常プレイでR⁴を評価し、不足が具体化するまでAMJ独自Repair & Reuseを実装しない
-- Simple Mendingも比較対象として残し、既存Modで修理を満たせる場合は、独自開発を素材回収・リサイクル等の不足部分だけへ縮小・分離できないかを先に検討する
-- 不足が小さい場合は互換Patchや設定調整を優先する
-- 収納中装備指定、修復結果クラス、補修表現等は、既存Modで解決できず独立したゲーム価値が確認できた場合だけ再検討する
-- Repair & ReuseをCore公開や鉄資源バランスの前提にしない
-
+Grainsは修理・再利用を所有しない。独自実装の要否とR⁴ / Simple Mending比較はProjectの [RepairReuseCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/RepairReuseCandidate.md) を正本とする。
 ### Core標準Scenario
 
 > **Grains移行注記:** 作者承認により最終所有先は開始シナリオ専用の独立Modとする（上の独立Mod化節）。物理移行までは現パッケージに暫定保持。step 2でBaseと条件付きMO差分を実装した。以下のAlpha表はMO併用時の既存互換契約、Base物資表はMOなし構成の契約とする。Scenario/Faction/PawnKindの既存DefNameを維持する。ScenarioはGrainsの主要機能ではない。
@@ -1576,83 +1206,16 @@ Waterworksの正式な詳細設計は専用リポジトリ **`sucRo-RimWorld/Anc
 
 ### 8.2 大豆
 
-大豆はGrainsから外す。史実上・AMJ全体として重要でも、乾田穀物の選択・製粉というGrainsの主要ループとは別責務である。
-
-将来AMJ大豆を実装する場合は、Fermentation等の具体的な主要用途、Vanilla単体での存在意義、外部大豆Modとの重複を再監査して所有Modを決める。**Grainsが将来Addon向け共通資源として大豆Plant/ThingDefを先行所有することはしない。**
-
+大豆はGrains外。将来の所有先・発酵用途・既存大豆Modとの比較はProjectの [DeferredPlantsAndProcessing.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/DeferredPlantsAndProcessing.md) と [ExistingModAudit.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/ExistingModAudit.md) を正本とする。
 ### 8.3 発酵食品
 
-独立拡張とする。Fermentation / Brewing Addonは**麹・発酵設備・温度管理等の共通基盤**を担当し、酒そのものを深掘りする Sake / Morohaku Addon の前提Addonとする。
-
-候補:
-
-- 麹
-- 味噌
-- 麦味噌
-- 納豆
-- 寺納豆 / 豆豉系
-- 醤
-- たまり
-- 醤油
-- 酢
-- なれずし
-- 発酵漬物
-
-濁酒・澄酒・諸白等の酒類は、共通の麹・発酵基盤を利用しつつ Sake / Morohaku Addon 側で実装する。
-
-**酢はFermentation / Brewing側に置き、Sake / Morohakuを必須にはしない。** 酢酸発酵はアルコールを基質とするため工程上は必ずアルコール段階を経るが、完成した飲用酒を一度アイテム化する必要はない。Fermentation単体では「穀物/米 + 麹 → アルコールを含む発酵醪 → 酢」という連続工程へ抽象化し、Sake導入時のみ必要に応じて酒・酒粕等からの追加Recipeを接続する。
-
+Grains外。詳細候補はProjectの [FermentationBrewingPreservationCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/FermentationBrewingPreservationCandidate.md) を正本とする。
 ### 8.4 酒造
 
-Core外。**Sake / Morohaku Addon はAMJ Coreを必須にせず、Fermentation / Brewing Addon の麹・発酵設備・温度管理等の共通基盤を再利用する方向**とする。Vanilla側に米が存在する環境では、単体時の基本的な米酒ルートをVanilla米へ接続できるようにし、AMJ導入時のみAMJの稲作・籾摺り・追加精米・雑穀等へ拡張する。
-
-酒は生存必須の食品ではなく嗜好品なので、日常料理より研究・工程を段階化してよい。基本方向は、
-
-- 初期: 雑穀などから作れる簡単な濁酒
-- 初〜中期: 濁酒を濾過・上澄み分離して得る澄んだ酒
-- 中級: 米を使う酒、より丁寧な麹・仕込み
-- 上級: 米の追加精米・選別、諸白系、希少な上位酒
-
-とし、具体的な研究名・酒名・RecipeはAddon詳細設計で固定する。
-
-既存のSake Brewery系Mod、Simple Sake、T's Samurai Faction等は、現時点で確認できる範囲では**単一の「日本酒」または米→醪→酒の比較的単純な醸造経路**を中心とし、古代～中世の酒造発展を段階化した直接代替ではない。Rice cultivating civilizationも酒を複数追加するが、大規模な料理・加工体系の一部であり、AMJの酒造Addonの前提候補にはしない。
-
-時代境界として、酒造史上の**諸白は室町～戦国末期の上位技術候補**として扱える。日本酒造組合中央会の年表では、火入れの初見が1569年、諸白の名称初見が1578年とされるため、AMJの対象上限である戦国末期には含められる。一方、江戸期に発達した寒造り・大規模な伊丹/灘型の量産酒造をAMJの標準進行には持ち込まない。
-
-将来の酒造拡張で、
-
-- 雑穀由来の濁酒・濾過酒
-- 米由来の酒
-- 精米度
-- 諸白
-- 火入れ
-- 酒造用米の追加精米・選別
-- 希少な上位酒
-
-などを扱う。
-
-**酒造専用品種の稲PlantDefは古代〜中世範囲では追加しない。** 日常食用の「米」から選別・追加精米して酒造向け原料ThingDefを得ることで、当時の上質米・酒造向け選別を抽象化する。
-
-上位酒は、通常酒より多い原料損失・作業量・工程・温度管理等を要求し、**生産量を絞ってレアリティを高くする代わりに、より強い一時効果・Mood・市場価値を持たせてよい**。強さの根拠は「日本酒だから」ではなく、投入コストと希少性に置く。恒常的な能力上昇や重い疾病治療のような効果にはしない。具体的な名称・効果量・収率はSake / Morohaku Addon詳細設計で決定する。
-
+Grains外。酒造・Sake / Morohaku候補はProjectの [FermentationBrewingPreservationCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/FermentationBrewingPreservationCandidate.md) を正本とする。
 ### 8.5 漁業・貝塚
 
-Core外。
-
-先行Mod監査の結果、**汎用の釣りシステムはAMJで再実装しない。** Vanilla Fishing ExpandedがFishing Job/zoneを、Fish Trapsが時間経過型の魚罠・網を既に提供する。
-
-AMJ側は一般的な釣りではなく、**日本の沿岸・河川生活で不足する採集資源と土地利用**へ責務を絞る。
-
-- 貝・貝殻・貝塚
-- 海藻
-- 淡水・汽水・海水での沿岸採集差
-- 乾貝・乾燥海藻等のFood Drying / Preservation連携
-- 必要に応じたAMJ魚介とVanilla Fishing Expandedのカテゴリ/漁獲互換
-
-海藻候補はわかめ、北方沿岸・交易資源としての昆布、利用史を追加確認してから採否を決めるひじきとする。
-
-初期実装は魚を重複追加するより、貝1種・海藻1種等の沿岸採集から始める案を優先する。詳細設計時には配布名も `Fisheries` より **Coastal Gathering / 沿岸採集** の方が責務を正確に表すか再検討する。
-
+Grains外。一般釣りを重複実装しない方針と沿岸採集・貝塚候補はProjectの [HuntingGatheringCoastalCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/HuntingGatheringCoastalCandidate.md) を正本とする。
 ### 8.5.1 AMJ共通リテクスチャ方針
 
 技術実装・既存リテクスチャMod監査・競合規則の共通正本は [`Docs/RetextureImplementationGuidelines.md`](RetextureImplementationGuidelines.md) とする。**AMJが所有する前提Mod資産は、AMJ固有texPathへ明示的にPatchする方式を標準とし、同名texture pathのロード順上書きだけには依存しない。** 対象は1枚のPNGではなく、実際にロードされたDefが使用するgraphic state一式として監査する。
@@ -1697,68 +1260,13 @@ AMJでいう**リテクスチャ**は、AMJ独自Defの画像制作だけを指�
 
 ### 8.6 建築
 
-最初の公開Alphaでは外す。
-
-先行Mod・MO実データ監査の結果、**独立した大型建築・家具Addonを作る計画はいったん外す。** MOと既存和風家具Modで成立する部分をそのまま使い、AMJ固有ゲームループから本当に必要になった設備・部材だけを各担当Modへ追加する。
-
-MO 1.6で再利用する主な要素:
-- 土間: `DankPyon_EarthenFloor`
-- 板床: `DankPyon_Floor_RusticWoodFloor_*`
-- 土壁系機能: `DankPyon_TudorWall`。日本式外観が必要なら新システムではなく差分Def/リテクスチャを検討する
-- 木壁・木戸・門、各種収納
-- Drying Rack、Paper Press、millstone、kiln、furnace、watermill等の一般設備
-
-既存和風Modへ任せる要素:
-- Erin's Japanese Furnitureにはfuton、kotatsu、zabuton、low table、andon、tatami、shoji door、fusuma/autoshoji等があるため同等品を重複追加しない
-- Thin Wallsが軽量・低耐久・低コストの薄壁/薄い扉を提供するため、汎用薄壁システムを新造しない
-- 囲炉裏は既存和風Modにも先行例があり、初期段階では**MO Earthen Floor + 既存Campfire**で簡素な炉・暖房・調理を表現できる。板床埋込炉として明確なゲーム上の差が必要になった場合のみ専用Iroriを再検討する
-
-AMJ独自追加の原則:
-- 「日本らしい見た目」だけでは新Defを増やさない
-- 酒造設備、発酵容器、稲作設備等はArchitectureへ集約せず、その機能を所有するSake / Fermentation / Rice Cultivation等へ入れる
-- AMJ独自Defの設備画像は、その機能を所有するModが所有する。MO既存設備を日本化する場合はJapanization側のRetextureへ集約する
-- MO既存資産を日本向けへ変更するリテクスチャは**Japanizationが正本**とする。各AMJ Modは同一MO texPathを独自に上書きせず、必要な日本化要望をJapanization側へ集約する。Japanization未導入でも各AMJ Mod自身の主要ゲームループは成立させる
-- 和紙は新しい汎用Paper Defを増やすより、MO既存PaperをAMJの麻・カラムシ等の原料へ接続し、対応する既存障子等へ互換Patchすることを優先する
-
-#### 高床建築の扱い
-
-RimWorld標準には連続した高さ・床下空間の概念がないため、**高床式倉庫は見た目だけを理由には実装しない。** 将来、洪水・湿気・害獣等と接続して高床自体が別の判断を生む場合だけ再検討する。
-
-#### 屋根
-
-**茅葺・板葺・瓦葺等の専用Roofシステムは当面実装しない。** RimWorld標準屋根を利用する。
-
-現時点ではArchitecture単独Modより、**MO + 既存和風家具 + 各AMJ機能Mod固有設備 + 必要な互換/リテクスチャ**で構成する。
-
+Grains外。大型建築Addonを安易に作らず既存MO/和風家具を優先する横断方針はProjectの [ArchitectureAndReligionBoundaries.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/ArchitectureAndReligionBoundaries.md) を正本とする。Grains固有の加工設備だけはGrainsが所有する。
 ### 8.7 宗教・価値観
 
-Core外。
-
-- 仏教由来の肉食禁忌
-- 精進料理
-- 寺院制度
-- Ideology向け戒律
-
-は扱わない。
-
+Grains外。現在の境界記録はProjectの [ArchitectureAndReligionBoundaries.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/ArchitectureAndReligionBoundaries.md) を参照する。
 ### 8.8 塩蔵
 
-Core外。
-
-塩そのものはMO `DankPyon_Salt` を正本として利用し、Core側で重複ThingDef・塩カテゴリを作らない。
-
-- 野菜の塩漬け
-- 魚・肉などの塩蔵
-- その他、塩そのものによる非発酵保存
-
-は最初の基礎Addon候補 `Salt Preservation / 塩蔵` 側へ分離する。
-
-糠漬けなど、発酵が本質となる保存食はFermentation Addon側で扱う。
-
-Coreは保存料理を直接抱えずCore所属作物を提供する。Rice Cultivation導入時はAMJ米も条件付きで利用できるようにし、塩はMO `DankPyon_Salt` を利用する。
-
----
-
+Grains外。塩蔵・非発酵保存候補はProjectの [FermentationBrewingPreservationCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/FermentationBrewingPreservationCandidate.md) を正本とする。
 ## 9. 将来のCore候補
 
 v1以降にCore本体へ追加する候補。
@@ -1800,111 +1308,25 @@ Grainsの主要実装は、次の順で管理する。
 
 ### Grains外へ移した旧Core候補
 
-- 小豆・大豆: Grains外。所有先未確定
-- 大麻・カラムシ: Grains外。繊維/Materials系の主要ループと合わせて再検討
-- 里芋・大根: Grains外。一般作物/食生活側で独立した意味が成立する場合に再検討
-- 葛: Grains外
-- 海水採取・塩: Grains外
-- 水田・稲・籾・米: Rice Cultivation
-- DBH水源互換: Waterworks / Hot Springs等の自然な所有Modで扱う
-
-
+旧Core由来でGrainsの所有外となった未所属候補はProjectの [DeferredPlantsAndProcessing.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/DeferredPlantsAndProcessing.md) に移管した。Grainsには「所有しない」という境界だけを適用する。
 ### 旧Core候補の履歴（Grains外）
 
-以下は旧Core案の履歴であり、Grains所有を意味しない。
-
-- 葛: Grains外。薬草・採集等の自然な所有先で再検討
-- 海水採取・塩: Grains外。Preservation / Coastal等の自然な所有先で再検討
-- DBH水源互換: Grains外。一般水利はWaterworks、温泉入浴時の衛生連携はHot Springsが所有する
-
+履歴と再検討条件はProjectの [DeferredPlantsAndProcessing.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/DeferredPlantsAndProcessing.md) を正本とする。
 ### Grainsに入れない / 旧Coreで保留した農作物・植物
 
-一度検討した要素も、後から同じ議論を繰り返さないよう不採用・移管理由を記録する。
-判断基準は、**史実上存在したかではなく、VanillaプロファイルまたはMO併用プロファイルで既存作物と異なるゲーム上の役割を持てるか**とする。
-
-| 候補 | 旧Coreでの判断 / Grains再編後 | 理由 / 将来の置き場所 |
-|---|---|---|
-| カブ | 不採用 | 大根と食感・用途・栽培上の役割が近い。文化的な代表性も考え、大根を採用する |
-| ナス | Core不採用・将来再検討 | 古代から存在するが、CoreではMOトマト等の暖地果菜・再収穫作物との差が弱い。ナス固有の加工・料理にゲーム上の役割が成立する段階で再検討 |
-| 瓜類 | Core不採用・将来再検討 | MOカボチャ等と役割が近い。DBHの渇き回復など明確な追加役割が成立する場合のみ別Addon/互換で再検討 |
-| 自然薯 | Hunting & Gathering候補 | 自然薯は日本に自生するヤマノイモで、長芋等の栽培ヤム類とは別系統として扱える。畑作物より「山野で探して掘る澱粉資源」とした方が里芋・ジャガイモとの差が出る |
-| 柿 | Preservation / Food Drying候補 | Coreで普通の果樹にするとMOリンゴ・レモン・桑等と重複する。古い日本の柿は渋柿中心で、甘柿は中世に現れるため、渋抜き・干柿を含む保存加工とセットで実装する方が特徴を出せる。柿渋はMaterials系で追加用途にできる |
-| ひょうたん | Materials / Architecture候補 | 食料作物としての価値より容器・生活用品としての意味が大きい。RimWorld標準では容器単体の役割が弱いためCoreには入れない |
-| 桃 | 不採用寄り | 日本での歴史自体は古いが、CoreではMO既存果樹との差別化が弱い。古代の文化・象徴性だけを理由に食用果樹を増やさない |
-| 梅 | Preservation候補 | Coreで普通の果実にすると既存果樹と重複する。梅干し・塩蔵等の保存加工を実装する段階で原料果樹とセットで追加する。酒利用は時代範囲を別途確認する |
-| ネギ類 | 新規追加しない | MOにタマネギ・ニンニク・ハーブが存在するため、新規PlantDefより既存資源との互換を優先する |
-| 荏胡麻 | Core採用保留 | 種実食材として独自の役割が成立する場合はCore候補へ戻せるが、油を作るためだけにはCoreへ追加しない。搾油は保存・発酵・調理・生活素材等の実利用が成立する機能側で扱う |
-| アブラナ | 保留 | MOキャベツ等と葉菜として競合する。油用途だけを理由にはCoreへ追加せず、明確な固有用途が生じた場合のみ再検討 |
-| 胡麻 | 保留 | 荏胡麻を含む油料作物全体のCore採用を一旦後回しにしたため、料理・搾油等で独立した役割が必要になった場合に再検討 |
-| こんにゃく芋 | 加工機能/Addon候補 | 日本固有植物ではなく、原産地は東南アジア方面と考えられ、中国にも古い加工記録がある。生芋そのものより凝固・あく抜き等の加工がゲーム上の本体なのでCore原料にはしない |
-
-#### 季節性の扱い
-
-季節性は「特定季節にしか植えられない」という管理負荷より、成長温度・耐寒性・成長速度・肥沃度感応度などで**緩やかな適期差**として表現することを優先する。
-
+未所属・保留・不採用候補の詳細台帳はProjectの [DeferredPlantsAndProcessing.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/DeferredPlantsAndProcessing.md) へ移管した。Grainsの実装範囲は本書4章の乾田穀物に限定する。
 ### 冬季加工の拡張候補
 
-Coreでは生鮮資源までに留めるが、後続Addonでは冬の寒さ・乾燥を利用する保存加工を候補とする。
-
-- 大根 → 切り干し大根 / 寒干し・凍み大根
-- 豆腐 → 凍り豆腐 / 高野豆腐
-- 渋柿 → 干柿
-- 梅 → 塩蔵・梅干し（季節・乾燥工程を含む場合）
-
-これらはCore作物の役割ではなく、保存・発酵等の該当Addon/機能側で「冬季に加工すると保存性が上がる」遊びへ発展させる。
-
+Grains外の保存・発酵候補としてProjectの [DeferredPlantsAndProcessing.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/DeferredPlantsAndProcessing.md) へ移管済み。
 ### 既存Mod側を優先し、Coreは互換中心
 
-- 苔などのFamine Food由来の困窮食
-- MO等ですでに野生植物・雑草として存在する蔓植物
-
-これらはCore側で重複PlantDefを追加せず、必要なら既存Defを共通カテゴリへ登録する。
-
-Famine Foodについては将来、採集・困窮食フェーズで任意互換を行う。Core側で同じ困窮食を再実装するのではなく、Famine Foodの既存Defを利用し、必要に応じてCoreの野生食料・採集・保存・料理カテゴリやレシピへ接続する。
-
+採集・困窮食等の未所属互換候補はProjectの [HuntingGatheringCoastalCandidate.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/HuntingGatheringCoastalCandidate.md) と [ExistingModAudit.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/ExistingModAudit.md) へ移管した。Grains自身に必要な互換だけを本リポジトリで管理する。
 ### 別アドオン / 姉妹Mod寄り
 
-- Japanese Environment / 日本環境（独立姉妹Mod、リポジトリ: `sucRo-RimWorld/Ancient-Medieval-Japan-Environment`）
-- Waterworks / 水利（Core非依存。河川・浅瀬等からの自然取水、開渠・暗渠・分水、温泉の取湯・引湯等を所有。水田・稲作は所有しない）
-- Rice Cultivation / 水田稲作（Core / Waterworks非依存。水田・稲・籾・米・稲作一次加工を所有。Waterworksなしでも簡易な水田成立条件で単体動作し、併用時のみ用水路灌漑へ接続）
-- Hot Springs / 温泉（Core非依存。2×2天然温泉、現地整備、入浴、湯治を所有。遠隔引湯はWaterworksへ委譲）
-- AMJ Backgrounds / 背景
-- AMJ Factions / 派閥
-- AMJ Events / 生活・社会イベント
-- AMJ - Medieval Overhaul Japanization / MO日本化（MO Patch + MO Retexture）
-- Hunting & Gathering / 狩猟採集
-- 発酵
-- 酒造
-- Coastal Gathering / 沿岸採集（一般的な釣りは既存Modを優先し、貝・海藻・貝塚等へ責務を絞る）
-- 保存
-- 建築・家具（大型独立Addonは計画せず、MO・既存和風家具・各機能Mod固有設備で構成する）
-- 製紙（MO既存Paper / Paper Pressを再利用し、Coreの原料Patchと各用途側の互換で拡張する）
-- 宗教（ゲームシステムが成立するまで建築だけを先行追加しない）
-- 武具（**独立した大型武具Addonは現時点では計画しない**。既存の戦国・侍系装備Modとの任意互換を優先し、AMJの生活・時代設計上どうしても不足する装備だけ個別追加を検討する）
-- AMJ Clothing / 一般生活者の衣服（大型独立Modは保留。既存和服Modとの互換を優先）
-- Repair & Reuse / 修理・再利用（独自開発はR⁴を実プレイ評価するまで保留）
-- Ironmaking / 古代・中世製鉄（独立Mod。鉄器加工→初期製鉄→箱形炉等→中世たたら。最低限の砂鉄供給も所有。Grains / MO / Environment / Waterworks非依存）
-- 地域鉄資源分布（旧Japanese Iron Resources。既存鉱床の地域化に独立した価値がある場合のみ再検討。公開時期・依存未定）
-
+AMJ全体の未所属・将来Mod一覧は `Ancient-Medieval-Japan-Project/Docs/Roadmap.md` を正本とする。Grainsでは自分の所有外であることと、必要な互換境界だけを記録する。
 ### Ironmaking / 古代・中世製鉄（2026-10-07 作者確定）
 
-**独立Modとして、鉄器加工から初期製鉄、箱形炉等の発展を経て、中世段階のたたらまで扱う。** 江戸・近世製鉄には触れない。Grains、MO、Environment、Waterworksを必須依存にせず、Vanilla単体で主要ループを成立させる。
-
-正式なコンセプト・所有境界・詳細初稿・MO添付XML監査・史料・検証計画の正本は [Docs/IronmakingDesign.md](IronmakingDesign.md)。具体的な研究費、資源量、設備、正式ラベル等は同文書の**設計候補**であり、作者承認済み値や実装済み機能ではない。
-
-旧Japanese Iron Resources / Japanese Ironworking案はこの方針で置き換える:
-- 砂鉄資源・最低限の採取・炭化・製錬・鍛錬はIronmakingが所有する。
-- 旧「MO必須の資源Modが一次製錬まで」「高度製鉄は保留」「Coreと資源Modの同時公開候補」は撤回する。
-- 既存鉱床の希少化・地域化だけは将来の資源分布Mod候補として再評価し、Ironmakingの必須前提にしない。
-- MO併用時は既存のIronIngot / Steel / 燃料体系を保持し、砂鉄ルートを並立させる。添付MOでは炭焼き出力が石炭と同じ `DankPyon_Coal` なので、専用MO Charcoal Defや木炭由来識別を前提にしない。
-- 玉鋼相当の良質鋼は万能上位Steelにしない。「玉鋼」は後世の呼称なので正式ラベル・説明文は日本語先行の作者確認で決める。
-- 完成品武具と汎用修理・再利用は別責務。鉄資源を少なくすること自体ではなく、生産・資源配分の選択を目的とする。
-- 高殿たたら・永代たたら・天秤鞴・近世完成型の大鍛冶体系を最終Tierへ持ち込まない。
-
-JapanizationはMO側の製鉄・鍛冶研究や装備外観を日本史に合わせて再構成できるが、砂鉄供給・炉・製錬・鍛錬等の日本製鉄ゲームループはIronmakingが所有する。IronmakingのDefをJapanizationへ移さず、併用時は研究接続と重複経路を互換Patchで整理する。
-
----
-
+IronmakingはGrains外の独立Modコンセプト。専用リポジトリ作成前の設計正本はProjectの [IronmakingDesign.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/IronmakingDesign.md) とする。GrainsはIronmakingを必須依存にせず、必要な互換だけを将来条件付きで持つ。
 ## 10. 推奨バイオーム
 
 初期の動作・バランス確認は以下3種に絞る。
@@ -1956,10 +1378,7 @@ Hilliness補正についてはバイオームとは独立したワールド側�
 
 ### 評価待ちの互換候補
 
-- **More Mushrooms**（Workshop `3813323629`）— きのこの重複実装を避けるための任意互換・推奨併用候補。MO併用の実Def・実行時監査後に採用と優先度を決める。現時点では対応済み・必須依存として扱わない。
-
-- **Custom Base Framework（CBF）**（Workshop `3813689040`）— 将来のFactions / 日本式NPC集落生成基盤候補。詳細設計開始時に現行版・MO / 地形 / 外部Faction互換と利用条件を再評価する。採用・依存範囲・対応優先度は未確定であり、Core / Environmentの必須依存にはしない。
-
+Grains以外の将来機能に関わる評価待ち候補はProjectの [ExistingModAudit.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Research/ExistingModAudit.md) に移管済み。Grainsの具体的な互換対象として採用された時点で、本節ではなく対応するGrains互換設計へ戻す。
 ### Faction / Background系の互換方針
 
 - 既存の和風Faction Modは、AMJ Factionsの競合相手ではなく**代替供給元・互換対象**として扱う
