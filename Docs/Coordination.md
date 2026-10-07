@@ -829,21 +829,46 @@ Durable design source: `Docs/Design.md` section **AMJ容器（甕）— 既存Mo
 ### DESIGN-016 — Japan Only責務の修正
 
 **Requested by:** author (2026-10-05 JST)  
-**Owner:** Japan Only / cross-mod design  
-**Status:** DONE — durable design corrected
+**Owner:** former Japan Only / cross-mod design  
+**Status:** ARCHIVED — superseded 2026-10-07 by DESIGN-MOJ-001
 
-Japan Onlyの責務について、「MOを日本風へ置換・リテクスチャする日本化レイヤー」という旧表現を撤回した。
+2026-10-05時点ではJapan OnlyをMO由来西洋要素の除去・非表示化だけに限定していたが、作者の2026-10-07方針変更により撤回。履歴として残し、現行仕様には使用しない。
 
-確定方針:
-- Japan Onlyは**Medieval Overhaul由来の西洋要素を除去・非表示化する限定レイヤー**。
-- 日本風Defへの置換、日本風リテクスチャ、日本側コンテンツの追加は担当しない。
-- 代替が必要な場合はCore、各Addon、専用互換/外観Mod、外部和風Mod等の所有責務とする。
-- Japan Onlyは外部Modの植物・Faction・衣服等を選別・除去する汎用フィルタにもならない。対象はMO由来要素に限定する。
-- MO要素の除去で進行や互換を壊さないことはJapan Only側で監査するが、代替資産の提供は行わない。
+Superseded durable design: `Docs/Design.md`, old commit `973c14a2d4555b1e3e880fb91ac342b061f4e8e6`.  
+Current replacement: DESIGN-MOJ-001 / design commit `ea656dcbeef821295acbedbf6a81621197219938`.
 
-Durable design source: `Docs/Design.md`, commit `973c14a2d4555b1e3e880fb91ac342b061f4e8e6`.
 
-**Next action:** 今後のJapan Only作業では、除去対象の選定・非表示/無効化・MO互換維持だけを扱う。リテクスチャ案件は適切な所有Modへ分離する。
+### DESIGN-MOJ-001 — AMJ - Medieval Overhaul Japanization
+
+**Requested by:** author (2026-10-07 JST)  
+**Owner:** future AMJ - Medieval Overhaul Japanization repository / cross-mod design  
+**Status:** DONE — architecture baseline recorded; dedicated repository and implementation not started
+
+The former Japan Only concept is replaced by the formal mod name **`AMJ - Medieval Overhaul Japanization`**.
+
+Confirmed architecture:
+- hard dependency: Medieval Overhaul;
+- role: **MO Patch + MO Retexture**;
+- reorganize MO's research flow across the mod to fit ancient-to-medieval Japanese technological history rather than merely hiding western content;
+- retain and reuse MO's useful material/processing stages wherever they still make sense in Japan;
+- patch names/descriptions, prerequisites, TechLevel, recipes/materials and unlock paths where needed;
+- retexture MO-owned weapons, armor, buildings and equipment when the same gameplay role can represent a Japanese counterpart without creating duplicate Defs;
+- centralize MO-owned AMJ retextures in Japanization; AMJ-owned Def art remains with each owning mod;
+- the mod is **not** a new Core. Grains, Rice Cultivation, Waterworks, Hot Springs, Ironmaking and other AMJ mods remain independently playable and do not require Japanization;
+- World Tech Level is the strong recommendation for world-wide medieval/tech filtering; Japanization does not reimplement that general filter and does not hard-depend on WTL;
+- Japanization does not absorb climate/environment, factions/events/backgrounds, independent fermentation/brewing/preservation loops, or Ironmaking's Japanese iron-production loop.
+
+DBH for Medieval compatibility is a formal target, optional rather than a hard dependency. Attached 2026-10-07 Def audit confirmed that DBH for Medieval adds, among other things, manual pump, simple bathtub/toilet, washing kit, boiler pot, filter device, irrigation canal/sluice and its own medieval hygiene/irrigation research. Its MO patches already replace Vanilla Steel / industrial components with MO `DankPyon_IronIngot` / `DankPyon_ComponentBasic`, connect wind pumps to MO windmill research, add MO coal as fuel and add DBH water values to MO foods/drinks.
+
+Japanization compatibility responsibility:
+- align DBH for Medieval research placement, labels/descriptions, material costs and visuals with the Japanese historical progression;
+- reuse DBH for Medieval's C# behavior rather than reimplementing pumps, hot-water storage, baths or plumbing;
+- when Waterworks is also present, do not leave duplicate canal/sluice roles unresolved. Exact authoritative visible building/network bridging remains an implementation/runtime audit for Waterworks/Japanization;
+- respect Hot Springs/Waterworks ownership of AMJ-specific bathing, hot-spring and water-management loops.
+
+**Durable source:** `Docs/Design.md`, commit `ea656dcbeef821295acbedbf6a81621197219938`.
+
+**Next action:** before implementation, create/choose the dedicated Japanization repository, then begin a complete MO 1.6 research/Def/retexture inventory and a DBH for Medieval overlap matrix. Do not move independent AMJ gameplay systems into Japanization.
 
 ### DOC-010 — Workshop cover common-left drift prevention
 
