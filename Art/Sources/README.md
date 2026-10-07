@@ -15,7 +15,7 @@ This directory stores accepted source artwork and authoring files that must surv
 
 ## Inventory / recovery queue
 
-The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 4 already archived and 15 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters.
+The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 5 already archived and 14 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters.
 
 ## Current authoritative sources
 
@@ -24,6 +24,7 @@ The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 
 - `Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png`
 - `Workshop/AMJ_WorkshopCover_Template.svg`
 - `Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
+- `Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
 
 Do not copy a `Textures/` derivative into this tree merely to make the inventory look complete. Historical accepted assets whose exact higher-resolution/source bytes still survive elsewhere should be migrated here only from those exact bytes. If only the production derivative remains, keep that limitation explicit rather than relabeling the derivative as an original source.
 
@@ -40,6 +41,16 @@ Additional accepted sources should be added to the corresponding mirrored path a
 - Production counterpart: `Textures/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png` (256×256).
 - Provenance: the accepted-source recovery recorded in `AMJ-009-ART-SOBA-PLANT` and the dedicated production integration commit `c7d5d2c229119aac717de80718ff7c2bdb92a00d`. Visual comparison confirms the same stem, triangular fruit clusters, leaves, flowers, and silhouette; the preceding `そばの実と花の植物アイコン.png` is a different rejected/earlier composition and was not archived.
 - The production counterpart is palette-encoded and is not a byte/pixel-identical direct resize of this original; the historical full export recipe has not been reconstructed. This recovery preserves the original only and does not change production files.
+
+### Soba immature plant — 2026-10-07 JST
+
+- Archived file: `Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`.
+- Original: `黒背景の芽吹く植物アイコン(1).png`, Library identity `libfile_3f5c688ff0088191b57c3583709cbf94`.
+- Original dimensions: 1448×1086 RGBA; 545,958 bytes. Preserved without resizing, recoloring, or re-encoding.
+- SHA-256: `194e4b67ea25ab77d73a07f973bbbf7bfaba4ededbda9eb1366c08bc7a2e75b4`.
+- Production counterpart: `Textures/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png` (256×256).
+- Provenance: the accepted-source recovery recorded in `AMJ-009-ART-SOBA-PLANT` and the production integration commit `c7d5d2c229119aac717de80718ff7c2bdb92a00d`. Visual comparison confirms the same three shoots/bud clusters, leaves, stem junctions, colors and silhouette. The unsuffixed `黒背景の芽吹く植物アイコン.png` has additional shoots and a different composition and was excluded.
+- The historical palette/export recipe has not been reconstructed; visual and recorded provenance establish the recovered candidate, without claiming an exact pixel-identical direct resize. This recovery preserves the original bytes only and does not change production files.
 
 ## Workshop distribution
 

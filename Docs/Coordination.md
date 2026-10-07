@@ -1410,6 +1410,7 @@ staged output; Environment's candidate builder gates the actual subscriber files
   - `Art/Sources/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png`
   - `Art/Sources/Workshop/AMJ_WorkshopCover_Template.svg`
   - `Art/Sources/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
+  - `Art/Sources/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
 - Workshop packaging rules already exclude the whole root `Art/` tree, so these development masters are not subscriber payload.
 - Environment's separate accepted-tree source archive is owned by the Environment repository and is not part of this Core recovery item.
 
@@ -1417,8 +1418,6 @@ staged output; Environment's candidate builder gates the actual subscriber files
 
 - The Core archive is not complete. Audit all previously accepted Core image assets for an exact pre-resize / authoring source that still survives outside `Art/Sources/`.
 - Priority audit families include the currently shipped Soba/Buckwheat and Millet assets, including:
-  - `Textures/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
-  - `Textures/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
   - `Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat/`
   - `Textures/Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/`
   - `Textures/Things/Item/Resource/AMJC_Millet/RawMillet/`
@@ -1446,6 +1445,9 @@ This item remains open until the Core accepted-image inventory has been audited 
 
 
 **Whole-Core inventory closeout (2026-10-07 JST):** Completed the requested inventory before further image migration. `Art/Sources/Inventory.md` is the durable item-by-item ledger; README links it. 26 production PNGs form 14 distinct image groups (6 identical a/b/c triples); 2 production-source groups are archived, 12 pending. The current empty masu plus 4 registered Workshop roles add 5 image roles, of which 2 are archived and 3 pending. Total: **19 roles / 4 archived / 15 pending verification or recovery**, not a claim of 15 proven recoverable original files. Millet hull/edible candidate art shares one 1448×1086 sheet, so one recovered file may satisfy two rows. Three named immature-millet candidates were measured at 256×256 and remain insufficient as pre-resize originals. Two supplemental roles (masu foreground and rice line-hierarchy calibration) are separate from the total. Grain rework status does not erase the historical-source preservation task. No new image was moved or generated in this inventory turn. Inventory row/count consistency and byte-identical a/b/c grouping checks PASS; source archive remains Workshop-excluded. **Next action:** continue with one verified G08 Soba-immature source, archive its exact bytes, then update Inventory/README and this main-only log before the next image. No background worker is active.
+
+
+**Single-asset closeout — G08 (2026-10-07 JST):** Recovered and archived only the accepted Soba immature original at `Art/Sources/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png` (1448×1086 RGBA, 545,958 bytes; SHA-256 `194e4b67ea25ab77d73a07f973bbbf7bfaba4ededbda9eb1366c08bc7a2e75b4`). Exact source identity: `黒背景の芽吹く植物アイコン(1).png`, Library `libfile_3f5c688ff0088191b57c3583709cbf94`. The AMJ-009-ART-SOBA-PLANT recovery record and integration `c7d5d2c229119aac717de80718ff7c2bdb92a00d` provide provenance; visual comparison confirms the production's three shoots/bud clusters, leaves and stem junctions. The unsuffixed extra-shoot composition was excluded. The historical palette/export recipe was not reconstructed, so this does not claim exact pixel-identical derivation. Source bytes and original dimensions are preserved; production textures are unchanged. Exact-copy comparison, source PNG integrity, all 26 production PNGs and Workshop exclusion checks PASS. README and Inventory now record **19 roles / 5 archived / 14 pending** (game 14/3/11, common/Workshop 5/2/3). This turn stops after this one image as requested; no background recovery worker is active. Overall ART-SOURCE-ARCHIVE-023 remains IN PROGRESS. **Next smallest unit:** G13 BuckwheatInHull — obtain its registered 1254×1254 source, verify the manifest SHA-256 and accepted identity, then archive only that image and report.
 
 ### ARCH-MODULAR-001 — Minimal dependencies / optional AMJ integration (2026-10-07 JST)
 
