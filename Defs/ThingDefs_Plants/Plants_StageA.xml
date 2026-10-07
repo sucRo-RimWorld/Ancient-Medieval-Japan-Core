@@ -201,9 +201,6 @@
       <maxMeshCount>4</maxMeshCount>
       <harvestedThingDef>AMJC_RawBarley</harvestedThingDef>
       <harvestYield>22</harvestYield>
-      <sowResearchPrerequisites>
-        <li>DankPyon_BasicAgriculture</li>
-      </sowResearchPrerequisites>
       <sowTags>
         <li>Ground</li>
       </sowTags>

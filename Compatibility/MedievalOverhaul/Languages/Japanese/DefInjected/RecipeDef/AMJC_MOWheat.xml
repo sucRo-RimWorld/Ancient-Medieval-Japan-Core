@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LanguageData>
+  <AMJC_ThreshWheat.label>小麦を脱穀する</AMJC_ThreshWheat.label>
+  <AMJC_ThreshWheat.description>小麦束を脱穀し、小麦穀粒と藁に分ける。</AMJC_ThreshWheat.description>
+  <AMJC_ThreshWheat.jobString>小麦を脱穀している。</AMJC_ThreshWheat.jobString>
+  <AMJC_ThreshWheatBulk.label>小麦を脱穀する x10</AMJC_ThreshWheatBulk.label>
+  <AMJC_ThreshWheatBulk.description>小麦束10個をまとめて脱穀し、小麦穀粒と藁に分ける。</AMJC_ThreshWheatBulk.description>
+  <AMJC_ThreshWheatBulk.jobString>小麦をまとめて脱穀している。</AMJC_ThreshWheatBulk.jobString>
+</LanguageData>

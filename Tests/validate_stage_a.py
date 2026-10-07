@@ -4,6 +4,8 @@ import struct
 import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
+from amj_profile_xml import profile_xml
+MO_XML = profile_xml("mo")
 
 def validate_powershell_encoding(path):
     """Windows PowerShell 5.1 reads BOM-less scripts using the ANSI code page."""
@@ -52,6 +54,8 @@ for texture in sorted((ROOT / "Textures").rglob("*.png")):
     validate_png(texture)
 
 def load(rel):
+    if rel.startswith("Defs/"):
+        return MO_XML
     return ET.parse(ROOT / rel).getroot()
 
 def find_def(root, tag, name):
@@ -88,7 +92,7 @@ deps = [n.findtext("packageId") for n in about.findall("./modDependencies/li")]
 assert "DankPyon.Medieval.Overhaul" in deps
 
 ccto_patch = load("Patches/Compatibility/CCTO_StageA.xml")
-wheat_patch = load("Patches/MedievalOverhaul_StageA_Wheat.xml")
+wheat_patch = load("Compatibility/MedievalOverhaul/Patches/MedievalOverhaul_StageA_Wheat.xml")
 plants = load("Defs/ThingDefs_Plants/Plants_StageA.xml")
 items = load("Defs/ThingDefs_Items/Items_StageA_Grains.xml")
 buildings = load("Defs/ThingDefs_Buildings/Buildings_GrainProcessing.xml")
@@ -260,7 +264,7 @@ assert text(jp, "AMJC_RawBarley.label") == "大麦束"
 assert text(jp, "AMJC_BarleyInHull.label") == "殻付き大麦"
 assert text(jp, "AMJC_Barley.label") == "大麦穀粒"
 assert text(jp, "AMJC_Wheat.label") == "小麦穀粒"
-mo_jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_MO_Overrides.xml")
+mo_jp = load("Compatibility/MedievalOverhaul/Languages/Japanese/DefInjected/ThingDef/AMJC_MO_Overrides.xml")
 assert text(mo_jp, "DankPyon_RawWheat.label") == "小麦束"
 assert text(awa, "graphicData/graphicClass") == "Graphic_Random"
 assert text(awa, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Awa"
@@ -521,5 +525,8 @@ for needed in ("DankPyon_RawWood", "DankPyon_IronIngot", "DankPyon_Straw", "Dank
 
 from validate_new_village import validate as validate_new_village
 validate_new_village()
+validate_new_village(profile="vanilla")
+from validate_grains_base import validate as validate_grains_base
+validate_grains_base()
 
 print("AMJ Stage A static validation: PASS")

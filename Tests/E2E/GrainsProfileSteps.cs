@@ -55,6 +55,20 @@ namespace AncientMedievalJapanCore.E2E
                     ctx.Require(recipe.ingredients != null && recipe.ingredients.Count > 0, recipe.defName + " must resolve ingredients.");
                     ctx.Assert(recipe.ingredients.All(i => i.filter.AllowedThingDefs.Any()), recipe.defName + " has an empty ingredient filter.");
                 }
+                if (!Active("dankpyon.medieval.overhaul"))
+                {
+                    ThingDef barley = DefDatabase<ThingDef>.GetNamed("AMJC_Plant_Barley");
+                    ctx.Assert(barley.plant.sowResearchPrerequisites == null || barley.plant.sowResearchPrerequisites.Count == 0,
+                        "Base barley must be research-free.");
+                    ThingDef table = DefDatabase<ThingDef>.GetNamed("AMJC_GrainProcessingTable");
+                    ctx.Assert(table.researchPrerequisites == null || table.researchPrerequisites.Count == 0,
+                        "Base processing table must be research-free.");
+                    ctx.Assert(table.costList.Count == 1 && table.costList[0].thingDef.defName == "Steel" && table.costList[0].count == 30,
+                        "Base processing table must use 30 steel.");
+                    foreach (RecipeDef recipe in DefDatabase<RecipeDef>.AllDefsListForReading.Where(r => r.defName.StartsWith("AMJC_Thresh")))
+                        ctx.Assert(recipe.products.Count == 1 && recipe.products.All(p => p.thingDef.defName.StartsWith("AMJC_")),
+                            "Base threshing must produce only its AMJ grain: " + recipe.defName);
+                }
                 new StageASteps().AssertSimpleMealAcceptsMillet(ctx);
                 ctx.Require(DefDatabase<ScenarioDef>.GetNamedSilentFail("AMJC_NewVillage") != null,
                     "New Village must remain present during migration.");

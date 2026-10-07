@@ -17,7 +17,9 @@ function Get-GrainsTestProfile([string]$Name) {
         Scenarios = @(
             "Grains $Name loads the requested real providers",
             "Grains $Name primary grain loop resolves",
-            "Grains $Name optional cold tolerance resolves"
+            "Grains $Name optional cold tolerance resolves",
+            "Grains $Name New Village definition resolves",
+            "Grains $Name New Village starts"
         )
     }
 }

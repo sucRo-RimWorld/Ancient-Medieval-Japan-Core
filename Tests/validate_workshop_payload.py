@@ -42,6 +42,8 @@ def subscriber_file(path):
     if path == "loadFolders.xml":
         return True
     parts = p.parts
+    if parts[:2] == ("Compatibility", "MedievalOverhaul"):
+        parts = parts[2:]
     if len(parts) > 1 and parts[0] in RUNTIME:
         return p.suffix.lower() in RUNTIME[parts[0]]
     return False
@@ -65,7 +67,10 @@ def self_test():
                 "Patches/_LocalTest.xml", "Assemblies/Mod.Tests.dll"]
     runtime = ["About/About.xml", "About/Preview.png", "About/PublishedFileId.txt",
                "Defs/Plants.xml", "Languages/Japanese/Keyed/Mod.xml", "Textures/Plant.png",
-               "Assemblies/Mod.dll", "Patches/Compatibility/Mod.xml", "loadFolders.xml", "LICENSE"]
+               "Assemblies/Mod.dll", "Patches/Compatibility/Mod.xml", "loadFolders.xml", "LICENSE",
+               "Compatibility/MedievalOverhaul/Defs/Recipes.xml",
+               "Compatibility/MedievalOverhaul/Patches/MO.xml",
+               "Compatibility/MedievalOverhaul/Languages/Japanese/DefInjected/ThingDef/MO.xml"]
     kept, leaks, lost = audit(unwanted + runtime, rules)
     assert kept == sorted(runtime) and not leaks and not lost
     assert audit(["NewDeveloperFolder/data.json"], rules)[1]

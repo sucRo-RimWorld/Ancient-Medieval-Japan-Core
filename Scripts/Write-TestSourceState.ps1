@@ -39,7 +39,15 @@ $trackedFiles = @(
     "Defs\ThingDefs_Items\Items_StageA_Grains.xml",
     "Defs\RecipeDefs\Recipes_GrainProcessing.xml",
     "Patches\Compatibility\CCTO_StageA.xml",
-    "Patches\MedievalOverhaul_StageA_Wheat.xml"
+    "Compatibility\MedievalOverhaul\Patches\MedievalOverhaul_StageA_Wheat.xml",
+    "Compatibility\MedievalOverhaul\Patches\MedievalOverhaul_StageA_Base.xml",
+    "Compatibility\MedievalOverhaul\Defs\Recipes_MOWheat.xml",
+    "loadFolders.xml",
+    "Tests\E2E\NewVillageSteps.cs",
+    "Defs\Scenarios\Scenarios_NewVillage.xml",
+    "Defs\PawnKindDefs\PawnKinds_Villager.xml",
+    "Defs\ThingDefs_Buildings\Buildings_GrainProcessing.xml",
+    "Scripts\Prepare-FixtureLoadFolders.ps1"
 )
 
 if ($Profile -ne 'fixture') {

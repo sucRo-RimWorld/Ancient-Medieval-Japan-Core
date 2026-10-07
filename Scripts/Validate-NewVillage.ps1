@@ -36,10 +36,11 @@ function Require-Source($Index, [string]$Type, [string]$Name) {
     return $Index[$key][0]
 }
 
-$scenarioXml = Load-Xml (Join-Path $RepositoryRoot "Defs/Scenarios/Scenarios_NewVillage.xml")
+. (Join-Path $PSScriptRoot "AmjProfileXml.ps1")
+$scenarioXml = Get-AmjProfileXml $RepositoryRoot
 $scen = Def-Node $scenarioXml "ScenarioDef" "AMJC_NewVillage"
-$faction = Def-Node (Load-Xml (Join-Path $RepositoryRoot "Defs/FactionDefs/Factions_PlayerVillage.xml")) "FactionDef" "AMJC_PlayerVillage"
-$pawn = Def-Node (Load-Xml (Join-Path $RepositoryRoot "Defs/PawnKindDefs/PawnKinds_Villager.xml")) "PawnKindDef" "AMJC_Villager"
+$faction = Def-Node $scenarioXml "FactionDef" "AMJC_PlayerVillage"
+$pawn = Def-Node $scenarioXml "PawnKindDef" "AMJC_Villager"
 Check ($scen.ParentName -eq "ScenarioBase") "ScenarioBase inheritance differs."
 Check ($faction.ParentName -eq "PlayerFactionBase") "PlayerFactionBase inheritance differs."
 Check ($pawn.ParentName -eq "BasePlayerPawnKind") "BasePlayerPawnKind inheritance differs."

@@ -17,7 +17,6 @@
     <costStuffCount>10</costStuffCount>
     <stuffCategories>
       <li>Woody</li>
-      <li>DankPyon_RawWood</li>
     </stuffCategories>
     <altitudeLayer>Building</altitudeLayer>
     <fillPercent>0.5</fillPercent>
@@ -61,7 +60,7 @@
       <drawRotated>false</drawRotated>
     </graphicData>
     <costList>
-      <DankPyon_IronIngot>30</DankPyon_IronIngot>
+      <Steel>30</Steel>
     </costList>
     <altitudeLayer>Building</altitudeLayer>
     <fillPercent>0.5</fillPercent>
@@ -89,9 +88,6 @@
     <placeWorkers>
       <li>PlaceWorker_PreventInteractionSpotOverlap</li>
     </placeWorkers>
-    <researchPrerequisites>
-      <li>DankPyon_BasicAgriculture</li>
-    </researchPrerequisites>
   </ThingDef>
 
 </Defs>
