@@ -292,7 +292,137 @@ Its v1 success criterion is:
 
 If future simplification removes the visible open-canal construction loop and leaves only an abstract water API, Waterworks should be reconsidered rather than retained as a redundant standalone mod.
 
-## 15. v1 automated validation targets
+## 15. Recommended implementation architecture
+
+This section fixes the **implementation shape**, not final class names.
+
+### 15.1 Open canal representation
+
+Use a Waterworks-owned **TerrainDef for the dug channel** as the persistent surface state.
+
+- The TerrainDef represents the excavated ditch itself, not whether it currently contains water.
+- Keep movement cost and basic terrain affordances on that TerrainDef.
+- Do not swap the TerrainDef back and forth between separate dry/wet terrain every time supply changes.
+- Render supplied water as a Waterworks visual overlay / section layer above the canal terrain.
+- An unsupplied canal therefore remains the same ditch terrain but renders dry.
+- This keeps topology/state changes from repeatedly rewriting the map terrain grid.
+
+For fill-in restoration, persist the replaced TerrainDef for each excavated canal cell. Restoration must validate that the stored terrain is still legal; if another mod has materially changed the cell context, fail safely rather than forcing an invalid terrain.
+
+### 15.2 Culvert representation
+
+Represent culverts as **persistent per-map underground state**, not as a normal TerrainDef or edifice.
+
+Reason:
+
+- culverts must coexist with roads, floors, walls and gates;
+- a normal TerrainDef would replace the surface;
+- an ordinary building/edifice cannot safely occupy the same cell as every supported surface structure.
+
+A Waterworks MapComponent should therefore own a saved culvert grid / cell set and expose it to:
+
+- construction/removal jobs;
+- topology calculation;
+- Waterworks overlay rendering;
+- external supply queries.
+
+Culvert state remains invisible in normal map rendering except where an entrance/exit mouth should be drawn.
+
+### 15.3 Intake and gate representation
+
+Natural-water intakes and manual gates should remain normal damageable Things / Buildings with Waterworks comps.
+
+- Intake comp reports whether an adjacent registered natural source is valid.
+- Gate comp exposes open / closed state.
+- Both notify the map network component when their state changes.
+- Gate destruction removes/cuts the gate node according to the resulting canal terrain/structure state; do not leave a phantom connection.
+
+### 15.4 Map network component
+
+Use a per-map Waterworks component as the authoritative runtime network manager.
+
+It should own or index:
+
+- open-canal cells;
+- culvert cells;
+- intake nodes;
+- gate nodes and open/closed state;
+- source classification;
+- connected-component / supplied-state cache;
+- original terrain restoration data;
+- overlay data needed for player diagnostics.
+
+Topology should be **invalidated by events** such as:
+
+- canal excavation / fill-in;
+- culvert build / removal;
+- gate open / close / destruction;
+- intake spawn / despawn;
+- source registration changes.
+
+After invalidation, rebuild connected components by graph traversal when needed. v1 does not require a continuously simulated graph.
+
+Because other mods may alter natural-water terrains without Waterworks receiving a direct event, intake source validity may also be revalidated at a low-frequency safe checkpoint or before a cached source result is reused. Do not compensate by scanning every canal cell every tick.
+
+### 15.5 Graphics and overlay
+
+Use two visual layers:
+
+1. **normal map view**
+   - dug ditch terrain always visible;
+   - supplied canals visibly contain water;
+   - unsupplied canals visibly read as dry channels;
+   - intake and gate buildings render normally;
+   - culvert mouths may render where open canal transitions below a crossing.
+
+2. **Waterworks overlay**
+   - supplied vs unsupplied network;
+   - intake nodes and validity;
+   - gate state;
+   - hidden culvert path;
+   - source class where relevant.
+
+The overlay is diagnostic; normal map view should still communicate wet/dry state without requiring it.
+
+### 15.6 External query API shape
+
+Expose a small stable API from Waterworks rather than exposing internal grids directly.
+
+Conceptual queries:
+
+- supplied connection at / near a cell;
+- source class for the supplied component;
+- optional nearest supplied connection for a caller-defined radius.
+
+Return neutral/no-supply results when no Waterworks map component exists.
+
+Do not expose mutable internal collections and do not require consumer mods to know Waterworks DefNames or graph representation.
+
+### 15.7 Save/load
+
+Persistent save state must include at least:
+
+- culvert cells;
+- original TerrainDefs for excavated/restorable canal cells;
+- manual gate state if not already saved by the ThingComp;
+- any source registrations that are save-specific rather than Def-driven.
+
+Derived values such as connected-component IDs, supplied flags and overlay caches should be rebuilt after load rather than serialized as authoritative state.
+
+### 15.8 Why not reuse DBH PipeNet internally
+
+Do not use DBH PipeNet as Waterworks' internal network even when DBH is loaded.
+
+That would:
+
+- make DBH a practical implementation dependency;
+- inherit volume/pipe semantics Waterworks intentionally does not simulate;
+- make Waterworks behavior differ structurally between DBH and non-DBH profiles;
+- recreate the same overlap identified in DBH for Medieval.
+
+DBH compatibility belongs at an adapter boundary after both independent systems are valid.
+
+## 16. v1 automated validation targets
 
 When implementation begins, automate at least:
 
@@ -315,7 +445,7 @@ When implementation begins, automate at least:
 
 Use RimTest Redux for graph / state logic where practical and Pickle for loaded-Def / map / placement / integration behavior.
 
-## 16. Open implementation values
+## 17. Open implementation values
 
 Still intentionally unfixed:
 
