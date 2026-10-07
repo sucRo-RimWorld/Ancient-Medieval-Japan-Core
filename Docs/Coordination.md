@@ -1718,3 +1718,30 @@ No runtime Def, About.xml, dependency metadata, or production texture was change
 - **Not completed:** runtime-test/Quickstart ownership transfer, C# compilation, game loader/inheritance/full refs, real starts, old-save/add/remove/re-save and runtime ERROR 0. No installed game/assemblies here. RawRice 300 remains draft-only. XML/static success does not establish safe save changes, Core/MO removal or release readiness. Prior current-Grains duplicate warning is superseded for the guarded commit; older versions still duplicate. About MO dependency remains gated.
 
 **Next smallest unit:** transfer NewVillage runtime steps/Quickstart/start features to Scenarios; retain generic Stage A/environment/native Bill tests and explicit legacy-save regression in Grains. Add four independent start profiles plus old-save/add/remove coverage with accurate source/summary attribution, then compile/run on installed RimWorld with offscreen/private rendering and ERROR gate. No game/background worker active.
+
+
+### DESIGN-CULTURE-001 — Vanilla premodern culture / Thought audit
+
+**Requested by:** author (2026-10-07 JST)  
+**Owner:** future standalone culture workstream / cross-mod design  
+**Status:** IN PROGRESS — initial audit started; implementation and final Mod name not decided
+
+Author identified that MO Japanization alone cannot normalize all cultural assumptions because RimWorld Vanilla itself is a far-future/spacer society. In particular, mood/social rules around table dining, floor sleeping, private rooms, drugs/alcohol and furniture expectations may remain historically wrong even after MO is fully Japanized.
+
+Boundary decision:
+- do **not** let `AMJ - Medieval Overhaul Japanization` expand into a general Vanilla-culture overhaul;
+- Vanilla ThoughtDef / TraitDef / Need / social-opinion / room/furniture expectation changes belong to a separate Mod candidate;
+- working name only: `AMJ - Premodern Culture`; final name/publication not decided;
+- preserve physiological effects where appropriate, but audit culturally contingent value judgments and triggers;
+- Ideology must not be required for the baseline culture correction.
+
+Initial high-priority examples:
+- `AteWithoutTable`: current Vanilla source mirror gives -3 mood and equates no Table with eating from the ground; valid Japanese floor-seated dining should not automatically trigger this;
+- `SleptOnGround`: current source mirror gives -4 and describes ground sleeping as animal-like; distinguish bare ground from proper floor bedding/futon/tatami;
+- `SleepDisturbed`: current wording assumes a private room as the natural solution; keep disturbance costs if mechanically justified but audit privacy assumptions;
+- `SleptInCold` / `SleptInHeat`: physiological discomfort may remain while heater/air-conditioning-oriented text is rewritten;
+- `DrugDesire` / intoxication social effects: audit availability, substance class, physiology, personal disposition and social judgment separately rather than treating all pleasurable chemicals as one timeless category.
+
+**Durable sources:** `Docs/Design.md`, boundary commit `3b244add98eded240c5dd623dc29b99ac572c2aa`; `Docs/Research/VanillaPremodernCultureThoughtAudit.md`, initial audit commit `9c47d1ca07e7b61e770674cc77aa011f4bd5631d`.
+
+**Next action:** inventory the full Vanilla 1.6 Thought/ThoughtWorker/Trait/Job trigger surface for dining, sleep, room impressiveness/comfort, drugs/alcohol and recreation before deciding whether the standalone Mod is worth implementation. Do not patch production XML/C# from this initial audit alone.
