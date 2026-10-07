@@ -181,6 +181,14 @@ It records the actual MO Defs gated by the crossbow/siege, armor, bow, polearm,
 mace, blade, gunpowder, Smithing and tailoring research families. Its Def-level
 mapping takes precedence over any earlier node-only shorthand in this document.
 
+## Domestic / production follow-up
+
+The production, cooking, preservation, pressing, textile and power-equipment
+follow-up is maintained in
+[MedievalOverhaulJapanizationDomesticProductionAudit.md](MedievalOverhaulJapanizationDomesticProductionAudit.md).
+It records why MO's cooking/agriculture/furniture research bundles must be
+split by actual output rather than translated wholesale.
+
 ## Remaining item-level audits before XML design
 
 The 67-node table is not enough to implement safely. Before production patches:
