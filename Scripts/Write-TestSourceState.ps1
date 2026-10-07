@@ -3,7 +3,10 @@ param(
     [string]$RepositoryRoot,
 
     [Parameter(Mandatory = $true)]
-    [string]$OutputPath
+    [string]$OutputPath,
+
+    [ValidateSet('fixture','vanilla','vanilla-ccto','mo','mo-ccto')]
+    [string]$Profile = 'fixture'
 )
 
 $ErrorActionPreference = "Stop"
@@ -11,6 +14,7 @@ $RepositoryRoot = (Resolve-Path -LiteralPath $RepositoryRoot).Path
 
 $lines = New-Object System.Collections.Generic.List[string]
 $lines.Add("sourceRoot=$RepositoryRoot")
+$lines.Add("profile=$Profile")
 $lines.Add("generatedAt=$([DateTimeOffset]::Now.ToString('o'))")
 
 $gitHead = $null
@@ -38,6 +42,14 @@ $trackedFiles = @(
     "Patches\MedievalOverhaul_StageA_Wheat.xml"
 )
 
+if ($Profile -ne 'fixture') {
+    $trackedFiles = @($trackedFiles | Where-Object { $_ -ne 'Tests\E2E\TestMod\Pickle\Features\stage-a.feature' }) + @(
+        'Tests\E2E\GrainsProfileSteps.cs', "Tests\E2E\Profiles\grains-$Profile.feature",
+        'Scripts\GrainsTestProfiles.ps1', 'Scripts\Stage-GrainsTestProfile.ps1',
+        'Scripts\Run-GrainsProfiles.ps1', 'Scripts\Prepare-TestSaveData.ps1', 'build-e2e.bat'
+    )
+}
+
 foreach ($relativePath in $trackedFiles) {
     $fullPath = Join-Path $RepositoryRoot $relativePath
     if (-not (Test-Path -LiteralPath $fullPath)) {
@@ -49,6 +61,7 @@ foreach ($relativePath in $trackedFiles) {
 }
 
 $featurePath = Join-Path $RepositoryRoot "Tests\E2E\TestMod\Pickle\Features\stage-a.feature"
+if ($Profile -ne 'fixture') { $featurePath = Join-Path $RepositoryRoot "Tests/E2E/Profiles/grains-$Profile.feature" }
 foreach ($line in Get-Content -LiteralPath $featurePath -Encoding UTF8) {
     if ($line -match '^\s*Scenario:\s*(.+)$') {
         $lines.Add("feature=$($Matches[1].Trim())")

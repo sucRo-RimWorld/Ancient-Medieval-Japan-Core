@@ -71,3 +71,7 @@ jobs:
             }
           }
           Write-Host "Windows PowerShell script parsing: PASS"
+
+      - name: Test Grains profile isolation and byte-preserving staging
+        shell: powershell
+        run: ./Tests/test_grains_profiles.ps1

@@ -1,4 +1,9 @@
-param([int]$TimeoutSeconds = 1800)
+param(
+ [int]$TimeoutSeconds = 1800,
+ [switch]$Grains,
+ [string]$RimWorldRoot = 'D:\SteamLibrary\steamapps\common\RimWorld',
+ [ValidateSet('all','vanilla','vanilla-ccto','mo','mo-ccto')][string]$GrainsProfile = 'all'
+)
 $ErrorActionPreference = 'Stop'
 $env:PSModulePath = "$env:SystemRoot\System32\WindowsPowerShell\v1.0\Modules"
 Add-Type -TypeDefinition @'
@@ -49,8 +54,17 @@ try {
  $startup.desktop = 'WinSta0\' + $desktopName
  $batch = Join-Path $PSScriptRoot 'run-amj-gates.cmd'
  $log = Join-Path $PSScriptRoot 'automated-gates.log'
+ $batchArgs = ''
+ if ($Grains) {
+  if ($RimWorldRoot -match '["%\r\n]') { throw 'Invalid RimWorldRoot for the batch launcher.' }
+  $batch = Join-Path $PSScriptRoot 'run-grains-profiles.cmd'
+  $reportRoot = Join-Path $PSScriptRoot '../../TestResults/Grains'
+  New-Item -ItemType Directory -Force -Path $reportRoot | Out-Null
+  $log = Join-Path $reportRoot 'automated-gates.log'
+  $batchArgs = ' "' + $RimWorldRoot + '" "' + $GrainsProfile + '"'
+ }
  $command = New-Object Text.StringBuilder
- [void]$command.Append('"' + $env:ComSpec + '" /d /s /c ""' + $batch + '" > "' + $log + '" 2>&1"')
+ [void]$command.Append('"' + $env:ComSpec + '" /d /s /c ""' + $batch + '"' + $batchArgs + ' > "' + $log + '" 2>&1"')
  $started = [AmjDesktop]::CreateProcess($env:ComSpec, $command, [IntPtr]::Zero, [IntPtr]::Zero, $false, 0x08000000, [IntPtr]::Zero, $PSScriptRoot, [ref]$startup, [ref]$info)
  if (-not $started) { throw (New-Object ComponentModel.Win32Exception) }
  Write-Output "[START] Desktop=$($startup.desktop); runner=$($info.pid); rendering enabled; desktop never switched."
