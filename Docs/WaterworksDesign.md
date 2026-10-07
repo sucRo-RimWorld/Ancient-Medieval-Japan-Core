@@ -268,6 +268,35 @@ Observed implementation:
 
 Therefore DBH for Medieval does not eliminate the specific Waterworks niche of **direct natural intake -> visible gravity-fed open canal**.
 
+### 13.2 DBH configuration compatibility
+
+Current DBH 1.6 exposes separate controls for:
+
+- thirst need;
+- bladder need;
+- hygiene need;
+- Lite Mode.
+
+Its own 1.6 localization states that Lite Mode removes **pipes, water and sewage management**, so Lite Mode is not the profile to use when the player wants DBH's water infrastructure.
+
+Waterworks must support the author's intended **DBH water-infrastructure-only style profile**:
+
+- DBH loaded;
+- Thirst disabled;
+- Bladder need disabled;
+- Hygiene need disabled if desired;
+- Lite Mode disabled so DBH water management remains available.
+
+Waterworks code and compatibility patches must not assume any of those pawn needs exist.
+
+Required behavior:
+
+- Waterworks core remains fully functional regardless of DBH need settings.
+- If DBH water management / PipeNet is available, an optional adapter may activate.
+- If DBH Lite Mode removes the required water-management Defs / systems, the adapter must disable itself cleanly while Waterworks itself continues to function.
+- Do not re-enable thirst, bladder or hygiene as a side effect of Waterworks compatibility.
+- Release testing must include both ordinary DBH configuration and the water-infrastructure-focused profile with pawn needs disabled.
+
 ### 13.2 Compatibility direction
 
 Waterworks must not turn its whole canal graph into DBH `PipeNet`.
@@ -441,6 +470,8 @@ When implementation begins, automate at least:
 - optional consumer query behavior with Waterworks present and absent;
 - DBH absent profile;
 - DBH present compatibility profile;
+- DBH present with Thirst / Bladder / Hygiene disabled and Lite Mode off;
+- DBH Lite Mode profile: Waterworks works, DBH adapter disables safely;
 - runtime ERROR = 0.
 
 Use RimTest Redux for graph / state logic where practical and Pickle for loaded-Def / map / placement / integration behavior.
