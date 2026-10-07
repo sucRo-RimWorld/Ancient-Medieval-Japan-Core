@@ -16,7 +16,7 @@ class BaseBoundaryTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        for name in ('Defs', 'Languages', 'Patches', 'Compatibility', 'BaseWithoutMO', 'LegacyStartingScenarios', 'Tests/Fixtures'):
+        for name in ('Defs', 'Languages', 'Patches', 'Compatibility', 'BaseWithoutMO', 'LegacyStartingScenarios', 'Tests/Fixtures', 'Textures'):
             shutil.copytree(ROOT / name, self.root / name)
         shutil.copyfile(ROOT / 'loadFolders.xml', self.root / 'loadFolders.xml')
 
@@ -50,6 +50,23 @@ class BaseBoundaryTests(unittest.TestCase):
         xml = ET.parse(path)
         output = xml.find('.//DankPyon_Straw')
         output.text = '2'
+        xml.write(path)
+        with self.assertRaisesRegex(AssertionError, 'pre-split snapshot'):
+            self.validate()
+
+    def test_base_mo_texture_rejected(self):
+        path = self.root / 'Defs/ThingDefs_Plants/Plants_StageA.xml'
+        xml = ET.parse(path)
+        xml.find('ThingDef[defName="AMJC_Plant_Barley"]/plant/immatureGraphicPath').text = 'Things/Plants/Immature/WheatPlant'
+        xml.write(path)
+        with self.assertRaisesRegex(AssertionError, 'Base MO texture reference'):
+            self.validate()
+
+    def test_missing_mo_graphics_restore_rejected(self):
+        path = self.root / MO_FOLDER / 'Patches/MedievalOverhaul_StageA_Base.xml'
+        xml = ET.parse(path)
+        operation = next(n for n in xml.getroot() if n.findtext('xpath', '').endswith('/plant/immatureGraphicPath'))
+        xml.getroot().remove(operation)
         xml.write(path)
         with self.assertRaisesRegex(AssertionError, 'pre-split snapshot'):
             self.validate()

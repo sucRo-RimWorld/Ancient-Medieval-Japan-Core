@@ -2,7 +2,7 @@
 
 対象はGrains main `644c2c9c60e7fa695d4b50f4aee16eae58b9835c` のProduction XMLと画像参照。所有境界の正本は [`Design.md`](Design.md)、実機検証の正本は [`GrainsProfileTesting.md`](GrainsProfileTesting.md)。Scenariosの静的検証・CIに問題が検出されていないため、作者の指示により追加のセーブ実行アダプター作業を保留し、Grains監査へ戻った。
 
-## 現在の結論
+## 監査時点の結論（以下の実装追記で更新）
 
 **MOのDef識別子・クラス参照はBaseから分離済みだが、3Defの4画像パスがMO提供画像に依存している。Grains単独動作・公開準備の完了ではない。** Production AboutのMO必須依存は維持する。packageId `sucro.ancientmedievaljapan.core` と既存AMJC DefNameも維持する。
 
@@ -16,7 +16,7 @@
 | About | MO必須依存が残る | 画像・実機・セーブ等のリリースゲート完了後に変更 |
 | シナリオ | Scenariosへ物理分離済み。Grains旧コピーはScenarios不在時のみ | 旧セーブ・追加・削除・再保存の実機検証 |
 
-## MO画像の残存依存
+## 監査時点のMO画像の残存依存
 
 確認資料は作者提供 `02-3219596926.zip`。そのAboutはMO **1.6.2.2**、ZIP SHA-256は `6ed379d7c400db43b3af2a9a7fd6203f7f7e99ca1a670d36b0f73fd1adccc9e3`。以下のパスの画像がMOアーカイブ内に存在し、GrainsのTexturesには同じパスの供給がない。Vanilla全画像の在庫は今回与えられておらず、全プロバイダーの網羅証明ではない。
 
@@ -37,6 +37,21 @@ Base小麦の既存アワ画像、粉類の既存雑穀画像、手動石臼・�
 
 `Tests/validate_grains_base.py` はBase XMLの識別子・クラス参照、条件付き互換、旧38契約を検証する。出力を「MO identifier/class references 0」へ限定し、画像と実ゲームは対象外と明記した。`test_grains_chain.py`、`test_grains_environment.py`、`test_scenario_extraction.py` は工程・環境・分離の静的回帰検証である。
 
-次の実装単位は上記3Defの画像依存解消。画像制作・レビュー後、4構成（Vanilla / MO / CCTO / MO+CCTO）をGrainsの6穀物ケースでコンパイル・実行し、描画・Bill実行・ERRORを確認する。旧セーブでのMO削除安全性は独立した検証が必要。Scenariosの実開始・旧セーブ試験はScenarios所有の未完了ゲートとして残す。
+本監査で選定した単位は上記3Defの画像依存解消（下記の仮参照分離を実装済み）。専用画像制作・レビュー後、4構成（Vanilla / MO / CCTO / MO+CCTO）をGrainsの6穀物ケースでコンパイル・実行し、描画・Bill実行・ERRORを確認する。旧セーブでのMO削除安全性は独立した検証が必要。Scenariosの実開始・旧セーブ試験はScenarios所有の未完了ゲートとして残す。
 
 このクラウド環境ではRimWorld本体・Managed assembly・実セーブがないため、C#コンパイル、ゲーム実行、保存移行は検証していない。静的検証を理由にProductionのMO依存や公開メタデータを変更しない。
+
+## 2026-10-08 単体用仮画像の分離
+
+共有Defの4パスをMO以外の開発用参照へ変更し、既存のMO条件付き `MedievalOverhaul_StageA_Base.xml` に4つのReplaceを追加した。MO導入時の明示Def契約38件は画像設定も含めて従来と一致する。これは**参照の条件分離**であり、専用Production画像の完成ではない。
+
+| Def / 状態 | MOなし | MOあり |
+|---|---|---|
+| 大麦・成熟 | `Things/Plants/FullGrown/AMJC_Awa` | 従来のMO WheatPlant |
+| 大麦・未成熟 | `Things/Plants/Immature/AMJC_Awa` | 従来のMO WheatPlant |
+| 脱穀場所 | `Things/Building/Production/TableStonecutter` | 従来のMO StonecuttingSpot |
+| 脱穀台 | `Things/Building/Production/TableStonecutter` | 従来のMO Millstone |
+
+AMJ植物画像は既存PNGファミリーをそのまま参照する。設備は既存のBase手動石臼と同じVanilla仮参照を採用し、既存の方向・描画サイズ等を保持する。両設備は同じ仮画像となり、建物サイズに合う見た目や方向・マスクの実描画は未確認。専用画の制作と実機確認を公開前ゲートに残す。
+
+Base境界検証は既知のMO4パス再侵入を拒否し、大麦の既存AMJ PNGファミリーの存在も確認する。MO画像復元の欠落は旧38契約照合で拒否する。未知の第三者画像パス・Vanilla全在庫・継承後の全参照・実際のTextureロードまで網羅する検証ではない。新規画像生成・既存PNG変更はない。Production AboutのMO必須依存は引き続き維持する。

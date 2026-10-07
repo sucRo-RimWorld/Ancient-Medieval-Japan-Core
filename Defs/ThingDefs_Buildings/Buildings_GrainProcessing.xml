@@ -7,8 +7,8 @@
     <description>A simple place for threshing and hulling grain by hand. It requires almost no infrastructure, but processing is slower than at a proper grain processing table.</description>
     <thingClass>Building_WorkTable</thingClass>
     <graphicData>
-      <!-- TEMP: Medieval Overhaul stonecutter's block graphic. -->
-      <texPath>Things/Building/Production/StonecuttingSpot</texPath>
+      <!-- TEMP: Vanilla stonecutter art for standalone loading; not final spot art. -->
+      <texPath>Things/Building/Production/TableStonecutter</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <shaderType>CutoutComplex</shaderType>
       <drawSize>(1.33,1.33)</drawSize>
@@ -52,8 +52,8 @@
     <description>A dedicated worktable for threshing and hulling grain efficiently. It performs the same jobs as the simple processing spot, but at normal work speed.</description>
     <thingClass>Building_WorkTable</thingClass>
     <graphicData>
-      <!-- TEMP: Medieval Overhaul millstone graphic, used only to distinguish this development placeholder from the simple spot. -->
-      <texPath>Things/Building/Production/Millstone</texPath>
+      <!-- TEMP: Vanilla stonecutter art for standalone loading; not final processing-table art. -->
+      <texPath>Things/Building/Production/TableStonecutter</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
       <shaderType>CutoutComplex</shaderType>
       <drawSize>(1,1)</drawSize>
