@@ -949,6 +949,7 @@ Patch側の責務:
 - 日本の対象時代・文化に合わないMO要素は、単純削除だけでなく、同等のゲーム上の役割を保てる場合は名称・説明・Recipe・研究位置・外観を日本向けへ置換する
 - Mithril等、日本の歴史環境として扱わない幻想的・西洋的な進行経路は、他の進行を壊さないことを確認したうえで通常進行から外す
 - MO互換Modが参照する既存Defを不用意に削除せず、非表示化・研究経路変更・Patchによる意味の置換を優先する
+- MOのPawnKind / FactionDefが西欧装備・称号・紋章等を直接要求する場合は、**Japanization側でMO所有の装備表・表示を同時にPatchし、日本化後に西欧装備がNPC生成から再流入しないようにする**。ただし新しい日本史Factionの社会構造・集落・専用機能はAMJ Factionsの責務とする
 
 Retexture側の責務:
 - MO本体が所有する武器・防具・設備・建築等について、**ゲーム上の役割が日本の器物へ無理なく対応する場合は既存Defを維持したまま日本向けテクスチャへ差し替える**
@@ -967,7 +968,7 @@ DBH for Medieval公式互換:
 責務に含めないもの:
 - 砂鉄供給・新しい日本製鉄ゲームループ → Ironmaking
 - 日本の気候・地形・植生 → Japanese Environment
-- 日本のFaction追加 → AMJ Factions
+- 新しい日本史Faction・社会構造・集落機能の追加 → AMJ Factions。MO既存Faction / PawnKindのJapanizationと装備整合はJapanization側
 - 日本固有イベント → AMJ Events
 - Backstory追加 → AMJ Backgrounds
 - Grains / Rice Cultivation / Waterworks / Hot Springs / 発酵 / 酒造 / 保存等の独立ゲームループそのもの
