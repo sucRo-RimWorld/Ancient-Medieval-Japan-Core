@@ -60,6 +60,17 @@ Use whichever label best fits the task:
 
 ## Current coordination items
 
+### DOC-PUBLICCOPY-COMMON-001 — AMJ public description wording rules
+
+**Requested by:** author (2026-10-07 JST)  
+**Owner:** Documentation/release  
+**Status:** DONE
+
+AMJ-common public-description rules were consolidated in `Docs/ModDescriptionGuidelines.md` and referenced from `AGENTS.md`. Japanese public copy should use established Japanese general terms, preserve English mainly for official names/identifiers, avoid internal engine terminology unless technically necessary, distinguish newly added content from reused/reconfigured systems, and prioritize player-visible changes over implementation or artwork provenance. README → Workshop → 2game → About.xml is the required decreasing-information hierarchy, and public-copy changes require cross-surface consistency checks.
+
+The 2game common structure now uses `▼ 特徴` and stale AMJ Core naming in the common description guideline was updated to AMJ Grains where applicable.
+
+
 ### DES-IRONMAKING-001 — standalone ancient / medieval Ironmaking
 
 **Requested by:** author (2026-10-07 JST)  
