@@ -919,7 +919,13 @@ The current rule is to retain/retexture only honest functional mappings, not cre
 
 **Durable source:** `Docs/Research/MedievalOverhaulJapanizationDomesticProductionAudit.md`, commit `4db54ad06cf0777a332c3ce5975327a41e572bcc`.
 
-**Next action:** trace Processor Framework processes behind presser/drying rack/smoker/millstone/watermill, complete lighting (oil lamps vs candles), and finish object-level furniture/architecture mapping. Separately compare weapon stats/material costs before fixing exact MO Def -> Japanese weapon labels. High-priority unresolved areas remain Carrier Birds, Heavy Crossbow, Tar, Smoker and Carpet Making. Create/choose the dedicated Japanization repository before production XML/assets are written.
+**2026-10-07 Processor Framework / lighting follow-up:** MO processor wiring is now traced. The generic presser embeds cheese (cow/goat/sheep) + apple processes, while paper uses a separate paper-press building/process. Drying racks use weather-sensitive 2.5-day PF drying at 0.8 base efficiency; smoker uses a 1-day fueled hot process with loaded efficiency 0.10 and therefore needs nutrition/spoilage balance review rather than being treated as equivalent to drying. The manual millstone is a normal Bill worktable, not PF. The MO watermill embeds two PF processes: cereal -> flour (0.25 day, efficiency 1.0, bonus Hay) and raw wood -> WoodLog (0.25 day, efficiency 2.0), so a historically valid water wheel does not imply both upstream process roles must stay. Windmill processor convenience does not override the baseline decision to hide the power windmill.
+
+Lighting audit confirms MO already has torch/oil-lamp families independently of candle research. Japanization can use oil/torch lighting as the baseline and keep candles later/optional; Western candelabra/lamp forms require item-level mapping rather than wholesale translation.
+
+**Durable source:** `Docs/Research/MedievalOverhaulJapanizationDomesticProductionAudit.md`, processor/lighting commit `ce535726744ed4c5326f71e049cbed06d1665710`.
+
+**Next action:** inspect smoker input/output nutrition/spoilage/value, audit the watermill lumber process against woodworking chronology and resource balance, finish object-level lighting/furniture/architecture mapping, then compare weapon stats/material costs. High-priority unresolved areas remain Carrier Birds, Heavy Crossbow, Tar, Smoker and Carpet Making. Create/choose the dedicated Japanization repository before production XML/assets are written.
 
 ### DOC-010 — Workshop cover common-left drift prevention
 
