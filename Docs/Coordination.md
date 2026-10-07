@@ -877,7 +877,20 @@ First-pass redesign hotspots, not yet final mappings:
 - armor progression `ProtectiveClothing -> ChainArmor -> PlateArmor`, cooking branches, windmill/watermill, royal/rustic architecture and carrier-bird/exploration branches all require explicit keep/reinterpret/retexture/hide decisions.
 - Gunpowder should be assessed as a late-medieval/Sengoku branch rather than remaining downstream of generic Alchemy.
 
-**Next action:** continue the 67-node combined MO+patched-Vanilla research audit, attach historical evidence per branch, and produce a keep / reposition / reinterpret+retexture / hide table before implementation. Create/choose the dedicated Japanization repository before production XML/assets are written. Do not move independent AMJ gameplay systems into Japanization.
+**2026-10-07 first-pass 67-node classification complete:** a dedicated research source now covers all 51 MO-owned research nodes plus all 16 Vanilla nodes that MO moves/reworks. It uses maintain / reposition / reinterpret+retexture / hide / further-audit classifications and records historical anchors plus item-level follow-up requirements. No production XML, Def, texture, About metadata or dependency was changed by this research pass.
+
+Cross-document reconciliation completed:
+- MO-to-Japan retexture ownership is now explicitly centralized in Japanization in `Docs/RetextureImplementationGuidelines.md`; AMJ-owned Def art remains with the owning feature Mod.
+- `Docs/IronmakingDesign.md` now distinguishes MO-alone behavior from Japanization-loaded behavior: Ironmaking does not rewrite MO research, while Japanization may reorganize MO metal research and connect it to Ironmaking conditionally.
+- `Docs/Design.md` links the 67-node research audit as the detailed source for MO research classification.
+
+**Result / commits:**
+- research audit: `Docs/Research/MedievalOverhaulJapanizationResearchAudit.md`, commit `eb25895778dfe1284a6192bdd729183b3e4b5ce8`
+- Design link: `9083cef4180c514bdf9449d69a56f4dbf0f0d6dc`
+- retexture ownership reconciliation: `710c573a8b35bb0f0665e5ec51a4120a7ecc2de8`
+- Ironmaking boundary reconciliation: `5128ed760a701cba20cf9017b7e3e04284a56369`
+
+**Next action:** trace the actual MO ThingDefs / RecipeDefs unlocked by the military and equipment nodes and produce a Def-by-Def Japanization mapping. High-priority unresolved rows are Carrier Birds, Heavy Crossbow/Ballista, Tar, Smoker, Carpet Making and Oven. Create/choose the dedicated Japanization repository before production XML/assets are written.
 
 ### DOC-010 — Workshop cover common-left drift prevention
 
