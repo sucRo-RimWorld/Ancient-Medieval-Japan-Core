@@ -975,6 +975,8 @@ DBH for Medieval公式互換:
 
 Japanizationは**「MOを中世日本へ変換する層」**であって、新しいCoreではない。AMJ各Modの独立性を維持したまま、MOを採用する構成だけを深く統合する。
 
+MO 1.6.2.2の研究ツリー全67ノード（MO独自51 + MOが移動/再構成するVanilla 16）の初回分類、史料アンカー、未解決監査項目は [Research/MedievalOverhaulJapanizationResearchAudit.md](Research/MedievalOverhaulJapanizationResearchAudit.md) を詳細正本とする。研究・武器・料理等の個別分類は同文書の監査を経て実装へ落とし込み、チャット上の一時分類だけでXMLを変更しない。
+
 ### 2.10 MOの研究フローを古代～中世日本史へ再構成する
 
 Medieval Overhaulの研究順は西欧中世を主軸にしたゲーム的抽象化であり、Japanization導入時にはその順序を日本側の技術史へそのまま従属させない。**`AMJ - Medieval Overhaul Japanization` がMO全体の研究フロー再構成を所有する。**
