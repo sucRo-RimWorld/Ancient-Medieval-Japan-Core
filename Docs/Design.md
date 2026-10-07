@@ -402,7 +402,7 @@ Fermentation / Brewingは、GrainsやMOをハード依存にしない設計を�
 | Straw | **AMJ Straw ThingDefを作らない。** Base脱穀では茎葉残渣を非アイテム化 | 脱穀時だけ DankPyon_Straw を副産物として追加。収穫時Hay・製粉時Hay/Strawは出さない | **MO時のみMO所有資産を利用** |
 | 作物・加工研究 | Base主要ループからMO ResearchDef参照を除去。最低限の栽培・一次加工・手動製粉はMO研究なしで成立 | MO研究との接続は条件付き互換。MO研究がないとGrains主要ループが止まる構成にしない | **BaseはGrains/MO非依存** |
 | 建築材料 | Vanilla / Grains所有のStuff・Thingだけで建設可能 | RawWood / IronIngot等への材料置換・追加は条件付き互換 | **BaseはVanilla/Grains** |
-| New Village Scenario | **開始シナリオ専用の独立Modへ分離する**。既存DefNameを維持する移行設計が完了するまで現packageに暫定保持 | 開始シナリオModがGrains/MO導入時の物資・研究差分を任意互換として所有 | **Grainsの最終責務から除外。物理移行は未実施** |
+| New Village Scenario | **独立Scenarios Modが所有**。Grainsの旧版互換コピーはScenarios不在時だけ読み込む | ScenariosがGrains/MO導入時の物資・研究差分を任意互換として所有 | **Grainsの最終責務から除外。物理分離済み、実ゲーム・旧セーブ移行は未検証** |
 | CCTO | なくてもGrains作物は成立 | CCTO存在時だけ既存互換Patch | **任意互換** |
 | 米・水田 | 所有しない | 所有しない | **Waterworks / Rice Cultivation** |
 | 豆類 | 所有しない | 所有しない | **Grains外。将来所有先を用途と合わせて決定** |
@@ -410,6 +410,9 @@ Fermentation / Brewingは、GrainsやMOをハード依存にしない設計を�
 | 根菜・一般野菜 | 所有しない | 所有しない | **Grains外。将来所有先を決定** |
 
 **小麦統合の固定ルール**
+
+現行コードの残存MO依存と検証範囲は [`GrainsDependencyAudit.md`](GrainsDependencyAudit.md) を参照する。Def識別子の分離完了を、画像・実ゲームを含む独立動作の完了と解釈しない。
+
 - MOなし: Grains小麦Plant → Grains小麦束 → 脱穀 → AMJC_Wheat → Grains小麦粉。
 - MOあり: MO小麦Plant → DankPyon_RawWheat（小麦束）→ 脱穀 → AMJC_Wheat → DankPyon_Flour。
 - 同一プロファイルでAMJ小麦PlantとMO小麦Plant、AMJ小麦粉とMO小麦粉を標準経路として並存させない。

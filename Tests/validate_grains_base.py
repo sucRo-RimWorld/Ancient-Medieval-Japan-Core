@@ -62,7 +62,8 @@ def validate():
         if (node.findtext("defName") or "").startswith("AMJC_Thresh"):
             assert len(node.findall("products/*")) == 1
     assert any(n.findtext("defName") == "AMJC_ThreshWheat" for n in base)
-    print("Grains stage-2 Base references 0; 38 pre-split MO explicit Def contracts preserved: PASS")
+    print("Grains Base MO identifier/class references 0; 38 pre-split MO explicit Def contracts preserved: PASS")
+    print("Scope: texture providers, inherited/full game references and runtime are not validated; see Docs/GrainsDependencyAudit.md")
 
 
 if __name__ == "__main__":
