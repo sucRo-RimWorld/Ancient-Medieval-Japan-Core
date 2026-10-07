@@ -573,7 +573,7 @@ Grainsの責務は、**乾田穀物の栽培・収穫・一次加工・製粉・
 
 #### 開始シナリオの独立Mod化（2026-10-07 作者確定）
 
-「新しい村」のScenario、開始用プレイヤーFaction/PawnKind、初期研究・物資は、**開始シナリオ専用の独立Mod**が所有する。Grainsは穀物・一次加工・製粉・最低限粉食を所有し、村の開始条件を含めない。NPC派閥を追加するAMJ Factionsとも別責務とする。新Modの正式名称・packageId・リポジトリは未決定。
+「新しい村」のScenario、開始用プレイヤーFaction/PawnKind、初期研究・物資は、**開始シナリオ専用の独立Mod**が所有する。Grainsは穀物・一次加工・製粉・最低限粉食を所有し、村の開始条件を含めない。NPC派閥を追加するAMJ Factionsとも別責務とする。新Modの正式名称・packageId・リポジトリは未決定。 移行対象台帳・二つの試作パッケージの生成規則・旧セーブ検証計画は [`Docs/ScenarioExtraction.md`](ScenarioExtraction.md) を正本とする。
 
 - 開始シナリオModはVanilla単独で成立させる。Grains・MOを必須依存にしない。
 - Grains導入時だけ雑穀等の開始物資と加工経路への接続を適用し、MO導入時だけMO研究・素材・携行食等の差分を適用する。両方導入した構成も開始シナリオMod側の任意互換で扱う。
@@ -2102,3 +2102,17 @@ New Villageに依存しないStage A Quickstart上の六穀の実収穫＋11回�
 CraftingのWorkGiver_DoBillから固定対象へ通常作業を割り当てる。
 レシピのrecipeUsersだけではWorkGiver_DoBillの固定対象一覧へ追加されないため、両方を持つ。
 MO石臼は既存MO WorkGiverを利用し、重複作業Defを追加しない。既存38契約は変更しない。
+
+
+### 開始シナリオの分離試作（2026-10-07）
+
+`Scripts/prepare_scenario_extraction.py` と機械可読台帳から、本番を変更せずに
+移行対応Grains／独立シナリオのテスト用パッケージを生成できる。
+新シナリオが有効なときはGrainsの旧3Def・翻訳・MO開始差分をロードせず、
+同名・同型のDefを新Mod側が一意に提供する。無効時はGrainsの互換用領域が提供する。
+MO差分の後にGrains物資差分を適用し、Grains併用時の全明示契約は現行値と順序を維持する。
+
+Vanilla/MO単独時の穀物代替は試案RawRice 300。正式なバランス採用・packageId確定・
+本番所有者変更・テスト移管は未実施。現行Coreを未更新のまま新Modと併用すると重複するため、
+移行対応版への更新を先に行う。静的な一意性・契約一致は旧セーブ読込／安全な削除の実測を代替しない。
+詳細と未完ゲートは `Docs/ScenarioExtraction.md`。

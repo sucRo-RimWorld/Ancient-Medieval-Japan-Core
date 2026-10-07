@@ -216,3 +216,24 @@ Base-only `AMJC_DoGrainsMilling` now connect those benches to native
 positive/negative contracts cover giver class and fixed targets; actual jobs are
 still uncompiled/unrun here. The step source preserves asynchronous cleanup while
 remaining compatible with the repository's Framework C# 5 compiler syntax.
+
+
+## Starting-scenario extraction prototype
+
+`Docs/ScenarioExtraction.md` is the owning extraction/migration procedure.
+`python Tests/test_scenario_extraction.py` builds two disposable test packages
+and checks six XML ownership configurations plus guard/order/duplicate regressions.
+It preserves all current explicit contracts whenever Grains is present; standalone
+Scenario supplies use draft RawRice 300 instead of unavailable AMJC grain refs.
+Production packages and eight-scenario runtime suites are unchanged. The generator
+requires fresh output and distinct `.extractiontest` IDs, records source/payload
+hashes and does not install, publish or rewrite saves. An unchanged current Core
+cannot coexist with a new provider; the regression explicitly rejects that mix.
+
+This establishes a reproducible candidate structure, not physical production
+extraction, game loader behavior or successful old-save migration. At actual
+ownership transfer, move only NewVillage steps/Quickstart/start scenarios to the
+new owner's test suite, keep generic Stage A/environment/Bill tests in Grains,
+and update exact suite names/counts/source attribution together. Both real
+four-profile suites and save-migration runs must retain rendering/private desktop
+and ERROR gates before reporting a release-ready separation.
