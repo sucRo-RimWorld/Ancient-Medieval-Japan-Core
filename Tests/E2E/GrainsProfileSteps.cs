@@ -41,7 +41,7 @@ namespace AncientMedievalJapanCore.E2E
             return RuntimeThread.Run(delegate
             {
                 foreach (string name in new[] { "AMJC_Plant_FoxtailMillet_Awa", "AMJC_Plant_BarnyardMillet_Hie",
-                    "AMJC_Plant_ProsoMillet_Kibi", "AMJC_Plant_Buckwheat_Soba", "AMJC_Plant_Barley" })
+                    "AMJC_Plant_ProsoMillet_Kibi", "AMJC_Plant_Buckwheat_Soba", "AMJC_Plant_Barley", "Plant_Rice" })
                 {
                     ThingDef crop = DefDatabase<ThingDef>.GetNamed(name);
                     ctx.Require(crop.plant != null && crop.plant.harvestedThingDef != null, name + " must resolve a harvest.");
@@ -69,6 +69,15 @@ namespace AncientMedievalJapanCore.E2E
                         ctx.Assert(recipe.products.Count == 1 && recipe.products.All(p => p.thingDef.defName.StartsWith("AMJC_")),
                             "Base threshing must produce only its AMJ grain: " + recipe.defName);
                 }
+                ThingDef rice = DefDatabase<ThingDef>.GetNamed("Plant_Rice");
+                ctx.Assert(rice.plant.harvestedThingDef != null && rice.plant.harvestedThingDef.defName == "RawRice"
+                    && rice.plant.growDays == 8f && rice.plant.harvestYield == 20f
+                    && rice.plant.fertilityMin == 0.7f && rice.plant.fertilitySensitivity == 0.9f
+                    && rice.plant.minGrowthTemperature == 10f && rice.plant.minOptimalGrowthTemperature == 20f
+                    && rice.plant.maxOptimalGrowthTemperature == 35f && rice.plant.maxGrowthTemperature == 42f,
+                    "Vanilla Plant_Rice must resolve as the Grains upland-rice balance.");
+                ctx.Assert(rice.plant.sowTags != null && rice.plant.sowTags.SequenceEqual(new[] { "Ground" }),
+                    "Upland rice must keep only the Ground sowTag.");
                 new StageASteps().AssertSimpleMealAcceptsMillet(ctx);
             });
         }
@@ -88,7 +97,7 @@ namespace AncientMedievalJapanCore.E2E
                 string sheaf = mo ? "DankPyon_RawWheat" : "AMJC_RawWheat";
                 ctx.Assert(wheat.plant.harvestedThingDef.defName == sheaf && wheat.plant.growDays == 12f
                     && wheat.plant.harvestYield == 28f && wheat.plant.fertilityMin == 0.7f
-                    && wheat.plant.fertilitySensitivity == 0.9f, "Wheat provider must retain the six-grain balance.");
+                    && wheat.plant.fertilitySensitivity == 0.9f, "Wheat provider must retain the seven-grain balance.");
                 if (!mo)
                 {
                     ctx.Assert(wheat.plant.sowResearchPrerequisites == null || wheat.plant.sowResearchPrerequisites.Count == 0,
@@ -159,7 +168,26 @@ namespace AncientMedievalJapanCore.E2E
         }
 
         [Then("Grains cold tolerance extensions are present")]
-        public void ColdPresent(PickleContext ctx) { new StageASteps().AssertLoadedCropCctoCompatibility(ctx); }
+        public void ColdPresent(PickleContext ctx)
+        {
+            new StageASteps().AssertLoadedCropCctoCompatibility(ctx);
+            ThingDef rice = DefDatabase<ThingDef>.GetNamed("Plant_Rice");
+            ctx.Assert(rice.plant.minGrowthTemperature == 10f,
+                "Upland rice must retain the 10 C minimum growth temperature with CCTO.");
+            var extensions = rice.modExtensions == null
+                ? new System.Collections.Generic.List<DefModExtension>()
+                : rice.modExtensions.Where(e => e != null &&
+                    e.GetType().FullName == "CropColdToleranceOverhaul.ColdToleranceExtension").ToList();
+            ctx.Assert(extensions.Count == 1,
+                "CCTO must provide exactly one cold-tolerance extension for Vanilla Plant_Rice.");
+            if (extensions.Count == 1)
+            {
+                var field = extensions[0].GetType().GetField("coldDeathTemperature");
+                ctx.Require(field != null, "CCTO rice extension must expose coldDeathTemperature.");
+                ctx.Assert(Convert.ToSingle(field.GetValue(extensions[0])) == -1f,
+                    "Upland rice must retain CCTO's -1 C cold-death threshold.");
+            }
+        }
 
         [Then("Grains cold tolerance extensions are absent")]
         public void ColdAbsent(PickleContext ctx)
@@ -168,6 +196,12 @@ namespace AncientMedievalJapanCore.E2E
                 ctx.Assert(crop.modExtensions == null || !crop.modExtensions.Any(e => e != null &&
                     e.GetType().FullName == "CropColdToleranceOverhaul.ColdToleranceExtension"),
                     crop.defName + " must not load a CCTO extension without CCTO.");
+            ThingDef rice = DefDatabase<ThingDef>.GetNamed("Plant_Rice");
+            ctx.Assert(rice.plant.minGrowthTemperature == 10f,
+                "Grains must own the upland-rice minimum growth temperature without CCTO.");
+            ctx.Assert(rice.modExtensions == null || !rice.modExtensions.Any(e => e != null &&
+                    e.GetType().FullName == "CropColdToleranceOverhaul.ColdToleranceExtension"),
+                "Grains must not fabricate a CCTO extension for Vanilla Plant_Rice.");
         }
     }
 }

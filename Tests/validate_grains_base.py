@@ -5,6 +5,7 @@ import re
 import xml.etree.ElementTree as ET
 from copy import deepcopy
 from amj_profile_xml import ROOT, MO_FOLDER, profile_xml, contract_signature
+from validate_grains_environment import UPLAND_RICE, upland_rice_values
 
 MO_GRAPHIC_PATHS = {
     "Things/Plants/FullGrown/WheatPlant",
@@ -46,6 +47,11 @@ def validate():
 
     base = profile_xml("vanilla")
     mo = profile_xml("mo")
+    assert upland_rice_values(ROOT) == UPLAND_RICE
+    for document in (base, mo):
+        explicit_names = {node.findtext("defName") for node in document.findall("ThingDef")}
+        assert "Plant_Rice" not in explicit_names and "RawRice" not in explicit_names, (
+            "Grains must patch Vanilla rice in place rather than duplicate its Defs")
     for name, paths in AMJ_GRAPHICS.items():
         for document in (base, mo):
             target = document.find('ThingDef[defName="' + name + '"]')

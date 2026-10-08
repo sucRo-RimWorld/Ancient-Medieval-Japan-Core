@@ -5,6 +5,7 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 from amj_profile_xml import profile_xml
+from validate_grains_environment import UPLAND_RICE, upland_rice_values
 MO_XML = profile_xml("mo")
 
 def validate_powershell_encoding(path):
@@ -97,6 +98,7 @@ plants = load("Defs/ThingDefs_Plants/Plants_StageA.xml")
 items = load("Defs/ThingDefs_Items/Items_StageA_Grains.xml")
 buildings = load("Defs/ThingDefs_Buildings/Buildings_GrainProcessing.xml")
 recipes = load("Defs/RecipeDefs/Recipes_GrainProcessing.xml")
+assert upland_rice_values(ROOT) == UPLAND_RICE
 
 def assert_ccto_patch(def_name, death_temp):
     matches = []
@@ -155,14 +157,14 @@ for design_name, crop, death in (
     ("ソバ", soba, "-2℃"),
     ("大麦", barley, "-8℃"),
 ):
-    row = markdown_row("Docs/Design.md", "### 4.2.1 Stage A畑作6作物の確定バランス", design_name)
+    row = markdown_row("Docs/Design.md", "### 4.2.1 Grains畑作7作物の確定バランス", design_name)
     assert float(row[1]) == num(crop, "plant/growDays")
     assert float(row[2]) == num(crop, "plant/harvestYield")
     assert float(row[3]) == num(crop, "plant/fertilityMin")
     assert float(row[4]) == num(crop, "plant/fertilitySensitivity")
     assert row[7] == death
 
-wheat_design = markdown_row("Docs/Design.md", "### 4.2.1 Stage A畑作6作物の確定バランス", "小麦（MO）")
+wheat_design = markdown_row("Docs/Design.md", "### 4.2.1 Grains畑作7作物の確定バランス", "小麦（MO）")
 assert float(wheat_design[1]) == 12
 assert float(wheat_design[2]) == 28
 assert float(wheat_design[3]) == 0.7
@@ -251,6 +253,7 @@ for recipe_name in ("DankPyon_CraftFlour_Manual", "DankPyon_CraftFlour", "DankPy
     )
 
 jp = load("Languages/Japanese/DefInjected/ThingDef/AMJC_StageA.xml")
+assert text(jp, "Plant_Rice.label") == "陸稲"
 assert text(jp, "AMJC_Plant_FoxtailMillet_Awa.label") == "アワ"
 assert text(jp, "AMJC_Plant_BarnyardMillet_Hie.label") == "ヒエ"
 assert text(jp, "AMJC_Plant_ProsoMillet_Kibi.label") == "キビ"

@@ -18,7 +18,7 @@ namespace AncientMedievalJapanCore.E2E
         {
             return new[] { "AMJC_Plant_FoxtailMillet_Awa", "AMJC_Plant_BarnyardMillet_Hie",
                 "AMJC_Plant_ProsoMillet_Kibi", "AMJC_Plant_Buckwheat_Soba", "AMJC_Plant_Barley",
-                mo ? "DankPyon_Plant_Wheat" : "AMJC_Plant_Wheat" };
+                mo ? "DankPyon_Plant_Wheat" : "AMJC_Plant_Wheat", "Plant_Rice" };
         }
 
         private static bool HasMO()
@@ -27,7 +27,7 @@ namespace AncientMedievalJapanCore.E2E
                 m.PackageIdPlayerFacing, "dankpyon.medieval.overhaul", StringComparison.OrdinalIgnoreCase));
         }
 
-        [Then("six Grains retain environmental harvest niches")]
+        [Then("seven Grains retain environmental harvest niches")]
         public Task Environment(PickleContext ctx)
         {
             return RuntimeThread.Run(delegate
@@ -145,6 +145,19 @@ namespace AncientMedievalJapanCore.E2E
                         foreach (Thing thing in cell.GetThingList(map).ToList()) thing.Destroy(DestroyMode.Vanish);
                         map.terrainGrid.SetTerrain(cell, TerrainDefOf.Soil);
                     }
+                    ThingDef uplandRice = DefDatabase<ThingDef>.GetNamed("Plant_Rice");
+                    ctx.Assert(uplandRice.plant != null
+                        && uplandRice.plant.sowTags != null
+                        && uplandRice.plant.sowTags.SequenceEqual(new[] { "Ground" }),
+                        "Upland rice must be available only to ordinary field sowing.");
+                    Zone_Growing dummyZone = new Zone_Growing(map.zoneManager);
+                    map.zoneManager.RegisterZone(dummyZone);
+                    try
+                    {
+                        ctx.Assert(PlantUtility.CanSowOnGrower(uplandRice, dummyZone),
+                            "Upland rice must remain selectable for an ordinary growing zone.");
+                    }
+                    finally { dummyZone.Delete(); }
                     for (int attempt = 0; attempt < 30; attempt++)
                     {
                         Pawn candidate = PawnGenerator.GeneratePawn(PawnKindDefOf.Colonist, Faction.OfPlayer);

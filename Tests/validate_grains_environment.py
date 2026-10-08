@@ -1,21 +1,39 @@
-"""Finite-season yield model; not a calendar/weather/survival simulation."""
+"""Seven-crop finite-season yield model; not a calendar/weather/survival simulation."""
 from itertools import product
 from collections import Counter
 from math import floor
+import xml.etree.ElementTree as ET
 from amj_profile_xml import ROOT, profile_xml
 
 CROPS = ('AMJC_Plant_FoxtailMillet_Awa', 'AMJC_Plant_BarnyardMillet_Hie',
          'AMJC_Plant_ProsoMillet_Kibi', 'AMJC_Plant_Buckwheat_Soba',
-         'AMJC_Plant_Barley', 'AMJC_Plant_Wheat')
+         'AMJC_Plant_Barley', 'AMJC_Plant_Wheat', 'Plant_Rice')
 FERTILITIES = (0.5, 1.0, 1.4)
 TEMPERATURES = (10, 20, 30)
-SEASONS = (5, 10, 20)  # effective full-light, non-resting growth days
+SEASONS = (5, 10, 20)
 FIELDS = ('growDays','harvestYield','fertilityMin','fertilitySensitivity',
           'minGrowthTemperature','minOptimalGrowthTemperature',
           'maxOptimalGrowthTemperature','maxGrowthTemperature')
-# External MO wheat uses PlantProperties defaults for temperature. This is an
-# explicit source assumption; loaded Pickle checks use the real game utility.
 MO_WHEAT = (12,28,0.7,0.9,0,6,42,58)
+UPLAND_RICE = (8,20,0.7,0.9,10,20,35,42)
+
+
+def upland_rice_values(root=ROOT):
+    patch = ET.parse(root/'Patches/UplandRice.xml').getroot()
+    operations = patch.findall('Operation')
+    assert len(operations) == 9, 'Upland rice patch must own eight numeric fields plus sowTags'
+    for operation in operations:
+        xpath = operation.findtext('xpath') or ''
+        assert 'Plant_Rice' in xpath and 'RawRice' not in xpath, 'Upland patch must target only Plant_Rice'
+    for field, expected in zip(FIELDS, UPLAND_RICE):
+        values = [float(node.text) for node in patch.findall('.//value/'+field)]
+        assert len(values) == 2 and all(value == expected for value in values), 'Upland rice patch differs for '+field
+    tags = patch.findall('.//value/sowTags')
+    assert len(tags) == 2
+    for node in tags:
+        assert [li.text for li in node.findall('li')] == ['Ground'], (
+            'Upland rice must be field-sown only; Hydroponic must stay removed')
+    return UPLAND_RICE
 
 
 def output(values, fertility, temperature, season):
@@ -34,7 +52,9 @@ def matrix(root=ROOT, profile='vanilla'):
     defs = {n.findtext('defName'): n for n in profile_xml(profile,root)}
     crops = []
     for name in CROPS:
-        if profile == 'mo' and name == CROPS[-1]:
+        if name == 'Plant_Rice':
+            crops.append(upland_rice_values(root))
+        elif profile == 'mo' and name == 'AMJC_Plant_Wheat':
             crops.append(MO_WHEAT)
         else:
             crops.append(tuple(float(defs[name].findtext('plant/'+field)) for field in FIELDS))
@@ -50,7 +70,7 @@ def matrix(root=ROOT, profile='vanilla'):
 
 def validate(root=ROOT):
     import json
-    expected = json.loads((ROOT/'Tests/Fixtures/Grains_Environment.json').read_text())
+    expected = json.loads((root/'Tests/Fixtures/Grains_Environment.json').read_text())
     for profile in ('vanilla','mo'):
         rows = matrix(root,profile)
         assert rows == expected[profile], 'Environmental yield/choice changed: '+profile
@@ -63,4 +83,4 @@ def validate(root=ROOT):
 
 if __name__ == '__main__':
     validate()
-    print('Grains environment: PASS (27 cells/profile, six niches; analytical only)')
+    print('Grains environment: PASS (27 cells/profile, seven niches; analytical only)')

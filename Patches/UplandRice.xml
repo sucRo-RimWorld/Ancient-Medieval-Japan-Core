@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <!--
+    AMJ treats Vanilla Plant_Rice as upland rice (陸稲).
+    RawRice remains the shared edible-rice Def; this patch only changes cultivation.
+  -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/growDays</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/growDays</xpath>
+      <value><growDays>8</growDays></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant</xpath>
+      <value><growDays>8</growDays></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/harvestYield</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/harvestYield</xpath>
+      <value><harvestYield>20</harvestYield></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant</xpath>
+      <value><harvestYield>20</harvestYield></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/fertilityMin</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/fertilityMin</xpath>
+      <value><fertilityMin>0.7</fertilityMin></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant</xpath>
+      <value><fertilityMin>0.7</fertilityMin></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/fertilitySensitivity</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/fertilitySensitivity</xpath>
+      <value><fertilitySensitivity>0.9</fertilitySensitivity></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant</xpath>
+      <value><fertilitySensitivity>0.9</fertilitySensitivity></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/minGrowthTemperature</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/minGrowthTemperature</xpath>
+      <value><minGrowthTemperature>10</minGrowthTemperature></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant</xpath>
+      <value><minGrowthTemperature>10</minGrowthTemperature></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/minOptimalGrowthTemperature</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/minOptimalGrowthTemperature</xpath>
+      <value><minOptimalGrowthTemperature>20</minOptimalGrowthTemperature></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant</xpath>
+      <value><minOptimalGrowthTemperature>20</minOptimalGrowthTemperature></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/maxOptimalGrowthTemperature</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/maxOptimalGrowthTemperature</xpath>
+      <value><maxOptimalGrowthTemperature>35</maxOptimalGrowthTemperature></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant</xpath>
+      <value><maxOptimalGrowthTemperature>35</maxOptimalGrowthTemperature></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/maxGrowthTemperature</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/maxGrowthTemperature</xpath>
+      <value><maxGrowthTemperature>42</maxGrowthTemperature></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant</xpath>
+      <value><maxGrowthTemperature>42</maxGrowthTemperature></value>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/sowTags</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/sowTags</xpath>
+      <value>
+        <sowTags><li>Ground</li></sowTags>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant</xpath>
+      <value>
+        <sowTags><li>Ground</li></sowTags>
+      </value>
+    </nomatch>
+  </Operation>
+
+</Patch>

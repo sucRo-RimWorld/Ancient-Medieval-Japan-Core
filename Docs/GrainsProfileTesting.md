@@ -230,17 +230,19 @@ and ERROR gates before reporting a release-ready separation.
 
 Scenarios build, provider-alias staging, four-profile runner, private-desktop entry point and actual-start assertions are source/tooling only: see the owner Docs/RuntimeTesting.md. They have not compiled or run here; old-save migration automation remains next.
 
-## Upland rice scope extension (2026-10-08 audit)
+## Upland rice implementation gate (2026-10-08)
 
-Grains now owns the Vanilla `Plant_Rice` crop as **upland rice (陸稲)** and keeps `RawRice` as the shared edible-rice Def. This is a confirmed design boundary, not a claim that the Production patch is already implemented.
+Grains patches the Vanilla `Plant_Rice` in place as upland rice and keeps `RawRice` as the shared edible-rice Def. Production source values are 8 growDays, 20 harvestYield, fertilityMin 0.7, fertilitySensitivity 0.9, 10–42°C growth and 20–35°C optimal growth. The sow-tag patch keeps `Ground` only.
 
-The current real-provider suite remains the existing six named grain scenarios until the implementation lands; do not change expected counts or fabricate a seven-crop PASS ahead of the source change. Before standalone release, extend the existing environment/job coverage so it proves all of the following:
+The real-provider suite still contains exactly six **scenarios** per profile, but its environment and production scenarios now cover **seven crops**. Source-level Pickle assertions require:
 
-- the loaded `Plant_Rice` is the Grains upland-rice definition/patch in both Vanilla and MO profiles;
-- upland rice is sowable on normal ground and the Vanilla `Hydroponic` sow tag is removed if the final implementation adopts the audited candidate;
-- a native harvest produces Vanilla `RawRice`, which remains accepted by ordinary meals;
-- CCTO profiles retain CCTO's existing `Plant_Rice` minimum-growth / cold-death behavior without a duplicate Grains cold-tolerance extension;
-- the analytical and loaded-Def environment regressions are extended from six crops to seven and still reject a single crop dominating the representative cells;
-- the real-profile matrix exercises at least one native upland-rice sow/harvest path and retains the strict runtime ERROR gate.
+- the loaded `Plant_Rice` balance and `RawRice` harvest target in Vanilla and MO profiles;
+- `Ground` as the only sowTag and compatibility with an ordinary `Zone_Growing`;
+- a native designated harvest job for `Plant_Rice`, so `RawRice` must be produced by the game's harvest path rather than by the test;
+- Vanilla simple-meal acceptance of `RawRice`;
+- seven-crop environment niches using the loaded `PlantUtility` functions;
+- with real CCTO, exactly one CCTO rice extension and fixed cold death -1°C; without CCTO, no such extension while Grains still supplies minimum growth 10°C.
 
-Future Rice Cultivation integration is not part of the Grains standalone matrix. That owner must test its water-rice crop converging on `RawRice` or the then-current Grains rice-processing path when Grains is present, without duplicating the Grains milling/food chain.
+These C# assertions are source changes until the installed-game four-profile runner actually compiles and executes them. Do not report a runtime PASS from static/CI validation. The release gate also retains an actual normal sow-job check if the grow-zone compatibility assertion is not sufficient to reproduce a player sow job.
+
+Future Rice Cultivation integration is not part of the Grains standalone matrix. Its owner must verify that water rice converges on `RawRice` or the then-current Grains rice-processing path when Grains is present, without duplicating the Grains milling/food chain.

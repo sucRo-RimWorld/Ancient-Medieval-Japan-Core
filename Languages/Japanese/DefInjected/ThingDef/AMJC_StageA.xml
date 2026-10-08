@@ -11,6 +11,8 @@
   <AMJC_Plant_ProsoMillet_Kibi.description>古くから栽培されてきた雑穀の一種。3種の雑穀の中で最も早く成熟し、肥沃度の低下による生育速度への影響も小さい。一度の収穫量はアワやヒエより少ない。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_ProsoMillet_Kibi.description>
 
 
+  <Plant_Rice.label>陸稲</Plant_Rice.label>
+
   <AMJC_Plant_Buckwheat_Soba.label>ソバ</AMJC_Plant_Buckwheat_Soba.label>
   <AMJC_Plant_Buckwheat_Soba.description>短い期間で収穫でき、痩せた土地でも生育速度が落ちにくい穀物。残りの生育期間が短い場合や低肥沃度の畑に向くが、霜には弱い。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_Buckwheat_Soba.description>
 

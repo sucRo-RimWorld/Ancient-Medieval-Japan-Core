@@ -12,8 +12,8 @@ Feature: Grains real-provider migration smoke - mo
   Scenario: Grains mo wheat flour and minimum food resolve
     Then the Grains wheat flour and minimum food chains resolve
 
-  Scenario: Grains mo six grains retain environmental niches
-    Then six Grains retain environmental harvest niches
+  Scenario: Grains mo seven grains retain environmental niches
+    Then seven Grains retain environmental harvest niches
 
   @quickstart:AmjStageAQuickstart
   Scenario: Grains mo real harvest and flour food Bills complete

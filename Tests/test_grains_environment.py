@@ -1,4 +1,4 @@
-"""Environmental regressions include broken fertility, heat and season niches."""
+"""Environmental regressions include crop roles and the in-place upland-rice patch."""
 import shutil
 import tempfile
 import unittest
@@ -6,6 +6,15 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from amj_profile_xml import ROOT
 from validate_grains_environment import validate, output
+
+
+def copy_runtime_xml(root):
+    for folder in ('Defs','Patches','BaseWithoutMO','Compatibility','LegacyStartingScenarios'):
+        shutil.copytree(ROOT/folder,root/folder)
+    shutil.copyfile(ROOT/'loadFolders.xml',root/'loadFolders.xml')
+    (root/'Tests/Fixtures').mkdir(parents=True)
+    shutil.copyfile(ROOT/'Tests/Fixtures/Grains_Environment.json',
+                    root/'Tests/Fixtures/Grains_Environment.json')
 
 
 class EnvironmentTests(unittest.TestCase):
@@ -25,14 +34,30 @@ class EnvironmentTests(unittest.TestCase):
                                   (3,'maxOptimalGrowthTemperature','32'),
                                   (4,'harvestYield','200')):
             with self.subTest(field=field,crop=crop), tempfile.TemporaryDirectory() as temp:
-                root=Path(temp)
-                for folder in ('Defs','BaseWithoutMO','Compatibility','LegacyStartingScenarios'):
-                    shutil.copytree(ROOT/folder,root/folder)
-                shutil.copyfile(ROOT/'loadFolders.xml',root/'loadFolders.xml')
+                root=Path(temp);copy_runtime_xml(root)
                 path=root/'Defs/ThingDefs_Plants/Plants_StageA.xml'
                 doc=ET.parse(path);node=doc.findall('ThingDef')[crop].find('plant/'+field)
                 node.text=value;doc.write(path)
                 with self.assertRaises(AssertionError):validate(root)
+
+    def test_upland_rice_balance_cannot_silently_change(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);copy_runtime_xml(root)
+            path=root/'Patches/UplandRice.xml'
+            doc=ET.parse(path)
+            doc.find('.//value/harvestYield').text='200'
+            doc.write(path)
+            with self.assertRaises(AssertionError):validate(root)
+
+    def test_upland_rice_hydroponic_sowing_cannot_return(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);copy_runtime_xml(root)
+            path=root/'Patches/UplandRice.xml'
+            doc=ET.parse(path)
+            tags=doc.find('.//value/sowTags')
+            ET.SubElement(tags,'li').text='Hydroponic'
+            doc.write(path)
+            with self.assertRaises(AssertionError):validate(root)
 
 
 if __name__ == '__main__':unittest.main()

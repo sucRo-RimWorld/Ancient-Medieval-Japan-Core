@@ -818,9 +818,9 @@ Grainsの存在意義は「日本の穀物Defを増やすこと」ではなく�
 
 AMJC固有作物の耐寒値と保存候補範囲の正本は [AMJC作物の耐寒データ](Balance/Crops/ColdTolerance.md) に置く。最低成長温度はAMJCのPlantDef、固定枯死・休眠はAMJC側の条件付き互換XMLが持ち、CCTOの実装予定表から参照・転載する運用は行わない。
 
-### 4.2.1 Stage A畑作6作物の確定バランス
+### 4.2.1 Grains畑作7作物の確定バランス
 
-2026-10-01〜02のStage A詳細設計で確定していた数値を、現行公開版のMO併用プロファイルとCCTO独立姉妹Mod方針に基づく初期値として正本化する。**この表のMO研究名・小麦供給元は現行MO必須実装のスナップショットであり、Grains移行後の所有境界は §2.8 の最終Base / MO所有境界を優先する。** growDays・収量・肥沃度・温度等の6穀物バランス値は移行後も原則維持し、変更する場合は競合作物をまとめて再監査する。
+2026-10-01〜02のStage A詳細設計で確定していた数値を、現行公開版のMO併用プロファイルとCCTO独立姉妹Mod方針に基づく初期値として正本化する。**この表のMO研究名・小麦供給元は現行MO必須実装のスナップショットであり、Grains移行後の所有境界は §2.8 の最終Base / MO所有境界を優先する。** growDays・収量・肥沃度・温度等の7穀物バランス値は移行後も原則維持し、変更する場合は競合作物をまとめて再監査する。
 
 | 作物 | growDays | 可食穀粒の基準収量 | fertilityMin | fertilitySensitivity | 成長可能温度 | 最適温度 | CCTO固定枯死温度 | sowMinSkill | 栽培解禁 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---|
@@ -830,6 +830,7 @@ AMJC固有作物の耐寒値と保存候補範囲の正本は [AMJC作物の耐�
 | ヒエ | 6 | 12 | 0.5 | 0.5 | 5～40℃ | 15～30℃ | -2℃ | 0 | 初期 |
 | 大麦 | 10 | 22 | 0.5 | 0.6 | 0～35℃ | 5～22℃ | -8℃ | 2 | MO `DankPyon_BasicAgriculture` |
 | 小麦（MO） | 12 | 28 | 0.7 | 0.9 | 最低0℃。高温側はMO/RimWorld基準を維持 | MO/RimWorld基準 | -6℃ | 0（MO 1.6で明示なし） | MO `DankPyon_BasicAgriculture` |
+| 陸稲（Vanilla `Plant_Rice`） | 8 | 20 | 0.7 | 0.9 | 10～42℃ | 20～35℃ | -1℃（CCTO所有） | 0 | 初期 |
 
 アワ・ヒエ・キビについて、プレイヤーが「どの土地・気温・残り生育期間ならどれを植えるか」を判断できるよう、肥沃度・温度のゲーム内式を含む比較資料を [`Docs/Balance/Crops/Millet_Cultivation_Balance.md`](Balance/Crops/Millet_Cultivation_Balance.md) に置く。そこに掲載する数値・グラフは**現実の農業値ではなく、史実・農学的特徴を参考にAMJへ落とし込んだゲーム内バランス値**である。
 
@@ -851,6 +852,7 @@ Stage Aの穀物は、加工前後の保存性も作物選択と備蓄判断に�
 | 大麦 | 穀束 → 脱穀 → 殻付き大麦 → 殻取り → 大麦穀粒 | 120日 → 120日 → 90日 | 不可。可食化は殻取り後 |
 | 小麦（MO） | 小麦束 → 脱穀 → 小麦穀粒 + `DankPyon_Straw` → 必要に応じてMO製粉 | 120日 → 90日。小麦粉は60日 | 不可。小麦は殻付き中間状態を省略 |
 | ソバ | 穀束 → 脱穀 → 殻付きソバ → 殻取り → ソバ穀粒 | 120日 → 120日 → 60日。蕎麦粉を実装する場合は30日 | 不可。可食化は殻取り後 |
+| 陸稲 | `Plant_Rice` → Vanilla `RawRice` | 40日（Vanilla `RawRice` を維持） | 可。専用の脱穀・籾摺り中間物は追加しない |
 
 - 雑穀粉は具体的用途を追加する段階で実装し、その場合の保存期間は一般粉の60日を基準とする。
 - 蕎麦粉は蕎麦切り・蕎麦がき等の用途とセットで追加し、Stage Aで用途がなければThingDefだけを先行追加しない。
@@ -869,10 +871,10 @@ GrainsではVanillaの `Plant_Rice` を削除・複製せず、**陸稲として
 固定方針:
 - 新規の `AMJC_UplandRice` PlantDefや陸稲専用米ThingDefは作らない。
 - `Plant_Rice` の表示名・説明・画像・栽培値はAMJの陸稲として監査対象にする。
-- Vanillaの `Hydroponic` sowTagは中世日本の陸稲表現には不要なので、Grains側で除去する実装候補とする。最終Patchは実機の播種可否回帰とセットで入れる。
+- Vanillaの `Hydroponic` sowTagは削除し、`Ground` のみを残す。陸稲は普通の栽培ゾーンで育てる。
 - `RawRice` は通常の米として再利用する。陸稲と将来の水稲で最終食材を無意味に分けない。
-- CCTO導入時はCCTOが既に `Plant_Rice` へ設定する最低生育10℃・固定枯死-1℃を利用し、Grains側に重複したColdToleranceExtensionを追加しない。
-- Vanilla Riceの現行3日成長・収量6をそのまま確定値とはしない。既存6作物を含む七穀環境回帰で、陸稲が単一の序盤最適解へ戻らない数値を決める。
+- Grains自身が最低生育10℃を設定する。CCTO導入時はCCTO既存のVanilla `Plant_Rice` 対応から固定枯死-1℃を受け、Grains側に重複したColdToleranceExtensionを追加しない。
+- 採用初期値は growDays 8、harvestYield 20、fertilityMin 0.7、fertilitySensitivity 0.9、成長10～42℃、最適20～35℃。七穀27条件では温暖・高肥沃・長期の2条件だけ最大となり、既存6作物の代表用途をすべて維持する。詳細は [`Docs/Balance/Crops/UplandRice.md`](Balance/Crops/UplandRice.md)。
 - 米粉等の製粉物は具体的用途ができた時だけ追加する。その場合のRecipe・設備・バランス所有はGrainsとする。
 
 将来のRice Cultivationは水田・水稲栽培を追加し、Grains併用時には `RawRice` またはその時点のGrains米加工経路へ合流させる。水稲側で同目的の精米・製粉体系を二重実装しない。
@@ -1018,7 +1020,7 @@ MO併用時は、Grains Baseと同じ目的の設備・素材を二重に並べ�
 - Straw: MO DankPyon_Straw
 - ソバ・大麦・雑穀および蕎麦粉・雑穀粉: Grains所有
 
-MO資産を使っても、Grainsの工程順・6穀物バランス・粉食バランスは維持する。MO固有PatchはMO存在時だけ適用し、Base XMLからMO DefNameを参照しない。
+MO資産を使っても、Grainsの工程順・7穀物バランス・粉食バランスは維持する。MO固有PatchはMO存在時だけ適用し、Base XMLからMO DefNameを参照しない。
 
 ### 6.2 MO研究ツリーとの統合
 
@@ -1256,7 +1258,7 @@ Grainsの主要実装は、次の順で管理する。
 |---|---|---|---|
 | **Stage A / 現行実装** | 乾田穀物 | アワ・ヒエ・キビ・ソバ・大麦・MO小麦統合、脱穀・殻取り、穀物加工設備、New Village | MO必須版として実装済み |
 | **Grains分離移行** | Vanilla自己完結 | 非MO小麦、小麦粉・蕎麦粉・雑穀粉、手動石臼、最低限粉食、BaseからMO参照除去、MO条件付き互換 | **step 3 小麦・製粉・最低限粉食XML実装・実機未検証** |
-| **陸稲統合** | Vanilla Riceの中世日本化 | `Plant_Rice` を陸稲として再定義、`RawRice` 再利用、Hydroponic除去候補、七穀バランス・CCTO・実収穫回帰 | **設計監査完了・Production XML未実装** |
+| **陸稲統合** | Vanilla Riceの中世日本化 | `Plant_Rice` を陸稲として再定義、`RawRice` 再利用、Hydroponic除去、七穀バランス・CCTO・実収穫回帰 | **Production XML・静的/Pickleソース実装。実ゲーム4構成は未検証** |
 | **回帰固定** | 環境別穀物選択 | Base/MO/CCTO各プロファイルで単一穀物がほぼ全条件の最適解にならないことを自動確認 | 分離移行と同時に追加 |
 
 旧Stage B（豆類）、Stage C（繊維）、Stage D（根菜）はGrainsロードマップから削除する。将来必要なら、それぞれの主要用途と自然な所有Modを決めて別途設計する。

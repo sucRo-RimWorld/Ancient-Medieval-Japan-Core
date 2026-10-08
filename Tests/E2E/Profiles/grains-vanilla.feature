@@ -12,8 +12,8 @@ Feature: Grains real-provider migration smoke - vanilla
   Scenario: Grains vanilla wheat flour and minimum food resolve
     Then the Grains wheat flour and minimum food chains resolve
 
-  Scenario: Grains vanilla six grains retain environmental niches
-    Then six Grains retain environmental harvest niches
+  Scenario: Grains vanilla seven grains retain environmental niches
+    Then seven Grains retain environmental harvest niches
 
   @quickstart:AmjStageAQuickstart
   Scenario: Grains vanilla real harvest and flour food Bills complete

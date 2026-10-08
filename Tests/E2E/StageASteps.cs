@@ -68,6 +68,11 @@ namespace AncientMedievalJapanCore.E2E
                 checkpoint = "Soba and Barley crop Defs";
             AssertLoadedCrop(ctx, "AMJC_Plant_Buckwheat_Soba", 4f, 8f, 0.4f, 0.25f, 5f, 35f, 12f, 25f, 1, "AMJC_RawBuckwheat");
             AssertLoadedCrop(ctx, "AMJC_Plant_Barley", 10f, 22f, 0.5f, 0.6f, 0f, 35f, 5f, 22f, 2, "AMJC_RawBarley");
+            AssertLoadedCrop(ctx, "Plant_Rice", 8f, 20f, 0.7f, 0.9f, 10f, 42f, 20f, 35f, 0, "RawRice");
+            ThingDef uplandRice = RequireThingDef(ctx, "Plant_Rice");
+            ctx.Assert(uplandRice.plant.sowTags != null
+                && uplandRice.plant.sowTags.SequenceEqual(new[] { "Ground" }),
+                "Upland rice must remove Vanilla Hydroponic sowing.");
             ThingDef barleyPlant = RequireThingDef(ctx, "AMJC_Plant_Barley");
             ctx.Assert(
                 barleyPlant.plant.sowResearchPrerequisites != null
@@ -448,6 +453,8 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(simpleMeal.fixedIngredientFilter.Allows(barley), "Edible AMJ barley should be accepted by the vanilla simple meal ingredient filter.");
             ThingDef wheat = RequireThingDef(ctx, "AMJC_Wheat");
             ctx.Assert(simpleMeal.fixedIngredientFilter.Allows(wheat), "Edible AMJ wheat grain should be accepted by the vanilla simple meal ingredient filter.");
+            ThingDef rice = RequireThingDef(ctx, "RawRice");
+            ctx.Assert(simpleMeal.fixedIngredientFilter.Allows(rice), "Vanilla RawRice should remain accepted after Plant_Rice becomes AMJ upland rice.");
         }
 
         private static void AssertLoadedCrop(
