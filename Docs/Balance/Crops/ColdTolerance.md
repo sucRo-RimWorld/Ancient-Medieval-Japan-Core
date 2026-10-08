@@ -80,3 +80,10 @@ AMJC固有作物の耐寒データは、**AMJCが所有・管理する**。CCTO�
 ## 2026-10-07 Base小麦の追加
 
 `AMJC_Plant_Wheat` はMOなし時だけ `BaseWithoutMO/Defs/Plants_Wheat.xml` からロードする。最低成長0℃、CCTO有効時だけ `BaseWithoutMO/Patches/CCTO_Wheat.xml` で固定枯死-6℃を追加する。MO併用時はこのDef/Patchをロードせず、従来どおりCCTO側のMO小麦対応を利用する。静的・配置検証は実装済み、実機温度挙動は未検証。
+
+
+## 暦＋温度を制御するnative播種試験（2026-10-08追加、実機未実行）
+
+Grainsは最終的な気候マップの選定を所有しない。既存7穀の本番成長温度値を変更せず、孤立したQuickstart上でのnative `WorkGiver_GrowerSow` と `Plant.TickLong` の接続を別途検証する。25℃の陸稲播種、15日後・5℃での陸稲播種不可/成長停止と大麦の播種可/成長、25℃への復温後の陸稲成長を検査する。
+
+温度は試験中のみ `BiomeDef.constantOutdoorTemperature` で固定し、テスト専用の暦移動を使用する。生育0℃大麦、10℃陸稲という生育温度の差の実機効果を対象とし、自然の季節気象モデル・降雪・CCTO固定枯死温度の実死判定は対象外。試験後は元値へ復元し、ユーザーのMod設定や本番Defsを変更しない。四構成の最新版実機結果は未取得。

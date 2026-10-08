@@ -104,6 +104,10 @@ namespace AncientMedievalJapanCore.E2E
                 await scope.Bill("AMJC_HullRiceBulk", scope.Processing, "AMJC_RiceInHull", 10);
                 foreach (string grain in new[] { "AMJC_Millet", "AMJC_Buckwheat", "AMJC_Barley", "AMJC_Wheat", "RawRice" })
                     await scope.SimpleMeal(grain);
+                // Keep the established six-scenario suite. This is an
+                // additional native sow + cold/warm grow integration assertion,
+                // not a seventh synthetic/static scenario.
+                await scope.NativeSeasonalSowAndGrowth();
             }
             catch (Exception error) { failure = ExceptionDispatchInfo.Capture(error); }
             // The repository builds with the Framework C# 5 compiler, which
@@ -270,6 +274,195 @@ namespace AncientMedievalJapanCore.E2E
                         "Upland rice must be plantable in normal soil.");
                 }
                 finally { zone.Delete(false); }
+            }
+
+
+            // A real WorkGiver -> Sow JobDriver -> Plant.TickLong integration.
+            // Calendar moves by one quadrum; test-only biome temperatures make
+            // warm/cold cases deterministic rather than claiming natural weather.
+            // No gameplay Def, map owner, permanent world climate or crop value
+            // is changed. Natural climate/frost-death remains a separate gate.
+            public async Task NativeSeasonalSowAndGrowth()
+            {
+                Zone_Growing zone = null;
+                Plant ricePlant = null, barleyPlant = null;
+                IntVec3 riceCell = IntVec3.Invalid, barleyCell = IntVec3.Invalid;
+                int savedTicks = -1;
+                float? savedBiomeTemperature = null;
+                var savedSnow = new Dictionary<IntVec3, float>();
+                float riceBeforeCold = 0f, riceBeforeWarm = 0f, barleyBeforeCold = 0f;
+                Job riceJob = null, barleyJob = null;
+                ExceptionDispatchInfo failure = null;
+                try
+                {
+                    await RuntimeThread.Run(delegate
+                    {
+                        ctx.Require(deadline.Elapsed.TotalSeconds < 240, "Seasonal sow test exceeded fixture deadline.");
+                        savedTicks = Find.TickManager.TicksGame;
+                        savedBiomeTemperature = map.Biome.constantOutdoorTemperature;
+                        // Prefer unroofed clear fixture ground away from the
+                        // active benches. The whole 15x15 area is disposable.
+                        IntVec3[] cells = CellRect.CenteredOn(center, 7).Cells
+                            .Where(c => !c.Roofed(map)
+                                && Math.Abs(c.x - center.x) + Math.Abs(c.z - center.z) >= 8
+                                && !c.GetThingList(map).Any(t => t is Building || t is Pawn || t is Plant))
+                            .Take(2).ToArray();
+                        ctx.Require(cells.Length == 2, "Need two open cells for native sow fixture.");
+                        riceCell = cells[0]; barleyCell = cells[1];
+                        foreach (IntVec3 cell in cells)
+                        {
+                            savedSnow.Add(cell, map.snowGrid.GetDepth(cell));
+                            map.snowGrid.SetDepth(cell, 0f);
+                            foreach (Thing leftover in cell.GetThingList(map).ToList())
+                                leftover.Destroy(DestroyMode.Vanish);
+                        }
+                        int hourShift = (12 - GenLocalDate.HourOfDay(map) + 24) % 24;
+                        Find.TickManager.DebugSetTicksGame(savedTicks + hourShift * GenDate.TicksPerHour);
+                        zone = new Zone_Growing(map.zoneManager);
+                        map.zoneManager.RegisterZone(zone);
+                        zone.AddCell(riceCell);
+                        zone.AddCell(barleyCell);
+                        zone.SetPlantDefToGrow(DefDatabase<ThingDef>.GetNamed("Plant_Rice"));
+                        SetSeasonTemperature(25f, riceCell, barleyCell);
+                        ThingDef rice = zone.GetPlantDefToGrow();
+                        ctx.Require(PlantUtility.GrowthSeasonNow(riceCell, map, rice),
+                            "Upland rice must be in a native growth season at 25 C.");
+                        riceJob = NativeSowOffer(riceCell);
+                        ctx.Require(riceJob != null && riceJob.def == JobDefOf.Sow &&
+                            riceJob.plantDefToSow == rice, "Rice needs a native sow job at 25 C.");
+                        Start(riceJob, "WarmSeason/RiceSow");
+                    });
+                    await Complete(riceJob, () => riceCell.GetPlant(map) != null &&
+                        riceCell.GetPlant(map).def.defName == "Plant_Rice" &&
+                        riceCell.GetPlant(map).LifeStage != PlantLifeStage.Sowing, "WarmSeason/RiceSow");
+
+                    await RuntimeThread.Run(delegate
+                    {
+                        ricePlant = riceCell.GetPlant(map);
+                        ctx.Require(ricePlant != null && ricePlant.sown, "Real sow must produce sown Plant_Rice.");
+                        int priorDay = GenLocalDate.DayOfYear(map);
+                        Find.TickManager.DebugSetTicksGame(Find.TickManager.TicksGame + GenDate.TicksPerQuadrum);
+                        ctx.Require(GenLocalDate.DayOfYear(map) == (priorDay + 15) % GenDate.DaysPerYear,
+                            "Controlled test date must advance exactly one quadrum.");
+                        SetSeasonTemperature(5f, riceCell, barleyCell);
+                        ctx.Require(!PlantUtility.GrowthSeasonNow(barleyCell, map, ricePlant.def),
+                            "Rice must not be in growing season at 5 C.");
+                        ctx.Assert(NativeSowOffer(barleyCell) == null,
+                            "Native WorkGiver must reject sowing rice at 5 C.");
+                        riceBeforeCold = ricePlant.Growth;
+                        ctx.Assert(ricePlant.GrowthRateFactor_Temperature == 0f &&
+                            ricePlant.GrowthRate == 0f, "Rice growth must be zero at 5 C.");
+                    });
+                    await SimulatePlantTicks(2200, "RiceColdStall");
+                    await RuntimeThread.Run(delegate
+                    {
+                        ctx.Require(!ricePlant.Destroyed && Math.Abs(ricePlant.Growth - riceBeforeCold) < 0.00001f,
+                            "Real TickLong must not advance rice growth below 10 C.");
+                        zone.SetPlantDefToGrow(DefDatabase<ThingDef>.GetNamed("AMJC_Plant_Barley"));
+                        ThingDef barley = zone.GetPlantDefToGrow();
+                        ctx.Require(PlantUtility.GrowthSeasonNow(barleyCell, map, barley),
+                            "Barley must be in a native growth season at 5 C.");
+                        barleyJob = NativeSowOffer(barleyCell);
+                        ctx.Require(barleyJob != null && barleyJob.def == JobDefOf.Sow &&
+                            barleyJob.plantDefToSow == barley, "Barley needs a native sow job at 5 C.");
+                        Start(barleyJob, "ColdSeason/BarleySow");
+                    });
+                    await Complete(barleyJob, () => barleyCell.GetPlant(map) != null &&
+                        barleyCell.GetPlant(map).def.defName == "AMJC_Plant_Barley" &&
+                        barleyCell.GetPlant(map).LifeStage != PlantLifeStage.Sowing, "ColdSeason/BarleySow");
+                    await RuntimeThread.Run(delegate
+                    {
+                        barleyPlant = barleyCell.GetPlant(map);
+                        ctx.Require(barleyPlant != null && barleyPlant.sown,
+                            "Real sow must produce sown barley.");
+                        ctx.Require(barleyPlant.GrowthRateFactor_Temperature > 0f,
+                            "Barley must retain positive growth-temperature factor at 5 C.");
+                        barleyBeforeCold = barleyPlant.Growth;
+                    });
+                    await SimulatePlantTicks(2200, "BarleyColdGrowth");
+                    await RuntimeThread.Run(delegate
+                    {
+                        ctx.Assert(barleyPlant.Growth > barleyBeforeCold + 0.000001f,
+                            "Native TickLong must grow barley at 5 C in daylight.");
+                        SetSeasonTemperature(25f, riceCell, barleyCell);
+                        ctx.Require(PlantUtility.GrowthSeasonNow(riceCell, map, ricePlant.def),
+                            "Rice must resume the native growth season at 25 C.");
+                        riceBeforeWarm = ricePlant.Growth;
+                    });
+                    await SimulatePlantTicks(2200, "RiceWarmRecovery");
+                    await RuntimeThread.Run(delegate
+                    {
+                        ctx.Assert(!ricePlant.Destroyed && ricePlant.Growth > riceBeforeWarm + 0.000001f,
+                            "Native TickLong must resume rice growth after warming.");
+                    });
+                }
+                catch (Exception error) { failure = ExceptionDispatchInfo.Capture(error); }
+
+                // The test assembly uses the Framework C# 5 compiler: no await
+                // inside finally. Always undo test-only calendar/climate.
+                try
+                {
+                    await RuntimeThread.Run(delegate
+                    {
+                        if (worker != null && worker.Spawned)
+                            worker.jobs.EndCurrentJob(JobCondition.InterruptForced, false);
+                        if (zone != null) zone.Delete(false);
+                        foreach (IntVec3 cell in new[] { riceCell, barleyCell })
+                        {
+                            if (!cell.IsValid) continue;
+                            Plant planted = cell.GetPlant(map);
+                            if (planted != null && !planted.Destroyed) planted.Destroy(DestroyMode.Vanish);
+                        }
+                        foreach (KeyValuePair<IntVec3,float> pair in savedSnow)
+                            map.snowGrid.SetDepth(pair.Key, pair.Value);
+                        if (savedTicks >= 0)
+                        {
+                            map.Biome.constantOutdoorTemperature = savedBiomeTemperature;
+                            foreach (Room room in map.regionGrid.AllRooms)
+                                if (room.UsesOutdoorTemperature) room.TempTracker.EqualizeTemperature();
+                            Find.TickManager.DebugSetTicksGame(savedTicks);
+                        }
+                    });
+                }
+                catch (Exception cleanup)
+                {
+                    if (failure != null) throw new AggregateException(failure.SourceException, cleanup);
+                    throw;
+                }
+                if (failure != null) failure.Throw();
+            }
+
+            private Job NativeSowOffer(IntVec3 cell)
+            {
+                WorkGiver_GrowerSow giver = new WorkGiver_GrowerSow();
+                // Consume scanner enumeration to reset its static cached
+                // wantedPlantDef before changing the zone's selected crop.
+                foreach (IntVec3 ignored in giver.PotentialWorkCellsGlobal(worker)) { }
+                return giver.JobOnCell(worker, cell, true);
+            }
+
+            private void SetSeasonTemperature(float temp, IntVec3 first, IntVec3 second)
+            {
+                map.Biome.constantOutdoorTemperature = temp;
+                foreach (Room room in map.regionGrid.AllRooms)
+                    if (room.UsesOutdoorTemperature) room.TempTracker.EqualizeTemperature();
+                ctx.Require(Math.Abs(first.GetTemperature(map) - temp) < 0.1f &&
+                            Math.Abs(second.GetTemperature(map) - temp) < 0.1f,
+                    "Climate fixture needs true outdoor temperature at both sow cells.");
+            }
+
+            private async Task SimulatePlantTicks(int count, string label)
+            {
+                for (int i = 0; i < count; i += 64)
+                {
+                    int batch = Math.Min(64, count - i);
+                    await RuntimeThread.Run(delegate
+                    {
+                        ctx.Require(deadline.Elapsed.TotalSeconds < 240, "Climate fixture timed out: " + label);
+                        for (int j = 0; j < batch; j++) Find.TickManager.DoSingleTick();
+                    });
+                    await Task.Delay(1);
+                }
             }
 
             public async Task Harvest(string name, bool extra = false)

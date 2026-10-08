@@ -117,6 +117,46 @@ class ChainRegressionTests(unittest.TestCase):
             assert 'Then Grains harvest and flour food Bills complete through real jobs' in feature
             assert feature.count('  Scenario:') == 6
 
+    def test_real_seasonal_sow_and_growth_uses_actual_game_jobs(self):
+        source = (ROOT/'Tests/E2E/GrainsSimulationSteps.cs').read_text(encoding='utf-8')
+        start = source.index('public async Task NativeSeasonalSowAndGrowth()')
+        end = source.index('public async Task Harvest(', start)
+        seasonal = source[start:end]
+        assert 'await scope.NativeSeasonalSowAndGrowth();' in source
+        # Real job provider + driver: reject assertions that only check XML,
+        # PlantUtility or directly create a plant via ThingMaker.MakeThing.
+        assert 'new WorkGiver_GrowerSow()' in seasonal
+        assert 'giver.JobOnCell(worker, cell, true)' in seasonal
+        assert 'JobDefOf.Sow' in seasonal and 'Start(riceJob,' in seasonal
+        assert 'Start(barleyJob,' in seasonal
+        assert 'await Complete(riceJob,' in seasonal
+        assert 'await Complete(barleyJob,' in seasonal
+        assert 'Find.TickManager.DoSingleTick()' in seasonal
+        assert 'PlantLifeStage.Sowing' in seasonal
+        assert 'ricePlant.GrowthRateFactor_Temperature == 0f' in seasonal
+        assert 'barleyPlant.GrowthRateFactor_Temperature > 0f' in seasonal
+        assert 'ricePlant.Growth > riceBeforeWarm' in seasonal
+        assert 'barleyPlant.Growth > barleyBeforeCold' in seasonal
+        assert 'GenDate.TicksPerQuadrum' in seasonal
+        assert 'DebugSetTicksGame' in seasonal
+        assert 'map.Biome.constantOutdoorTemperature = savedBiomeTemperature;' in seasonal
+        assert 'map.snowGrid.SetDepth(pair.Key, pair.Value)' in seasonal
+        assert 'zone.Delete(false)' in seasonal
+        assert 'if (failure != null) failure.Throw();' in seasonal
+        assert 'ThingMaker.MakeThing(rice' not in seasonal
+        assert 'ThingMaker.MakeThing(barley' not in seasonal
+
+    def test_seasonal_job_contract_is_not_only_a_static_projection(self):
+        source = (ROOT/'Tests/E2E/GrainsSimulationSteps.cs').read_text(encoding='utf-8')
+        seasonal = source.split('public async Task NativeSeasonalSowAndGrowth()', 1)[1]
+        assert 'NativeSowOffer(barleyCell) == null' in seasonal
+        assert 'PlantUtility.GrowthSeasonNow(barleyCell, map, barley)' in seasonal
+        assert 'await SimulatePlantTicks(2200, "RiceColdStall")' in seasonal
+        assert 'await SimulatePlantTicks(2200, "BarleyColdGrowth")' in seasonal
+        assert 'await SimulatePlantTicks(2200, "RiceWarmRecovery")' in seasonal
+        assert 'private void SetSeasonTemperature(float temp' in seasonal
+        assert 'room.TempTracker.EqualizeTemperature()' in seasonal
+
     def test_mo_flour_job_accepts_declared_hay_only(self):
         source = (ROOT/'Tests/E2E/GrainsSimulationSteps.cs').read_text(encoding='utf-8')
         start = source.index('public async Task Bill(')

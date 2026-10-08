@@ -332,3 +332,17 @@ python Scripts/grains_save_contract.py compare --before "D:\\AMJ-TestResults\\gr
 `prepare` は新しい隔離フォルダ内に元XMLのSHA256、元セーブとバイト同一な `baseline.rws`、プロバイダ/実機検証要件を `plan.json` へ保存する。既存フォルダを上書きしない。`compare` が通っても `runtimeVerified=false` と明示する。**これは実ゲーム起動器ではなく、実機で旧セーブを更新版Grainsへロード・再保存する処理は未実装**。XML要素が一致しても未解決Def、ロード後の参照、ログERRORやUIは証明されない。Scenarios追加/削除やMO解除はこの契約の外側であり、Scenarios専用ゲートまたは別のリリーステストが必要。
 
 `Tests/test_grains_save_contract.py` はsynthetic保存XMLで数量の欠落、`RawRice` の再解釈、加工Bill差分、tick変更、Mod構成欠落、別名テストMod、破損XML、既存結果への上書きを負例として検出する。GitHub CIではこのfixtureテストのみ実行し、実旧セーブをリポジトリへアップロードしない。現在の4×6 Pickle/ERROR-0 PASSは変わらず、**旧セーブ移行の実機ゲートは依然OPEN**。
+
+
+### 暦移動＋制御温度による実播種・低温成長の追加検査（2026-10-08）
+
+既存の4構成×6シナリオの名称・件数と本番XMLを維持したまま、実Bill/収穫/調理が完了した最後に、`GrainsSimulationSteps.ProductionScope.NativeSeasonalSowAndGrowth` を追加した。Quickstartの隔離された土壌セルを使い、テスト専用の暦と屋外温度を設定して、以下の**ゲーム実装の経路**を検証する：
+
+1. **適温25℃：** 栽培区画で陸稲を選択し、実際の `WorkGiver_GrowerSow.JobOnCell` が `JobDefOf.Sow` を提供することを確認。ジョブを動かして `Plant_Rice` の実播種を完了。
+2. **暦を1 quadrum（15日）進めて5℃：** 新たな区画で陸稲の播種ジョブが出ないこと、既に播かれた陸稲の成長率が0になり、実際の `DoSingleTick` 2,200tickで成長が停止することを確認。
+3. **同じ5℃：** 区画を大麦に切替え、実際の播種ジョブで `AMJC_Plant_Barley` を播き、2,200tickで成長が進むことを確認。
+4. **25℃へ戻す：** 稲の成長が2,200tickで再開することを確認。区画・テスト植物・積雪深・暦tick・温度Overrideを成功/失敗時ともに復元する。
+
+**このテストの限界：** `BiomeDef.constantOutdoorTemperature` をテスト中だけ25/5℃に設定するため、RimWorldの native sow/growth/long-tick 経路は通るが、地形・実際の季節曲線・降雪・天候変化を通じた自然発生の温度変化を検証するものではない。また固定枯死温度の**実際の枯死処理**は今回の条件（5℃）では試験していない。CCTOなし/あり、MOなし/ありの4構成での実機結果は追加変更後**未実行**。旧 `automated-gates(4).log` の6/6・ERROR 0は変更前の版の合格実績であり、新しい播種テストの実行結果として再使用しない。
+
+今回追加したのはテストソースと回帰検証のみ。必要なゲーム本体・Pickle・QuickstartsがないCIではC#ビルドと実ゲーム動作は判断できない。 `Tests/test_grains_chain.py` は Job/生育tick/保存復元の接続が失われないことを静的に確認する。新しい実機確認でも元の `run-grains-tests.bat` を使い、4構成の6/6とERROR 0を必須にする。
