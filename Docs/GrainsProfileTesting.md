@@ -274,3 +274,8 @@ The existing `Tests/validate_grains_chain.py --mo-root` source validator now acc
 ### Pickle run-wide timeout audit (2026-10-08)
 
 Pickle's `-pickle-run-timeout` is measured in **minutes** and applies to the entire feature run, whereas `@timeout:270` allows one long production scenario 270 **seconds**. The former shared 4-minute (240-second) global cap could terminate this scenario prematurely. The shared launcher now accepts `-PickleRunTimeoutMinutes` (default `4` for legacy tests); Grains' four-profile runner uses `7` minutes with a separate `540`-second process watchdog. The Windows static tooling verifies `scenario < Pickle run < process` and the 40-minute four-profile watchdog boundary. This is runner verification, not proof of game runtime or C# compilation.
+
+
+### MO millstone Hay byproduct regression (2026-10-08)
+
+The MO 1.6 provider's `DankPyon_CraftFlourBulk` produces `DankPyon_Flour` 10 **and** `Hay` 10, while `DankPyon_CraftFlour` yields one of each. The previous Grains native-Bill test incorrectly asserted `Hay` never increases, causing a false failure even when MO's millstone recipe succeeds. The production Pickle step now checks each declared product's **exact output count**, including Hay, and separately insists on zero extra Hay/Straw for recipes that do **not** declare those byproducts. A static source contract test ensures that distinction is preserved. This fixes a test-harness false positive; it does **not** demonstrate runtime test completion. The Vanilla milling path still must not create Hay.

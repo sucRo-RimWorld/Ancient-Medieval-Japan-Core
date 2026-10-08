@@ -68,6 +68,22 @@ class ChainRegressionTests(unittest.TestCase):
             assert 'Then Grains harvest and flour food Bills complete through real jobs' in feature
             assert feature.count('  Scenario:') == 6
 
+    def test_mo_flour_job_accepts_declared_hay_only(self):
+        source = (ROOT/'Tests/E2E/GrainsSimulationSteps.cs').read_text(encoding='utf-8')
+        start = source.index('public async Task Bill(')
+        end = source.index('public async Task SimpleMeal(', start)
+        bill = source[start:end]
+        # Every declared product (including Hay from MO CraftFlourBulk) must
+        # increase by its exact recipe quantity. Undeclared Hay must not increase.
+        assert 'recipe.products.ToDictionary(p => p.thingDef.defName' in bill
+        assert 'products[p.thingDef.defName] + p.count' in bill
+        assert 'if (!recipe.products.Any(p => p.thingDef.defName == "Hay"))' in bill
+        assert 'ctx.Assert(Count("Hay") == hay,' in bill
+        assert 'ctx.Assert(Count("Hay") == hay, recipeName + " must not create hay.");' not in bill
+        assert 'if (!recipe.products.Any(p => p.thingDef.defName == "DankPyon_Straw"))' in bill
+        # Actual MO 1.6 source contract is tested separately; don't assume
+        # its native grinding recipe has no hay byproduct.
+
     def test_mo_16_archive_provider_contract(self):
         # Synthetic compressed MO provider: run without the proprietary game.
         things = """<Defs>

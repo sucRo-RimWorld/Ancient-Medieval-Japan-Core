@@ -350,7 +350,11 @@ namespace AncientMedievalJapanCore.E2E
                             recipeName + " produced the wrong quantity: " + product.thingDef.defName);
                     if (!recipe.products.Any(p => p.thingDef.defName == "DankPyon_Straw"))
                         ctx.Assert(Count("DankPyon_Straw") == straw, recipeName + " must not create straw.");
-                    ctx.Assert(Count("Hay") == hay, recipeName + " must not create hay.");
+                    // MO's native wheat milling intentionally produces Hay.
+                    // Declared products are already checked at their exact recipe counts.
+                    // Recipes without Hay must still prove that none appeared.
+                    if (!recipe.products.Any(p => p.thingDef.defName == "Hay"))
+                        ctx.Assert(Count("Hay") == hay, recipeName + " must not create undeclared hay.");
                     bench.BillStack.Delete(bill);
                 });
             }

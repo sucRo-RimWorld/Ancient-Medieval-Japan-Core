@@ -1846,3 +1846,6 @@ Audit result: the current design still assigned water field, rice plant, paddy r
 **Status:** DONE — current AGENTS and shared-rule references route to Project
 
 Canonical shared rules and Workshop template/tooling now live in Project `Docs/SharedRules.md` and its linked sources. Grains old Markdown paths are migration pointers only. Existing historical coordination entries retain their original commit/path provenance; resolve future work through the new Project index. Mod-specific implementation, tests and accepted content art remain with this repository. No runtime behavior, new preview generation or Steam publication is part of this migration.
+
+
+**Grains MO grinding E2E false-positive fix (2026-10-08):** Identified a deterministic mischeck in `GrainsSimulationSteps.ProductionScope.Bill`: MO's real `DankPyon_CraftFlourBulk` produces 10 `Hay` as a declared coproduct, yet the helper asserted that Hay could never increase. The native-Bill test now validates each declared product (including MO Hay) by exact recipe quantities; only undeclared Hay and Straw must remain unchanged. Added `Tests/test_grains_chain.py` guard plus formal GrainsProfileTesting source notes. Still pending C# compilation, real four-profile Pickle+runtime ERROR 0, native sow, art and migration gates. This change is test-harness correction only.
