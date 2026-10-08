@@ -54,7 +54,8 @@ class ChainRegressionTests(unittest.TestCase):
         assert 'foreach (KeyValuePair<IntVec3,TerrainDef> cell in terrain)' in source
 
     def test_powder_food_not_bread_storage(self):
-        self.mutate('Defs/ThingDefs_Items/Items_GrainsFood.xml','ThingDef/comps/li/daysToRotStart','8')
+        self.mutate('Defs/ThingDefs_Items/Items_GrainsFood.xml',
+                    'ThingDef/comps/li[@Class="CompProperties_Rottable"]/daysToRotStart','8')
     def test_cooking_remains_research_free(self):
         self.mutate('Defs/RecipeDefs/Recipes_GrainsFood.xml','RecipeDef',new_element='<researchPrerequisite>Cooking</researchPrerequisite>')
     def test_mo_food_uses_mo_flour(self):

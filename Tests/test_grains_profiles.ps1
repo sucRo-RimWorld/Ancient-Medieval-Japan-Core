@@ -75,7 +75,7 @@ try {
         $cctoRecords = @($resolved | Where-Object { $_.PackageId -eq 'sucro.cropcoldtoleranceoverhaul' })
         Assert ($cctoRecords.Count -eq [int]$spec.UseCCTO) 'Unexpected CCTO manifest presence.'
         if ($spec.UseCCTO) {
-            $chosen = [IO.Path]::GetFullPath([string]$cctoRecords[0].Root)
+            $chosen = [IO.Path]::GetFullPath([string]($cctoRecords[0].Root))
             $expected = [IO.Path]::GetFullPath((Join-Path $mods 'sucro.cropcoldtoleranceoverhaul'))
             Assert ($chosen -eq $expected) 'CCTO duplicate resolution did not select the local installed copy.'
         }

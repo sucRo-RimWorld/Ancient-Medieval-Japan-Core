@@ -73,7 +73,18 @@ def validate(root=ROOT):
             assert rec.findtext('products/AMJC_'+suffix) == '1'
             assert len(rec.findall('products/*')) == 1
             assert float(food.findtext('statBases/Nutrition')) == 0.9
-            assert float(food.findtext('comps/li/daysToRotStart')) == 2.5
+            # Inherited MealFineBase already provides a Rottable comp.
+            # Grains must replace, not append to, the complete base meal list.
+            assert food.find('comps').get('Inherit') == 'False'
+            assert [node.get('Class') for node in food.findall('comps/li')] == [
+                'CompProperties_Forbiddable',
+                'CompProperties_Ingredients',
+                'CompProperties_FoodPoisonable',
+                'CompProperties_Rottable',
+            ]
+            assert float(food.findtext("comps/li[@Class='CompProperties_Rottable']/daysToRotStart")) == 2.5
+            assert food.findtext('graphicData/texPath') == 'Things/Item/Meal/Simple'
+            assert food.findtext('graphicData/graphicClass') == 'Graphic_Single'
             assert food.findtext('ingestible/tasteThought') == 'AMJC_AteFlourFood'
             assert food.findtext('ingestible/preferability') == 'MealSimple'
             assert rec.find('researchPrerequisite') is None and rec.find('researchPrerequisites') is None
