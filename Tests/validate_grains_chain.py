@@ -63,6 +63,14 @@ def validate(root=ROOT):
             assert rec.find('researchPrerequisite') is None and rec.find('researchPrerequisites') is None
             assert float(defs[flour].findtext('comps/li/daysToRotStart')) == 60
             assert defs[flour].findtext('ingestible/preferability') == 'NeverForNutrition'
+        # These temporary meal sprites are shipped by Grains. Never regress
+        # to a guessed Vanilla texPath: those failed real-game Texture2D loads
+        # despite matching older public Vanilla XML examples.
+        meal_graphics = {
+            'Houtou': 'Things/Item/Resource/AMJC_Millet/Millet',
+            'Sobagaki': 'Things/Item/Resource/AMJC_Buckwheat/Buckwheat',
+            'MilletDumplings': 'Things/Item/Resource/AMJC_Millet/Millet',
+        }
         for suffix, flour in [('Houtou','DankPyon_Flour' if profile == 'mo' else 'AMJC_WheatFlour'),
                               ('Sobagaki','AMJC_BuckwheatFlour'),('MilletDumplings','AMJC_MilletFlour')]:
             rec = defs['AMJC_Cook'+suffix];food=defs['AMJC_'+suffix]
@@ -83,8 +91,13 @@ def validate(root=ROOT):
                 'CompProperties_Rottable',
             ]
             assert float(food.findtext("comps/li[@Class='CompProperties_Rottable']/daysToRotStart")) == 2.5
-            assert food.findtext('graphicData/texPath') == 'Things/Item/Meal/Simple'
-            assert food.findtext('graphicData/graphicClass') == 'Graphic_Single'
+            tex = food.findtext('graphicData/texPath')
+            assert tex == meal_graphics[suffix], 'Unexpected temporary meal graphic: ' + suffix
+            assert food.findtext('graphicData/graphicClass') == 'Graphic_StackCount'
+            # Validate *all* variants used for stack size changes, not just
+            # one representative PNG. Paths must be deployable in both Base/MO.
+            assert all((root/'Textures'/tex/(Path(tex).name + '_' + variant + '.png')).is_file()
+                       for variant in 'abc'), 'Missing packaged meal graphic family: ' + suffix
             assert food.findtext('ingestible/tasteThought') == 'AMJC_AteFlourFood'
             assert food.findtext('ingestible/preferability') == 'MealSimple'
             assert rec.find('researchPrerequisite') is None and rec.find('researchPrerequisites') is None

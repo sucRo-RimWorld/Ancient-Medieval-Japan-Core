@@ -13,7 +13,7 @@ class ChainRegressionTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        for folder in ('Defs','BaseWithoutMO','Compatibility','LegacyStartingScenarios'):
+        for folder in ('Defs','BaseWithoutMO','Compatibility','LegacyStartingScenarios','Textures'):
             shutil.copytree(ROOT/folder,self.root/folder)
         shutil.copyfile(ROOT/'loadFolders.xml',self.root/'loadFolders.xml')
 
@@ -36,9 +36,30 @@ class ChainRegressionTests(unittest.TestCase):
         xml.write(target)
         with self.assertRaises(AssertionError): validate(self.root)
 
-    def test_meal_must_not_reference_missing_texture(self):
+    def test_meal_must_not_reference_unavailable_vanilla_texture(self):
         self.mutate('Defs/ThingDefs_Items/Items_GrainsFood.xml',
-                    'ThingDef/graphicData/texPath', 'Things/Item/Meal/SimpleMeal')
+                    'ThingDef/graphicData/texPath', 'Things/Item/Meal/Simple')
+
+    def test_meal_must_use_packaged_stack_graphics(self):
+        self.mutate('Defs/ThingDefs_Items/Items_GrainsFood.xml',
+                    'ThingDef/graphicData/graphicClass', 'Graphic_Single')
+
+    def test_meal_must_include_every_stack_variant(self):
+        path = self.root/'Textures/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat_c.png'
+        path.unlink()
+        with self.assertRaises(AssertionError):
+            validate(self.root)
+
+    def test_meal_recipe_graphic_paths_are_source_backed(self):
+        doc = ET.parse(ROOT/'Defs/ThingDefs_Items/Items_GrainsFood.xml')
+        for food in doc.findall('ThingDef'):
+            texture = food.findtext('graphicData/texPath')
+            self.assertTrue(texture.startswith('Things/Item/Resource/AMJC_'))
+            self.assertEqual(food.findtext('graphicData/graphicClass'), 'Graphic_StackCount')
+            for variant in 'abc':
+                self.assertTrue((ROOT/'Textures'/texture/(Path(texture).name + '_' + variant + '.png')).is_file(),
+                                (food.findtext('defName'),variant))
+
 
     def test_mood_memory_must_have_stage_description(self):
         self.mutate('Defs/ThoughtDefs/Thoughts_GrainsFood.xml',

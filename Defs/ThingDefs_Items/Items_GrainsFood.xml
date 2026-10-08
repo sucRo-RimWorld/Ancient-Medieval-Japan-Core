@@ -4,9 +4,10 @@
     <defName>AMJC_Houtou</defName>
     <label>houtou</label>
     <description>Hakutaku (餺飥). A dish representing an old kind of wheat-flour food prepared by kneading flour and heating it. Hakutaku in Heian-period records has been linked to present-day Yamanashi hoto, but the two cannot be assumed to be the same dish. Here it represents a simple wheat-flour food, not a modern miso-simmered dish with many ingredients.</description>
+    <!-- Temporary existing AMJ grain graphics; final prepared-food art is pending. -->
     <graphicData>
-      <texPath>Things/Item/Meal/Simple</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Item/Resource/AMJC_Millet/Millet</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.9</Nutrition>
@@ -32,9 +33,10 @@
     <defName>AMJC_Sobagaki</defName>
     <label>sobagaki</label>
     <description>Sobagaki (蕎麦掻き). A flour-based dish made by stirring buckwheat flour into hot water instead of shaping it into noodles. Before soba noodles became widespread, buckwheat was also eaten as cooked grains or kneaded flour.</description>
+    <!-- Temporary existing AMJ grain graphics; final prepared-food art is pending. -->
     <graphicData>
-      <texPath>Things/Item/Meal/Simple</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Item/Resource/AMJC_Buckwheat/Buckwheat</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.9</Nutrition>
@@ -60,9 +62,10 @@
     <defName>AMJC_MilletDumplings</defName>
     <label>millet dumplings</label>
     <description>Millet dumplings (雑穀団子). A single game dish representing dumpling-like foods made by mixing flour from awa, hie, or kibi with water and cooking it. It does not recreate the sweet confections of the early modern period or later.</description>
+    <!-- Temporary existing AMJ grain graphics; final prepared-food art is pending. -->
     <graphicData>
-      <texPath>Things/Item/Meal/Simple</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Item/Resource/AMJC_Millet/Millet</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.9</Nutrition>

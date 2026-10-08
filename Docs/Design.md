@@ -483,7 +483,7 @@ Production About.xmlを変えずにruntimeファイルをそのままテスト�
 | そばがき | `AMJC_Sobagaki` | `AMJC_CookSobagaki` | `AMJC_BuckwheatFlour` | 同左 |
 | 雑穀団子 | `AMJC_MilletDumplings` | `AMJC_CookMilletDumplings` | `AMJC_MilletFlour` | 同左 |
 
-新規説明文は日本語先行レビュー前のため空欄とし、未承認の歴史的説明を英訳・公開していない。旧小麦Recipeの説明/翻訳は保持する。新規画像は生成せず、Base小麦は既存AMJアワ、束・粉は既存AMJ雑穀、石臼・料理はVanillaの開発用画像参照を使う。**これらは完成画ではなく、固有画像・日本語説明レビュー→英訳、実機の継承/参照/Graphic/Bill実行、環境別選択・既存セーブ回帰をリリース前に完了する必要がある。** Production About.xmlのMO必須依存はまだ変更しない。本段落はstep 3時点の記録であり、現行の開始シナリオ互換コピーは `LegacyStartingScenarios` へ移転済みである（`Docs/ScenarioExtraction.md`参照）。
+新規説明文は日本語先行レビュー前のため空欄とし、未承認の歴史的説明を英訳・公開していない。旧小麦Recipeの説明/翻訳は保持する。新規画像は生成せず、Base小麦は既存AMJアワ、束・粉は既存AMJ雑穀、石臼・料理はVanillaの開発用画像参照を使う（step 3当時の記録。2026-10-08の実機画像ロード障害により、現行の粉食3品はAMJ同梱雑穀の仮画像へ変更した。詳細は本書の実機回帰注記を参照）。**これらは完成画ではなく、固有画像・日本語説明レビュー→英訳、実機の継承/参照/Graphic/Bill実行、環境別選択・既存セーブ回帰をリリース前に完了する必要がある。** Production About.xmlのMO必須依存はまだ変更しない。本段落はstep 3時点の記録であり、現行の開始シナリオ互換コピーは `LegacyStartingScenarios` へ移転済みである（`Docs/ScenarioExtraction.md`参照）。
 
 `Tests/validate_grains_chain.py` と変異回帰は入力/出力、栄養保存、研究不要、保存/Mood、MO差替え/非重複を静的確認する。旧38件はそのまま照合し、新規11件の共有Defだけ追加許可する。4構成のPickleに製粉/粉食のロード後契約を加え、各6シナリオとした。ゲーム内でBillを完了した証拠ではなく、実機実行自体も未実施。
 
@@ -1445,3 +1445,8 @@ Grainsの通常6件から専用Scenario要件を外し、旧fixtureの8件には
 ### 七穀の収穫→加工→粉食バランス監査（2026-10-08）
 
 七穀の相対収量と各工程・製粉・完成料理までを [Balance/Crops/SevenGrainFoodChainAudit.md](Balance/Crops/SevenGrainFoodChainAudit.md) にまとめ、`Tests/test_grains_balance_chain.py` で静的な歩留まり・作業量・Nutrition・保存期間・Mood・陸稲の同率首位を監査する。**既存六穀の作物・Recipe・温度・栄養・画像設定は維持。陸稲の収穫先と専用加工Recipeだけを新規追加した。** 七穀全てに同率を含む最大収量セルがあるが、陸稲は6セル全て同率で独自の収量首位なし。水田不要という特徴はあるが、**収穫後加工ゼロは現行暫定XMLの問題であり採用すべき永続的な優位ではない**。稲束→籾→`RawRice` の加工義務化を実装・再テストする。MO原本の小麦製粉一括workAmount 800は非MO石臼の300より大きい一方、MO小麦粉は90日保存（Baseは60日）。手動加工・製粉・調理の異なるworkSpeedStatを単純合算したものを実作業時間とはしない。MO原本の製粉効率や陸稲の労働優位は今後の実プレイ評価項目に残し、変更を要するかは別判断とする。CCTO/気象/播種労働・収穫技能・実機栄養/画面/保存・セーブ移行は未確認。
+
+
+### 粉食3品の画像参照 — 実機エラー修正（2026-10-08）
+
+実機4構成のPickle全24シナリオが成功した一方で、食事3品のVanilla仮画像 `Things/Item/Meal/Simple` は `Graphic_Single` では読み込めず、ERROR 0を阻害した。さらに以前の `Things/Item/Meal/SimpleMeal` も実機で不在を確認済み。そこで最終画像の承認・制作に先立ち、食事 `AMJC_Houtou` と `AMJC_MilletDumplings` には同梱の `Things/Item/Resource/AMJC_Millet/Millet`、`AMJC_Sobagaki` には同梱の `Things/Item/Resource/AMJC_Buckwheat/Buckwheat` を `Graphic_StackCount` で暫定使用する。各パスは `_a/_b/_c.png` の3枚すべてがGrains内に存在し、静的回帰テストで厳密に照合する。**料理の完成した見た目ではなく、未承認の仮画像**。専用の料理画像を機能テスト合格後に製作し、実機で表示確認する。今回の変更は描画参照のみで、Recipe/食品栄養/腐敗・Mood・加工導線に変更はない。
