@@ -1,0 +1,62 @@
+# 陸稲の収穫後加工 — Vanilla米との接続設計
+
+**Status:** 加工必須化の設計方針を採用。**本番XML・Pickleの実装は未変更**（2026-10-08）。
+**Owner:** AMJGrains（共通穀物の収穫後加工）。将来のRice Cultivationは水田・水稲栽培と任意の稲架掛けを担当する。
+
+## なぜ見直すか
+
+現在のVanilla `Plant_Rice` 陸稲Patchは `plant.harvestedThingDef` を上書きせず、可食状態の `RawRice` が畑から直接出る。これは**Vanilla食材・料理との互換性を保つ実装上の近道**であり、脱穀や籾摺りが不要という史実でも、他の畑作穀物と比較して無償の加工優位を与える積極的な設計判断でもない。
+
+従来 `Docs/Design.md §2.4` の稲作共通工程では「稲→籾→米」を想定していた。陸稲統合でそれを引き継がなかったのは設計と実装の不整合。ユーザーの2026-10-08指摘を受け、**陸稲も収穫後の加工を必要とする経路へ変更する方針**とする。
+
+## 目標の入出力
+
+```text
+Vanilla Plant_Rice（Grainsの陸稲設定）
+  ↓ 収穫
+AMJC_RiceSheaf（稲束・未脱穀）
+  ↓ 脱穀（同一Grains加工場所/加工台）
+AMJC_RiceInHull（籾・籾殻付き）
+  ↓ 籾摺り（同一Grains加工場所/加工台）
+RawRice（既存Vanillaの食用米）
+  ↓
+Vanilla CookMealSimple・既存の米を使うRecipe
+```
+
+- 追加するThingDefは**非可食中間物2件**。新しい可食米Def（`AMJC_Rice` 等）は**作らない**。`RawRice` の既存Def・料理フィルタ・交易・開始物資を無条件に差し替えない。
+- `Plant_Rice` を複製せず、収穫先だけ `RawRice` → `AMJC_RiceSheaf` とする。畑の稲を収穫したときには加工が必要になる。一方、既に所持している `RawRice` や他Modが直接生成する `RawRice` は引き続き使用できる（アイテム自体の全世界的な精米強制ではない）。
+- これによって、現行の「米作だけは脱穀・殻取りの追加労働0」というバランス上の例外は解消する。ただし実際の農業・加工労働差は作業速度、播種、収穫、搬送、栽培条件を含む実ゲームで再評価する。
+
+## Recipeと数値の暫定設計（確定前の検証候補）
+
+| Recipe候補 | 入出力 | 単品workAmount候補 | 10個一括workAmount候補 |
+|---|---|---:|---:|
+| `AMJC_ThreshRice` / `AMJC_ThreshRiceBulk` | 稲束1/10 → 籾1/10 | 15 | 120 |
+| `AMJC_HullRice` / `AMJC_HullRiceBulk` | 籾1/10 → Vanilla米1/10 | 10 | 80 |
+
+- 候補workAmountは既存の雑穀・蕎麦・大麦の2段階加工と同じ仮置きで、**最終バランス値としては未確定**。1:1歩留まり、10個の一括処理、研究不要の加工場所/加工台は初期検証条件。籾・稲束の保存期間や藁副産物、籾摺り・精米の技術区分はバランスと互換性の監査後に確定する。
+- MO使用時の稲藁を `DankPyon_Straw` に統一するかは、既存のMO向け脱穀副産物規則およびRice Cultivation側の乾燥副産物との二重発生を避けて決める。MOなしに存在しないStraw Defは参照しない。
+- `RawRice` のNutrition、腐敗期間、食事適性はVanilla側の値を維持。精米米/玄米/米糠を個別ThingDefとして増やすことを本変更の必須条件にしない。籾摺りから日常用の米へ抽象化する。
+- 史実では杵と臼を用いて脱穀と籾摺りを連続作業で行った事例もある。2種類のRecipeはプレイヤーに加工負担・保存中間物を示す**ゲーム内抽象化**であり、古代に全地域・全時代で二つの専用設備が必要だったとの主張ではない。
+- 陸稲の従来 `growDays 5 / harvestYield 11 / fertilityMin 0.7 / fertilitySensitivity 0.8` は直ちには変更せず、七穀の比較を**加工労働込み**で再監査する。従来の「陸稲の最大収量6セル、単独首位なし」は収穫段階の解析であり、最終食材の効率を保証しない。
+
+## 将来の水稲・Rice Cultivationとの接続
+
+- 水田や田植えなどの水稲**栽培系統**はRice Cultivationが所有する。
+- **Grainsがある場合**、水稲の収穫物をこの稲束/籾の共通経路に接続する。水稲専用の必要工程（稲架掛け、干し稲、乾燥による歩留まり向上など）はRice Cultivationが所有し、Grainsの脱穀・籾摺りRecipeを二重定義しない。
+- **Rice Cultivation単独の場合**、Grainsを必須化せず、依存なしで遊べる最低限の収穫・食料経路をRice Cultivation側に用意する。併用時は重複生成・二重加工を避ける条件付き接続が必要。
+- Waterworksは水田の任意の水利供給元であり、Grainsの陸稲→籾→米ループの必須依存ではない。
+
+## 実装ゲートと互換性（すべて未完）
+
+1. 日本語優先で **稲束／籾／脱穀／籾摺り** のプレイヤー表示・歴史説明案を作成し、作者確認を受ける。承認前に史実の英文を新規作成しない。
+2. `Patches/UplandRice.xml` で `harvestedThingDef` の差し替えを行い、共通DefとRecipe（単品/一括）を追加。条件付きMO副産物・日本語/英語翻訳・仮グラフィックの所有とロード順を整合させる。
+3. `Tests/test_upland_rice.py`、`Tests/test_grains_balance_chain.py`、`Tests/validate_stage_a.py`、`Tests/E2E/GrainsProfileSteps.cs`、`Tests/E2E/GrainsSimulationSteps.cs` を新工程へ更新。**稲の実収穫→稲束→実Bill脱穀→実Bill籾摺り→RawRice→CookMealSimple** を全4構成で検証する。
+4. CCTO低温・MOあり/なし・旧セーブ中の `RawRice` ・Vanilla料理・直接Riceを入手する交易・他Modの米参照は維持し、実機ログ ERROR 0 と言語表示、テクスチャBadTexを検証する。
+5. 収穫後加工の本番テストが通るまで、**旧バランス監査の「陸稲加工労働0」は現行実装の記述であり、最終設計上の強みと扱わない**。上記を実装済みと報告しない。
+
+## 史料
+
+- 農林水産省「お米の産地銘柄とブレンド米の進化」：https://www.maff.go.jp/j/syouan/keikaku/soukatu/okome_summary/01/type03.html （脱穀→籾乾燥→籾摺り→玄米）
+- 山梨県埋蔵文化財センター「油田遺跡」：https://www.pref.yamanashi.jp/maizou-bnk/topics/101-200/0144.html （弥生期の竪杵と脱穀）
+- クボタ「臼を使った籾摺り」：https://www.kubota.co.jp/kubotatanbo/history/tools/hulling.html （杵臼による処理、時代による工程の変化）
