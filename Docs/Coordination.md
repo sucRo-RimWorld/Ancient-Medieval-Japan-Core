@@ -1849,3 +1849,11 @@ Canonical shared rules and Workshop template/tooling now live in Project `Docs/S
 
 
 **Grains MO grinding E2E false-positive fix (2026-10-08):** Identified a deterministic mischeck in `GrainsSimulationSteps.ProductionScope.Bill`: MO's real `DankPyon_CraftFlourBulk` produces 10 `Hay` as a declared coproduct, yet the helper asserted that Hay could never increase. The native-Bill test now validates each declared product (including MO Hay) by exact recipe quantities; only undeclared Hay and Straw must remain unchanged. Added `Tests/test_grains_chain.py` guard plus formal GrainsProfileTesting source notes. Still pending C# compilation, real four-profile Pickle+runtime ERROR 0, native sow, art and migration gates. This change is test-harness correction only.
+
+
+### GRAINS-DESIGN-CODE-CONSISTENCY-20261008 — ownership, MO milling and crop docs
+
+**Owner:** Grains source/documentation QA  
+**Status:** Grains static design/code reconciliation implemented; real-game gates remain open (2026-10-08 JST)
+
+Audited Grains Design, crop cold-tolerance source-of-truth, Scenarios extraction ledger, E2E contract and MO 1.6 upstream against Production XML. Reconciled old pre-upland Rice Cultivation ownership (including §8.1), obsolete six-crop/unfinished-flour wording, stale Scenarios compatibility paths, and mismatched MO grinding Hay claims. Grains' MO wheat conditional Patch removes upstream Hay from all three grinding recipes, so the loaded milling contract is flour-only, while the provider archive remains unchanged and legitimately contains Hay. New static/negative tests and loaded Pickle assertions guard that distinction. CCTO remains Vanilla rice death-temperature owner (-1°C), while Grains owns Plant_Rice's upland growth settings. No new gameplay Def, MO dependency removal or release claim. Pending: C# compile, all four real Pickle profiles, ERROR 0, season-dependent Sow, final art and old-save migration.

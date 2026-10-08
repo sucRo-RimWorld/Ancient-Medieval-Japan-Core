@@ -141,6 +141,19 @@ namespace AncientMedievalJapanCore.E2E
                         && rec.products.Single(p => p.thingDef.defName == "AMJC_Wheat").count == count,
                         "Wheat thresh convergence differs: " + name);
                 }
+                if (mo)
+                {
+                    // All three upstream MO grinding recipes include Hay, but
+                    // AMJ's conditional XML patch must remove that byproduct.
+                    foreach (string sourceName in new[] { "DankPyon_CraftFlour_Manual",
+                        "DankPyon_CraftFlour", "DankPyon_CraftFlourBulk" })
+                    {
+                        RecipeDef loaded = DefDatabase<RecipeDef>.GetNamed(sourceName);
+                        ctx.Assert(loaded.products != null && loaded.products.Count == 1
+                            && loaded.products[0].thingDef.defName == "DankPyon_Flour",
+                            "Grains must remove upstream MO milling Hay: " + sourceName);
+                    }
+                }
                 ThingDef mill = DefDatabase<ThingDef>.GetNamed(mo ? "DankPyon_Millstone" : "AMJC_ManualMillstone");
                 ctx.Assert(mill.researchPrerequisites == null || mill.researchPrerequisites.Count == 0,
                     "The standard Grains mill must be research-free.");

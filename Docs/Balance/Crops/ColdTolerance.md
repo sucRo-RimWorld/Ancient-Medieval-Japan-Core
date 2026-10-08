@@ -7,7 +7,7 @@ AMJC固有作物の耐寒データは、**AMJCが所有・管理する**。CCTO�
 - 最低成長温度はAMJC自身のPlantDefに設定する。
 - 固定枯死温度・休眠設定は、CCTOが有効な場合だけAMJC側の互換XMLから `CropColdToleranceOverhaul.ColdToleranceExtension` として付与する。
 - CCTOは任意依存のまま。未導入時もAMJCの栽培・加工は成立し、低温枯死には元のRimWorldの挙動を使う。
-- CCTOが管理するVanilla/MO作物と、AMJC固有作物を区別する。MO小麦 `DankPyon_Plant_Wheat` の温度データはCCTO側のMO対応を利用する。
+- CCTOが管理するVanilla/MO作物と、AMJC固有作物を区別する。MO小麦 `DankPyon_Plant_Wheat` の枯死温度はCCTO側のMO対応を利用する。Vanilla `Plant_Rice` はGrainsが**陸稲として成長温度を再設定**するが、固定枯死温度はCCTOのVanilla米定義（-1℃）を再利用し、Grains専用の `ColdToleranceExtension` は追加しない。
 - 将来AMJC作物を追加・調整する際も、数値・根拠・互換XML・検証はAMJC側で更新する。CCTOには汎用APIに関する変更だけを依頼する。
 
 本資料はCCTOの `Docs/Design.md` / `Docs/ImplementationTable.md` に置かれていたAMJC作物のデータを移管した正本である。移管時点では数値変更を行わなかったが、その後の再監査でAMJC側の判断として値を改定する。Stage Aの栽培全体は [Docs/Design.md §4.2.1](../../Design.md) と整合させる。値は現実の耐寒性を参考にした**ゲーム内バランス値**であり、現実の測定値そのものではない。
@@ -35,7 +35,7 @@ AMJC固有作物の耐寒データは、**AMJCが所有・管理する**。CCTO�
 
 クズ（Kudzu）は低温で地上部が休眠し、根株が生存して回復できる作物として扱う。休眠は最低成長温度未満で始まり、固定枯死の判定は閾値未満（strict `<`）で行う。閾値ちょうどでは枯死しない。
 
-現時点でPlantDefとCCTO互換XMLが実装されているStage AのAMJC作物は、アワ `AMJC_Plant_FoxtailMillet_Awa`、ヒエ `AMJC_Plant_BarnyardMillet_Hie`、キビ `AMJC_Plant_ProsoMillet_Kibi`、ソバ `AMJC_Plant_Buckwheat_Soba`、大麦 `AMJC_Plant_Barley`。各最低成長温度は `Defs/ThingDefs_Plants/Plants_StageA.xml`、固定枯死温度は `Patches/Compatibility/CCTO_StageA.xml` が持つ。他の行は今後の作物実装で利用する設計値であり、対応済みの作物一覧ではない。未実装作物のDefNameを先行確定したり、存在しないDefを対象とするPatchを追加したりしない。
+現時点でPlantDefとCCTO互換XMLが実装されているStage AのAMJC作物は、アワ `AMJC_Plant_FoxtailMillet_Awa`、ヒエ `AMJC_Plant_BarnyardMillet_Hie`、キビ `AMJC_Plant_ProsoMillet_Kibi`、ソバ `AMJC_Plant_Buckwheat_Soba`、大麦 `AMJC_Plant_Barley`。各最低成長温度は `Defs/ThingDefs_Plants/Plants_StageA.xml`、固定枯死温度は `Patches/Compatibility/CCTO_StageA.xml` が持つ。他の行は原則として今後の作物実装で利用する設計値だが、**Rice行は例外で既存Vanilla `Plant_Rice` を `Patches/UplandRice.xml` により陸稲化済み**である。Grainsの固定枯死Patchは作らず、CCTOのVanilla米対応を使用する。陸稲の5日・収量11・肥沃度最低0.7・成長10～42℃／最適18～32℃はGrainsの同Patchと `Docs/Design.md §4.2.2` が正本であり、実ゲーム温度挙動は未検証。未実装作物のDefNameを先行確定したり、存在しないDefを対象とするPatchを追加したりしない。
 
 ## 2026-10-04 アワ・ヒエ・キビの凍霜害再監査
 

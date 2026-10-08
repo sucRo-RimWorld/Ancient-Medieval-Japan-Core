@@ -84,6 +84,33 @@ class ChainRegressionTests(unittest.TestCase):
         # Actual MO 1.6 source contract is tested separately; don't assume
         # its native grinding recipe has no hay byproduct.
 
+    def test_mo_hay_removal_is_not_lost(self):
+        path = self.root/'Compatibility/MedievalOverhaul/Patches/MedievalOverhaul_StageA_Wheat.xml'
+        doc = ET.parse(path)
+        target = '/Defs/RecipeDef[defName="DankPyon_CraftFlourBulk"]/products/Hay'
+        nodes = [op.find('xpath') for op in doc.getroot().findall('Operation')
+                 if op.get('Class') == 'PatchOperationRemove' and op.findtext('xpath') == target]
+        self.assertEqual(len(nodes), 1)
+        nodes[0].text = target.replace('/products/Hay', '/products/Flour')
+        doc.write(path)
+        with self.assertRaises(AssertionError):
+            validate(self.root)
+
+    def test_docs_match_active_grains_ownership(self):
+        design = (ROOT/'Docs/Design.md').read_text(encoding='utf-8')
+        profile = (ROOT/'Docs/GrainsProfileTesting.md').read_text(encoding='utf-8')
+        cold = (ROOT/'Docs/Balance/Crops/ColdTolerance.md').read_text(encoding='utf-8')
+        scenario = (ROOT/'Docs/ScenarioExtraction.md').read_text(encoding='utf-8')
+        self.assertNotIn('Rice Cultivationは水田・稲・籾・米・稲作一次加工を所有する', design)
+        self.assertNotIn('- 米・水田', design)
+        self.assertNotIn('### 8.1 米・水田（Rice Cultivationへ移管）', design)
+        self.assertNotIn('蕎麦粉を実装する場合は30日', design)
+        self.assertIn('MedievalOverhaul_StageA_Wheat.xml', design)
+        self.assertIn('Grains適用後の製粉成果物は小麦粉のみ', design)
+        self.assertIn('Patches/UplandRice.xml', cold)
+        self.assertIn('LegacyStartingScenarios/Defs/Scenarios/Scenarios_NewVillage.xml', scenario)
+        self.assertNotIn('not a claim that the Production patch is already implemented', profile)
+
     def test_mo_16_archive_provider_contract(self):
         # Synthetic compressed MO provider: run without the proprietary game.
         things = """<Defs>
@@ -93,6 +120,7 @@ class ChainRegressionTests(unittest.TestCase):
           <ThingDef><defName>DankPyon_RawWheat</defName></ThingDef>
         </Defs>"""
         recipes = """<Defs>
+          <RecipeDef><defName>DankPyon_CraftFlour_Manual</defName><recipeUsers><li>CraftingSpot</li></recipeUsers><ingredients><li><count>1</count></li></ingredients><products><DankPyon_Flour>1</DankPyon_Flour><Hay>1</Hay></products></RecipeDef>
           <RecipeDef><defName>DankPyon_CraftFlour</defName><recipeUsers><li>DankPyon_Millstone</li></recipeUsers><ingredients><li><count>1</count></li></ingredients><products><DankPyon_Flour>1</DankPyon_Flour><Hay>1</Hay></products></RecipeDef>
           <RecipeDef><defName>DankPyon_CraftFlourBulk</defName><recipeUsers><li>DankPyon_Millstone</li></recipeUsers><ingredients><li><count>10</count></li></ingredients><products><DankPyon_Flour>10</DankPyon_Flour><Hay>10</Hay></products></RecipeDef>
         </Defs>"""

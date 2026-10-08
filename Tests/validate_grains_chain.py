@@ -85,6 +85,18 @@ def validate(root=ROOT):
     mill_patch = ET.parse(root/'Compatibility/MedievalOverhaul/Patches/MedievalOverhaul_GrainsMillstone.xml')
     assert mill_patch.findtext('Operation/xpath') == '/Defs/ThingDef[defName="DankPyon_Millstone"]/researchPrerequisites'
     assert mill_patch.find('Operation/match').get('Class') == 'PatchOperationRemove'
+    # Upstream MO grinding emits Hay, but AMJ removes it at all three
+    # recipes: no redundant feed/bedding from the milling stage.
+    wheat_patch = ET.parse(root/'Compatibility/MedievalOverhaul/Patches/MedievalOverhaul_StageA_Wheat.xml')
+    expected_hay_removals = {
+        '/Defs/RecipeDef[defName="' + name + '"]/products/Hay'
+        for name in ('DankPyon_CraftFlour_Manual', 'DankPyon_CraftFlour',
+                     'DankPyon_CraftFlourBulk')
+    }
+    hay_removals = {op.findtext('xpath') for op in wheat_patch.getroot().findall('Operation')
+                    if op.get('Class') == 'PatchOperationRemove'
+                    and (op.findtext('xpath') or '').endswith('/products/Hay')}
+    assert hay_removals == expected_hay_removals, 'AMJ MO grinding must remove upstream Hay for all three recipes'
     print('Grains Base/MO wheat/flour/milling/minimum-food static contracts: PASS')
 
 
@@ -115,9 +127,11 @@ def validate_mo_source(mo_root):
     assert float(flour.findtext('statBases/Nutrition')) == 0.05
     stone=get('ThingDef','DankPyon_Millstone')
     assert stone.find('researchPrerequisites') is not None
-    for recipe_name, count in (('DankPyon_CraftFlour', 1), ('DankPyon_CraftFlourBulk', 10)):
+    for recipe_name, count, mill_user in (('DankPyon_CraftFlour_Manual', 1, 'CraftingSpot'),
+                                          ('DankPyon_CraftFlour', 1, 'DankPyon_Millstone'),
+                                          ('DankPyon_CraftFlourBulk', 10, 'DankPyon_Millstone')):
         recipe = get('RecipeDef', recipe_name)
-        assert recipe.findtext('recipeUsers/li') == 'DankPyon_Millstone', recipe_name
+        assert recipe.findtext('recipeUsers/li') == mill_user, recipe_name
         assert float(recipe.findtext('ingredients/li/count')) == count, recipe_name
         assert float(recipe.findtext('products/DankPyon_Flour')) == count, recipe_name
         assert float(recipe.findtext('products/Hay')) == count, recipe_name

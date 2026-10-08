@@ -16,14 +16,14 @@ Coreリポジトリは作者により https://github.com/sucRo-RimWorld/Ancient-
 `LegacyStartingScenarios/` 配下に従来開始・旧セーブ用の互換コピーを維持する。
 台帳の `sourceRoot` はこのGrains互換コピーの入力位置を示す。
 
-| 対象 | 維持する識別子 | 現在の正本 |
+| 対象 | 維持する識別子 | Grains側の現行互換コピー（最終所有正本はScenarios） |
 |---|---|---|
-| ScenarioDef | `AMJC_NewVillage` | `Defs/Scenarios/Scenarios_NewVillage.xml` |
-| 開始用FactionDef | `AMJC_PlayerVillage` | `Defs/FactionDefs/Factions_PlayerVillage.xml` |
-| 開始用PawnKindDef | `AMJC_Villager` | `Defs/PawnKindDefs/PawnKinds_Villager.xml` |
-| 英語・日本語の開始ダイアログ | `AMJC_GameStart_NewVillage` | 両言語の `Keyed/AMJC_Scenarios.xml` |
-| 日本語Def翻訳3ファイル | 上記3つのDefのフィールド | `DefInjected/ScenarioDef`、`FactionDef`、`PawnKindDef` |
-| MO差分2操作 | Scenario全parts置換・PawnKind衣装タグ追加 | Scenariosの `Compatibility/MedievalOverhaul/Patches/StartingScenarios.xml`／Grainsの同パスを `LegacyStartingScenarios/` 配下へ |
+| ScenarioDef | `AMJC_NewVillage` | `LegacyStartingScenarios/Defs/Scenarios/Scenarios_NewVillage.xml` |
+| 開始用FactionDef | `AMJC_PlayerVillage` | `LegacyStartingScenarios/Defs/FactionDefs/Factions_PlayerVillage.xml` |
+| 開始用PawnKindDef | `AMJC_Villager` | `LegacyStartingScenarios/Defs/PawnKindDefs/PawnKinds_Villager.xml` |
+| 英語・日本語の開始ダイアログ | `AMJC_GameStart_NewVillage` | `LegacyStartingScenarios/Languages/English/Keyed/AMJC_Scenarios.xml` と `LegacyStartingScenarios/Languages/Japanese/Keyed/AMJC_Scenarios.xml` |
+| 日本語Def翻訳3ファイル | 上記3つのDefのフィールド | `LegacyStartingScenarios/Languages/Japanese/DefInjected/{ScenarioDef,FactionDef,PawnKindDef}/` |
+| MO差分2操作 | Scenario全parts置換・PawnKind衣装タグ追加 | `LegacyStartingScenarios/Compatibility/MedievalOverhaul/Patches/StartingScenarios.xml`（独立Scenariosにも正式な所有ファイルあり） |
 
 Factionはプレイヤー開始専用であり、NPC派閥を追加しない。
 Scenario→Faction→PawnKind→Factionの参照を一組として移す。

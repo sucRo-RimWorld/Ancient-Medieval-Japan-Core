@@ -234,12 +234,12 @@ Scenarios build, provider-alias staging, four-profile runner, private-desktop en
 
 ## Upland rice scope extension (2026-10-08 audit)
 
-Grains now owns the Vanilla `Plant_Rice` crop as **upland rice (陸稲)** and keeps `RawRice` as the shared edible-rice Def. This is a confirmed design boundary, not a claim that the Production patch is already implemented.
+Grains owns Vanilla `Plant_Rice` as **upland rice (陸稲)** through the committed Production `Patches/UplandRice.xml`, retaining `RawRice` without a duplicate item Def. XML and seven-crop analytical regression exist; loaded-Def, sow/harvest and real-game success remain unverified.
 
-The current real-provider suite remains the existing six named grain scenarios until the implementation lands; do not change expected counts or fabricate a seven-crop PASS ahead of the source change. Before standalone release, extend the existing environment/job coverage so it proves all of the following:
+The real-provider suite retains **six named scenarios per profile**, but its C# Pickle source and static analysis now cover **seven crops**. No four-profile game execution has occurred. These tests must pass at runtime before standalone release:
 
 - the loaded `Plant_Rice` is the Grains upland-rice definition/patch in both Vanilla and MO profiles;
-- upland rice is sowable on normal ground and the Vanilla `Hydroponic` sow tag is removed if the final implementation adopts the audited candidate;
+- upland rice is sowable on normal ground with the implemented `Ground`-only sow tag and without `Hydroponic`;
 - a native harvest produces Vanilla `RawRice`, which remains accepted by ordinary meals;
 - CCTO profiles retain CCTO's existing `Plant_Rice` minimum-growth / cold-death behavior without a duplicate Grains cold-tolerance extension;
 - the analytical and loaded-Def environment regressions are extended from six crops to seven and still reject a single crop dominating the representative cells;
@@ -278,4 +278,4 @@ Pickle's `-pickle-run-timeout` is measured in **minutes** and applies to the ent
 
 ### MO millstone Hay byproduct regression (2026-10-08)
 
-The MO 1.6 provider's `DankPyon_CraftFlourBulk` produces `DankPyon_Flour` 10 **and** `Hay` 10, while `DankPyon_CraftFlour` yields one of each. The previous Grains native-Bill test incorrectly asserted `Hay` never increases, causing a false failure even when MO's millstone recipe succeeds. The production Pickle step now checks each declared product's **exact output count**, including Hay, and separately insists on zero extra Hay/Straw for recipes that do **not** declare those byproducts. A static source contract test ensures that distinction is preserved. This fixes a test-harness false positive; it does **not** demonstrate runtime test completion. The Vanilla milling path still must not create Hay.
+The **unpatched MO 1.6 provider source** declares `Hay` alongside `DankPyon_Flour` in its three milling Recipes (manual, regular and bulk). Grains' MO-conditional `MedievalOverhaul_StageA_Wheat.xml` **removes `products/Hay` from all three Recipes**, so the expected loaded Grains+MO grinding output is flour only, not Hay. The native-Bill helper compares all *loaded* Recipe product counts, rejecting undeclared Hay/Straw; the loaded-MO Pickle contract additionally asserts all three Recipes are flour-only. The upstream-MO archive validator intentionally checks the provider's original Hay before AMJ patches apply, while the Grains static validator enforces the three removal operations. Neither static check substitutes for a real RimWorld test.

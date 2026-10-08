@@ -262,7 +262,7 @@ Base XMLにはMO DefNameへの無条件参照を残さない。MO固有PatchはM
 - Fermentation: Grainsを必須依存にしない。単独の発酵ループを持たせ、Grains導入時に雑穀等、Rice Cultivation導入時にAMJ米等を追加接続する
 - Brewing: Grains / Waterworks / Rice Cultivationのいずれも自動的な必須依存にせず、存在時だけ対応原料・工程を追加接続する
 - Ironmaking: Vanilla単体で鉄器加工・砂鉄供給・古代～中世製鉄を成立させる。MO / Environment / Waterworksは公式任意互換。詳細は [IronmakingDesign.md](IronmakingDesign.md)
-- Waterworks / Rice Cultivation / Hot Springs / Environment / Events / Factions / Backgrounds等: 責務上必要な前提だけを持ち、Grainsを共通必須基盤にはしない。Waterworksは水利、Rice Cultivationは水田・稲・籾・米・稲作一次加工を所有する
+- Waterworks / Rice Cultivation / Hot Springs / Environment / Events / Factions / Backgrounds等: 責務上必要な前提だけを持ち、Grainsを共通必須基盤にはしない。Waterworksは水利、Rice Cultivationは水田・水管理・水稲栽培を所有し、陸稲と共通穀物加工・製粉はGrainsが所有する
 
 #### Hot Springs / 温泉 Addon
 
@@ -468,7 +468,7 @@ Scenarioの旧具体値表は移行中のMOプロファイル互換契約とす�
 `Docs/GrainsProfileTesting.md` に、実MO / 実CCTOの有無を選ぶ4プロファイルを追加した。
 Production About.xmlを変えずにruntimeファイルをそのままテスト専用コピーへ読み込ませる。
 旧MO/CCTO fixtureの8シナリオとは別に、各構成の読み込み・一次加工・任意CCTOを
-確認する移行用smokeを置く。step 2でNew Village実開始、step 3で製粉・粉食のロード後契約を追加したが実機未実行であり、環境別6穀物選択を含むリリース条件全件を満たした扱いにはしない。
+確認する移行用smokeを置く。step 2でNew Village実開始、step 3で製粉・粉食のロード後契約を追加したが実機未実行であり、陸稲を含む七穀選択を含むリリース条件全件を満たした扱いにはしない。
 **2026-10-07 Base分離 step 2:** Base Defs/翻訳からMO研究・素材・カテゴリ・Straw・Scenario・apparel参照を除去した。大麦と加工台はBaseでは研究不要、加工台の金属はSteel 30、簡易加工場はWoodyのみとする。MO併用時は `loadFolders.xml` の IfModActive により `Compatibility/MedievalOverhaul` を読み込み、旧38件の明示AMJC Def/抽象Def契約を保持する。MO小麦脱穀、外部MO小麦PatchとRawWheat翻訳もこの条件付きフォルダへ移した。step 2時点ではBase小麦の脱穀Recipeを非公開とし、次のstep 3で復帰した。
 
 4構成のPickle featureにNew Villageのロード後設定と実開始を追加した（各5シナリオ）。静的projectionはAMJ所有XMLとBase差分Add/Replaceだけを検証し、RimWorldの継承・全Patch・Def解決・描画の代替ではない。step 2時点では小麦・製粉・粉食は未実装だった（次のstep 3でXMLを追加）。MO仮画像3件の置換、実機4構成、セーブ移行は未完了。Production About.xmlのMO必須依存は維持する。
@@ -487,7 +487,7 @@ Production About.xmlを変えずにruntimeファイルをそのままテスト�
 | そばがき | `AMJC_Sobagaki` | `AMJC_CookSobagaki` | `AMJC_BuckwheatFlour` | 同左 |
 | 雑穀団子 | `AMJC_MilletDumplings` | `AMJC_CookMilletDumplings` | `AMJC_MilletFlour` | 同左 |
 
-新規説明文は日本語先行レビュー前のため空欄とし、未承認の歴史的説明を英訳・公開していない。旧小麦Recipeの説明/翻訳は保持する。新規画像は生成せず、Base小麦は既存AMJアワ、束・粉は既存AMJ雑穀、石臼・料理はVanillaの開発用画像参照を使う。**これらは完成画ではなく、固有画像・日本語説明レビュー→英訳、実機の継承/参照/Graphic/Bill実行、環境別選択・既存セーブ回帰をリリース前に完了する必要がある。** Production About.xmlのMO必須依存はまだ変更しない。開始シナリオも物理移転前の暫定配置を維持する。
+新規説明文は日本語先行レビュー前のため空欄とし、未承認の歴史的説明を英訳・公開していない。旧小麦Recipeの説明/翻訳は保持する。新規画像は生成せず、Base小麦は既存AMJアワ、束・粉は既存AMJ雑穀、石臼・料理はVanillaの開発用画像参照を使う。**これらは完成画ではなく、固有画像・日本語説明レビュー→英訳、実機の継承/参照/Graphic/Bill実行、環境別選択・既存セーブ回帰をリリース前に完了する必要がある。** Production About.xmlのMO必須依存はまだ変更しない。本段落はstep 3時点の記録であり、現行の開始シナリオ互換コピーは `LegacyStartingScenarios` へ移転済みである（`Docs/ScenarioExtraction.md`参照）。
 
 `Tests/validate_grains_chain.py` と変異回帰は入力/出力、栄養保存、研究不要、保存/Mood、MO差替え/非重複を静的確認する。旧38件はそのまま照合し、新規11件の共有Defだけ追加許可する。4構成のPickleに製粉/粉食のロード後契約を加え、各6シナリオとした。ゲーム内でBillを完了した証拠ではなく、実機実行自体も未実施。
 
@@ -850,14 +850,14 @@ Stage Aの穀物は、加工前後の保存性も作物選択と備蓄判断に�
 | アワ / ヒエ / キビ | 雑穀束 → 脱穀 → 殻付き雑穀 → 殻取り → 雑穀 | 120日 → 120日 → 90日 | 不可。可食化は殻取り後 |
 | 大麦 | 穀束 → 脱穀 → 殻付き大麦 → 殻取り → 大麦穀粒 | 120日 → 120日 → 90日 | 不可。可食化は殻取り後 |
 | 小麦（MO） | 小麦束 → 脱穀 → 小麦穀粒 + `DankPyon_Straw` → 必要に応じてMO製粉 | 120日 → 90日。小麦粉は60日 | 不可。小麦は殻付き中間状態を省略 |
-| ソバ | 穀束 → 脱穀 → 殻付きソバ → 殻取り → ソバ穀粒 | 120日 → 120日 → 60日。蕎麦粉を実装する場合は30日 | 不可。可食化は殻取り後 |
+| ソバ | 穀束 → 脱穀 → 殻付きソバ → 殻取り → ソバ穀粒 | 120日 → 120日 → 60日。実装済みの蕎麦粉は60日 | 不可。可食化は殻取り後 |
 
-- 雑穀粉は具体的用途を追加する段階で実装し、その場合の保存期間は一般粉の60日を基準とする。
-- 蕎麦粉は蕎麦切り・蕎麦がき等の用途とセットで追加し、Stage Aで用途がなければThingDefだけを先行追加しない。
+- 雑穀粉 `AMJC_MilletFlour` は実装済み。保存期間60日で、雑穀団子に使用する。
+- 蕎麦粉 `AMJC_BuckwheatFlour` はそばがきとともに実装済み。保存期間60日。蕎麦切りは初期範囲外とする。
 - 大麦の製粉は具体的用途が必要になった段階で決める。Stage Aでは可食大麦穀粒までを基本経路とする。
 - Straw副産物は製粉ではなく脱穀段階へ統一する。ただし `DankPyon_Straw` はMO併用時だけ出力し、BaseではStraw ThingDefを所有しない。
 - **MO併用時は** `DankPyon_Plant_Wheat` / `DankPyon_RawWheat` を可視供給元として再利用し、`DankPyon_RawWheat` を未脱穀の小麦束として `DankPyon_Cereal` から外す。脱穀後の `AMJC_Wheat` だけをMO製粉へ接続する。BaseではGrains所有の小麦Plant/穀束を同じ `AMJC_Wheat` へ合流させる。
-- MO 1.6標準では小麦収穫時の `Plant_SecondaryDrop` と製粉Recipeの両方でHayが生じるが、AMJでは収穫時副産物を外し、製粉側のHayも削除する。藁はAMJ脱穀Recipeでのみ `DankPyon_Straw` として発生させる。
+- MO 1.6の**上流原本**では小麦収穫時の `Plant_SecondaryDrop` と製粉Recipe3種でHayが生じる。GrainsのMO条件付き `MedievalOverhaul_StageA_Wheat.xml` は収穫時副産物拡張を除去し、`DankPyon_CraftFlour_Manual` / `DankPyon_CraftFlour` / `DankPyon_CraftFlourBulk` の `products/Hay` を削除する。したがって**Grains適用後の製粉成果物は小麦粉のみ**であり、`DankPyon_Straw` はAMJ脱穀Recipeでのみ生じる。上流MOのHay存在とGrains適用後の製粉仕様を混同しない。
 - MO `DankPyon_Flour` の保存期間はAMJ共通粉基準に合わせて60日へ調整する。
 
 この確定表は「一種類の最適作物」を作らないための基準である。短期・痩せ地はソバ/キビ、標準～肥沃な畑で収穫回数を抑える雑穀はアワ、寒冷側はヒエ/大麦、肥沃地で長期高収量・粉食は小麦、という役割差を維持する。
@@ -1020,7 +1020,7 @@ MO併用時は、Grains Baseと同じ目的の設備・素材を二重に並べ�
 - Straw: MO DankPyon_Straw
 - ソバ・大麦・雑穀および蕎麦粉・雑穀粉: Grains所有
 
-MO資産を使っても、Grainsの工程順・6穀物バランス・粉食バランスは維持する。MO固有PatchはMO存在時だけ適用し、Base XMLからMO DefNameを参照しない。
+MO資産を使っても、Grainsの工程順・七穀（陸稲を含む）のバランス・粉食バランスは維持する。MO固有PatchはMO存在時だけ適用し、Base XMLからMO DefNameを参照しない。
 
 ### 6.2 MO研究ツリーとの統合
 
@@ -1071,7 +1071,7 @@ GrainsはBase主要ループに必要なDefを自分で所有し、MO併用時�
 
 **Grainsが所有しない**
 - AMJ独自Straw
-- 米・水田
+- 水田・水管理・水稲栽培（陸稲と `RawRice`、共通の穀物加工はGrainsが担当する）
 - 豆類
 - 繊維・紡績・紙
 - 根菜・一般野菜
@@ -1083,7 +1083,7 @@ GrainsはBase主要ループに必要なDefを自分で所有し、MO併用時�
 |---|---|---|
 | 小麦 | DankPyon_Plant_Wheat / DankPyon_RawWheat | MO時の可視供給元。GrainsバランスPatchを適用 |
 | 小麦粉 | DankPyon_Flour | MO時の唯一の標準小麦粉 |
-| 製粉設備 | DankPyon_Millstone、CraftingSpot手挽き、Windmill / Watermill系 | MO時に再利用。未脱穀束から工程を飛ばさない |
+| 製粉設備 | `DankPyon_Millstone` | MO時に石臼と既存の製粉Recipeを再利用する。CraftingSpot・風車・水車による別経路は現行Grainsの正式互換対象ではなく、未脱穀束から工程を飛ばさない |
 | 藁 | DankPyon_Straw | MO時だけ脱穀副産物として利用 |
 | 穀物カテゴリ | DankPyon_Cereal | MO製粉/醸造へ参加させる対象だけ条件付き登録 |
 | 農業研究 | DankPyon_BasicAgriculture 等 | Grains主要ループの必須依存にはしない |
@@ -1130,23 +1130,13 @@ Food Drying 1.6はProcessor Frameworkを利用し、米・ジャガイモ・ト�
 
 ## 8. 最初の公開Alphaでは実装しないもの
 
-### 8.1 米・水田（Rice Cultivationへ移管）
+### 8.1 水田・水稲栽培（Rice Cultivationへ分離）
 
-Coreでは実装しない。**水田・稲作はWaterworksからも分離し、独立したRice Cultivation Modとして後続実装する。**
+**Grainsは陸稲の栽培と穀物共通の収穫後加工・製粉を担当する。** 現行実装ではVanilla `Plant_Rice` を陸稲として再定義し、`RawRice` をそのまま収穫する。したがって、陸稲や可食米は本章の「最初の公開Alphaでは実装しないもの」に含まない。
 
-理由:
+**Rice Cultivationは水田・給排水・苗代・田植え・水稲Plant等の水田固有の栽培システム**を担当する。Grains併用時は水稲の収穫結果を `RawRice` またはGrainsの米加工経路へ合流させ、可食米・精米・製粉の共通経路を二重実装しない。稲架掛け・稲藁等の水稲固有工程はRice Cultivationが独立に設計する。
 
-- 水田
-- 灌漑
-- 水源
-- 稲
-- 脱穀
-- 精米
-- 稲藁
-
-まで連鎖し、一つの大きなシステムになるため。
-
-水利と稲作は責務と規模が大きいため**別Modへ分離する**。Waterworksは自然取水・用水路・分水・暗渠・引湯等の水利を所有し、Rice Cultivationは水田・稲・籾・米・稲作一次加工を所有する。両者は相互に必須依存せず、併用時だけ公式互換で接続する。
+Waterworksは自然取水・用水路・分水・暗渠・引湯等の水利基盤を持ち、Rice Cultivationとは任意連携する。Grainsは両者に必須依存しない。詳細仕様は各所有リポジトリを正本とし、Grainsではこの接続境界だけ固定する。
 
 #### Waterworks / 水利Modの基本方針
 
@@ -1406,7 +1396,7 @@ Medieval Overhaulと並べても違和感が少ない、**ベクター画像的�
 
 ### Grains 環境・実ジョブ回帰の追加（2026-10-07）
 
-**2026-10-08陸稲再監査:** 以下の六穀回帰は現行実装の基準として維持するが、最終Grains範囲は陸稲を加えた七穀である。陸稲のProduction Patchと値が確定した時点でFixture・Pickle環境比較・実収穫を七穀へ拡張し、六穀PASSだけでリリース完了とはしない。
+**2026-10-08陸稲実装後の状態:** 六穀Fixtureは陸稲追加前の履歴回帰として維持する。Productionの `Patches/UplandRice.xml`、七穀静的回帰 `Tests/test_upland_rice.py`、七穀Pickle環境比較・収穫テストの**ソース**は追加済み。実ゲームでのPickle成功、C#コンパイル、季節条件を含む播種ジョブ、ERROR 0は未確認。六穀の履歴PASSだけでリリース完了とはしない。
 
 六穀の有限成長時間比較を `Docs/Balance/Crops/GrainsEnvironment.md` に定義し、
 肥沃度3×温度3×季節3の27セルで成熟穀粒収量と勝者を回帰固定する。
@@ -1415,7 +1405,7 @@ Medieval Overhaulと並べても違和感が少ない、**ベクター画像的�
 既存PlantDefの値・About依存・開始シナリオの分離方針は変更しない。
 
 四プロファイルのPickleは穀物専用6シナリオ（開始シナリオ2件はScenariosへ移管）。ロード済みPlantUtilityの環境係数比較と、
-New Villageに依存しないStage A Quickstart上の六穀の実収穫＋11回の加工・製粉・調理Billを追加する。
+New Villageに依存しないStage A Quickstart上の七穀の実収穫を検証する。元の11件の加工・製粉・粉食Billに、追加の脱穀・殻取りと5種類の可食穀粒による `CookMealSimple` Billを加えている（いずれも実ゲームの成功は未確認）。
 成熟株の配置を開始点とし、収穫物・加工品はテスト側で生成しない。
 現在はC#ソースと起動配線の追加までであり、実ゲームのビルド・実行・ERROR 0は未検証。
 実ジョブ経路と検証境界の正本は `Docs/GrainsProfileTesting.md`。
