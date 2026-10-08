@@ -397,3 +397,6 @@ RimWorld 1.6参照実装の `Plant.Resting` は現地日内割合が `<0.25` ま
 最終4構成ゲートは、変更を終えた一つのソースで引数なし（または `all`）を実行して確認する。単独構成を診断した場合はその構成だけの証拠として扱う。旧ログ(8)のVanillaはゲーム処理修正後の診断合格として保持し、この新しいランナーの実機合格へ読み替えない。
 
 `Tests/test_grains_profiles.ps1` はWindows PowerShell 5.1のsyntheticテストで移設/時刻/報告書に対する同値性、稲/翻訳/PNG/C#/feature/runner/Aboutの変更、追加・削除・改名、4構成共通の記録hashを検証する。このテストは実ゲーム合格を代替しない。
+
+
+**CI verified (2026-10-08 JST):** commit `a055c5b0e4f76ce7d69b57c89ed08850d2e52e30` passed [Stage A run 37761723079](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Grains/actions/runs/37761723079), including Windows PowerShell 5.1 parsing and the expanded synthetic four-profile/source-drift tests, plus [Workshop payload run 37761722979](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Grains/actions/runs/37761722979). Source-identity tooling validation is DONE. This is not an installed-game execution of the new runner; corrected real-provider matrix remains OPEN.
