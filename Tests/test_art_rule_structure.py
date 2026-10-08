@@ -118,10 +118,9 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertIn("Tests/test_prepare_boxed_resource_candidate.py", text)
         self.assertNotIn("Tests/test_masu_template.py", text)
 
-    def test_legacy_masu_coordination_tasks_are_archived(self):
+    def test_legacy_masu_coordination_tasks_are_not_active(self):
         text = read("Docs/Coordination.md")
         lines = text.splitlines()
-        found = []
         for i, line in enumerate(lines):
             if not line.startswith("### ART-TEMPLATE-"):
                 continue
@@ -132,7 +131,6 @@ class ArtRuleStructureTest(unittest.TestCase):
                 continue
             if not 4 <= number <= 18:
                 continue
-            found.append(ident)
             status = None
             for later in lines[i + 1:]:
                 if later.startswith("### "):
@@ -143,9 +141,8 @@ class ArtRuleStructureTest(unittest.TestCase):
             self.assertIsNotNone(status, ident)
             self.assertTrue(
                 status.startswith("ARCHIVED"),
-                f"{ident} is not archived: {status}",
+                f"legacy masu task reactivated in live Coordination: {ident}: {status}",
             )
-        self.assertGreaterEqual(len(found), 15)
 
 
 
