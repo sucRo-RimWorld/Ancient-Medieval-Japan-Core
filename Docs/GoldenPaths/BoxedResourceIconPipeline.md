@@ -110,11 +110,9 @@ Reject internally when any of the following is true:
 - the generated layer contains any wood, container rim, box, background, UI, text, or decorative shadow;
 - the source or normalized output is not usable as a transparent contents-only layer.
 
-When a candidate fails this gate, diagnose it against the actual accepted references; do not use a fixed automatic regeneration count. Prefer correcting privately screenable contents sources or revising a genuinely changed production approach. In-chat ImageGen may display each output immediately, so it cannot serve as a hidden retry loop or satisfy pre-display QA retroactively. Do not trigger speculative repeated visible generations or attach known-bad candidates. If no screenable acceptable source can be prepared, report the limit without presenting a rejected image.
+Failure/retry behavior and the boundary for immediately visible image generation follow Project `Docs/GoldenPaths/TextureAssetPipeline.md`; this family defines no separate attempt quota. Before adding a boxed-resource-specific rule, determine whether the failure is caused by the reference role, subject description, deterministic projection, or a capability limit.
 
-Do not repair failures by adding more ad-hoc permanent rules. First determine whether the failure comes from a missing/ambiguous reference role, a wrong subject description, the projection normalization, or a capability limit. Only durable causes belong in this Golden Path.
-
-For privately screenable sources, only after mechanical QA, deterministic projection, agent semantic QA, and the generated review sheet all pass is the candidate shown to the author for the **single remaining human gate: final visual acceptance**. When the image-generation tool immediately shows its output, this pre-display guarantee cannot be claimed; follow Project `Docs/GoldenPaths/TextureAssetPipeline.md` instead.
+For privately screenable sources, mechanical QA, deterministic projection, agent semantic QA and the review sheet must pass before the **single remaining human gate: final visual acceptance**.
 
 ## Manual composition
 
