@@ -7,7 +7,7 @@ relative style-complexity checks, and review-sheet generation.
 
 The actual image-generation step is deliberately external to this Python
 process. In ChatGPT work, use the built-in image-generation tool between the
-"prepare" and "review" commands. No OPENAI_API_KEY is read and no network
+"prepare" and "review" commands. No API credential is read and no network
 request is made by this script.
 """
 from __future__ import annotations
