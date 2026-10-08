@@ -3,8 +3,8 @@
   <RecipeDef>
     <defName>AMJC_CookHoutou</defName>
     <label>cook houtou</label>
-    <description />
-    <jobString>Cooking flour food.</jobString>
+    <description>Prepare one serving of hakutaku using wheat flour.</description>
+    <jobString>Cooking hakutaku.</jobString>
     <workAmount>300</workAmount>
     <workSpeedStat>CookSpeed</workSpeedStat>
     <workSkill>Cooking</workSkill>
@@ -39,8 +39,8 @@
   <RecipeDef>
     <defName>AMJC_CookSobagaki</defName>
     <label>cook sobagaki</label>
-    <description />
-    <jobString>Cooking flour food.</jobString>
+    <description>Prepare one serving of sobagaki using buckwheat flour.</description>
+    <jobString>Cooking sobagaki.</jobString>
     <workAmount>300</workAmount>
     <workSpeedStat>CookSpeed</workSpeedStat>
     <workSkill>Cooking</workSkill>
@@ -75,8 +75,8 @@
   <RecipeDef>
     <defName>AMJC_CookMilletDumplings</defName>
     <label>cook millet dumplings</label>
-    <description />
-    <jobString>Cooking flour food.</jobString>
+    <description>Prepare one serving of millet dumplings using millet flour.</description>
+    <jobString>Cooking millet dumplings.</jobString>
     <workAmount>300</workAmount>
     <workSpeedStat>CookSpeed</workSpeedStat>
     <workSkill>Cooking</workSkill>

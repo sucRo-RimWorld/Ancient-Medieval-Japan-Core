@@ -3,7 +3,7 @@
   <ThingDef ParentName="RoughPlantBase">
     <defName>AMJC_BuckwheatFlour</defName>
     <label>buckwheat flour</label>
-    <description />
+    <description>Buckwheat flour (sobako). Flour made from buckwheat grains after their hulls have been removed. It is used in flour-based foods such as sobagaki, made by mixing the flour with hot water rather than forming noodles.</description>
     <graphicData>
       <texPath>Things/Item/Resource/AMJC_Millet/Millet</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
@@ -30,7 +30,7 @@
   <ThingDef ParentName="RoughPlantBase">
     <defName>AMJC_MilletFlour</defName>
     <label>millet flour</label>
-    <description />
+    <description>Millet flour (zakkokuko). Flour ground from edible grains of awa, hie, and kibi. In AMJGrains, these three millets share one flour item used to prepare dumplings.</description>
     <graphicData>
       <texPath>Things/Item/Resource/AMJC_Millet/Millet</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>

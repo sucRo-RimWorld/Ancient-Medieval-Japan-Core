@@ -3,8 +3,8 @@
   <RecipeDef>
     <defName>AMJC_MillWheat</defName>
     <label>mill wheat</label>
-    <description />
-    <jobString>Milling grain.</jobString>
+    <description>Grind 10 threshed wheat grains into 10 units of wheat flour.</description>
+    <jobString>Milling wheat.</jobString>
     <workAmount>300</workAmount>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
     <workSkill>Crafting</workSkill>

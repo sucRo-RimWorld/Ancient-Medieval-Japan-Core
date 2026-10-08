@@ -3,8 +3,8 @@
   <RecipeDef>
     <defName>AMJC_MillBuckwheat</defName>
     <label>mill buckwheat</label>
-    <description />
-    <jobString>Milling grain.</jobString>
+    <description>Grind 10 dehulled buckwheat grains into 10 units of buckwheat flour.</description>
+    <jobString>Milling buckwheat.</jobString>
     <workAmount>300</workAmount>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
     <workSkill>Crafting</workSkill>
@@ -38,8 +38,8 @@
   <RecipeDef>
     <defName>AMJC_MillMillet</defName>
     <label>mill millet</label>
-    <description />
-    <jobString>Milling grain.</jobString>
+    <description>Grind 10 units of edible millet into 10 units of millet flour.</description>
+    <jobString>Milling millet.</jobString>
     <workAmount>300</workAmount>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
     <workSkill>Crafting</workSkill>

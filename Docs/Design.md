@@ -1438,4 +1438,4 @@ Grainsの通常6件から専用Scenario要件を外し、旧fixtureの8件には
 
 ### 日本語説明文・翻訳監査（2026-10-08）
 
-歴史説明の候補、根拠、翻訳対象、既存の不一致の一覧は [LocalizationHistoricalReview.md](LocalizationHistoricalReview.md) を正本とする。まず機能の事実関係（MOなしの大麦研究不要、藁が出るのはMO互換時だけ、麦茶・味噌は未実装、小麦製粉はBase/MOとも利用可能）を日本語DefInjectedで修正した。餺飥・蕎麦掻き・雑穀団子等の歴史説明は日本語候補をレビュー資料にとどめ、**作者承認前に本番description・英語へ翻訳しない**。出力は文言監査・構造テストであり、ゲーム内翻訳ロードの確認や史実表現の正式承認ではない。
+歴史説明の候補、根拠、翻訳対象、既存の不一致の一覧は [LocalizationHistoricalReview.md](LocalizationHistoricalReview.md) を正本とする。まず機能の事実関係（MOなしの大麦研究不要、藁が出るのはMO互換時だけ、麦茶・味噌は未実装、小麦製粉はBase/MOとも利用可能）を日本語DefInjectedで修正した。餺飥・蕎麦掻き・雑穀団子等の15件の歴史説明・作業表示について、作者は2026-10-08に日本語を承認した（`Grains` 表記をプレイヤー向け説明では `AMJGrains` へ変更し、小麦の「実は食材になる」の曖昧さを解消した）。日本語DefInjectedへ承認済み表現を反映し、対応する英語原文のdescription・jobStringを追加した。日英の正本文面と典拠は `Docs/LocalizationHistoricalReview.md` §2/§6。DefName・既存label・栽培/加工数値・MOとの依存/切替は変更しない。既存植物の追加史実説明、実ゲーム4構成での文字列ロード・UI表示・ERROR 0は未検証。

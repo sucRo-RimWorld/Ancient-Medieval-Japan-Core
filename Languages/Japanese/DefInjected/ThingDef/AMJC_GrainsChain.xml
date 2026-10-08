@@ -5,4 +5,9 @@
   <AMJC_Houtou.label>餺飥</AMJC_Houtou.label>
   <AMJC_Sobagaki.label>そばがき</AMJC_Sobagaki.label>
   <AMJC_MilletDumplings.label>雑穀団子</AMJC_MilletDumplings.label>
+  <AMJC_BuckwheatFlour.description>蕎麦粉（そばこ）。殻を取った蕎麦の実を挽いた粉。湯で練る蕎麦掻きなど、麺にしない粉食にも利用される。</AMJC_BuckwheatFlour.description>
+  <AMJC_MilletFlour.description>雑穀粉（ざっこくこ）。粟・稗・黍から得た可食穀粒を挽いた粉。AMJGrainsでは三種の雑穀を共通の粉にまとめ、団子の材料にする。</AMJC_MilletFlour.description>
+  <AMJC_Houtou.description>餺飥（はくたく）。小麦粉を練って加熱する古い粉食を表現したもの。平安期の史料に見える餺飥と現在の山梨のほうとうには関係が指摘されるが、料理として同一だったとは断定できない。ここでは現代の具だくさんの味噌煮込みを再現せず、簡素な小麦粉食として扱う。</AMJC_Houtou.description>
+  <AMJC_Sobagaki.description>蕎麦掻き（そばがき）。蕎麦粉を湯で練って食べる、麺にしない粉食。蕎麦切りが広く普及する以前にも、蕎麦の実を炊くほか粉を練って食べる方法があった。</AMJC_Sobagaki.description>
+  <AMJC_MilletDumplings.description>雑穀団子（ざっこくだんご）。粟・稗・黍などの粉を水で練って加熱する団子状の食物を、一品として抽象化したもの。近世以降の甘味菓子そのものを再現する料理ではない。</AMJC_MilletDumplings.description>
 </LanguageData>

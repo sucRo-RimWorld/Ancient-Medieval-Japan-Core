@@ -1,4 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <LanguageData>
   <AMJC_MillWheat.label>小麦を製粉する</AMJC_MillWheat.label>
+  <AMJC_MillWheat.description>脱穀した小麦穀粒10個を挽いて、小麦粉10個にする。</AMJC_MillWheat.description>
+  <AMJC_MillWheat.jobString>小麦を製粉している。</AMJC_MillWheat.jobString>
 </LanguageData>

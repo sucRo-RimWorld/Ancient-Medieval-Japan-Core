@@ -3,7 +3,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>AMJC_Plant_Wheat</defName>
     <label>wheat plant</label>
-    <description />
+    <description>Wheat (komugi). A cereal introduced to Japan in the Yayoi period and known to have been cultivated during the Nara period. Wheat grains can be used in meals or ground into flour for flour-based dishes. In AMJGrains, harvested wheat sheaves must be threshed before use.</description>
     <descriptionHyperlinks>
       <ThingDef>AMJC_RawWheat</ThingDef>
     </descriptionHyperlinks>

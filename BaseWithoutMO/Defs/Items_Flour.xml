@@ -3,7 +3,7 @@
   <ThingDef ParentName="RoughPlantBase">
     <defName>AMJC_WheatFlour</defName>
     <label>wheat flour</label>
-    <description />
+    <description>Wheat flour (komugiko). Flour ground from wheat grains using a stone mill. In AMJGrains, it is used to prepare hakutaku.</description>
     <graphicData>
       <texPath>Things/Item/Resource/AMJC_Millet/Millet</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>

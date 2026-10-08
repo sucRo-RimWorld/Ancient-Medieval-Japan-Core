@@ -5,4 +5,14 @@
   <AMJC_CookHoutou.label>餺飥を作る</AMJC_CookHoutou.label>
   <AMJC_CookSobagaki.label>そばがきを作る</AMJC_CookSobagaki.label>
   <AMJC_CookMilletDumplings.label>雑穀団子を作る</AMJC_CookMilletDumplings.label>
+  <AMJC_MillBuckwheat.description>殻を取ったソバ穀粒10個を挽いて、蕎麦粉10個にする。</AMJC_MillBuckwheat.description>
+  <AMJC_MillBuckwheat.jobString>蕎麦を製粉している。</AMJC_MillBuckwheat.jobString>
+  <AMJC_MillMillet.description>雑穀10個を挽いて、雑穀粉10個にする。</AMJC_MillMillet.description>
+  <AMJC_MillMillet.jobString>雑穀を製粉している。</AMJC_MillMillet.jobString>
+  <AMJC_CookHoutou.description>小麦粉から餺飥を1個調理する。</AMJC_CookHoutou.description>
+  <AMJC_CookHoutou.jobString>餺飥を調理している。</AMJC_CookHoutou.jobString>
+  <AMJC_CookSobagaki.description>蕎麦粉からそばがきを1個調理する。</AMJC_CookSobagaki.description>
+  <AMJC_CookSobagaki.jobString>そばがきを調理している。</AMJC_CookSobagaki.jobString>
+  <AMJC_CookMilletDumplings.description>雑穀粉から雑穀団子を1個調理する。</AMJC_CookMilletDumplings.description>
+  <AMJC_CookMilletDumplings.jobString>雑穀団子を調理している。</AMJC_CookMilletDumplings.jobString>
 </LanguageData>

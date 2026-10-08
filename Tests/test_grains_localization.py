@@ -34,9 +34,9 @@ def all_localizations(*bases):
 
 
 class JapaneseLocalizationAudit(unittest.TestCase):
-    def test_labels_and_pending_description_inventory(self):
+    def test_labels_and_approved_description_inventory(self):
         audit = (ROOT / 'Docs/LocalizationHistoricalReview.md').read_text(encoding='utf-8')
-        self.assertIn('作者未承認', audit)
+        self.assertIn('作者承認済み', audit)
         shared = all_localizations('Languages/Japanese/DefInjected')
         vanilla = all_localizations('Languages/Japanese/DefInjected',
                                     'BaseWithoutMO/Languages/Japanese/DefInjected')
@@ -97,14 +97,35 @@ class JapaneseLocalizationAudit(unittest.TestCase):
         self.assertNotIn('Medieval Overhaul', wheat)
         self.assertIn('製粉', wheat)
 
-    def test_description_review_is_not_prematurely_translated(self):
-        audit = (ROOT / 'Docs/LocalizationHistoricalReview.md').read_text(encoding='utf-8')
-        self.assertIn('作者未承認', audit)
-        self.assertIn('英訳', audit)
+    def test_approved_japanese_english_parity_and_recipe_work_strings(self):
+        audit = (ROOT/'Docs/LocalizationHistoricalReview.md').read_text(encoding='utf-8')
+        self.assertIn('作者承認済み', audit)
         self.assertIn('国土交通省', audit)
-        self.assertIn('ほうとう', audit)
-        self.assertIn('そばがき', audit)
-        # No fabricated historical text is inserted into English Def originals.
+        self.assertIn('## 6. English localization', audit)
+
+        def table(section):
+            values = {}
+            for line in section.splitlines():
+                if not line.startswith('| `AMJC_'):
+                    continue
+                cells = [cell.strip() for cell in line.split('|')]
+                if len(cells) < 4 or not cells[1].startswith('`AMJC_') or not cells[1].endswith('`'):
+                    continue
+                name = cells[1].strip('`')
+                description = cells[2].replace('**', '').replace('。 ', '。')
+                job = cells[3] if len(cells) >= 5 and cells[3] != '—' else ''
+                self.assertNotIn(name, values, 'duplicate approval row')
+                values[name] = (description, job)
+            return values
+
+        jp = table(audit.split('## 2.', 1)[1].split('## 3.', 1)[0])
+        en = table(audit.split('## 6.', 1)[1])
+        names = SHARED_THINGS | SHARED_RECIPES | BASE_THINGS | BASE_RECIPES
+        self.assertEqual(set(jp), names)
+        self.assertEqual(set(en), names)
+
+        japanese = all_localizations('Languages/Japanese/DefInjected',
+                                    'BaseWithoutMO/Languages/Japanese/DefInjected')
         source_groups = (
             ('Defs/ThingDefs_Items/Items_GrainsFlour.xml', SHARED_THINGS),
             ('Defs/ThingDefs_Items/Items_GrainsFood.xml', SHARED_THINGS),
@@ -117,18 +138,38 @@ class JapaneseLocalizationAudit(unittest.TestCase):
             ('BaseWithoutMO/Defs/Recipes_Milling.xml', BASE_RECIPES),
         )
         seen = set()
-        for filename, names in source_groups:
-            for thing in ET.parse(ROOT / filename).getroot():
-                name = thing.findtext('defName')
-                if name not in names:
+        for path, relevant in source_groups:
+            for node in ET.parse(ROOT/path).getroot():
+                name = node.findtext('defName')
+                if name not in relevant:
                     continue
+                self.assertNotIn(name, seen, 'duplicate Def across runtime scopes: ' + name)
                 seen.add(name)
-                self.assertIsNotNone(thing.find('description'), name)
-                # This check is a review-state snapshot; remove or update it
-                # once the author has approved the Japanese historical copy.
-                self.assertFalse((thing.findtext('description') or '').strip(),
-                                 'Unapproved English description: ' + name)
-        self.assertEqual(seen, SHARED_THINGS | SHARED_RECIPES | BASE_THINGS | BASE_RECIPES)
+                self.assertEqual(japanese[name+'.description'], jp[name][0],
+                                 'Japanese description drift: ' + name)
+                self.assertEqual(node.findtext('description'), en[name][0],
+                                 'English description drift: ' + name)
+                if name in SHARED_RECIPES | BASE_RECIPES:
+                    self.assertTrue(jp[name][1], 'missing Japanese jobString: ' + name)
+                    self.assertTrue(en[name][1], 'missing English jobString: ' + name)
+                    self.assertEqual(japanese[name+'.jobString'], jp[name][1])
+                    self.assertEqual(node.findtext('jobString'), en[name][1])
+                else:
+                    self.assertEqual(jp[name][1], '')
+                    self.assertEqual(en[name][1], '')
+        self.assertEqual(seen, names)
+
+        wheat = japanese['AMJC_Plant_Wheat.description']
+        self.assertIn('小麦の穀粒は食事の材料に使え', wheat)
+        self.assertNotIn('実は食材になる', wheat)
+        for name in ('AMJC_MilletFlour', 'AMJC_Plant_Wheat',
+                     'AMJC_WheatFlour', 'AMJC_ManualMillstone'):
+            self.assertIn('AMJGrains', japanese[name+'.description'], name)
+            self.assertIn('AMJGrains', en[name][0], name)
+        self.assertIn('料理として同一だったとは断定できない',
+                      japanese['AMJC_Houtou.description'])
+        self.assertIn('cannot be assumed to be the same dish',
+                      en['AMJC_Houtou'][0])
 
 
 if __name__ == '__main__':
