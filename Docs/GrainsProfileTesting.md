@@ -1,5 +1,7 @@
 # Grains dependency-migration test profiles
 
+**Current accepted real-game smoke gate (2026-10-08 JST):** author-supplied `automated-gates(4).log` shows **6/6 named Pickle scenarios and runtime ERROR 0** in each of four real-provider profiles (vanilla, vanilla-ccto, mo, mo-ccto; **24/24 in total**). This is a fresh isolated E2E acceptance, not proof of legacy saved-game compatibility, season-specific sow, visual approval or release-readiness. Production MO dependency remains unchanged; see the dated acceptance section at the end of this document.
+
 This covers migration steps 1 through 3 of `Docs/Design.md`: separate the harness before changing
 production dependency metadata or runtime ownership. The production `About.xml`
 still requires MO. A successful tooling test is not a successful Grains release.
@@ -296,3 +298,19 @@ The `automated-gates(2).log` recorded Vanilla and MO Pickle failures, including 
 The author-provided `automated-gates(3).log` confirms the exact six expected Pickle scenarios passed without skips in **all four profiles** (vanilla / vanilla-ccto / mo / mo-ccto); C# build, CCTO local-first selection and real work-Bill behavior no longer report scenario failures. However the **ERROR-0 gate still fails in all four profiles**, solely on three flour-meal graphics: `AMJC_Houtou`, `AMJC_Sobagaki` and `AMJC_MilletDumplings` use `Things/Item/Meal/Simple` with `Graphic_Single`, a path which the installed game reports cannot resolve, plus follow-on `MatFrom with null sourceTex`. Previous `Things/Item/Meal/SimpleMeal` was also missing. Do not infer texture availability from old Vanilla Def XML or the Python source projection.
 
 As a **temporary, unapproved visual placeholder only**, these three food Defs now reuse the Grains-owned, already shipped Millet/Buckwheat three-variant PNG sets and matching `Graphic_StackCount` class. Houtou/dumplings use Millet and sobagaki uses Buckwheat. This intentionally is not a claim that the food art depicts prepared dishes; replace with proper approved individual food artwork during the post-runtime art phase. The chain validator and negative tests confirm actual `Textures/` PNG presence for all three `_a/_b/_c` variants, matching Def paths and class, so regressions to unprovided Vanilla art should be caught in CI. No PNG bytes, numbers, Recipes, thoughts, names, package IDs, load order, MO dependency, or historical copy changed. **Re-run real four-profile 6/6 and runtime ERROR 0** before marking the release gate passed. Visual approval and old-save migration remain separate.
+
+
+### 四構成の実機スモーク確定結果（2026-10-08 JST）
+
+作者アップロードの `automated-gates(4).log` により、以下の**実ゲーム**実行結果を確認した。GitHub CI上の仮想summaryではなく、各構成でQuickstarts、Pickle C# assembly、実ゲームの起動が行われたテスト結果である。
+
+| Profile | Pickle | 隔離ログERROR | 判定 |
+| --- | ---: | ---: | --- |
+| `vanilla` | 6/6 | 0 | PASS |
+| `vanilla-ccto` | 6/6 | 0 | PASS |
+| `mo` | 6/6 | 0 | PASS |
+| `mo-ccto` | 6/6 | 0 | PASS |
+
+実行スクリプトは六つの期待シナリオ名と失敗/skip 0を検証し、ERRORレベルのログがないことも確認した。全構成でテスト対象Def/Patch/Textureのバイト同一ステージが成功した。CCTOがローカル・Workshopに重複していても、テスト用manifestにローカル側を選択して正常に実行した。粉食3品をAMJ同梱穀物の仮画像へ切り替えた `6d0c791bca3424a8e97c73fb48f906beded01ed7` の後、以前の `Texture2D` / `MatFrom` のERRORは再発していない。C#コンパイルは成功、`CS1684` は非致命警告のみ。
+
+**この範囲のゲートはDONE：** 4構成のロード済み契約と、E2Eに組み込んだ作物収穫・加工/製粉/料理の実Bill、6シナリオ×4、隔離ランタイムERROR 0。**リリース前の残件：** 旧Core／既存セーブの読み込み・途中導入/削除、季節別のネイティブ播種/経時低温検証、日本語/英語の実UI表示、完成料理/作物/設備の専用画像と通常ズームの目視、プレイ時間・バランス、依存MOの本番解除判定。既存節に残る「実機未実施」の文言は当時の作業記録であり、最新の合否は本節を正本とする。

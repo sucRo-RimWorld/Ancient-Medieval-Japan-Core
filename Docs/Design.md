@@ -1450,3 +1450,8 @@ Grainsの通常6件から専用Scenario要件を外し、旧fixtureの8件には
 ### 粉食3品の画像参照 — 実機エラー修正（2026-10-08）
 
 実機4構成のPickle全24シナリオが成功した一方で、食事3品のVanilla仮画像 `Things/Item/Meal/Simple` は `Graphic_Single` では読み込めず、ERROR 0を阻害した。さらに以前の `Things/Item/Meal/SimpleMeal` も実機で不在を確認済み。そこで最終画像の承認・制作に先立ち、食事 `AMJC_Houtou` と `AMJC_MilletDumplings` には同梱の `Things/Item/Resource/AMJC_Millet/Millet`、`AMJC_Sobagaki` には同梱の `Things/Item/Resource/AMJC_Buckwheat/Buckwheat` を `Graphic_StackCount` で暫定使用する。各パスは `_a/_b/_c.png` の3枚すべてがGrains内に存在し、静的回帰テストで厳密に照合する。**料理の完成した見た目ではなく、未承認の仮画像**。専用の料理画像を機能テスト合格後に製作し、実機で表示確認する。今回の変更は描画参照のみで、Recipe/食品栄養/腐敗・Mood・加工導線に変更はない。
+
+
+### Grains 実機四構成スモーク完了（2026-10-08）
+
+作者の `automated-gates(4).log` により、Vanilla / Vanilla+CCTO / MO / MO+CCTOの**各6/6 Pickle・合計24/24、隔離ランタイムERROR 0**を確認。C#コンパイル成功（CS1684警告のみ）、食事の一時画像参照も読込可能で、実収穫・実加工・食事Billを含むテストがすべて成功した。四構成の**実ゲーム・フレッシュ環境のスモークゲートは完了**とする。日英の実表示確認、旧セーブ互換／追加削除、季節変化中の播種・低温成長、専用料理・設備画像、実プレイバランスについてはこのログでは検証していない。GrainsをMOなしで本番公開するための依存メタデータ変更は行っておらず、`About.xml` のMO必須指定は維持する。詳細は `Docs/GrainsProfileTesting.md`（現在の検証正本）と `Docs/Balance/Crops/RicePostHarvestProcessing.md`。旧節の実機未検証記載は当時の履歴であり、実機スモークの最新状態は本節による。

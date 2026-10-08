@@ -1,6 +1,6 @@
 # 陸稲の収穫後加工 — Vanilla米との接続設計
 
-**Status:** 加工必須化のXML・日英翻訳・Pickleソースへ反映（2026-10-08）。**C#コンパイル・実機4構成・ERROR 0・保存互換性は未検証**。
+**Status:** 加工必須化のXML・日英翻訳に加え、実機Pickle四構成各6/6・ERROR 0を確認（2026-10-08）。**旧セーブ移行・季節別播種・最終画像・公開互換性は未検証**。
 **Owner:** AMJGrains（共通穀物の収穫後加工）。将来のRice Cultivationは水田・水稲栽培と任意の稲架掛けを担当する。
 
 ## なぜ見直すか
@@ -47,11 +47,11 @@ Vanilla CookMealSimple・既存の米を使うRecipe
 - **Rice Cultivation単独の場合**、Grainsを必須化せず、依存なしで遊べる最低限の収穫・食料経路をRice Cultivation側に用意する。併用時は重複生成・二重加工を避ける条件付き接続が必要。
 - Waterworksは水田の任意の水利供給元であり、Grainsの陸稲→籾→米ループの必須依存ではない。
 
-## 実装ゲートと互換性（ソース実装済み／実機未完）
+## 実装ゲートと互換性（実機スモークPASS／残余ゲート未完）
 
 1. **稲束／籾／脱穀／籾摺り** の確認済み日本語説明と対応する英文を実装済み。史実説明は新たな断定を加えず、ユーザー承認案を維持。
 2. `Patches/UplandRice.xml` の収穫先を稲束に置換。共通Def・Recipe単品/一括、MO時のStraw、日英説明と既存AMJ仮画像を追加済み。実描画は未確認。
-3. `Tests/test_upland_rice.py`、`Tests/test_grains_balance_chain.py`、`Tests/validate_stage_a.py`、`Tests/E2E/GrainsProfileSteps.cs`、`Tests/E2E/GrainsSimulationSteps.cs` を更新。**稲の実収穫→稲束→実Bill脱穀→実Bill籾摺り→RawRice→CookMealSimple** は4構成のテストソースに接続済み（実行未確認）。
+3. `Tests/test_upland_rice.py`、`Tests/test_grains_balance_chain.py`、`Tests/validate_stage_a.py`、`Tests/E2E/GrainsProfileSteps.cs`、`Tests/E2E/GrainsSimulationSteps.cs` を更新。**稲の実収穫→稲束→実Bill脱穀→実Bill籾摺り→RawRice→CookMealSimple** は4構成の実機Pickleで各6/6・ERROR 0を確認済み（旧セーブ互換は別検証）。
 4. CCTO低温・MOあり/なし・旧セーブ中の `RawRice` ・Vanilla料理・直接Riceを入手する交易・他Modの米参照は維持し、実機ログ ERROR 0 と言語表示、テクスチャBadTexを検証する。
 5. 旧監査の「陸稲加工労働0」は旧XMLの履歴値。新Recipeの加工合計は10原料あたり200。実機・保存・描画ゲートを経るまでリリース可能とは報告しない。
 
@@ -60,3 +60,8 @@ Vanilla CookMealSimple・既存の米を使うRecipe
 - 農林水産省「お米の産地銘柄とブレンド米の進化」：https://www.maff.go.jp/j/syouan/keikaku/soukatu/okome_summary/01/type03.html （脱穀→籾乾燥→籾摺り→玄米）
 - 山梨県埋蔵文化財センター「油田遺跡」：https://www.pref.yamanashi.jp/maizou-bnk/topics/101-200/0144.html （弥生期の竪杵と脱穀）
 - クボタ「臼を使った籾摺り」：https://www.kubota.co.jp/kubotatanbo/history/tools/hulling.html （杵臼による処理、時代による工程の変化）
+
+
+### 2026-10-08 実機スモークの合格範囲
+
+`automated-gates(4).log` により、Vanilla / Vanilla+CCTO / MO / MO+CCTOで各6/6のPickleと隔離ランタイムERROR 0を確認した。新規隔離テスト上で稲束→籾→Vanilla米の実Billを含む既定のシナリオが完了した。料理用仮PNGの読込障害も解消。これにより四構成実機スモークのゲートを完了とするが、実ユーザーの古いセーブ（農地、既存の `RawRice`、途中のBill、既存設備等）の移行、途中導入/削除の安全性と、季節別・低温下での実播種は未確認。最終専用画像の制作と目視も未完了。既存数値とRecipeを変更せず、今後の検証は `Docs/GrainsProfileTesting.md` に記録する。
