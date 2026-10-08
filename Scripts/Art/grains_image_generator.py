@@ -1,28 +1,27 @@
 #!/usr/bin/env python3
-"""Generate one Grains art candidate from locked AMJ references, then QA it.
+"""Prepare and review one Grains image candidate without calling a paid image API.
 
-Development-only authoring entry point. It never writes directly to Textures/,
-Art/Sources/, or Docs/References/ and never auto-retries a failed image.
-Final semantic/visual acceptance remains a separate review gate.
+This repository tool owns the deterministic parts around image generation:
+reference resolution, prompt construction, reference bundling, mechanical QA,
+relative style-complexity checks, and review-sheet generation.
+
+The actual image-generation step is deliberately external to this Python
+process. In ChatGPT work, use the built-in image-generation tool between the
+"prepare" and "review" commands. No OPENAI_API_KEY is read and no network
+request is made by this script.
 """
 from __future__ import annotations
 
 import argparse
-import base64
 from dataclasses import dataclass
 import hashlib
 import importlib.util
 import io
 import json
-import mimetypes
-import os
 from pathlib import Path
 import re
-import secrets
 import subprocess
 import sys
-import urllib.error
-import urllib.request
 import zipfile
 from typing import Any, Iterable
 
@@ -30,7 +29,6 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_POLICY = ROOT / "Docs/References/AMJ_Grains_ImageGenerator.json"
-API_URL = "https://api.openai.com/v1/images/edits"
 PROTECTED_OUTPUT_ROOTS = (
     ROOT / "Textures",
     ROOT / "Art/Sources",
@@ -64,16 +62,14 @@ def _image_meta(data: bytes, source: str) -> tuple[int, int, str, str]:
             image.load()
             fmt = image.format or "UNKNOWN"
             if fmt not in {"PNG", "WEBP", "JPEG"}:
-                raise GenerationError(f"unsupported reference format {fmt}: {source}")
+                raise GenerationError(f"unsupported image format {fmt}: {source}")
             return image.width, image.height, image.mode, fmt
     except (OSError, ValueError) as exc:
-        raise GenerationError(f"cannot decode reference image: {source}: {exc}") from exc
+        raise GenerationError(f"cannot decode image: {source}: {exc}") from exc
 
 
 def _reference_from_bytes(role: str, source: str, filename: str, data: bytes) -> Reference:
     width, height, mode, _ = _image_meta(data, source)
-    if len(data) > 50 * 1024 * 1024:
-        raise GenerationError(f"reference exceeds 50 MB API limit: {source}")
     return Reference(role, source, filename, data, _sha256(data), width, height, mode)
 
 
@@ -160,7 +156,8 @@ def _assert_safe_output(path: Path) -> None:
         except ValueError:
             continue
         raise GenerationError(
-            f"candidate output may not write into protected source/production tree: {resolved}"
+            f"unreviewed image workflow may not write into protected source/"
+            f"production tree: {resolved}"
         )
 
 
@@ -215,8 +212,6 @@ def _load_family_references(
                 "for a knowingly incomplete draft"
             )
 
-    if len(references) > 16:
-        raise GenerationError(f"too many API input images ({len(references)} > 16)")
     return references
 
 
@@ -262,88 +257,131 @@ FAMILY-SPECIFIC RULES
     return prompt
 
 
-def _multipart(
-    fields: dict[str, str],
+def _role_slug(role: str) -> str:
+    value = re.sub(r"[^a-z0-9]+", "-", role.lower()).strip("-")
+    return value or "reference"
+
+
+def _write_reference_bundle(
+    output_dir: Path,
     references: list[Reference],
-) -> tuple[bytes, str]:
-    boundary = "----AMJGrains" + secrets.token_hex(16)
-    out = bytearray()
+) -> list[dict[str, Any]]:
+    reference_dir = output_dir / "references"
+    reference_dir.mkdir(parents=True, exist_ok=True)
+    bundled: list[dict[str, Any]] = []
 
-    def add_line(value: bytes = b"") -> None:
-        out.extend(value + b"\r\n")
-
-    for name, value in fields.items():
-        add_line(f"--{boundary}".encode())
-        add_line(f'Content-Disposition: form-data; name="{name}"'.encode())
-        add_line()
-        add_line(value.encode("utf-8"))
-
-    for ref in references:
-        add_line(f"--{boundary}".encode())
-        safe_name = ref.filename.replace('"', "_")
-        add_line(
-            f'Content-Disposition: form-data; name="image[]"; '
-            f'filename="{safe_name}"'.encode()
+    for index, ref in enumerate(references, 1):
+        suffix = Path(ref.filename).suffix.lower() or ".png"
+        filename = f"{index:02d}-{_role_slug(ref.role)}{suffix}"
+        path = reference_dir / filename
+        path.write_bytes(ref.data)
+        if _sha256(path.read_bytes()) != ref.sha256:
+            raise GenerationError(f"reference bundle write changed bytes: {path}")
+        bundled.append(
+            {
+                "role": ref.role,
+                "source": ref.source,
+                "source_filename": ref.filename,
+                "bundle_path": str(path.relative_to(output_dir)),
+                "sha256": ref.sha256,
+                "width": ref.width,
+                "height": ref.height,
+                "mode": ref.mode,
+            }
         )
-        mime = mimetypes.guess_type(ref.filename)[0] or "application/octet-stream"
-        add_line(f"Content-Type: {mime}".encode())
-        add_line()
-        out.extend(ref.data)
-        out.extend(b"\r\n")
-
-    add_line(f"--{boundary}--".encode())
-    return bytes(out), f"multipart/form-data; boundary={boundary}"
+    return bundled
 
 
-def _call_openai(
-    api_key: str,
-    *,
-    model: str,
-    prompt: str,
-    references: list[Reference],
-    size: str,
-    quality: str,
-) -> tuple[bytes, dict[str, Any]]:
-    fields = {
-        "model": model,
-        "prompt": prompt,
-        "n": "1",
-        "size": size,
-        "quality": quality,
-        "background": "transparent",
-        "output_format": "png",
+def _write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.write_text(
+        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _prepare(args: argparse.Namespace) -> int:
+    policy_path = args.policy.resolve()
+    policy = _load_policy(policy_path)
+    try:
+        family = policy["families"][args.family]
+    except KeyError as exc:
+        raise GenerationError(
+            f"unknown family {args.family!r}; "
+            f"choose from {sorted(policy['families'])}"
+        ) from exc
+
+    output_dir = args.output_dir.resolve()
+    _assert_safe_output(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    references = _load_family_references(
+        args.family,
+        family,
+        args.subject_reference,
+        args.mo_root,
+        args.mo_zip,
+        args.allow_no_mo_reference,
+    )
+    prompt = _build_prompt(
+        args.subject,
+        args.family,
+        family,
+        references,
+        args.notes or "",
+    )
+    (output_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
+    bundled = _write_reference_bundle(output_dir, references)
+
+    policy_bytes = policy_path.read_bytes()
+    manifest: dict[str, Any] = {
+        "schema_version": 2,
+        "workflow": "chatgpt-imagegen-prepare-review",
+        "status": "prepared",
+        "family": args.family,
+        "subject": args.subject,
+        "policy": {
+            "path": str(policy_path),
+            "sha256": _sha256(policy_bytes),
+        },
+        "prompt": {
+            "path": "prompt.txt",
+            "sha256": _sha256(prompt.encode("utf-8")),
+        },
+        "references": bundled,
+        "generation": {
+            "provider": "ChatGPT built-in image generation",
+            "python_calls_image_api": False,
+            "api_key_required": False,
+            "image_count": 1,
+            "transparent_background": True,
+            "candidate_expected": "candidate-source.png",
+            "automatic_retry": False,
+            "note": (
+                "Run image generation outside this Python process using prompt.txt "
+                "and every bundled reference. Then run the review subcommand on the "
+                "resulting PNG."
+            ),
+        },
     }
-    body, content_type = _multipart(fields, references)
-    request = urllib.request.Request(
-        API_URL,
-        data=body,
-        method="POST",
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": content_type,
-            "Accept": "application/json",
-            "User-Agent": "AMJ-Grains-Image-Generator/1",
+    _write_json(output_dir / "manifest.json", manifest)
+    _write_json(
+        output_dir / "generation-request.json",
+        {
+            "provider": manifest["generation"]["provider"],
+            "prompt_file": "prompt.txt",
+            "reference_files": [item["bundle_path"] for item in bundled],
+            "image_count": 1,
+            "transparent_background": True,
+            "candidate_expected": "candidate-source.png",
+            "api_key_required": False,
+            "automatic_retry": False,
         },
     )
-    try:
-        with urllib.request.urlopen(request, timeout=300) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as exc:
-        detail = exc.read().decode("utf-8", errors="replace")[:4000]
-        raise GenerationError(
-            f"OpenAI image API HTTP {exc.code}: {detail}"
-        ) from exc
-    except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
-        raise GenerationError(f"OpenAI image API request failed: {exc}") from exc
 
-    try:
-        encoded = payload["data"][0]["b64_json"]
-        image_bytes = base64.b64decode(encoded, validate=True)
-    except (KeyError, IndexError, TypeError, ValueError) as exc:
-        raise GenerationError(
-            "OpenAI image API response contained no decodable image"
-        ) from exc
-    return image_bytes, payload.get("usage") or {}
+    print(f"PASS: Grains image-generation request prepared: {output_dir}")
+    print("NEXT: generate exactly one image in ChatGPT using prompt.txt and all references.")
+    print("THEN: run this script's review subcommand on the generated PNG.")
+    return 0
 
 
 def _load_generated_qa():
@@ -357,31 +395,64 @@ def _load_generated_qa():
     return module
 
 
+def _references_from_manifest(
+    work_dir: Path,
+    manifest: dict[str, Any],
+) -> list[Reference]:
+    references: list[Reference] = []
+    for item in manifest.get("references", []):
+        path = work_dir / item["bundle_path"]
+        if not path.is_file():
+            raise GenerationError(f"bundled reference missing: {path}")
+        data = path.read_bytes()
+        actual = _sha256(data)
+        if actual != item["sha256"]:
+            raise GenerationError(
+                f"bundled reference SHA-256 mismatch: {path}: "
+                f"{actual} != {item['sha256']}"
+            )
+        references.append(
+            _reference_from_bytes(
+                item["role"],
+                item.get("source", str(path)),
+                item.get("source_filename", path.name),
+                data,
+            )
+        )
+    if not references:
+        raise GenerationError("manifest contains no bundled references")
+    return references
+
+
 def _complexity_report(
     candidate: Path,
     references: list[Reference],
-    output_dir: Path,
+    work_dir: Path,
 ) -> dict[str, Any]:
     qa = _load_generated_qa()
     candidate_metrics = qa.analyze(candidate)
     refs: list[dict[str, Any]] = []
 
-    for index, ref in enumerate(references):
-        temp = output_dir / f".reference-{index}.png"
-        try:
+    temp_dir = work_dir / ".qa-reference-cache"
+    temp_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        for index, ref in enumerate(references):
+            temp = temp_dir / f"reference-{index}.png"
             with Image.open(io.BytesIO(ref.data)) as image:
                 image.load()
                 image.convert("RGBA").save(temp, format="PNG")
             metrics = qa.analyze(temp)
-        finally:
+            refs.append(
+                {
+                    "role": ref.role,
+                    "source": ref.source,
+                    "metrics": metrics,
+                }
+            )
+    finally:
+        for temp in temp_dir.glob("*"):
             temp.unlink(missing_ok=True)
-        refs.append(
-            {
-                "role": ref.role,
-                "source": ref.source,
-                "metrics": metrics,
-            }
-        )
+        temp_dir.rmdir()
 
     style_metrics = [
         ref["metrics"]
@@ -481,144 +552,83 @@ def _review_sheet(
     canvas.convert("RGB").save(output, format="PNG")
 
 
-def _write_manifest(path: Path, payload: dict[str, Any]) -> None:
-    path.write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False),
-        encoding="utf-8",
-    )
+def _review(args: argparse.Namespace) -> int:
+    work_dir = args.work_dir.resolve()
+    _assert_safe_output(work_dir)
+    manifest_path = work_dir / "manifest.json"
+    if not manifest_path.is_file():
+        raise GenerationError(f"prepared manifest missing: {manifest_path}")
 
-
-def run(args: argparse.Namespace) -> int:
-    policy_path = args.policy.resolve()
-    policy = _load_policy(policy_path)
     try:
-        family = policy["families"][args.family]
-    except KeyError as exc:
-        raise GenerationError(
-            f"unknown family {args.family!r}; "
-            f"choose from {sorted(policy['families'])}"
-        ) from exc
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise GenerationError(f"cannot read prepared manifest: {exc}") from exc
+    if manifest.get("schema_version") != 2:
+        raise GenerationError("review requires a schema_version 2 prepared manifest")
 
-    output_dir = args.output_dir.resolve()
-    _assert_safe_output(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+    references = _references_from_manifest(work_dir, manifest)
+    candidate_input = args.candidate.resolve()
+    if not candidate_input.is_file():
+        raise GenerationError(f"candidate missing: {candidate_input}")
+    _assert_safe_output(candidate_input)
 
-    references = _load_family_references(
-        args.family,
-        family,
-        args.subject_reference,
-        args.mo_root,
-        args.mo_zip,
-        args.allow_no_mo_reference,
-    )
-    prompt = _build_prompt(
-        args.subject,
-        args.family,
-        family,
-        references,
-        args.notes or "",
-    )
-    (output_dir / "prompt.txt").write_text(prompt, encoding="utf-8")
-
-    manifest: dict[str, Any] = {
-        "schema_version": 1,
-        "policy": str(policy_path),
-        "family": args.family,
-        "subject": args.subject,
-        "model": args.model,
-        "size": args.size,
-        "quality": args.quality,
-        "references": [
-            {
-                "role": ref.role,
-                "source": ref.source,
-                "filename": ref.filename,
-                "sha256": ref.sha256,
-                "width": ref.width,
-                "height": ref.height,
-                "mode": ref.mode,
-            }
-            for ref in references
-        ],
-        "prompt_sha256": _sha256(prompt.encode("utf-8")),
-        "generated": False,
-        "automatic_retry": False,
-    }
-    _write_manifest(output_dir / "manifest.json", manifest)
-
-    if args.dry_run:
-        print(
-            "PASS: generation plan prepared without API call: "
-            f"{output_dir}"
-        )
-        return 0
-
-    key = os.environ.get("OPENAI_API_KEY")
-    if not key:
-        raise GenerationError(
-            "OPENAI_API_KEY is required unless --dry-run is used"
-        )
-
-    image_bytes, usage = _call_openai(
-        key,
-        model=args.model,
-        prompt=prompt,
-        references=references,
-        size=args.size,
-        quality=args.quality,
-    )
-    candidate = output_dir / "candidate-source.png"
-    candidate.write_bytes(image_bytes)
-    width, height, mode, fmt = _image_meta(image_bytes, str(candidate))
+    candidate_bytes = candidate_input.read_bytes()
+    width, height, mode, fmt = _image_meta(candidate_bytes, str(candidate_input))
     if fmt != "PNG":
-        raise GenerationError(f"API output was not PNG: {fmt}")
+        raise GenerationError(f"candidate must be PNG, got {fmt}")
+
+    candidate = work_dir / "candidate-source.png"
+    candidate.write_bytes(candidate_bytes)
+    if _sha256(candidate.read_bytes()) != _sha256(candidate_bytes):
+        raise GenerationError("candidate staging changed bytes")
+
+    policy_info = manifest.get("policy", {})
+    policy_path = Path(policy_info.get("path", DEFAULT_POLICY))
+    if not policy_path.is_file():
+        policy_path = DEFAULT_POLICY
+    policy_bytes = policy_path.read_bytes()
+    if policy_info.get("sha256") and _sha256(policy_bytes) != policy_info["sha256"]:
+        raise GenerationError(
+            "generator policy changed since prepare; prepare a fresh request before review"
+        )
+    policy = _load_policy(policy_path)
+    family_name = manifest["family"]
+    try:
+        family = policy["families"][family_name]
+    except KeyError as exc:
+        raise GenerationError(f"prepared family no longer exists: {family_name}") from exc
 
     qa = _load_generated_qa()
     base_qa_path = ROOT / policy["base_qa_policy"]
     base_result = qa.validate(candidate, base_qa_path)
-    complexity = _complexity_report(candidate, references, output_dir)
-    _write_manifest(
-        output_dir / "qa-report.json",
-        {
-            "base": base_result,
-            "relative_complexity": complexity,
-        },
-    )
+    complexity = _complexity_report(candidate, references, work_dir)
+    passed = bool(base_result["passed"] and complexity["passed"])
 
-    manifest.update(
-        {
-            "generated": True,
-            "candidate": {
-                "path": str(candidate),
-                "sha256": _sha256(image_bytes),
-                "width": width,
-                "height": height,
-                "mode": mode,
-            },
-            "usage": usage,
-            "mechanical_qa_passed": bool(
-                base_result["passed"] and complexity["passed"]
-            ),
-        }
-    )
-    _write_manifest(output_dir / "manifest.json", manifest)
+    report = {
+        "base": base_result,
+        "relative_complexity": complexity,
+        "passed": passed,
+        "semantic_visual_review_required": True,
+        "pre_display_screening_claimed": False,
+    }
+    _write_json(work_dir / "qa-report.json", report)
 
-    if not base_result["passed"] or not complexity["passed"]:
-        print(
-            "FAIL: generated candidate rejected by automatic "
-            "mechanical/style-complexity QA"
-        )
-        for failure in base_result["failures"] + complexity["failures"]:
-            print(f"- {failure}")
-        print(
-            "Internal candidate retained for diagnosis only: "
-            f"{candidate}"
-        )
-        return 2
+    manifest["candidate"] = {
+        "input_path": str(candidate_input),
+        "staged_path": "candidate-source.png",
+        "sha256": _sha256(candidate_bytes),
+        "width": width,
+        "height": height,
+        "mode": mode,
+    }
+    manifest["status"] = "automatic-qa-passed" if passed else "automatic-qa-failed"
+    manifest["automatic_qa_passed"] = passed
+    manifest["semantic_visual_review_required"] = True
+    manifest["pre_display_screening_claimed"] = False
 
-    if family.get("postprocess") == "boxed-resource":
+    if passed and family.get("postprocess") == "boxed-resource":
         preparer = ROOT / "Scripts/Art/prepare_boxed_resource_candidate.py"
-        boxed_dir = output_dir / "boxed-prepared"
+        boxed_dir = work_dir / "boxed-prepared"
         subprocess.run(
             [
                 sys.executable,
@@ -630,20 +640,26 @@ def run(args: argparse.Namespace) -> int:
             cwd=ROOT,
             check=True,
         )
-        manifest["boxed_prepared"] = str(boxed_dir)
-        _write_manifest(output_dir / "manifest.json", manifest)
+        manifest["boxed_prepared"] = str(boxed_dir.relative_to(work_dir))
 
-    review = output_dir / "review-sheet.png"
-    _review_sheet(candidate, references, review)
+    _write_json(manifest_path, manifest)
+    _review_sheet(candidate, references, work_dir / "review-sheet.png")
+
+    if not passed:
+        print("FAIL: candidate rejected by automatic mechanical/style-complexity QA")
+        for failure in base_result["failures"] + complexity["failures"]:
+            print(f"- {failure}")
+        print("No automatic retry is performed.")
+        return 2
+
     print(
-        "PASS: one candidate passed automatic gates; "
-        f"visual review still required: {review}"
+        "PASS: candidate passed automatic measurable gates; "
+        "semantic/visual comparison and author acceptance remain required"
     )
     return 0
 
 
-def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description=__doc__)
+def _add_common_prepare_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--family",
         required=True,
@@ -686,22 +702,35 @@ def build_parser() -> argparse.ArgumentParser:
         "--output-dir",
         type=Path,
         required=True,
-        help="Development-only output directory, normally Work/Art/...",
+        help="Development-only work directory, normally Work/Art/...",
     )
-    parser.add_argument(
-        "--model",
-        default="gpt-image-2.5-sunburst-2026-09-08",
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    prepare = subparsers.add_parser(
+        "prepare",
+        help="Resolve references and create an API-free ChatGPT generation request",
     )
-    parser.add_argument("--size", default="1024x1024")
-    parser.add_argument(
-        "--quality",
-        choices=["low", "medium", "high", "xhigh", "max", "auto"],
-        default="high",
+    _add_common_prepare_args(prepare)
+
+    review = subparsers.add_parser(
+        "review",
+        help="Run deterministic QA on one image produced after prepare",
     )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Resolve references and write prompt/manifest without calling the API",
+    review.add_argument(
+        "--work-dir",
+        type=Path,
+        required=True,
+        help="Directory previously created by the prepare command",
+    )
+    review.add_argument(
+        "--candidate",
+        type=Path,
+        required=True,
+        help="Generated PNG to stage and review",
     )
     return parser
 
@@ -709,7 +738,11 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> int:
     args = build_parser().parse_args()
     try:
-        return run(args)
+        if args.command == "prepare":
+            return _prepare(args)
+        if args.command == "review":
+            return _review(args)
+        raise GenerationError(f"unsupported command: {args.command}")
     except (GenerationError, subprocess.CalledProcessError) as exc:
         print(f"FAIL: {exc}", file=sys.stderr)
         return 1
