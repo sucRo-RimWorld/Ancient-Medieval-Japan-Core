@@ -1996,3 +1996,13 @@ Diagnostic-only E2E change: report Exception.ToString() in the outer message so 
 **Status:** SOURCE RESTRUCTURED; validation/publication evidence is recorded in Project `Docs/RuleAudit.md` and actual commit/CI results, not inferred here.
 
 AGENTS now routes through Project `Docs/SharedRules.md` stop conditions and task procedures. New development requires VE and non-VE source/evidence comparison plus a justified implementation decision. Static/runtime/specification/distribution/publication remain separate states. Historical records below/above retain their original scope; this entry does not reopen paused work, change gameplay/dependencies/art/versions, or supersede owner runtime/release blockers. Main-only Coordination means one authoritative integrated log, not deleting branch snapshots. No Steam/2game update is claimed.
+
+### ART-GRAINS-GENERATOR-20261009 — Grains-specific grain/crop image generation entry point
+
+**Requested by:** author (2026-10-09 JST)  
+**Owner:** Art/tooling / Grains  
+**Status:** SOURCE IMPLEMENTED — repository tooling and regression coverage added; no image generated or visually accepted by this work
+
+Grains now has a repository-owned source-generation entry point at `Scripts/Art/grains_image_generator.py`, routed by `Docs/GoldenPaths/GrainImageGeneration.md` and the family policy `Docs/References/AMJ_Grains_ImageGenerator.json`. It resolves the registered accepted AMJ references plus caller-supplied subject identity and applicable real Medieval Overhaul reference, generates exactly one transparent source candidate through the image edit API, then runs existing generated-asset QA plus a relative game-size complexity guard. Boxed contents hand off to the existing boxed-resource preparer; the wooden masu is never generated. Candidate output is blocked from `Textures/`, `Art/Sources/`, and `Docs/References/`, and there is no automatic retry/batch loop.
+
+The generator is development tooling only. Mechanical QA does not establish subject/style acceptance, and the script does not promote generated output into accepted sources or production textures. Final semantic comparison and author visual acceptance remain required under the shared Project texture pipeline. No gameplay XML, Def paths, production PNGs, dependency metadata, Workshop payload, or publication state changed.
