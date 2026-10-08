@@ -1,9 +1,9 @@
-# Ancient & Medieval Japan Core — 設計書
+# Ancient & Medieval Japan - Grains（中世日本 - 穀類） — 設計書
 
 **文書状態:** Core→Grains再編設計確定・runtime移行前  
 **対象:** RimWorld 1.6  
-**現行公開名:** Ancient & Medieval Japan Core  
-**将来の機能位置づけ:** Grains系独立Mod（公開名・packageId・既存DefNameの変更は移行完了後に別途判断）  
+**公開表示名（名称方針）:** Ancient & Medieval Japan - Grains（中世日本 - 穀類）  
+**将来の機能位置づけ:** Grains系独立Mod（表示名はGrainsへ改称。既存`packageId`・DefNameは互換性維持のため変更しない。runtime移行およびMO依存解除は別途検証後に判断）  
 **基本方針:** 現CoreはAMJ全体の共通基盤ではなく、乾田穀物の栽培・一次加工・最低限の粉食を自己完結して提供するGrains系Modへ縮小再編する。Vanilla + Grainsだけで主要ループを成立させ、Medieval Overhaul（MO）は推奨環境・公式互換先とする。現行公開Coreはruntime移行と自動テストが完了するまでMO必須のまま維持する。
 
 ---
@@ -26,7 +26,7 @@ Grainsは、水田・水稲栽培、豆類、繊維、根菜、一般採集、�
 
 ### 1.1 名称・サブタイトル方針
 
-シリーズ名 **Ancient & Medieval Japan（AMJ）** は維持する。
+シリーズ英語名 **Ancient & Medieval Japan（AMJ）** は維持し、公開日本語シリーズ名は **中世日本** とする。表示名は **Ancient & Medieval Japan - Grains（中世日本 - 穀類）** に統一する。ここでの日本語名は公開上の略称であり、設計書中の古代から中世にわたる史実上の対象範囲を変更しない。
 
 一方、英語圏では `Medieval Japan` だけだと、侍・城・合戦・戦国武将などの華やかな軍事文化を主題とするModと受け取られやすいため、公開時のサブタイトル・短い紹介文では**江戸以前の一般の人々の生活が主題であること**を明示する。
 

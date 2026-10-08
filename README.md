@@ -1,8 +1,8 @@
-# Ancient & Medieval Japan Core
+# Ancient & Medieval Japan - Grains（中世日本 - 穀類）
 
 **RimWorld 1.6 — Development build**
 
-Ancient & Medieval Japan Core (AMJC) extends Medieval Overhaul with agriculture, primary processing, materials, and village-life systems inspired by ordinary life in pre-Edo Japan.
+Ancient & Medieval Japan - Grains（中世日本 - 穀類） (formerly AMJ Core; internal identifiers retained during migration) currently extends Medieval Overhaul with agriculture, primary processing, materials, and village-life systems inspired by ordinary life in pre-Edo Japan.
 
 The current development slice focuses on field crops and the processing needed to make them useful in a small colony.
 

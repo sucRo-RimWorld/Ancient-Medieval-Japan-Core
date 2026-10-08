@@ -1,4 +1,4 @@
-# AMJ Core Agent Instructions
+# AMJ Grains Agent Instructions
 
 This repository is part of the **Ancient & Medieval Japan (AMJ)** project.
 
