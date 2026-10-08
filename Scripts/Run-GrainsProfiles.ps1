@@ -4,6 +4,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'GrainsTestProfiles.ps1')
+. (Join-Path $PSScriptRoot 'GrainsSourceState.ps1')
 $repo = Split-Path -Parent $PSScriptRoot
 $profiles = @($Profile)
 if ($Profile -eq 'all') { $profiles = @('vanilla','vanilla-ccto','mo','mo-ccto') }
@@ -12,6 +13,10 @@ New-Item -ItemType Directory -Force -Path $matrixRoot | Out-Null
 $matrix = New-Object 'System.Collections.Generic.List[object]'
 $lock = [IO.File]::Open((Join-Path $matrixRoot 'runner.lock'), 'OpenOrCreate', 'ReadWrite', 'None')
 try {
+    $sourceState = Get-GrainsSourceState $repo
+    Write-Host "[OK] Grains matrix source SHA256: $($sourceState.Hash)"
+    @("sourceSnapshotHash=$($sourceState.Hash)") + @($sourceState.Lines) |
+        Set-Content -LiteralPath (Join-Path $matrixRoot 'matrix-source-state.txt') -Encoding UTF8
     $matrixPath = Join-Path $matrixRoot 'matrix.json'
     if (Test-Path -LiteralPath $matrixPath) { Remove-Item -LiteralPath $matrixPath -Force }
     foreach ($name in $profiles) {
@@ -26,12 +31,18 @@ try {
         $launched = $false
         $diagnostic = ''
         try {
+            Assert-GrainsSourceState $repo $sourceState.Hash
             & (Join-Path $repo 'build-e2e.bat') $RimWorldRoot $name
             if ($LASTEXITCODE -ne 0) { throw "Build failed: $LASTEXITCODE" }
             & (Join-Path $PSScriptRoot 'Prepare-TestSaveData.ps1') -OutputRoot $savedata -Profile $name -RimWorldRoot $RimWorldRoot
             if ($LASTEXITCODE -ne 0) { throw "Profile preparation failed: $LASTEXITCODE" }
             & (Join-Path $PSScriptRoot 'Write-TestSourceState.ps1') -RepositoryRoot $repo -OutputPath (Join-Path $report 'source-state.txt') -Profile $name
             if ($LASTEXITCODE -ne 0) { throw "Source-state capture failed: $LASTEXITCODE" }
+            $recordedHash = @(Get-Content -LiteralPath (Join-Path $report 'source-state.txt') |
+                Where-Object { $_ -like 'sourceSnapshotHash=*' })
+            if ($recordedHash.Count -ne 1 -or $recordedHash[0] -ne "sourceSnapshotHash=$($sourceState.Hash)") {
+                throw 'Profile source attribution does not match the matrix snapshot.'
+            }
             Copy-Item -LiteralPath (Join-Path $savedata 'providers.json') -Destination $report
             $testRoot = Join-Path $RimWorldRoot 'Mods/AncientMedievalJapanCore.E2E'
             Copy-Item -LiteralPath (Join-Path $testRoot 'profile.json') -Destination $report
@@ -61,7 +72,9 @@ try {
                 if ($LASTEXITCODE -ne 0 -and $result -eq 0) { $result = 2 }
             } catch { Write-Host "[FAIL] $($_.Exception.Message)"; if ($result -eq 0) { $result = 2 } }
         }
-        $matrix.Add([pscustomobject]@{ Profile = $name; Launched = $launched; ExitCode = $result; Diagnostic = $diagnostic; Report = $report })
+        try { Assert-GrainsSourceState $repo $sourceState.Hash }
+        catch { $diagnostic = $_.Exception.Message; Write-Host "[FAIL] $diagnostic"; $result = 2 }
+        $matrix.Add([pscustomobject]@{ Profile = $name; Launched = $launched; ExitCode = $result; Diagnostic = $diagnostic; Report = $report; SourceHash = $sourceState.Hash })
         $matrix | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath (Join-Path $matrixRoot 'matrix.json') -Encoding UTF8
     }
 } finally { $lock.Dispose() }

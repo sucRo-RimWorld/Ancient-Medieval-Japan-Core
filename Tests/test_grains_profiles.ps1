@@ -1,6 +1,7 @@
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $PSScriptRoot
 . (Join-Path $repo 'Scripts/GrainsTestProfiles.ps1')
+. (Join-Path $repo 'Scripts/GrainsSourceState.ps1')
 function Assert([bool]$Condition, [string]$Message) { if (-not $Condition) { throw $Message } }
 function MustFail([scriptblock]$Action, [string]$Message) {
     $failed = $false
@@ -36,6 +37,7 @@ try {
         Set-Content -LiteralPath (Join-Path $sourceConfig 'ModsConfig.xml')
     '<PrefsData><devMode>False</devMode></PrefsData>' | Set-Content -LiteralPath (Join-Path $sourceConfig 'Prefs.xml')
     $sourceHash = (Get-FileHash -LiteralPath (Join-Path $sourceConfig 'ModsConfig.xml')).Hash
+    $expectedState = Get-GrainsSourceState $repo
     $baseIds = @('brrainz.harmony','ludeon.rimworld','rimworks.rimlogging','rimworks.pickle','rimworks.quickstarts')
     foreach ($id in $baseIds + @('oskarpotocki.vanillafactionsexpanded.core','syrchalis.processor.framework',
         'dankpyon.medieval.overhaul','sucro.cropcoldtoleranceoverhaul','unrelated.player.mod')) {
@@ -105,6 +107,13 @@ try {
         & (Join-Path $repo 'Scripts/Write-TestSourceState.ps1') -RepositoryRoot $repo -OutputPath $statePath -Profile $profile
         $state = Get-Content -LiteralPath $statePath
         Assert ($state -contains "profile=$profile") 'Source attribution has the wrong profile.'
+        Assert ($state -contains "sourceSnapshotHash=$($expectedState.Hash)") 'Profile source fingerprint differs.'
+        foreach ($relative in @('Patches/UplandRice.xml',
+            'Languages/Japanese/DefInjected/ThingDef/AMJC_RiceProcessing.xml',
+            'Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png',
+            'Tests/E2E/Profiles/grains-mo-ccto.feature')) {
+            Assert (@($state | Where-Object { $_.StartsWith("sha256[$relative]=") }).Count -eq 1) "Missing or duplicate source witness: $relative"
+        }
         Assert (@($state | Where-Object { $_ -like 'feature=*' }).Count -eq $spec.Scenarios.Count) 'Source attribution lists the legacy suite.'
         @{total=$spec.Scenarios.Count;passed=$spec.Scenarios.Count;failed=0;skipped=0;scenarios=@(@{name='wrong suite'})} |
             ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $summaryPath
@@ -172,5 +181,50 @@ try {
     }
 
     MustFail { Get-GrainsTestProfile 'invalid' } 'Invalid profile was accepted.'
+    # Same bytes at a different installation path must produce the same hash.
+    # Reports/docs/mtime must not affect it; additions, deletions, renames and
+    # edits of actual runtime/localization/graphics/harness bytes must affect it.
+    $snapshot = Join-Path $temp 'source-snapshot'
+    New-Item -ItemType Directory -Force -Path $snapshot | Out-Null
+    foreach ($folder in @('About','Defs','Patches','BaseWithoutMO','Compatibility',
+        'LegacyStartingScenarios','Languages','Textures','Scripts')) {
+        Copy-Item -LiteralPath (Join-Path $repo $folder) -Destination $snapshot -Recurse
+    }
+    New-Item -ItemType Directory -Force -Path (Join-Path $snapshot 'Tests') | Out-Null
+    Copy-Item -LiteralPath (Join-Path $repo 'Tests/E2E') -Destination (Join-Path $snapshot 'Tests') -Recurse
+    foreach ($path in @('loadFolders.xml','build-e2e.bat','run-grains-tests.bat')) {
+        Copy-Item -LiteralPath (Join-Path $repo $path) -Destination $snapshot
+    }
+    Assert ((Get-GrainsSourceState $snapshot).Hash -eq $expectedState.Hash) 'Machine path contaminated source fingerprint.'
+    New-Item -ItemType Directory -Force -Path (Join-Path $snapshot 'TestResults') | Out-Null
+    'unrelated report' | Set-Content -LiteralPath (Join-Path $snapshot 'TestResults/matrix.json')
+    'unrelated documentation' | Set-Content -LiteralPath (Join-Path $snapshot 'README.md')
+    Assert-GrainsSourceState $snapshot $expectedState.Hash
+    foreach ($relative in @('Patches/UplandRice.xml',
+        'Languages/Japanese/DefInjected/ThingDef/AMJC_RiceProcessing.xml',
+        'Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png',
+        'Tests/E2E/GrainsSimulationSteps.cs', 'Tests/E2E/Profiles/grains-mo-ccto.feature',
+        'Scripts/Run-GrainsProfiles.ps1', 'About/About.xml')) {
+        $path = Join-Path $snapshot $relative
+        $original = [IO.File]::ReadAllBytes($path)
+        [IO.File]::WriteAllBytes($path, [byte[]](@($original) + @(0)))
+        MustFail { Assert-GrainsSourceState $snapshot $expectedState.Hash } "Changed source was accepted: $relative"
+        [IO.File]::WriteAllBytes($path, $original)
+        (Get-Item -LiteralPath $path).LastWriteTimeUtc = [DateTime]::UtcNow
+        Assert-GrainsSourceState $snapshot $expectedState.Hash
+    }
+    $added = Join-Path $snapshot 'Textures/new-runtime-asset.png'
+    [IO.File]::WriteAllBytes($added, [byte[]]@(1,2,3))
+    MustFail { Assert-GrainsSourceState $snapshot $expectedState.Hash } 'Added runtime file was accepted.'
+    $beforeRename = (Get-GrainsSourceState $snapshot).Hash
+    Move-Item -LiteralPath $added -Destination (Join-Path $snapshot 'Textures/renamed-runtime-asset.png')
+    Assert ((Get-GrainsSourceState $snapshot).Hash -ne $beforeRename) 'Changed path was accepted.'
+    Remove-Item -LiteralPath (Join-Path $snapshot 'Textures/renamed-runtime-asset.png')
+    Assert-GrainsSourceState $snapshot $expectedState.Hash
+    $ricePatch = Join-Path $snapshot 'Patches/UplandRice.xml'
+    Remove-Item -LiteralPath $ricePatch
+    MustFail { Assert-GrainsSourceState $snapshot $expectedState.Hash } 'Deleted runtime file was accepted.'
+    Assert ($runnerSource.Contains('Assert-GrainsSourceState $repo $sourceState.Hash')) 'Matrix does not reject source drift.'
+    Assert ($runnerSource.Contains('SourceHash = $sourceState.Hash')) 'Matrix omits its source evidence.'
     Write-Host '[OK] Four-profile staging/config/summary/negative regressions PASS (no RimWorld runtime claim).'
 } finally { Remove-Item -LiteralPath $temp -Recurse -Force }

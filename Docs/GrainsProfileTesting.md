@@ -1,6 +1,6 @@
 # Grains dependency-migration test profiles
 
-**Current accepted real-game smoke gate (2026-10-08 JST):** author-supplied `automated-gates(4).log` shows **6/6 named Pickle scenarios and runtime ERROR 0** in each of four real-provider profiles (vanilla, vanilla-ccto, mo, mo-ccto; **24/24 in total**). This is a fresh isolated E2E acceptance, not proof of legacy saved-game compatibility, season-specific sow, visual approval or release-readiness. Production MO dependency remains unchanged; see the dated acceptance section at the end of this document.
+**Latest seasonal-test evidence (2026-10-08 JST):** `automated-gates(8).log` confirms the post-sky-fix **vanilla 6/6, runtime ERROR 0**. The other three profiles on that corrected test source remain OPEN. Earlier `automated-gates(4).log` established four-profile fresh smoke **24/24, ERROR 0**, before seasonal-test changes; it does not certify the latest matrix. Legacy saved-game compatibility, natural seasonal weather, visual approval and release-readiness remain separate gates. Production MO dependency remains unchanged; see the dated evidence sections below.
 
 This covers migration steps 1 through 3 of `Docs/Design.md`: separate the harness before changing
 production dependency metadata or runtime ownership. The production `About.xml`
@@ -380,3 +380,20 @@ RimWorld 1.6参照実装の `Plant.Resting` は現地日内割合が `<0.25` ま
 `b127e16` で追加した `map.skyManager.SkyManagerUpdate()` のテスト途中・強制的な呼び出しが今回の共通原因候補。RimWorld 1.6の実装では当該メソッドは天候と画面・シェーダー・陰影まで処理し、CCTO/MO非依存の単純な日照値更新APIではない。ログから発生行は確定できないため、この因果関係は**仮説**として扱う。テストの修正では直接の `SkyManagerUpdate()` 呼び出しを廃止し、ローカル正午時点のゲーム本来の `GenCelestial.CurCelestialSunGlow(map)` 値を検証して `map.skyManager.ForceSetCurSkyGlow(solarGlow)` で**隔離Quickstartのキャッシュ照度だけ**を合わせる。元の照度も保存・復元する。稲の`TickLong`成長判定、休息時間外と温度/光量係数の条件、および2,200tickの実ゲーム進行は維持。例外には工程名と元の例外を内包させ、スタックが得られなくても原因の絞り込みが可能なようにする。
 
 **テスト本体の新しい実機実行は未完了**。3構成のNREが完全に解消されたことや、自然季節・降雪・CCTO固定枯死を検証したとは主張しない。ゲーム本番XML/Def、依存関係、レシピ、温度値、画像を変更していない。続く実機ではまず`vanilla`単独を診断し、6/6・ERROR 0なら残る構成を確認する（未失敗条件の機械的な繰り返しは避ける）。
+
+
+### automated-gates(8).log — 照明同期修正後のVanilla合格（2026-10-08 JST）
+
+作者提供ログ `automated-gates(8).log`（原本SHA256: `967ec9afcac0915103f3213d33ac1af91b53312fa884021dd85dbeb1886dad06`）では、`vanilla` 単独のC#ビルド、Pickle **6/6**、隔離実行時 **ERROR 0** を確認した。通常のModsConfigは変更されず、CS1684は非致命警告だった。(7)のNullReferenceExceptionはこの実行では再発していない。ログ本文にコミット番号やsource-stateの内容は含まれないため、厳密なコミット/全ソースhashの対応付けまでは主張しない。
+
+残る `vanilla-ccto` / `mo` / `mo-ccto` の照明修正後版は未確認。以前の(5)〜(7)の別版合格を転用しない。今回の合格は制御温度と暦移動を伴うネイティブ播種/成長であり、自然気象、CCTO枯死、旧セーブ、画像、公開可否の合格を意味しない。
+
+### 4構成のソース同一性を保つ実行手順
+
+`Scripts/GrainsSourceState.ps1` はAbout・本番Defs/Patches・BaseWithoutMO・MO互換・旧シナリオ・全翻訳・全Textures・E2Eソース/全4feature・Scripts、およびloader/build/通常ランナーのバイトと相対パスをSHA256へまとめる。絶対パス、時刻、git HEAD、設計書、TestResults、Pythonキャッシュは計算に含めない。同じバイトを別ディレクトリへ移しただけなら同じ値になる。ファイル追加/削除/改名も対象で、稲パッチや翻訳/画像を旧固定リストから漏らさない。
+
+通常の `run-grains-tests.bat` は引き続き非表示デスクトップ・実描画経路で実行する。ランナーは開始時の全体hashをコンソール、`TestResults/Grains/matrix-source-state.txt`、各 `Pickle/source-state.txt` と `matrix.json` の `SourceHash` に記録する。各構成のbuild前と結果確定前に同じhashを要求し、途中の編集やsource-stateの不一致は終了コード2にする。構成別の6シナリオと実行時ERROR 0も従来どおり必要で、ソース同一性だけでは合格にしない。
+
+最終4構成ゲートは、変更を終えた一つのソースで引数なし（または `all`）を実行して確認する。単独構成を診断した場合はその構成だけの証拠として扱う。旧ログ(8)のVanillaはゲーム処理修正後の診断合格として保持し、この新しいランナーの実機合格へ読み替えない。
+
+`Tests/test_grains_profiles.ps1` はWindows PowerShell 5.1のsyntheticテストで移設/時刻/報告書に対する同値性、稲/翻訳/PNG/C#/feature/runner/Aboutの変更、追加・削除・改名、4構成共通の記録hashを検証する。このテストは実ゲーム合格を代替しない。

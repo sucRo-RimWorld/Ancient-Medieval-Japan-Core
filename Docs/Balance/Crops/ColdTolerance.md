@@ -102,3 +102,8 @@ Grainsは最終的な気候マップの選定を所有しない。既存7穀の�
 ## 2026-10-08 制御温度テストの照明同期方式変更（実機再確認待ち）
 
 (7)の4構成実機ログでは3構成にPickle `NullReferenceException` が発生し、`mo-ccto` だけ6/6・ERROR 0となった。前回修正時の手動`SkyManagerUpdate()`呼び出しが描画・影・天候更新も実行するため原因候補となるが、スタックがないので未確定。より狭いテスト経路として、正午のネイティブ太陽光`GenCelestial.CurCelestialSunGlow(map)`を読み、隔離マップの`ForceSetCurSkyGlow`キャッシュだけ同期、復元する。Plantの休息や実成長処理は回避しない。ゲーム本番の気象・低温枯死やCCTO機能には手を加えていない。最終判定は`Docs/GrainsProfileTesting.md`。
+
+
+## 照明同期修正後のVanilla実機結果（2026-10-08）
+
+`automated-gates(8).log` は修正後のVanilla単独でC#ビルド、Pickle 6/6、実行時ERROR 0を確認した。以前のNREはこの実行では再発しない。Vanilla+CCTO / MO / MO+CCTOの同修正版は確認待ちであり、旧版の合格と混ぜて4構成完了にはしない。5/25℃・暦移動・実播種/成長の試験範囲と、自然気象/CCTO枯死が未検証という制約は維持する。証拠hashと同一ソースでのマトリクス確認手順は `Docs/GrainsProfileTesting.md` を正本とする。
