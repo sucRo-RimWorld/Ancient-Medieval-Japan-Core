@@ -1915,19 +1915,3 @@ Implemented Vanilla `Plant_Rice → AMJC_RiceSheaf → AMJC_RiceInHull → RawRi
 
 
 **GRAINS-RICE-POSTHARVEST-QA-20261008:** Additional protection for the shipped rice processing source: §10 exact Japanese/English localization parity for two ThingDefs and four RecipeDefs (including four bilingual jobStrings), plus negative drift tests; Pickle loaded contracts now require the precise MO Straw Def and 1×/10× counts rather than accepting any second coproduct. Historical 38 MO contracts remain immutable. Full CI and four-profile C#/Pickle still separate; no gameplay balance/art/dependency changes.
-
-
-### GRAINS-REAL-PROVIDER-RUNTIME-FAILURES-20261008 — author-supplied automated-gates.log
-
-**Owner:** Grains real-provider E2E / production meal Defs  
-**Status:** OPEN — concrete runtime regressions and test-provider ambiguity observed, no fixes committed by this entry
-
-The author uploaded `automated-gates.log` from a four-profile Grains test (not a Waterworks log). The `vanilla` and `mo` profiles started RimWorld but failed the **6/6** Pickle/ERROR-zero gates; `vanilla-ccto` and `mo-ccto` were blocked during provider resolution before launching the game. The log records:
-- `Config error in AMJC_AteFlourFood: affects mood but doesn't have a description`. The current `Defs/ThoughtDefs/Thoughts_GrainsFood.xml` stage has `<description />`; provide a valid stage description with appropriate JP/EN localization parity.
-- `Collection cannot init: No textures found at path Things/Item/Meal/SimpleMeal` (twice per launched profile). All three `Defs/ThingDefs_Items/Items_GrainsFood.xml` foods reference this path, while Vanilla's simple meal Def uses `Things/Item/Meal/Simple`; correct the runtime asset reference without adding test-only graphic replacement.
-- `Sequence contains more than one element` in `Grains wheat flour and minimum food resolve`. The relevant `Tests/E2E/GrainsProfileSteps.cs` method has `Single()` assertions including `food.comps.OfType<CompProperties_Rottable>().Single()`. The three flour meals inherit `MealFineBase` (which inherits a rottable CompProperties through `MealCookedIngredientless`) and also append an explicit 2.5-day Rottable component; duplicate rottable comps are a likely cause, **not established without a stack trace**. Preserve the accepted 2.5-day expiry and inherited meal behaviors while resolving it. Check the recipe-products `Single(...)` too.
-- `Quickstart map needs a clear 15x15 test area` in `Grains real harvest and flour food Bills complete` (both launched profiles). The fixture currently searches for a completely empty, standable 15×15 natural region; choose a deterministic disposable area and explicitly clean/map-prepare it without changing runtime production terrain or graphic bytes.
-- Both CCTO profiles report `Ambiguous installed package sucro.cropcoldtoleranceoverhaul`: local `Mods/CropColdToleranceOverhaul` and Workshop `3812412548` are installed simultaneously. The source is `Scripts/Prepare-TestSaveData.ps1`'s deliberate duplicate-provider safety check. Fix test-provider selection/isolation in a way that retains byte/real-provider verification; **do not silently delete, rename, or alter either user's installed Mod copy**.
-- C# `CS1684` Span/ReadOnlySpan references are warnings in the E2E-steps compiler, not the observed gate failures.
-
-**Next owner action:** inspect all affected source-of-truth XML, four-profile runner and Pickle methods together; implement tightly scoped production and test-fixture fixes with static + negative regressions, validate locally before a single CI push, then rerun four isolated profiles and require 6/6 + ERROR 0. Do not mark runtime work done or ask the user to relay this into another Grains workstream. Existing validated 6/6 Waterworks result is unrelated.
