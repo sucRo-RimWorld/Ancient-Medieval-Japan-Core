@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "policy_version": "grains-imagegen-v1",
+  "policy_version": "grains-imagegen-v2-no-api",
   "base_qa_policy": "Docs/References/AMJ_GeneratedAsset_BaseQA.json",
   "families": {
     "plant-mature": {
@@ -96,5 +96,16 @@
       ],
       "postprocess": "boxed-resource"
     }
+  },
+  "generation_workflow": {
+    "provider": "ChatGPT built-in image generation",
+    "python_calls_image_api": false,
+    "api_key_required": false,
+    "stages": [
+      "prepare",
+      "ChatGPT image generation",
+      "review"
+    ],
+    "automatic_retry": false
   }
 }
