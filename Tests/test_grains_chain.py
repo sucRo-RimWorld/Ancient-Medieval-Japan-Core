@@ -168,6 +168,11 @@ class ChainRegressionTests(unittest.TestCase):
         assert 'savedSkyGlow = map.skyManager.CurSkyGlow;' in seasonal
         assert 'map.skyManager.ForceSetCurSkyGlow(savedSkyGlow);' in seasonal
         assert 'NativeSeasonalSowAndGrowth failed at ' in seasonal
+        assert 'error.ToString(), error' in seasonal
+        for diagnostic_phase in ('local hour', 'tick manager calendar shift',
+                                 'native celestial glow', 'sky glow cache', 'temperature setup',
+                                 'local day percent', 'rice growth season', 'rice growth factors'):
+            assert 'phase = "warm recovery ' + diagnostic_phase + '";' in seasonal
         assert 'InnerException' in seasonal
         assert 'warmDayPercent > 0.25f && warmDayPercent < 0.8f' in seasonal
         assert 'ricePlant.GrowthRateFactor_Light > 0.001f' in seasonal

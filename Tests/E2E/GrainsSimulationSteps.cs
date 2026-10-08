@@ -404,21 +404,32 @@ namespace AncientMedievalJapanCore.E2E
                         // null reference in automated-gates(7).log (suspected).
                         // ForceSetCurSkyGlow changes only the disposable map's
                         // cached light, not Plant growth, terrain, or weather.
+                        phase = "warm recovery local hour";
                         int warmHourShift = (12 - GenLocalDate.HourOfDay(map) + 24) % 24;
+                        phase = "warm recovery tick manager calendar shift";
                         Find.TickManager.DebugSetTicksGame(
                             Find.TickManager.TicksGame + warmHourShift * GenDate.TicksPerHour);
+                        phase = "warm recovery native celestial glow";
                         float solarGlow = GenCelestial.CurCelestialSunGlow(map);
                         ctx.Require(solarGlow > 0.1f,
                             "Warm recovery fixture requires actual daylight: "
                             + "solarGlow=" + solarGlow + ", phase=" + phase);
+                        phase = "warm recovery sky glow cache";
+                        ctx.Require(map.skyManager != null, "Warm recovery sky manager is missing.");
                         map.skyManager.ForceSetCurSkyGlow(solarGlow);
+                        phase = "warm recovery temperature setup";
                         SetSeasonTemperature(25f, riceCell, barleyCell);
+                        phase = "warm recovery local day percent";
                         float warmDayPercent = GenLocalDate.DayPercent(map);
                         ctx.Require(warmDayPercent > 0.25f && warmDayPercent < 0.8f,
                             "Warm recovery fixture must run outside the plant resting hours: "
                             + warmDayPercent);
+                        phase = "warm recovery rice growth season";
+                        ctx.Require(ricePlant != null && !ricePlant.Destroyed && ricePlant.Spawned,
+                            "Warm recovery requires the previously sown rice to remain spawned.");
                         ctx.Require(PlantUtility.GrowthSeasonNow(riceCell, map, ricePlant.def),
                             "Rice must resume the native growth season at 25 C.");
+                        phase = "warm recovery rice growth factors";
                         ctx.Require(ricePlant.GrowthRateFactor_Light > 0.001f &&
                             ricePlant.GrowthRateFactor_Temperature > 0f &&
                             ricePlant.GrowthRate > 0f &&
@@ -454,7 +465,7 @@ namespace AncientMedievalJapanCore.E2E
                     // Retain the original exception/stack in InnerException
                     // and put the active native-fixture stage in the message.
                     failure = ExceptionDispatchInfo.Capture(new InvalidOperationException(
-                        "NativeSeasonalSowAndGrowth failed at " + phase + ": " + error.Message, error));
+                        "NativeSeasonalSowAndGrowth failed at " + phase + ": " + error.ToString(), error));
                 }
 
                 // The test assembly uses the Framework C# 5 compiler: no await
