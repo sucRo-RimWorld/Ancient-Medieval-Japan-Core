@@ -167,7 +167,7 @@ class JapaneseLocalizationAudit(unittest.TestCase):
             return values
 
         jp = table(audit.split('## 2.', 1)[1].split('## 3.', 1)[0])
-        en = table(audit.split('## 6.', 1)[1])
+        en = table(audit.split('## 6.', 1)[1].split('## 7.', 1)[0])
         names = SHARED_THINGS | SHARED_RECIPES | BASE_THINGS | BASE_RECIPES
         self.assertEqual(set(jp), names)
         self.assertEqual(set(en), names)
