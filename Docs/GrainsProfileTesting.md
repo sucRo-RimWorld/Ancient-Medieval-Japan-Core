@@ -244,3 +244,12 @@ The current real-provider suite remains the existing six named grain scenarios u
 - the real-profile matrix exercises at least one native upland-rice sow/harvest path and retains the strict runtime ERROR gate.
 
 Future Rice Cultivation integration is not part of the Grains standalone matrix. That owner must test its water-rice crop converging on `RawRice` or the then-current Grains rice-processing path when Grains is present, without duplicating the Grains milling/food chain.
+
+
+### Seven-crop Pickle regression (2026-10-08)
+
+The four real-provider profiles retain **six named scenarios each**, now covering **seven crops** including Vanilla `Plant_Rice` in the environmental-niche and native designated-harvest checks. Loaded runtime assertions verify the upland rice growth/fertility/temperature balance, Ground-only sow tags, `RawRice` meal compatibility, and exactly one CCTO extension with a -1°C threshold only when CCTO is present. A temporary normal-soil growing zone checks engine sow eligibility with `PlantUtility.CanSowOnGrower` and `CanNowPlantAt`, and the native harvest job produces actual `RawRice`. The existing 11 processing/cooking Bills remain unchanged. The PowerShell expected-name registry matches the new feature files.
+
+The upland rice XML now uses conditional replace-or-add for all six PlantProperties fields that may already be present (including CCTO's minimum growth temperature). The static test validates match and nomatch values and guards against duplicate operations. The historical six-crop analytical fixture is not rewritten.
+
+**Still unverified:** C# compilation, actual four-profile Pickle 6/6 and ERROR 0, a calendar-controlled native Sow job, graphical rendering, old-save compatibility, and the standalone MO-dependency release gate.

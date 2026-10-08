@@ -18,7 +18,7 @@ namespace AncientMedievalJapanCore.E2E
         {
             return new[] { "AMJC_Plant_FoxtailMillet_Awa", "AMJC_Plant_BarnyardMillet_Hie",
                 "AMJC_Plant_ProsoMillet_Kibi", "AMJC_Plant_Buckwheat_Soba", "AMJC_Plant_Barley",
-                mo ? "DankPyon_Plant_Wheat" : "AMJC_Plant_Wheat" };
+                mo ? "DankPyon_Plant_Wheat" : "AMJC_Plant_Wheat", "Plant_Rice" };
         }
 
         private static bool HasMO()
@@ -27,7 +27,7 @@ namespace AncientMedievalJapanCore.E2E
                 m.PackageIdPlayerFacing, "dankpyon.medieval.overhaul", StringComparison.OrdinalIgnoreCase));
         }
 
-        [Then("six Grains retain environmental harvest niches")]
+        [Then("seven Grains retain environmental harvest niches")]
         public Task Environment(PickleContext ctx)
         {
             return RuntimeThread.Run(delegate
@@ -69,6 +69,7 @@ namespace AncientMedievalJapanCore.E2E
             try
             {
                 await RuntimeThread.Run(delegate { scope = new ProductionScope(ctx); });
+                await RuntimeThread.Run(scope.AssertUplandSowability);
                 foreach (string crop in Crops(scope.MO)) await scope.Harvest(crop);
                 // All inputs below are outputs of the preceding real jobs.
                 await scope.Bill("AMJC_ThreshMilletBulk", scope.Processing, "AMJC_RawMillet", 10);
@@ -232,6 +233,27 @@ namespace AncientMedievalJapanCore.E2E
                 });
             }
 
+            public void AssertUplandSowability()
+            {
+                // Real engine eligibility on soil; calendar-dependent native Sow remains pending.
+                ThingDef rice = DefDatabase<ThingDef>.GetNamed("Plant_Rice");
+                IntVec3 cell = center + new IntVec3(0, 0, 2);
+                Zone_Growing zone = new Zone_Growing(map.zoneManager);
+                map.zoneManager.RegisterZone(zone);
+                try
+                {
+                    zone.AddCell(cell);
+                    zone.SetPlantDefToGrow(rice);
+                    ctx.Require(zone.CellCount == 1 && zone.GetPlantDefToGrow() == rice,
+                        "Rice must be selectable on a standard growing zone.");
+                    ctx.Assert(PlantUtility.CanSowOnGrower(rice, zone),
+                        "Native sow eligibility must accept upland rice.");
+                    ctx.Assert(rice.CanNowPlantAt(cell, map),
+                        "Upland rice must be plantable in normal soil.");
+                }
+                finally { zone.Delete(false); }
+            }
+
             public async Task Harvest(string name, bool extra = false)
             {
                 Plant plant = null; Job job = null;
@@ -240,6 +262,7 @@ namespace AncientMedievalJapanCore.E2E
                 {
                     ThingDef crop = DefDatabase<ThingDef>.GetNamed(name);
                     raw = crop.plant.harvestedThingDef.defName;
+                    if (name == "Plant_Rice") ctx.Require(raw == "RawRice", "Upland rice must harvest Vanilla RawRice.");
                     before = Count(raw); straw = Count("DankPyon_Straw"); hay = Count("Hay");
                     // Two Soba plants ensure >=10 actual sheaves for the x10 Bills.
                     plant = (Plant)ThingMaker.MakeThing(crop);

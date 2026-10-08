@@ -69,6 +69,33 @@ namespace AncientMedievalJapanCore.E2E
                         ctx.Assert(recipe.products.Count == 1 && recipe.products.All(p => p.thingDef.defName.StartsWith("AMJC_")),
                             "Base threshing must produce only its AMJ grain: " + recipe.defName);
                 }
+                ThingDef rice = DefDatabase<ThingDef>.GetNamed("Plant_Rice");
+                ThingDef rawRice = DefDatabase<ThingDef>.GetNamed("RawRice");
+                ctx.Require(rice.plant != null && rice.plant.harvestedThingDef == rawRice,
+                    "Upland rice must reuse Vanilla Plant_Rice and RawRice.");
+                ctx.Assert(rice.plant.growDays == 5f && rice.plant.harvestYield == 11f
+                    && rice.plant.fertilityMin == 0.7f && rice.plant.fertilitySensitivity == 0.8f,
+                    "Rice growth, yield or fertility differs from design.");
+                ctx.Assert(rice.plant.minGrowthTemperature == 10f && rice.plant.maxGrowthTemperature == 42f
+                    && rice.plant.minOptimalGrowthTemperature == 18f && rice.plant.maxOptimalGrowthTemperature == 32f,
+                    "Rice temperatures differ from design.");
+                ctx.Assert(rice.plant.sowTags.Count == 1 && rice.plant.sowTags[0] == "Ground",
+                    "Rice must sow on ground and not in hydroponics.");
+                RecipeDef meal = DefDatabase<RecipeDef>.GetNamed("CookMealSimple");
+                ctx.Assert(meal.fixedIngredientFilter != null && meal.fixedIngredientFilter.Allows(rawRice),
+                    "RawRice must still be a simple-meal ingredient.");
+                var ext = rice.modExtensions == null
+                    ? new System.Collections.Generic.List<DefModExtension>()
+                    : rice.modExtensions.Where(e => e != null &&
+                        e.GetType().FullName == "CropColdToleranceOverhaul.ColdToleranceExtension").ToList();
+                bool ccto = Active("sucro.cropcoldtoleranceoverhaul");
+                ctx.Assert(ext.Count == (ccto ? 1 : 0), "Rice CCTO extension count differs.");
+                if (ccto)
+                {
+                    var field = ext[0].GetType().GetField("coldDeathTemperature");
+                    ctx.Require(field != null && Convert.ToSingle(field.GetValue(ext[0])) == -1f,
+                        "Rice must retain the CCTO -1 C cold-death threshold.");
+                }
                 new StageASteps().AssertSimpleMealAcceptsMillet(ctx);
             });
         }

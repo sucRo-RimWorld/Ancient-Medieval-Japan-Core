@@ -14,23 +14,37 @@ FIELDS = {'growDays': 5, 'harvestYield': 11, 'fertilityMin': .7,
 
 
 def validate():
-    operations = ET.parse(PATCH).getroot().findall('.//li')
-    values = {}
-    for operation in operations:
-        if operation.attrib.get('Class') not in ('PatchOperationAdd', 'PatchOperationReplace'):
-            continue
-        xpath = operation.findtext('xpath', '')
-        if 'ThingDef[defName="Plant_Rice"]' not in xpath:
-            raise AssertionError('Upland patch must only target existing Plant_Rice')
-        value = operation.find('value')
-        for node in value:
-            if node.tag in FIELDS:
-                if node.tag in values:
-                    raise AssertionError('duplicate field ' + node.tag)
-                values[node.tag] = float(node.text)
-            if node.tag == 'sowTags':
-                assert [child.text for child in node] == ['Ground']
-    assert values == FIELDS, 'Unexpected upland-rice balance or missing patch fields'
+    operations = ET.parse(PATCH).getroot().findall('./Operation/operations/li')
+    assert len(operations) == 11, 'Five replaces and six guarded additions'
+    values, guarded, replaced = {}, set(), set()
+    for op in operations:
+        kind, xpath = op.attrib.get('Class'), op.findtext('xpath', '')
+        assert xpath.startswith('/Defs/ThingDef[defName="Plant_Rice"]/')
+        key = xpath.rsplit('/', 1)[-1]
+        if kind == 'PatchOperationConditional':
+            assert key in FIELDS and key not in guarded
+            guarded.add(key)
+            m, n = op.find('match'), op.find('nomatch')
+            assert m is not None and n is not None
+            assert m.get('Class') == 'PatchOperationReplace' and n.get('Class') == 'PatchOperationAdd'
+            assert m.findtext('xpath') == xpath
+            assert n.findtext('xpath') == '/Defs/ThingDef[defName="Plant_Rice"]/plant'
+            a, b = m.find('value'), n.find('value')
+            assert a is not None and b is not None and len(a) == len(b) == 1
+            assert a[0].tag == b[0].tag == key
+            assert float(a[0].text) == float(b[0].text) == FIELDS[key]
+            values[key] = float(a[0].text)
+        else:
+            assert kind == 'PatchOperationReplace' and xpath not in replaced
+            replaced.add(xpath)
+            value = op.find('value')
+            assert value is not None and len(value) == 1 and value[0].tag == key
+            if key == 'sowTags':
+                assert [child.text for child in value[0]] == ['Ground']
+            elif key in FIELDS:
+                values[key] = float(value[0].text)
+    assert len(replaced) == 5 and guarded == set(FIELDS) - {'growDays', 'harvestYield'}
+    assert values == FIELDS
     xml = PATCH.read_text(encoding='utf-8')
     assert 'RawRice' in xml and 'AMJC_UplandRice' not in xml
     jp = ET.parse(ROOT / 'Languages/Japanese/DefInjected/ThingDef/AMJC_UplandRice.xml').getroot()
