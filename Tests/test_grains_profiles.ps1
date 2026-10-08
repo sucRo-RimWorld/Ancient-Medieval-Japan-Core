@@ -71,11 +71,17 @@ try {
         $output = Join-Path $temp $profile
         & (Join-Path $repo 'Scripts/Prepare-TestSaveData.ps1') -OutputRoot $output -Profile $profile -RimWorldRoot $game -SourceModsConfigPath (Join-Path $sourceConfig 'ModsConfig.xml')
         Assert ($LASTEXITCODE -eq 0) 'Config generation failed.'
-        $resolved = @(Get-Content -LiteralPath (Join-Path $output 'providers.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
+        # In Windows PowerShell 5.1, piping ConvertFrom-Json directly into
+        # @() can retain the entire JSON array as one object. Deserialize first
+        # and enumerate its individual PackageId/Root records deliberately.
+        $manifestText = Get-Content -LiteralPath (Join-Path $output 'providers.json') -Raw -Encoding UTF8
+        $resolved = ConvertFrom-Json -InputObject $manifestText
         $cctoRecords = @($resolved | Where-Object { $_.PackageId -eq 'sucro.cropcoldtoleranceoverhaul' })
         Assert ($cctoRecords.Count -eq [int]$spec.UseCCTO) 'Unexpected CCTO manifest presence.'
         if ($spec.UseCCTO) {
-            $chosen = [IO.Path]::GetFullPath([string]($cctoRecords[0].Root))
+            $providerPath = $cctoRecords[0].Root
+            Assert ($providerPath -is [string]) 'CCTO manifest must contain one path string, not a wrapped JSON array.'
+            $chosen = [IO.Path]::GetFullPath($providerPath)
             $expected = [IO.Path]::GetFullPath((Join-Path $mods 'sucro.cropcoldtoleranceoverhaul'))
             Assert ($chosen -eq $expected) 'CCTO duplicate resolution did not select the local installed copy.'
         }
