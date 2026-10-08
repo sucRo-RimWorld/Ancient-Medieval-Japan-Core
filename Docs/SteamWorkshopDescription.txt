@@ -13,15 +13,17 @@
 This is a focused agriculture module, not an all-in-one AMJ Core. Rice paddies, fermentation and the broader Japanese settlement systems belong to other independent AMJ projects.
 
 [h2]Requirements and compatibility[/h2]
-[b]RimWorld 1.6[/b]. The [b]current development build requires Medieval Overhaul[/b]; standalone Vanilla support without MO is a future migration goal, not a released feature. [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3812412548]Crop Cold Tolerance Overhaul (CCTO)[/url] is optional for crop-specific cold behavior. Other AMJ modules are not universal dependencies.
+[b]RimWorld 1.6[/b]. The [b]current production metadata still requires Medieval Overhaul[/b]. A MO-free development profile has passed automated tests, but save-compatibility and artwork gates remain open before the hard dependency can be removed. [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3812412548]Crop Cold Tolerance Overhaul (CCTO)[/url] is optional for crop-specific cold behavior. Other AMJ modules are not universal dependencies.
 
 [h2]Save compatibility[/h2]
 Adding to or removing from an existing save has [b]not been verified[/b]. This build uses custom crops, items and processing content. Do not assume it is safe to uninstall from a save that uses them. Existing saves do not receive new-start scenario pawns or starting supplies.
 
 [h2]Development status[/h2]
-[b]Development build, not ready for public release.[/b] The Core-to-Grains migration and compatibility tests remain in progress; the current description does not claim completed standalone Vanilla support.
+[b]Development build, not ready for public release.[/b] The Core-to-Grains migration has progressed, but the production dependency has not yet been removed.
 
 Documentation: [url=https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Grains]GitHub README[/url]
+
+[hr][/hr]
 
 [h2]日本語 / Japanese[/h2]
 
@@ -38,12 +40,12 @@ Documentation: [url=https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Gra
 AMJ全体の共通基盤Modではなく、穀類とその基本加工を担う独立した構成要素です。水田稲作・発酵・集落生活のほかの仕組みは別のAMJ Modで扱います。
 
 [h2]必須Mod・互換性[/h2]
-[b]RimWorld 1.6対応。現行の開発ビルドではMedieval Overhaulが必須です。[/b] MOなしでの単独利用は移行目標であり、現時点で対応済みではありません。[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3812412548]Crop Cold Tolerance Overhaul（CCTO）[/url]は任意で、作物の低温反応に利用します。ほかのAMJ Modを一律に必須とはしません。
+[b]RimWorld 1.6対応。現行の配布メタデータではMedieval Overhaulが必須です。[/b] MOなしの開発用構成でも自動テストを通過していますが、正式な依存解除には未完了のセーブ互換性・画像等の確認が必要です。[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3812412548]Crop Cold Tolerance Overhaul（CCTO）[/url]は任意で、作物の低温反応に利用します。ほかのAMJ Modを一律に必須とはしません。
 
 [h2]セーブ互換性[/h2]
 既存セーブへの[b]途中追加・削除は未検証[/b]です。独自の穀物・アイテム・加工要素を使用するセーブから安全に削除できるとは限りません。既存セーブに開始シナリオのポーンや初期物資が追加されることもありません。
 
 [h2]開発状況[/h2]
-[b]開発ビルドであり、公開準備は完了していません。[/b] 旧CoreからGrainsへの再編と互換テストを継続しています。MO非依存化は現時点で完了していません。
+[b]開発ビルドであり、公開準備は完了していません。[/b] 旧CoreからGrainsへの再編と互換テストを継続しています。MO非依存化の実装・検証は進んでいますが、正式な依存解除は未完了です。
 
 詳細：[url=https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Grains]GitHub README[/url]
