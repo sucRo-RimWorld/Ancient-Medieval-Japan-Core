@@ -314,3 +314,21 @@ As a **temporary, unapproved visual placeholder only**, these three food Defs no
 実行スクリプトは六つの期待シナリオ名と失敗/skip 0を検証し、ERRORレベルのログがないことも確認した。全構成でテスト対象Def/Patch/Textureのバイト同一ステージが成功した。CCTOがローカル・Workshopに重複していても、テスト用manifestにローカル側を選択して正常に実行した。粉食3品をAMJ同梱穀物の仮画像へ切り替えた `6d0c791bca3424a8e97c73fb48f906beded01ed7` の後、以前の `Texture2D` / `MatFrom` のERRORは再発していない。C#コンパイルは成功、`CS1684` は非致命警告のみ。
 
 **この範囲のゲートはDONE：** 4構成のロード済み契約と、E2Eに組み込んだ作物収穫・加工/製粉/料理の実Bill、6シナリオ×4、隔離ランタイムERROR 0。**リリース前の残件：** 旧Core／既存セーブの読み込み・途中導入/削除、季節別のネイティブ播種/経時低温検証、日本語/英語の実UI表示、完成料理/作物/設備の専用画像と通常ズームの目視、プレイ時間・バランス、依存MOの本番解除判定。既存節に残る「実機未実施」の文言は当時の作業記録であり、最新の合否は本節を正本とする。
+
+
+### 旧Coreの穀物セーブ保存契約：読取専用・実機移行未実施（2026-10-08）
+
+Grains固有の存続確認は新規の `Scripts/grains_save_contract.py` が担当する。独立Scenariosの `Scripts/scenario_save_contract.py` は開始Scenario/Faction/PawnKindの所有者切替を担当し、Grains側で重複実装しない。Grainsの検査器はRimWorld 1.6の UTF-8 XML形式の **production-ID** `.rws` に限定し、旧Core `sucro.ancientmedievaljapan.core` とMOが保存元/更新先の双方にある場合にだけ適用する。名前の改変や保存データの修復は一切実行しない。
+
+旧Core環境で作成した実際の旧セーブを**コピー**して、検証に使用する。元セーブは読み取り専用。作物・加工品・設備などの `AMJC_` Things と、`Plant_Rice` / `RawRice` の保存ID・Def名・数量、AMJC Recipeの保存Bill、ゲームtick、GameVersion、Mod ID集合を更新前と更新後の再保存されたXMLで比較する。必須Grains項目とVanilla米を含まないセーブは、この検証用fixtureの入力として拒否する。Id・数量・Bill等が変化した場合も不合格。時刻停止状態でのエンジンload→re-saveを比較前提とし、作物の自然成長や生産による数量変化を許容しない。
+
+ローカル使用例（入力のSHAは作業時の実際の40文字のcommitを指定。旧版ソースとセーブの来歴は別途記録する）。
+
+```powershell
+python Scripts/grains_save_contract.py prepare --save "D:\\AMJ-TestFixtures\\old-core-grains.rws" --output "D:\\AMJ-TestResults\\grains-migration" --legacy-commit <OLD_FULL_SHA> --updated-commit <NEW_FULL_SHA>
+python Scripts/grains_save_contract.py compare --before "D:\\AMJ-TestResults\\grains-migration\\baseline.rws" --after "D:\\AMJ-TestResults\\grains-migration\\same-provider-upgrade\\resaved.rws"
+```
+
+`prepare` は新しい隔離フォルダ内に元XMLのSHA256、元セーブとバイト同一な `baseline.rws`、プロバイダ/実機検証要件を `plan.json` へ保存する。既存フォルダを上書きしない。`compare` が通っても `runtimeVerified=false` と明示する。**これは実ゲーム起動器ではなく、実機で旧セーブを更新版Grainsへロード・再保存する処理は未実装**。XML要素が一致しても未解決Def、ロード後の参照、ログERRORやUIは証明されない。Scenarios追加/削除やMO解除はこの契約の外側であり、Scenarios専用ゲートまたは別のリリーステストが必要。
+
+`Tests/test_grains_save_contract.py` はsynthetic保存XMLで数量の欠落、`RawRice` の再解釈、加工Bill差分、tick変更、Mod構成欠落、別名テストMod、破損XML、既存結果への上書きを負例として検出する。GitHub CIではこのfixtureテストのみ実行し、実旧セーブをリポジトリへアップロードしない。現在の4×6 Pickle/ERROR-0 PASSは変わらず、**旧セーブ移行の実機ゲートは依然OPEN**。

@@ -65,3 +65,8 @@ Vanilla CookMealSimple・既存の米を使うRecipe
 ### 2026-10-08 実機スモークの合格範囲
 
 `automated-gates(4).log` により、Vanilla / Vanilla+CCTO / MO / MO+CCTOで各6/6のPickleと隔離ランタイムERROR 0を確認した。新規隔離テスト上で稲束→籾→Vanilla米の実Billを含む既定のシナリオが完了した。料理用仮PNGの読込障害も解消。これにより四構成実機スモークのゲートを完了とするが、実ユーザーの古いセーブ（農地、既存の `RawRice`、途中のBill、既存設備等）の移行、途中導入/削除の安全性と、季節別・低温下での実播種は未確認。最終専用画像の制作と目視も未完了。既存数値とRecipeを変更せず、今後の検証は `Docs/GrainsProfileTesting.md` に記録する。
+
+
+### 旧米保存互換性の次ゲート（2026-10-08）
+
+旧Coreで取得済みの `RawRice` を新しい `AMJC_RiceSheaf` に改名・書換えしない。既存の `RawRice`、`Plant_Rice`、`AMJC_` 保存アイテム、穀物加工設備と保存済みAMJC加工Billについて、RimWorld 1.6実機の停止時ロード→再保存前後でDefName、保存ID、数量、Billを失わないことを確認する。Grains側の読取専用XML比較器と負例テストは `Scripts/grains_save_contract.py` / `Tests/test_grains_save_contract.py`、詳細は `Docs/GrainsProfileTesting.md`。これらはXML保存契約の準備であり、実機エンジンでの旧セーブ読込・保存互換性はまだ未合格。Scenarios/Faction/PawnKindの移行はScenarios側を正本とする。
