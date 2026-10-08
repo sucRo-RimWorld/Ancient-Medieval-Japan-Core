@@ -71,8 +71,27 @@ namespace AncientMedievalJapanCore.E2E
                 }
                 ThingDef rice = DefDatabase<ThingDef>.GetNamed("Plant_Rice");
                 ThingDef rawRice = DefDatabase<ThingDef>.GetNamed("RawRice");
-                ctx.Require(rice.plant != null && rice.plant.harvestedThingDef == rawRice,
-                    "Upland rice must reuse Vanilla Plant_Rice and RawRice.");
+                ThingDef riceSheaf = DefDatabase<ThingDef>.GetNamed("AMJC_RiceSheaf");
+                ThingDef riceHull = DefDatabase<ThingDef>.GetNamed("AMJC_RiceInHull");
+                ctx.Require(rice.plant != null && rice.plant.harvestedThingDef == riceSheaf,
+                    "Upland rice must harvest AMJC_RiceSheaf; RawRice remains the existing edible item.");
+                ctx.Assert(riceSheaf.ingestible.preferability == FoodPreferability.NeverForNutrition
+                    && riceHull.ingestible.preferability == FoodPreferability.NeverForNutrition,
+                    "Rice intermediates must be inedible.");
+                foreach (string part in new[] { "Thresh", "Hull" })
+                foreach (bool bulk in new[] { false, true })
+                {
+                    string name = "AMJC_" + part + "Rice" + (bulk ? "Bulk" : "");
+                    RecipeDef rec = DefDatabase<RecipeDef>.GetNamed(name);
+                    int n = bulk ? 10 : 1;
+                    ThingDef input = part == "Thresh" ? riceSheaf : riceHull;
+                    ThingDef output = part == "Thresh" ? riceHull : rawRice;
+                    ctx.Assert(rec.ingredients.Count == 1 && rec.ingredients[0].filter.Allows(input)
+                        && rec.ingredients[0].GetBaseCount() == n, "Rice processing input differs: " + name);
+                    ctx.Assert(rec.products.Any(p => p.thingDef == output && p.count == n)
+                        && rec.products.Count == ((Active("dankpyon.medieval.overhaul") && part == "Thresh") ? 2 : 1),
+                        "Rice processing output or optional straw differs: " + name);
+                }
                 ctx.Assert(rice.plant.growDays == 5f && rice.plant.harvestYield == 11f
                     && rice.plant.fertilityMin == 0.7f && rice.plant.fertilitySensitivity == 0.8f,
                     "Rice growth, yield or fertility differs from design.");

@@ -3,6 +3,7 @@ from pathlib import Path
 from collections import Counter
 import json
 import xml.etree.ElementTree as ET
+from amj_profile_xml import profile_xml
 
 ROOT = Path(__file__).resolve().parents[1]
 NAME = 'Plant_Rice'
@@ -15,7 +16,7 @@ FIELDS = {'growDays': 5, 'harvestYield': 11, 'fertilityMin': .7,
 
 def validate():
     operations = ET.parse(PATCH).getroot().findall('./Operation/operations/li')
-    assert len(operations) == 11, 'Five replaces and six guarded additions'
+    assert len(operations) == 12, 'Six replaces and six guarded additions'
     values, guarded, replaced = {}, set(), set()
     for op in operations:
         kind, xpath = op.attrib.get('Class'), op.findtext('xpath', '')
@@ -39,14 +40,17 @@ def validate():
             replaced.add(xpath)
             value = op.find('value')
             assert value is not None and len(value) == 1 and value[0].tag == key
-            if key == 'sowTags':
+            if key == 'harvestedThingDef':
+                assert value[0].text == 'AMJC_RiceSheaf'
+            elif key == 'sowTags':
                 assert [child.text for child in value[0]] == ['Ground']
             elif key in FIELDS:
                 values[key] = float(value[0].text)
-    assert len(replaced) == 5 and guarded == set(FIELDS) - {'growDays', 'harvestYield'}
+    assert len(replaced) == 6 and guarded == set(FIELDS) - {'growDays', 'harvestYield'}
     assert values == FIELDS
     xml = PATCH.read_text(encoding='utf-8')
     assert 'RawRice' in xml and 'AMJC_UplandRice' not in xml
+    assert '/Defs/ThingDef[defName="Plant_Rice"]/plant/harvestedThingDef' in replaced
     jp = ET.parse(ROOT / 'Languages/Japanese/DefInjected/ThingDef/AMJC_UplandRice.xml').getroot()
     assert jp.findtext('Plant_Rice.label') == '陸稲'
     assert jp.findtext('Plant_Rice.description')
@@ -81,6 +85,44 @@ def validate():
                     wins[i] += 1
         assert set(wins) == set(range(7)), 'A grain lost its representative niche: ' + str(wins)
         assert max(wins.values()) * 3 < viable * 2, 'Single-crop dominance: ' + str(wins)
+    # Both actual Grains projections must make intermediate rice inedible,
+    # bind thresh/hull Bills to the existing processing benches, and exclude
+    # Straw from the Vanilla profile only.
+    for profile in ('vanilla', 'mo'):
+        projected = profile_xml(profile)
+        defs = {node.findtext('defName'): node for node in projected if node.findtext('defName')}
+        for name, graphic in (
+            ('AMJC_RiceSheaf', 'Things/Item/Resource/AMJC_Millet/RawMillet'),
+            ('AMJC_RiceInHull', 'Things/Item/Resource/AMJC_Millet/MilletInHull'),
+        ):
+            item = defs[name]
+            assert item.findtext('ingestible/preferability') == 'NeverForNutrition'
+            assert float(item.findtext('comps/li/daysToRotStart')) == 120
+            assert item.findtext('graphicData/texPath') == graphic
+        for op, ingredient, result, single_work, bulk_work in (
+            ('Thresh', 'AMJC_RiceSheaf', 'AMJC_RiceInHull', 15, 120),
+            ('Hull', 'AMJC_RiceInHull', 'RawRice', 10, 80),
+        ):
+            for bulk, count, work in ((False, 1, single_work), (True, 10, bulk_work)):
+                recipe = defs['AMJC_' + op + 'Rice' + ('Bulk' if bulk else '')]
+                assert recipe.findtext('ingredients/li/filter/thingDefs/li') == ingredient
+                assert recipe.findtext('fixedIngredientFilter/thingDefs/li') == ingredient
+                assert float(recipe.findtext('ingredients/li/count')) == count
+                assert float(recipe.findtext('workAmount')) == work
+                products = [(node.tag, int(node.text)) for node in recipe.findall('products/*')]
+                expected = [(result, count)]
+                if profile == 'mo' and op == 'Thresh':
+                    expected.append(('DankPyon_Straw', count))
+                assert products == expected, (profile, op, bulk, products)
+                assert recipe.get('ParentName') == 'AMJC_RiceProcessingBase'
+    for name in ('AMJC_RiceSheaf', 'AMJC_RiceInHull'):
+        jp = ET.parse(ROOT / 'Languages/Japanese/DefInjected/ThingDef/AMJC_RiceProcessing.xml').getroot()
+        assert jp.findtext(name + '.label') and jp.findtext(name + '.description')
+    rice_recipes = ET.parse(ROOT / 'Languages/Japanese/DefInjected/RecipeDef/AMJC_RiceProcessing.xml').getroot()
+    for op in ('Thresh', 'Hull'):
+        for suffix in ('', 'Bulk'):
+            name = 'AMJC_' + op + 'Rice' + suffix
+            assert all(rice_recipes.findtext(name + '.' + field) for field in ('label', 'description', 'jobString'))
     return True
 
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <AMJC_RiceSheaf.label>稲束</AMJC_RiceSheaf.label>
+  <AMJC_RiceSheaf.description>収穫した稲を束ねたもの。穂にはまだ籾が付いており、食料にするには脱穀と籾摺りが必要となる。</AMJC_RiceSheaf.description>
+  <AMJC_RiceInHull.label>籾</AMJC_RiceInHull.label>
+  <AMJC_RiceInHull.description>稲を脱穀して得られる、籾殻に包まれた米粒。籾殻を取り除くことで食用の米になる。</AMJC_RiceInHull.description>
+</LanguageData>

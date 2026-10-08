@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <AMJC_ThreshRice.label>稲を脱穀する</AMJC_ThreshRice.label>
+  <AMJC_ThreshRice.description>収穫した稲束から籾を分離する。</AMJC_ThreshRice.description>
+  <AMJC_ThreshRice.jobString>稲を脱穀している。</AMJC_ThreshRice.jobString>
+  <AMJC_ThreshRiceBulk.label>稲を脱穀する x10</AMJC_ThreshRiceBulk.label>
+  <AMJC_ThreshRiceBulk.description>稲束10個をまとめて脱穀し、籾10個にする。</AMJC_ThreshRiceBulk.description>
+  <AMJC_ThreshRiceBulk.jobString>稲をまとめて脱穀している。</AMJC_ThreshRiceBulk.jobString>
+  <AMJC_HullRice.label>籾摺りをする</AMJC_HullRice.label>
+  <AMJC_HullRice.description>籾から籾殻を取り除き、食用の米に加工する。</AMJC_HullRice.description>
+  <AMJC_HullRice.jobString>籾摺りをしている。</AMJC_HullRice.jobString>
+  <AMJC_HullRiceBulk.label>籾摺りをする x10</AMJC_HullRiceBulk.label>
+  <AMJC_HullRiceBulk.description>籾10個をまとめて籾摺りし、食用の米10個にする。</AMJC_HullRiceBulk.description>
+  <AMJC_HullRiceBulk.jobString>籾をまとめて籾摺りしている。</AMJC_HullRiceBulk.jobString>
+</LanguageData>

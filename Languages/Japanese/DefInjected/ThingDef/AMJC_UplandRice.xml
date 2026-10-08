@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <Plant_Rice.label>陸稲</Plant_Rice.label>
-  <Plant_Rice.description>陸稲（おかぼ・りくとう）。水田で育てる水稲と異なり、畑に作付けする稲。日本でも水稲と併せて栽培されてきたが、20世紀半ば以降は栽培が大幅に縮小した。AMJGrainsではバニラの稲を陸稲として扱い、温暖な気温と一定以上の肥沃度を必要とする。収穫物は従来の米を使い、水田栽培は別Modに委ねる。</Plant_Rice.description>
+  <Plant_Rice.description>陸稲（おかぼ・りくとう）。水田で育てる水稲と異なり、畑に作付けする稲。日本でも水稲と併せて栽培されてきたが、20世紀半ば以降は栽培が大幅に縮小した。AMJGrainsではバニラの稲を陸稲として扱い、温暖な気温と一定以上の肥沃度を必要とする。収穫後は脱穀と籾摺りを経て従来の米を得る。水田栽培は別Modに委ねる。</Plant_Rice.description>
 </LanguageData>

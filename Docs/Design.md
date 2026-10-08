@@ -20,7 +20,7 @@
 - 作物ごとの肥沃度・温度・生育日数・収量・加工価値の差
 - MO導入時の小麦・小麦粉・石臼・Straw等の公式互換
 
-Grainsは、水田・米、豆類、繊維、根菜、一般採集、発酵、酒造、保存、建築等を「共通基盤だから」という理由では所有しない。これらは実際の主要ゲームループに最も自然なModへ分け、Grainsとは必要時だけ条件付き互換する。
+Grainsは、水田・水稲栽培、豆類、繊維、根菜、一般採集、発酵、酒造、保存、建築等を「共通基盤だから」という理由では所有しない。陸稲と共通の米の収穫後加工はGrainsが所有する。これらは実際の主要ゲームループに最も自然なModへ分け、Grainsとは必要時だけ条件付き互換する。
 
 最終的な対象時代は新石器相当から戦国末期までとするが、Grains自体はその全生活文化を網羅しない。
 
@@ -137,7 +137,7 @@ Coreは古代～中世日本を厳密に再現する歴史シミュレーター�
 稲作ではこの原則を次のように扱う。
 
 - **共通の必須加工**は `稲束 → 籾 → 米` とする。Grainsは陸稲の収穫先を未脱穀の稲束とし、既存の穀物加工設備で脱穀・籾摺りを提供する。最終食材はVanilla `RawRice` を再利用する
-- 「籾」は独立した中間物、玄米・精白米は必須の別ThingDefにはしない。籾摺りからVanillaの日常食用の「米」までを抽象化する。**Grains現行XMLはまだRawRiceの直接収穫であり、上記は未実装の修正方針**
+- 「籾」は独立した中間物、玄米・精白米は必須の別ThingDefにはしない。籾摺りからVanillaの日常食用の「米」までを抽象化する。**Grains現行XMLは稲束を収穫し、2段階のRecipeでRawRiceを得る。実機検証は未完了**
 - 稲架掛け、乾燥した稲、乾燥の歩留まり差等は**Rice Cultivation側の水稲固有の任意追加工程**とする。MO Drying Rack／Processor Frameworkを必須依存とはしない。通常の収穫と必須加工を経るだけで食事に利用でき、乾燥工程は任意
 - MO Strawは条件付きの副産物として検討するが、BaseにMO Defを参照させない。稲藁の発生箇所と任意乾燥での二重発生を防ぐ
 
@@ -520,7 +520,7 @@ Grainsの責務は、**乾田穀物（陸稲を含む）の栽培・収穫と、
 #### Grainsに入れる基準
 
 - アワ・ヒエ・キビ・ソバ・大麦・小麦
-- Vanilla `Plant_Rice` を再利用して表現する陸稲と、その収穫物 `RawRice`
+- Vanilla `Plant_Rice` を再利用して表現する陸稲と、収穫物の稲束・籾の共通加工を経て得る `RawRice`
 - 穀束・殻付き中間物・可食穀粒
 - 脱穀・殻取り・製粉と、その最小設備
 - 小麦粉・蕎麦粉・雑穀粉
@@ -860,13 +860,13 @@ Stage Aの穀物は、加工前後の保存性も作物選択と備蓄判断に�
 
 ### 4.2.2 陸稲（Vanilla Rice）の再定義
 
-GrainsではVanillaの `Plant_Rice` を削除・複製せず、**陸稲として上書きして利用する**。**現行XMLでは**収穫物を `RawRice` のままにしているが、これは既存料理への接続を急いだ暫定実装であり、史実・他の穀物加工との不整合がある。**修正後は `稲束（新中間物）→脱穀→籾（新中間物）→籾摺り→RawRice` を必須とし、既存料理と他Mod参照の互換性は最終食材のVanilla `RawRice` を維持して守る。** 実装前の確定・未確定条件は [RicePostHarvestProcessing.md](Balance/Crops/RicePostHarvestProcessing.md) を参照する。
+GrainsではVanillaの `Plant_Rice` を削除・複製せず、**陸稲として上書きして利用する**。旧XMLでは `RawRice` を直接収穫する実装上の近道があった。**現行XMLは `稲束（AMJC_RiceSheaf）→脱穀→籾（AMJC_RiceInHull）→籾摺り→RawRice` を必須とし、既存料理と他Mod参照の互換性は最終食材のVanilla `RawRice` を維持して守る。**** 実装前の確定・未確定条件は [RicePostHarvestProcessing.md](Balance/Crops/RicePostHarvestProcessing.md) を参照する。
 
 固定方針:
 - 新規の `AMJC_UplandRice` PlantDefや**別の可食米**ThingDefは作らない。ただし稲束・籾の非可食中間物2件は追加する方針（本番未実装）。
 - `Plant_Rice` の表示名・説明・画像・栽培値はAMJの陸稲として監査対象にする。
 - Vanillaの `Hydroponic` sowTagを除き、`Ground` のみとする。実ゲームの播種可否は別途検証する。
-- `RawRice` は籾摺り**後**の共通米食材として再利用する。陸稲と将来の水稲で最終食材を無意味に分けない。現行では畑から直接 `RawRice` を収穫するため、収穫先とRecipe・E2Eを併せて修正する。
+- `RawRice` は籾摺り**後**の共通米食材として再利用する。陸稲と将来の水稲で最終食材を無意味に分けない。現行では収穫先とRecipe・E2Eのソースを二段階加工へ更新済み（実ゲームテストは未実行）。
 - CCTO導入時はCCTOが既に `Plant_Rice` へ設定する最低生育10℃・固定枯死-1℃を利用し、Grains側に重複したColdToleranceExtensionを追加しない。
 - Vanilla Riceの現行3日成長・収量6は採用せず、初期実装値を **growDays 5、harvestYield 11、fertilityMin 0.7、fertilitySensitivity 0.8、成長10～42℃・最適18～32℃** とする。既存六穀との七穀27セル分析で全作物の勝利条件と単一作物の支配防止を確認し、実機挙動は未検証とする。
 - 米粉等の製粉物は具体的用途ができた時だけ追加する。その場合のRecipe・設備・バランス所有はGrainsとする。
@@ -1032,7 +1032,7 @@ Grains Baseの主要ループはMO ResearchDefを必要としない。MO併用�
 
 Grainsは**陸稲と穀物の収穫後加工・製粉**を所有し、将来のRice Cultivationは**水田・水管理・水稲栽培**を所有する。Rice Cultivationの詳細設計は専用所有先ができるまではProject側を正本とし、本書ではGrainsとの接続境界だけを固定する。
 
-- GrainsはVanilla `Plant_Rice` を陸稲として再定義し、稲束→籾→Vanilla `RawRice` の収穫後加工を共通所有する（収穫先とRecipeは未実装）。
+- GrainsはVanilla `Plant_Rice` を陸稲として再定義し、稲束→籾→Vanilla `RawRice` の収穫後加工を共通所有する（収穫先とRecipeは本番XMLへ実装済み、実ゲーム未検証）。
 - 水田Terrain、水深・給排水、苗代・田植え、水稲Plant等の水田固有ロジックはGrainsに入れない。
 - Rice Cultivation + Grainsでは、水稲の収穫先をGrainsの稲束・籾の共通加工経路に接続し、米への脱穀・籾摺りを迂回しない。同目的の米・米粉・精米設備・製粉RecipeをRice Cultivation側で重複定義しない。
 - GrainsはRice Cultivationを必須依存にしない。Rice Cultivation単独時の簡易収穫経路と、稲架掛け・藁・保存差等の水稲固有設計はRice Cultivation側で決める。
@@ -1128,7 +1128,7 @@ Food Drying 1.6はProcessor Frameworkを利用し、米・ジャガイモ・ト�
 
 ### 8.1 水田・水稲栽培（Rice Cultivationへ分離）
 
-**Grainsは陸稲の栽培と穀物共通の収穫後加工・製粉を担当する。** 現行実装ではVanilla `Plant_Rice` を陸稲として再定義し、まだ `RawRice` をそのまま収穫するが、これは**修正対象**である。最初の公開Alphaまでに稲束→籾→`RawRice` の必須加工を導入し、同一の穀物加工設備へ接続する。陸稲や米加工は水田Modへ移管しない。
+**Grainsは陸稲の栽培と穀物共通の収穫後加工・製粉を担当する。** 現行実装ではVanilla `Plant_Rice` を陸稲として再定義し、稲束→籾→`RawRice` の必須加工を本番XMLへ導入した。同一の穀物加工設備に接続し、公開Alpha前に実機テストを必要とする。陸稲や米加工は水田Modへ移管しない。
 
 **Rice Cultivationは水田・給排水・苗代・田植え・水稲Plant等の水田固有の栽培システム**を担当する。Grains併用時は水稲の収穫物をGrainsの**必須加工経路（稲束・籾）**へ合流させ、可食米・精米・製粉の共通経路を二重実装しない。稲架掛け・稲藁等の水稲固有工程はRice Cultivationが独立に設計する。
 
@@ -1244,7 +1244,7 @@ Grainsの主要実装は、次の順で管理する。
 |---|---|---|---|
 | **Stage A / 現行実装** | 乾田穀物 | アワ・ヒエ・キビ・ソバ・大麦・MO小麦統合、脱穀・殻取り、穀物加工設備、New Village | MO必須版として実装済み |
 | **Grains分離移行** | Vanilla自己完結 | 非MO小麦、小麦粉・蕎麦粉・雑穀粉、手動石臼、最低限粉食、BaseからMO参照除去、MO条件付き互換 | **step 3 小麦・製粉・最低限粉食XML実装・実機未検証** |
-| **陸稲統合** | Vanilla Riceの中世日本化 | `Plant_Rice` を陸稲として再定義、`RawRice` 再利用、Hydroponic除去、七穀バランス・CCTO・実収穫回帰 | **Production XML・静的七穀分析を追加。実ゲーム・画像監査・七穀Pickle回帰は未完** |
+| **陸稲統合** | Vanilla Riceの中世日本化 | `Plant_Rice` を陸稲として再定義、稲束→籾→`RawRice` 必須加工、Hydroponic除去、七穀バランス・CCTO回帰 | **Production XML・静的七穀分析・Pickleの加工経路ソースを追加。実ゲーム・画像・セーブ回帰は未完** |
 | **回帰固定** | 環境別穀物選択 | Base/MO/CCTO各プロファイルで単一穀物がほぼ全条件の最適解にならないことを自動確認 | 分離移行と同時に追加 |
 
 旧Stage B（豆類）、Stage C（繊維）、Stage D（根菜）はGrainsロードマップから削除する。将来必要なら、それぞれの主要用途と自然な所有Modを決めて別途設計する。
@@ -1444,4 +1444,4 @@ Grainsの通常6件から専用Scenario要件を外し、旧fixtureの8件には
 
 ### 七穀の収穫→加工→粉食バランス監査（2026-10-08）
 
-七穀の相対収量と各工程・製粉・完成料理までを [Balance/Crops/SevenGrainFoodChainAudit.md](Balance/Crops/SevenGrainFoodChainAudit.md) にまとめ、`Tests/test_grains_balance_chain.py` で静的な歩留まり・作業量・Nutrition・保存期間・Mood・陸稲の同率首位を監査する。**既存の作物・Recipe・温度・栄養・画像設定は変えない。** 七穀全てに同率を含む最大収量セルがあるが、陸稲は6セル全て同率で独自の収量首位なし。水田不要という特徴はあるが、**収穫後加工ゼロは現行暫定XMLの問題であり採用すべき永続的な優位ではない**。稲束→籾→`RawRice` の加工義務化を実装・再テストする。MO原本の小麦製粉一括workAmount 800は非MO石臼の300より大きい一方、MO小麦粉は90日保存（Baseは60日）。手動加工・製粉・調理の異なるworkSpeedStatを単純合算したものを実作業時間とはしない。MO原本の製粉効率や陸稲の労働優位は今後の実プレイ評価項目に残し、変更を要するかは別判断とする。CCTO/気象/播種労働・収穫技能・実機栄養/画面/保存・セーブ移行は未確認。
+七穀の相対収量と各工程・製粉・完成料理までを [Balance/Crops/SevenGrainFoodChainAudit.md](Balance/Crops/SevenGrainFoodChainAudit.md) にまとめ、`Tests/test_grains_balance_chain.py` で静的な歩留まり・作業量・Nutrition・保存期間・Mood・陸稲の同率首位を監査する。**既存六穀の作物・Recipe・温度・栄養・画像設定は維持。陸稲の収穫先と専用加工Recipeだけを新規追加した。** 七穀全てに同率を含む最大収量セルがあるが、陸稲は6セル全て同率で独自の収量首位なし。水田不要という特徴はあるが、**収穫後加工ゼロは現行暫定XMLの問題であり採用すべき永続的な優位ではない**。稲束→籾→`RawRice` の加工義務化を実装・再テストする。MO原本の小麦製粉一括workAmount 800は非MO石臼の300より大きい一方、MO小麦粉は90日保存（Baseは60日）。手動加工・製粉・調理の異なるworkSpeedStatを単純合算したものを実作業時間とはしない。MO原本の製粉効率や陸稲の労働優位は今後の実プレイ評価項目に残し、変更を要するかは別判断とする。CCTO/気象/播種労働・収穫技能・実機栄養/画面/保存・セーブ移行は未確認。

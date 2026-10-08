@@ -62,6 +62,9 @@ class ChainRegressionTests(unittest.TestCase):
                        'AMJC_ThreshBarleyBulk', 'AMJC_HullBarleyBulk',
                        'AMJC_ThreshWheatBulk'):
             assert 'await scope.Bill("' + recipe + '"' in source, recipe
+        for recipe in ('AMJC_ThreshRiceBulk', 'AMJC_HullRiceBulk'):
+            assert 'await scope.Bill("' + recipe + '"' in source, recipe
+        assert 'ctx.Require(raw == "AMJC_RiceSheaf"' in source
         for name in ('vanilla', 'vanilla-ccto', 'mo', 'mo-ccto'):
             feature = (ROOT/'Tests/E2E/Profiles'/('grains-' + name + '.feature')).read_text(encoding='utf-8')
             assert '@quickstart:AmjStageAQuickstart @timeout:270' in feature

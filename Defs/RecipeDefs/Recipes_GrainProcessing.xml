@@ -324,4 +324,50 @@
     <products><AMJC_Barley>10</AMJC_Barley></products>
   </RecipeDef>
 
+  <RecipeDef Name="AMJC_RiceProcessingBase" Abstract="True">
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <workSkillLearnFactor>0.1</workSkillLearnFactor>
+    <allowMixingIngredients>false</allowMixingIngredients>
+    <recipeUsers><li>AMJC_GrainProcessingSpot</li><li>AMJC_GrainProcessingTable</li></recipeUsers>
+  </RecipeDef>
+  <RecipeDef ParentName="AMJC_RiceProcessingBase">
+    <defName>AMJC_ThreshRice</defName><label>thresh rice</label>
+    <description>Separate rice grains enclosed in their husks from the harvested sheaves.</description><jobString>Threshing rice.</jobString>
+    <workAmount>15</workAmount><targetCountAdjustment>1</targetCountAdjustment>
+    <ingredients><li><filter><thingDefs><li>AMJC_RiceSheaf</li></thingDefs></filter><count>1</count></li></ingredients>
+    <fixedIngredientFilter><thingDefs><li>AMJC_RiceSheaf</li></thingDefs>
+      <specialFiltersToDisallow><li>AllowRotten</li></specialFiltersToDisallow></fixedIngredientFilter>
+    <products><AMJC_RiceInHull>1</AMJC_RiceInHull></products>
+  </RecipeDef>
+
+  <RecipeDef ParentName="AMJC_RiceProcessingBase">
+    <defName>AMJC_ThreshRiceBulk</defName><label>thresh rice x10</label>
+    <description>Thresh ten rice sheaves to obtain ten portions of rice in husk.</description><jobString>Threshing rice in bulk.</jobString>
+    <workAmount>120</workAmount><targetCountAdjustment>10</targetCountAdjustment>
+    <ingredients><li><filter><thingDefs><li>AMJC_RiceSheaf</li></thingDefs></filter><count>10</count></li></ingredients>
+    <fixedIngredientFilter><thingDefs><li>AMJC_RiceSheaf</li></thingDefs>
+      <specialFiltersToDisallow><li>AllowRotten</li></specialFiltersToDisallow></fixedIngredientFilter>
+    <products><AMJC_RiceInHull>10</AMJC_RiceInHull></products>
+  </RecipeDef>
+
+  <RecipeDef ParentName="AMJC_RiceProcessingBase">
+    <defName>AMJC_HullRice</defName><label>hull rice</label>
+    <description>Remove the husks from threshed rice to obtain edible Vanilla rice.</description><jobString>Hulling rice.</jobString>
+    <workAmount>10</workAmount><targetCountAdjustment>1</targetCountAdjustment>
+    <ingredients><li><filter><thingDefs><li>AMJC_RiceInHull</li></thingDefs></filter><count>1</count></li></ingredients>
+    <fixedIngredientFilter><thingDefs><li>AMJC_RiceInHull</li></thingDefs>
+      <specialFiltersToDisallow><li>AllowRotten</li></specialFiltersToDisallow></fixedIngredientFilter>
+    <products><RawRice>1</RawRice></products>
+  </RecipeDef>
+
+  <RecipeDef ParentName="AMJC_RiceProcessingBase">
+    <defName>AMJC_HullRiceBulk</defName><label>hull rice x10</label>
+    <description>Remove the husks from ten portions of threshed rice to obtain edible Vanilla rice.</description><jobString>Hulling rice in bulk.</jobString>
+    <workAmount>80</workAmount><targetCountAdjustment>10</targetCountAdjustment>
+    <ingredients><li><filter><thingDefs><li>AMJC_RiceInHull</li></thingDefs></filter><count>10</count></li></ingredients>
+    <fixedIngredientFilter><thingDefs><li>AMJC_RiceInHull</li></thingDefs>
+      <specialFiltersToDisallow><li>AllowRotten</li></specialFiltersToDisallow></fixedIngredientFilter>
+    <products><RawRice>10</RawRice></products>
+  </RecipeDef>
 </Defs>

@@ -12,7 +12,7 @@
 | `AMJC_Wheat` と `AMJC_Barley` | 前者はMO醸造だけを説明、後者は未実装の麦茶・味噌を予告 | Base/MO共通の実装済み食材用途だけに訂正 |
 | 共通加工Recipe（雑穀・ソバ・大麦） | 日本語descriptionに「藁を得る」とあり、Baseでは藁を生成しない | Base/MO共通の「殻付き穀物を得る」説明に訂正 |
 | 小麦脱穀Recipe | BaseとMOで同じDefNameだがMOでのみ藁生成 | Base翻訳のみ訂正し、MO翻訳は維持 |
-| `Plant_Rice` / `RawRice` | Vanilla米を陸稲化し、陸稲の史実説明§7を日英反映。`RawRice` は再利用 | 別の米Plant/食材を追加したと書かない。水田栽培は別Modの責務 |
+| `Plant_Rice` / `RawRice` | Vanilla米を陸稲化し、稲束・籾から加工して既存`RawRice`を得る | 新たな可食米Def/Plantは作らず、水田栽培は別Modの責務 |
 | 粉 `AMJC_BuckwheatFlour` / `AMJC_MilletFlour` | ThingDef本体description空、和訳labelのみ | 承認済み、日本語・英語へ反映 |
 | 料理 `AMJC_Houtou` / `AMJC_Sobagaki` / `AMJC_MilletDumplings` | ThingDef本体description空、和訳labelのみ | 承認済み、日本語・英語へ反映 |
 | 共有の製粉・料理Recipe5件 | description空、和訳labelのみ、英語jobStringが残る | 説明文と作業表示の承認済み、日本語・英語へ反映 |
@@ -120,7 +120,7 @@ The following descriptions and jobStrings are the approved Japanese-first implem
 | `AMJC_Plant_ProsoMillet_Kibi` | **黍（きび）。** 米・麦・粟などと並び、「五穀」の一つに数えられることもある雑穀。AMJGrainsではアワ・ヒエより早く成熟し、肥沃度の影響も比較的小さい一方、一度の収穫量は少ない。収穫後は脱穀と殻取りを行う。 | 5日／収量11／肥沃度感応0.3。「五穀」には黍に代えて稗を含める異説あり。 |
 | `AMJC_Plant_Buckwheat_Soba` | **蕎麦（そば）。** 古代には凶作に備える作物として栽培を勧められ、山間部や痩せた土地でも育てられてきた。AMJGrainsでは短期栽培に向くが霜には弱く、収穫後に脱穀・殻取りを行う。古い蕎麦の食べ方と、江戸期に広まる麺状の蕎麦切りは区別する。 | 4日／収量8／最低肥沃度0.4。農水省の救荒作物・蕎麦切り史。 |
 | `AMJC_Plant_Barley` | **大麦（おおむぎ）。** 弥生時代に日本へ伝わり、奈良時代にも栽培が確認される麦類。米とともに食生活を支えてきた。AMJGrainsでは冷涼な気温での栽培に向き、雑穀より生育期間は長いが収量が多い。収穫後は脱穀と殻取りを行う。 | 10日／収量22／成長最低0℃。農水省「特集1 麦(1)」。 |
-| `Plant_Rice` | **陸稲（おかぼ・りくとう）。** 水田で育てる水稲と異なり、畑に作付けする稲。日本でも水稲と併せて栽培されてきたが、20世紀半ば以降は栽培が大幅に縮小した。AMJGrainsではバニラの稲を陸稲として扱い、温暖な気温と一定以上の肥沃度を必要とする。収穫物は従来の米を使い、水田栽培は別Modに委ねる。 | Vanilla `Plant_Rice` Patch：5日／収量11／最低肥沃度0.7／成長10～42℃。陸稲の古代の普及割合は確定していない。 |
+| `Plant_Rice` | **陸稲（おかぼ・りくとう）。** 水田で育てる水稲と異なり、畑に作付けする稲。日本でも水稲と併せて栽培されてきたが、20世紀半ば以降は栽培が大幅に縮小した。AMJGrainsではバニラの稲を陸稲として扱い、温暖な気温と一定以上の肥沃度を必要とする。収穫後は脱穀と籾摺りを経て従来の米を得る。水田栽培は別Modに委ねる。 | Vanilla `Plant_Rice` Patch：5日／収量11／最低肥沃度0.7／成長10～42℃。陸稲の古代の普及割合は確定していない。 |
 
 ### 根拠・留保
 
@@ -145,7 +145,7 @@ These six English strings are translations of the author-approved Japanese §7 d
 | `AMJC_Plant_ProsoMillet_Kibi` | Proso millet (kibi). A millet sometimes counted among the traditional five grains, together with rice, mugi and awa. In AMJGrains it matures sooner than awa or hie and is relatively less affected by soil fertility, but yields less grain per harvest. It must be threshed and dehulled after harvest. |
 | `AMJC_Plant_Buckwheat_Soba` | Buckwheat (soba). In ancient Japan it was recommended as a crop to guard against poor harvests, and it has been grown in mountain regions and on less fertile land. In AMJGrains it grows quickly but is vulnerable to frost, and requires threshing and dehulling. Older ways of eating buckwheat are distinct from cut soba noodles, which became widespread in the Edo period. |
 | `AMJC_Plant_Barley` | Barley (omugi). A cereal introduced to Japan in the Yayoi period and known to have been cultivated during the Nara period. It has long contributed to diets alongside rice. In AMJGrains it grows well in cooler conditions, takes longer to mature than the millets, and yields a larger harvest. Harvested grain must be threshed and dehulled. |
-| `Plant_Rice` | Upland rice (okabo, rikuto). Rice grown in dry fields rather than flooded paddies. It has been cultivated in Japan alongside paddy rice, but its cultivation declined sharply after the middle of the twentieth century. In AMJGrains Vanilla rice is treated as upland rice and requires warm temperatures and sufficiently fertile soil. It yields the existing rice item; paddy cultivation belongs to a separate mod. |
+| `Plant_Rice` | Upland rice (okabo, rikuto). Rice grown in dry fields rather than flooded paddies. It has been cultivated in Japan alongside paddy rice, but its cultivation declined sharply after the middle of the twentieth century. In AMJGrains Vanilla rice is treated as upland rice and requires warm temperatures and sufficiently fertile soil. After threshing and hulling the harvest, the existing Vanilla rice item is obtained; paddy cultivation belongs to a separate mod. |
 
 **Static verification:** `Tests/test_grains_localization.py` checks approved Japanese/English text against loaded-source XML/DefInjected and verifies the `Plant_Rice` description Patch. Game-loaded language switching, UI readability and four-profile ERROR 0 are still pending.
 
@@ -155,3 +155,19 @@ These six English strings are translations of the author-approved Japanese §7 d
 旧MO必須Coreの履歴Fixtureには、今回承認した5つの穀物PlantDefの旧英語descriptionもハッシュ計算の対象として含まれている。履歴Fixture自体は変更しない。 `Tests/validate_grains_base.py` は、現行の説明文を本書§8の承認済み英文と完全一致で検証してから、ハッシュ比較用のコピーに限って旧説明文へ戻す。これにより、説明文だけの承認済み変更を認めながら、作物数値・研究・製粉・画像参照など既存契約の検証は維持する。 Vanillaの陸稲 `Plant_Rice` は旧AMJC履歴ハッシュ対象外のため、翻訳テストと `Patches/UplandRice.xml` の照合で確認する。
 
 `Tests/test_grains_base.py` には実装英文と§8の改変をそれぞれ検出する負例を追加した。実機での翻訳ロード・表示確認は未実行。
+
+## 10. 陸稲の新加工語彙（2026-10-08）
+
+作者承認済みの稲束／籾／脱穀／籾摺りの日本語説明をThingDef・RecipeDefへ反映。§7/§8の陸稲史実本文は維持し、末尾の旧「RawRice直接収穫」文だけを新工程と整合させた。対応する英文は日本語確認後の訳。既存Vanilla米Def・既存セーブ中の米を置換しない。
+
+**収穫物**
+
+- `AMJC_RiceSheaf`：**稲束**。収穫した稲を束ねたもの。穂にはまだ籾が付いており、食料にするには脱穀と籾摺りが必要となる。English: **rice sheaf** — Harvested rice stalks and ears tied into sheaves. Threshing and hulling are needed before this rice can be eaten.
+- `AMJC_RiceInHull`：**籾**。稲を脱穀して得られる、籾殻に包まれた米粒。籾殻を取り除くことで食用の米になる。English: **rice in hull** — Rice grains after threshing, still enclosed in their husks. Remove the husks to obtain edible Vanilla rice.
+
+**加工Recipe**
+
+- `AMJC_ThreshRice`：稲を脱穀する。収穫した稲束から籾を分離する。English: **thresh rice** — Separate rice grains enclosed in their husks from the harvested sheaves.
+- `AMJC_ThreshRiceBulk`：稲を脱穀する x10。稲束10個をまとめて脱穀し、籾10個にする。English: **thresh rice x10** — Thresh ten rice sheaves to obtain ten portions of rice in husk.
+- `AMJC_HullRice`：籾摺りをする。籾から籾殻を取り除き、食用の米に加工する。English: **hull rice** — Remove the husks from threshed rice to obtain edible Vanilla rice.
+- `AMJC_HullRiceBulk`：籾摺りをする x10。籾10個をまとめて籾摺りし、食用の米10個にする。English: **hull rice x10** — Remove the husks from ten portions of threshed rice to obtain edible Vanilla rice.

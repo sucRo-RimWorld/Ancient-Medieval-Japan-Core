@@ -278,4 +278,26 @@
     </comps>
   </ThingDef>
 
+  <!-- Temporary shared AMJ textures; final rice art follows runtime checks. -->
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_RiceSheaf</defName>
+    <label>rice sheaf</label>
+    <description>Harvested rice stalks and ears tied into sheaves. Threshing and hulling are needed before this rice can be eaten.</description>
+    <graphicData><texPath>Things/Item/Resource/AMJC_Millet/RawMillet</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
+    <statBases><MarketValue>1.1</MarketValue></statBases>
+    <ingestible><foodType>Seed</foodType><preferability>NeverForNutrition</preferability></ingestible>
+    <comps><li Class="CompProperties_Rottable"><daysToRotStart>120</daysToRotStart><rotDestroys>true</rotDestroys></li></comps>
+    <thingCategories><li>Foods</li></thingCategories>
+  </ThingDef>
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_RiceInHull</defName>
+    <label>rice in hull</label>
+    <description>Rice grains after threshing, still enclosed in their husks. Remove the husks to obtain edible Vanilla rice.</description>
+    <graphicData><texPath>Things/Item/Resource/AMJC_Millet/MilletInHull</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
+    <statBases><MarketValue>1.1</MarketValue></statBases>
+    <ingestible><foodType>Seed</foodType><preferability>NeverForNutrition</preferability></ingestible>
+    <comps><li Class="CompProperties_Rottable"><daysToRotStart>120</daysToRotStart><rotDestroys>true</rotDestroys></li></comps>
+    <thingCategories><li>Foods</li></thingCategories>
+  </ThingDef>
+
 </Defs>

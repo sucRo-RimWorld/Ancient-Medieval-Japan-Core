@@ -74,4 +74,6 @@
       <DankPyon_Straw>10</DankPyon_Straw>
     </value>
   </Operation>
+  <Operation Class="PatchOperationAdd"><xpath>/Defs/RecipeDef[defName="AMJC_ThreshRice"]/products</xpath><value><DankPyon_Straw>1</DankPyon_Straw></value></Operation>
+  <Operation Class="PatchOperationAdd"><xpath>/Defs/RecipeDef[defName="AMJC_ThreshRiceBulk"]/products</xpath><value><DankPyon_Straw>10</DankPyon_Straw></value></Operation>
 </Patch>

@@ -135,7 +135,11 @@ def validate():
             raw = json.dumps(contract_signature(normalized), ensure_ascii=False, separators=(",", ":"))
             actual[node.tag + ":" + name] = hashlib.sha256(raw.encode()).hexdigest()
     from validate_grains_chain import SHARED_NAMES
-    assert set(actual) == set(golden["sha256"]) | {n.tag+":"+n.findtext("defName") for n in mo if n.findtext("defName") in SHARED_NAMES}, "Unknown MO AMJC contract"
+    rice_names = {"ThingDef:AMJC_RiceSheaf", "ThingDef:AMJC_RiceInHull",
+                  "RecipeDef:AMJC_RiceProcessingBase",
+                  "RecipeDef:AMJC_ThreshRice", "RecipeDef:AMJC_ThreshRiceBulk",
+                  "RecipeDef:AMJC_HullRice", "RecipeDef:AMJC_HullRiceBulk"}
+    assert set(actual) == set(golden["sha256"]) | {n.tag+":"+n.findtext("defName") for n in mo if n.findtext("defName") in SHARED_NAMES} | rice_names, "Unknown MO AMJC contract"
     assert {k: actual[k] for k in golden["sha256"]} == golden["sha256"], "MO-loaded explicit AMJC contracts differ from the pre-split snapshot"
     def get(name):
         matches = [node for node in base if node.findtext("defName") == name]

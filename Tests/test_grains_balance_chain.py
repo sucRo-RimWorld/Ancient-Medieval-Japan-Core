@@ -17,6 +17,7 @@ PROCESSED = {
     "Millet": ("AMJC_RawMillet", "AMJC_MilletInHull", "AMJC_Millet"),
     "Buckwheat": ("AMJC_RawBuckwheat", "AMJC_BuckwheatInHull", "AMJC_Buckwheat"),
     "Barley": ("AMJC_RawBarley", "AMJC_BarleyInHull", "AMJC_Barley"),
+    "Rice": ("AMJC_RiceSheaf", "AMJC_RiceInHull", "RawRice"),
 }
 FLOUR = {
     "Buckwheat": ("AMJC_Buckwheat", "AMJC_BuckwheatFlour", "AMJC_MillBuckwheat",

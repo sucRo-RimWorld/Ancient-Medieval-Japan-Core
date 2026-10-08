@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
-  <!-- Reuse Vanilla Plant_Rice and RawRice; do not create a duplicate rice plant or item. -->
+  <!-- Preserve Vanilla Plant_Rice and edible RawRice; harvest unthreshed AMJC_RiceSheaf. -->
   <Operation Class="PatchOperationSequence">
     <operations>
       <li Class="PatchOperationReplace">
@@ -9,7 +9,7 @@
       </li>
       <li Class="PatchOperationReplace">
         <xpath>/Defs/ThingDef[defName="Plant_Rice"]/description</xpath>
-        <value><description>Upland rice (okabo, rikuto). Rice grown in dry fields rather than flooded paddies. It has been cultivated in Japan alongside paddy rice, but its cultivation declined sharply after the middle of the twentieth century. In AMJGrains Vanilla rice is treated as upland rice and requires warm temperatures and sufficiently fertile soil. It yields the existing rice item; paddy cultivation belongs to a separate mod.</description></value>
+        <value><description>Upland rice (okabo, rikuto). Rice grown in dry fields rather than flooded paddies. It has been cultivated in Japan alongside paddy rice, but its cultivation declined sharply after the middle of the twentieth century. In AMJGrains Vanilla rice is treated as upland rice and requires warm temperatures and sufficiently fertile soil. After threshing and hulling the harvest, the existing Vanilla rice item is obtained; paddy cultivation belongs to a separate mod.</description></value>
       </li>
       <li Class="PatchOperationReplace">
         <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/growDays</xpath>
@@ -18,6 +18,10 @@
       <li Class="PatchOperationReplace">
         <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/harvestYield</xpath>
         <value><harvestYield>11</harvestYield></value>
+      </li>
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/harvestedThingDef</xpath>
+        <value><harvestedThingDef>AMJC_RiceSheaf</harvestedThingDef></value>
       </li>
       <li Class="PatchOperationReplace">
         <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/sowTags</xpath>

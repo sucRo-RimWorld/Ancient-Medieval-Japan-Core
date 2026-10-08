@@ -470,6 +470,10 @@ cases = {
     "AMJC_HullBarleyBulk": (80, "AMJC_BarleyInHull", 10, {"AMJC_Barley": 10}),
     "AMJC_ThreshWheat": (15, "DankPyon_RawWheat", 1, {"AMJC_Wheat": 1, "DankPyon_Straw": 1}),
     "AMJC_ThreshWheatBulk": (120, "DankPyon_RawWheat", 10, {"AMJC_Wheat": 10, "DankPyon_Straw": 10}),
+    "AMJC_ThreshRice": (15, "AMJC_RiceSheaf", 1, {"AMJC_RiceInHull": 1, "DankPyon_Straw": 1}),
+    "AMJC_ThreshRiceBulk": (120, "AMJC_RiceSheaf", 10, {"AMJC_RiceInHull": 10, "DankPyon_Straw": 10}),
+    "AMJC_HullRice": (10, "AMJC_RiceInHull", 1, {"RawRice": 1}),
+    "AMJC_HullRiceBulk": (80, "AMJC_RiceInHull", 10, {"RawRice": 10}),
 }
 
 for name, (work, input_def, input_count, products) in cases.items():

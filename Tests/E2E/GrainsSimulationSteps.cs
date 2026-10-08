@@ -100,6 +100,8 @@ namespace AncientMedievalJapanCore.E2E
                 await scope.Bill("AMJC_HullBuckwheatBulk", scope.Processing, "AMJC_BuckwheatInHull", 10);
                 await scope.Bill("AMJC_ThreshWheatBulk", scope.Processing,
                     scope.MO ? "DankPyon_RawWheat" : "AMJC_RawWheat", 10);
+                await scope.Bill("AMJC_ThreshRiceBulk", scope.Processing, "AMJC_RiceSheaf", 10);
+                await scope.Bill("AMJC_HullRiceBulk", scope.Processing, "AMJC_RiceInHull", 10);
                 foreach (string grain in new[] { "AMJC_Millet", "AMJC_Buckwheat", "AMJC_Barley", "AMJC_Wheat", "RawRice" })
                     await scope.SimpleMeal(grain);
             }
@@ -280,7 +282,7 @@ namespace AncientMedievalJapanCore.E2E
                 {
                     ThingDef crop = DefDatabase<ThingDef>.GetNamed(name);
                     raw = crop.plant.harvestedThingDef.defName;
-                    if (name == "Plant_Rice") ctx.Require(raw == "RawRice", "Upland rice must harvest Vanilla RawRice.");
+                    if (name == "Plant_Rice") ctx.Require(raw == "AMJC_RiceSheaf", "Upland rice must harvest AMJC_RiceSheaf.");
                     before = Count(raw); straw = Count("DankPyon_Straw"); hay = Count("Hay");
                     // Two Soba plants ensure >=10 actual sheaves for the x10 Bills.
                     plant = (Plant)ThingMaker.MakeThing(crop);
