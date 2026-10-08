@@ -869,10 +869,10 @@ GrainsではVanillaの `Plant_Rice` を削除・複製せず、**陸稲として
 固定方針:
 - 新規の `AMJC_UplandRice` PlantDefや陸稲専用米ThingDefは作らない。
 - `Plant_Rice` の表示名・説明・画像・栽培値はAMJの陸稲として監査対象にする。
-- Vanillaの `Hydroponic` sowTagは中世日本の陸稲表現には不要なので、Grains側で除去する実装候補とする。最終Patchは実機の播種可否回帰とセットで入れる。
+- Vanillaの `Hydroponic` sowTagを除き、`Ground` のみとする。実ゲームの播種可否は別途検証する。
 - `RawRice` は通常の米として再利用する。陸稲と将来の水稲で最終食材を無意味に分けない。
 - CCTO導入時はCCTOが既に `Plant_Rice` へ設定する最低生育10℃・固定枯死-1℃を利用し、Grains側に重複したColdToleranceExtensionを追加しない。
-- Vanilla Riceの現行3日成長・収量6をそのまま確定値とはしない。既存6作物を含む七穀環境回帰で、陸稲が単一の序盤最適解へ戻らない数値を決める。
+- Vanilla Riceの現行3日成長・収量6は採用せず、初期実装値を **growDays 5、harvestYield 11、fertilityMin 0.7、fertilitySensitivity 0.8、成長10～42℃・最適18～32℃** とする。既存六穀との七穀27セル分析で全作物の勝利条件と単一作物の支配防止を確認し、実機挙動は未検証とする。
 - 米粉等の製粉物は具体的用途ができた時だけ追加する。その場合のRecipe・設備・バランス所有はGrainsとする。
 
 将来のRice Cultivationは水田・水稲栽培を追加し、Grains併用時には `RawRice` またはその時点のGrains米加工経路へ合流させる。水稲側で同目的の精米・製粉体系を二重実装しない。
@@ -1256,7 +1256,7 @@ Grainsの主要実装は、次の順で管理する。
 |---|---|---|---|
 | **Stage A / 現行実装** | 乾田穀物 | アワ・ヒエ・キビ・ソバ・大麦・MO小麦統合、脱穀・殻取り、穀物加工設備、New Village | MO必須版として実装済み |
 | **Grains分離移行** | Vanilla自己完結 | 非MO小麦、小麦粉・蕎麦粉・雑穀粉、手動石臼、最低限粉食、BaseからMO参照除去、MO条件付き互換 | **step 3 小麦・製粉・最低限粉食XML実装・実機未検証** |
-| **陸稲統合** | Vanilla Riceの中世日本化 | `Plant_Rice` を陸稲として再定義、`RawRice` 再利用、Hydroponic除去候補、七穀バランス・CCTO・実収穫回帰 | **設計監査完了・Production XML未実装** |
+| **陸稲統合** | Vanilla Riceの中世日本化 | `Plant_Rice` を陸稲として再定義、`RawRice` 再利用、Hydroponic除去、七穀バランス・CCTO・実収穫回帰 | **Production XML・静的七穀分析を追加。実ゲーム・画像監査・七穀Pickle回帰は未完** |
 | **回帰固定** | 環境別穀物選択 | Base/MO/CCTO各プロファイルで単一穀物がほぼ全条件の最適解にならないことを自動確認 | 分離移行と同時に追加 |
 
 旧Stage B（豆類）、Stage C（繊維）、Stage D（根菜）はGrainsロードマップから削除する。将来必要なら、それぞれの主要用途と自然な所有Modを決めて別途設計する。

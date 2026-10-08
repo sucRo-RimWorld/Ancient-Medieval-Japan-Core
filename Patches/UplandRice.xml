@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Reuse Vanilla Plant_Rice and RawRice; do not create a duplicate rice plant or item. -->
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="Plant_Rice"]/label</xpath>
+        <value><label>upland rice plant</label></value>
+      </li>
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="Plant_Rice"]/description</xpath>
+        <value><description>Rice grown in ordinary dry fields without a paddy. It provides edible rice without water-control infrastructure but depends on warm growing conditions and adequately fertile soil.</description></value>
+      </li>
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/growDays</xpath>
+        <value><growDays>5</growDays></value>
+      </li>
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/harvestYield</xpath>
+        <value><harvestYield>11</harvestYield></value>
+      </li>
+      <li Class="PatchOperationReplace">
+        <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/sowTags</xpath>
+        <value><sowTags><li>Ground</li></sowTags></value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant</xpath>
+        <value>
+          <fertilityMin>0.7</fertilityMin>
+          <fertilitySensitivity>0.8</fertilitySensitivity>
+          <minGrowthTemperature>10</minGrowthTemperature>
+          <minOptimalGrowthTemperature>18</minOptimalGrowthTemperature>
+          <maxOptimalGrowthTemperature>32</maxOptimalGrowthTemperature>
+          <maxGrowthTemperature>42</maxGrowthTemperature>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+</Patch>

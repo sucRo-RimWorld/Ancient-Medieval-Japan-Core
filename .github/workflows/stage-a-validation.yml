@@ -58,6 +58,9 @@ jobs:
       - name: Reject environmental crop-choice regressions
         run: python Tests/test_grains_environment.py
 
+      - name: Validate upland rice and seven-crop choice
+        run: python Tests/test_upland_rice.py
+
       - name: Validate independent scenario extraction prototypes
         run: python Tests/test_scenario_extraction.py
 

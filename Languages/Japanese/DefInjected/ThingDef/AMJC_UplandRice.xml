@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <Plant_Rice.label>陸稲</Plant_Rice.label>
+  <Plant_Rice.description>水田を使わず、畑で育てる稲。水利設備なしで米を得られるが、暖かい気候と一定以上の肥沃度を必要とする。水田で育てる水稲とは栽培方法が異なる。</Plant_Rice.description>
+</LanguageData>
