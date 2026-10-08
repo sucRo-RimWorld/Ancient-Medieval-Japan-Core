@@ -108,6 +108,7 @@ class GeneratedAssetQaTest(unittest.TestCase):
             self.assertIn("candidate has no visible content", result["failures"])
 
 
+
 GENERATOR_SCRIPT = ROOT / "Scripts/Art/grains_image_generator.py"
 generator_spec = importlib.util.spec_from_file_location(
     "grains_image_generator",
@@ -161,34 +162,32 @@ class GrainsImageGeneratorTest(unittest.TestCase):
             finally:
                 generator.PROTECTED_OUTPUT_ROOTS = old_roots
 
-    def test_generator_multipart_is_single_candidate_with_all_refs(self):
-        refs = [
-            generator._reference_from_bytes(
-                "accepted AMJ style reference",
-                "a.png",
-                "a.png",
-                self._png_bytes(),
-            ),
-            generator._reference_from_bytes(
+    def test_prepare_bundle_preserves_reference_bytes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            ref = generator._reference_from_bytes(
                 "subject identity reference",
-                "b.png",
-                "b.png",
+                "subject.png",
+                "subject.png",
                 self._png_bytes(),
-            ),
-        ]
-        body, content_type = generator._multipart(
-            {"model": "test", "n": "1"},
-            refs,
-        )
-        self.assertIn("multipart/form-data; boundary=", content_type)
-        self.assertEqual(body.count(b'name="image[]"'), 2)
-        self.assertEqual(body.count(b'name="n"'), 1)
-        self.assertIn(b"\r\n1\r\n", body)
+            )
+            bundled = generator._write_reference_bundle(root, [ref])
+            self.assertEqual(len(bundled), 1)
+            copied = root / bundled[0]["bundle_path"]
+            self.assertEqual(copied.read_bytes(), ref.data)
+            self.assertEqual(bundled[0]["sha256"], ref.sha256)
 
-    def test_generator_policy_references_exist_and_has_no_retry_batch(self):
+    def test_generator_policy_is_api_free_and_has_no_retry_batch(self):
         policy_path = ROOT / "Docs/References/AMJ_Grains_ImageGenerator.json"
         policy = json.loads(policy_path.read_text(encoding="utf-8"))
         self.assertEqual(policy["schema_version"], 1)
+        self.assertEqual(
+            policy["generation_workflow"]["provider"],
+            "ChatGPT built-in image generation",
+        )
+        self.assertFalse(policy["generation_workflow"]["python_calls_image_api"])
+        self.assertFalse(policy["generation_workflow"]["api_key_required"])
+        self.assertFalse(policy["generation_workflow"]["automatic_retry"])
         self.assertIn("plant-mature", policy["families"])
         self.assertIn("boxed-contents", policy["families"])
         for family in policy["families"].values():
@@ -196,6 +195,21 @@ class GrainsImageGeneratorTest(unittest.TestCase):
             self.assertNotIn("batch", family)
             for relative in family.get("accepted_references", []):
                 self.assertTrue((ROOT / relative).is_file(), relative)
+
+    def test_generator_source_contains_no_paid_api_path(self):
+        source = GENERATOR_SCRIPT.read_text(encoding="utf-8")
+        forbidden = (
+            "OPENAI_API_KEY",
+            "api.openai.com",
+            "urllib.request",
+            "/v1/images",
+            "b64_json",
+        )
+        for token in forbidden:
+            self.assertNotIn(token, source, token)
+        self.assertIn("ChatGPT built-in image generation", source)
+        self.assertIn('"prepare"', source)
+        self.assertIn('"review"', source)
 
 
 if __name__ == "__main__":
