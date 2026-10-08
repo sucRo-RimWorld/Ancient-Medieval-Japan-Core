@@ -1,9 +1,12 @@
+import argparse
 import importlib.util
 import json
 from pathlib import Path
+import shutil
 import sys
 import tempfile
 import unittest
+import zipfile
 
 from PIL import Image, ImageDraw
 
@@ -195,6 +198,88 @@ class GrainsImageGeneratorTest(unittest.TestCase):
             self.assertNotIn("batch", family)
             for relative in family.get("accepted_references", []):
                 self.assertTrue((ROOT / relative).is_file(), relative)
+
+    def test_prepare_then_review_end_to_end_without_api(self):
+        awa = (
+            ROOT
+            / "Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png"
+        )
+        self.assertTrue(awa.is_file())
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            subject = root / "subject-wheat.png"
+            candidate = root / "candidate.png"
+            work = root / "work"
+            mo_zip = root / "medieval-overhaul.zip"
+
+            shutil.copyfile(awa, subject)
+            shutil.copyfile(awa, candidate)
+            with zipfile.ZipFile(mo_zip, "w") as archive:
+                archive.write(
+                    awa,
+                    "FakeMO/Textures/Things/Plants/FullGrown/WheatPlant/"
+                    "PlantWheat_Mature.png",
+                )
+
+            prepare_args = argparse.Namespace(
+                family="plant-mature",
+                subject="wheat",
+                subject_reference=[subject],
+                notes="mechanical end-to-end workflow test",
+                mo_root=None,
+                mo_zip=mo_zip,
+                allow_no_mo_reference=False,
+                policy=ROOT / "Docs/References/AMJ_Grains_ImageGenerator.json",
+                output_dir=work,
+            )
+            self.assertEqual(generator._prepare(prepare_args), 0)
+
+            manifest = json.loads(
+                (work / "manifest.json").read_text(encoding="utf-8")
+            )
+            request = json.loads(
+                (work / "generation-request.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(manifest["schema_version"], 2)
+            self.assertEqual(manifest["status"], "prepared")
+            self.assertFalse(manifest["generation"]["python_calls_image_api"])
+            self.assertFalse(manifest["generation"]["api_key_required"])
+            self.assertFalse(request["api_key_required"])
+            self.assertFalse(request["automatic_retry"])
+            self.assertEqual(request["image_count"], 1)
+            self.assertEqual(len(manifest["references"]), 5)
+            for item in manifest["references"]:
+                bundled = work / item["bundle_path"]
+                self.assertTrue(bundled.is_file())
+                self.assertEqual(
+                    generator._sha256(bundled.read_bytes()),
+                    item["sha256"],
+                )
+
+            review_args = argparse.Namespace(
+                work_dir=work,
+                candidate=candidate,
+            )
+            self.assertEqual(generator._review(review_args), 0)
+
+            reviewed = json.loads(
+                (work / "manifest.json").read_text(encoding="utf-8")
+            )
+            qa = json.loads(
+                (work / "qa-report.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(reviewed["status"], "automatic-qa-passed")
+            self.assertTrue(reviewed["automatic_qa_passed"])
+            self.assertTrue(reviewed["semantic_visual_review_required"])
+            self.assertFalse(reviewed["pre_display_screening_claimed"])
+            self.assertTrue(qa["passed"])
+            self.assertTrue((work / "candidate-source.png").is_file())
+            self.assertTrue((work / "review-sheet.png").is_file())
+            self.assertEqual(
+                (work / "candidate-source.png").read_bytes(),
+                candidate.read_bytes(),
+            )
 
     def test_generator_source_contains_no_paid_api_path(self):
         source = GENERATOR_SCRIPT.read_text(encoding="utf-8")
