@@ -1,6 +1,6 @@
 # 現行六穀の環境比較回帰（陸稲統合前）
 
-> 2026-10-08のGrains再監査で、Vanilla `Plant_Rice` を陸稲としてGrainsへ含める方針を確定した。本書の六穀Fixtureは現行実装の回帰基準として維持するが、Production陸稲Patchと最終値の確定後は七穀比較へ拡張する。六穀PASSだけでは最終Grainsリリースゲートを満たさない。
+> 2026-10-08のGrains再監査で、Vanilla `Plant_Rice` を陸稲として実装済み。本書は**陸稲追加前の六穀履歴Fixture**の説明として残し、現行七穀の静的比較は `Tests/test_upland_rice.py` と [SevenGrainFoodChainAudit.md](SevenGrainFoodChainAudit.md) を参照する。六穀FixtureのPASSだけでは最終リリース判定を満たさない。
 
 2026-10-07。実装値の正本は各PlantDefと `Docs/Balance/Crops/Millet_Cultivation_Balance.md`。
 この比較は既存値を変更せず、有限の成長時間で成熟収穫できる量を固定する。
@@ -58,6 +58,6 @@ CCTOの枯死・耐霜差とMO Strawの価値はこの穀粒収量へ金額や�
 意図的に値を変更するときはCultivation正本・XML・回帰Fixture・説明を同時に更新し、
 影響する代表セルをレビューする。Fixtureだけを自動更新して失敗を消さない。
 
-## 2026-10-08 陸稲追加後の暫定七穀ゲート
+## 2026-10-08 陸稲追加後の現行七穀解析ゲート
 
-`Patches/UplandRice.xml` にVanilla `Plant_Rice` を陸稲化し、5日/収量11/最低肥沃度0.7/肥沃度感応度0.8/成長10～42℃・最適18～32℃を設定する。既存六穀Fixtureは履歴として維持し、`Tests/test_upland_rice.py` が各27セルに陸稲を加えて再計算する。六穀および陸稲が少なくとも一つの最大収量条件を持ち、単一作物が2/3以上の有効セルで勝たないことを確認する。CCTOの既存米枯死-1℃は変更しない。これは解析ゲートであり、Pickleでのロード済み七穀比較・実播種・実収穫・画像・旧セーブの確認は未完了。
+`Patches/UplandRice.xml` にVanilla `Plant_Rice` を陸稲化し、5日/収量11/最低肥沃度0.7/肥沃度感応度0.8/成長10～42℃・最適18～32℃を設定する。既存六穀Fixtureは履歴として維持し、`Tests/test_upland_rice.py` が各27セルに陸稲を加えて再計算する。七穀すべてに**同率を含む**最大収量条件があり、単一作物が2/3以上の有効セルで勝たないことを確認する。**陸稲の最大収量6セルはすべて同率、単独首位は0セル**。これは陸稲固有の収量ニッチが確認済みという意味ではない。陸稲の加工労働ゼロという別の利点と、MOの製粉作業量の差は [SevenGrainFoodChainAudit.md](SevenGrainFoodChainAudit.md) に分離して記録した。CCTOの既存米枯死-1℃は変更しない。これは解析ゲートであり、Pickleでのロード済み七穀比較・実播種・実収穫・画像・旧セーブの確認は未完了。

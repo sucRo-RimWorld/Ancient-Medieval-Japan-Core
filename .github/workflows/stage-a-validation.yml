@@ -61,6 +61,9 @@ jobs:
       - name: Validate upland rice and seven-crop choice
         run: python Tests/test_upland_rice.py
 
+      - name: Audit seven-grain harvest-to-meal balance
+        run: python Tests/test_grains_balance_chain.py
+
       - name: Validate independent scenario extraction prototypes
         run: python Tests/test_scenario_extraction.py
 

@@ -120,9 +120,9 @@ class ChainRegressionTests(unittest.TestCase):
           <ThingDef><defName>DankPyon_RawWheat</defName></ThingDef>
         </Defs>"""
         recipes = """<Defs>
-          <RecipeDef><defName>DankPyon_CraftFlour_Manual</defName><recipeUsers><li>CraftingSpot</li></recipeUsers><ingredients><li><count>1</count></li></ingredients><products><DankPyon_Flour>1</DankPyon_Flour><Hay>1</Hay></products></RecipeDef>
-          <RecipeDef><defName>DankPyon_CraftFlour</defName><recipeUsers><li>DankPyon_Millstone</li></recipeUsers><ingredients><li><count>1</count></li></ingredients><products><DankPyon_Flour>1</DankPyon_Flour><Hay>1</Hay></products></RecipeDef>
-          <RecipeDef><defName>DankPyon_CraftFlourBulk</defName><recipeUsers><li>DankPyon_Millstone</li></recipeUsers><ingredients><li><count>10</count></li></ingredients><products><DankPyon_Flour>10</DankPyon_Flour><Hay>10</Hay></products></RecipeDef>
+          <RecipeDef><defName>DankPyon_CraftFlour_Manual</defName><workAmount>300</workAmount><recipeUsers><li>CraftingSpot</li></recipeUsers><ingredients><li><count>1</count></li></ingredients><products><DankPyon_Flour>1</DankPyon_Flour><Hay>1</Hay></products></RecipeDef>
+          <RecipeDef><defName>DankPyon_CraftFlour</defName><workAmount>100</workAmount><recipeUsers><li>DankPyon_Millstone</li></recipeUsers><ingredients><li><count>1</count></li></ingredients><products><DankPyon_Flour>1</DankPyon_Flour><Hay>1</Hay></products></RecipeDef>
+          <RecipeDef><defName>DankPyon_CraftFlourBulk</defName><workAmount>800</workAmount><recipeUsers><li>DankPyon_Millstone</li></recipeUsers><ingredients><li><count>10</count></li></ingredients><products><DankPyon_Flour>10</DankPyon_Flour><Hay>10</Hay></products></RecipeDef>
         </Defs>"""
         worker = """<Defs><WorkGiverDef><defName>DankPyon_DoBillsMillstone</defName>
           <giverClass>WorkGiver_DoBill</giverClass><workType>Cooking</workType>
@@ -138,6 +138,13 @@ class ChainRegressionTests(unittest.TestCase):
         package(worker)
         validate_mo_source(archive)
         package(worker.replace('WorkGiver_DoBill','WorkGiver_PlantsCut'))
+        with self.assertRaises(AssertionError):validate_mo_source(archive)
+        # Work values are balance data: stale MO provider work must not pass.
+        with ZipFile(archive,'w') as z:
+            z.writestr('3219596926/1.6/Defs/Things.xml',things)
+            z.writestr('3219596926/1.6/Defs/Recipes.xml',
+                       recipes.replace('<workAmount>800</workAmount>', '<workAmount>30</workAmount>'))
+            z.writestr('3219596926/1.6/Defs/WorkGivers.xml',worker)
         with self.assertRaises(AssertionError):validate_mo_source(archive)
         package(worker.replace('DankPyon_Millstone</li>','OtherMillstone</li>'))
         with self.assertRaises(AssertionError):validate_mo_source(archive)

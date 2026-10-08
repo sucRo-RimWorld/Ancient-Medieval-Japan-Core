@@ -127,14 +127,18 @@ def validate_mo_source(mo_root):
     assert float(flour.findtext('statBases/Nutrition')) == 0.05
     stone=get('ThingDef','DankPyon_Millstone')
     assert stone.find('researchPrerequisites') is not None
-    for recipe_name, count, mill_user in (('DankPyon_CraftFlour_Manual', 1, 'CraftingSpot'),
-                                          ('DankPyon_CraftFlour', 1, 'DankPyon_Millstone'),
-                                          ('DankPyon_CraftFlourBulk', 10, 'DankPyon_Millstone')):
+    # These values are taken from the supplied MO 1.6 ZIP; compare raw
+    # workAmount only, not clock time (bench factors and pawn stats differ).
+    for recipe_name, count, mill_user, work in (
+            ('DankPyon_CraftFlour_Manual', 1, 'CraftingSpot', 300),
+            ('DankPyon_CraftFlour', 1, 'DankPyon_Millstone', 100),
+            ('DankPyon_CraftFlourBulk', 10, 'DankPyon_Millstone', 800)):
         recipe = get('RecipeDef', recipe_name)
         assert recipe.findtext('recipeUsers/li') == mill_user, recipe_name
         assert float(recipe.findtext('ingredients/li/count')) == count, recipe_name
         assert float(recipe.findtext('products/DankPyon_Flour')) == count, recipe_name
         assert float(recipe.findtext('products/Hay')) == count, recipe_name
+        assert float(recipe.findtext('workAmount')) == work, ('MO grinding work', recipe_name)
     # MO's native WorkGiver must actually route bills to the millstone.
     giver = get('WorkGiverDef','DankPyon_DoBillsMillstone')
     assert giver.findtext('giverClass') == 'WorkGiver_DoBill'

@@ -1444,3 +1444,8 @@ Grainsの通常6件から専用Scenario要件を外し、旧fixtureの8件には
 ### 既存六作物の歴史説明追加監査（2026-10-08）
 
 前回承認済みの15件（粉食・製粉・非MO小麦等）の日本語・英語説明は確定済みとし、その文面を変更しない。残る栽培対象の**粟・稗・黍・蕎麦・大麦・陸稲**について、原文・日本語DefInjected・現行Plant/陸稲Patchと史料を再照合した。2026-10-08に作者が**六作物の日本語説明も承認**したため、[LocalizationHistoricalReview.md §7](LocalizationHistoricalReview.md) の日本語を各DefInjectedへ反映し、§8の対応英訳を共有PlantDef5件とVanilla `Plant_Rice` の条件付きdescription Patchへ反映した。生育温度・収量と霜の耐性に関する表現は区別し、農村の地域的事例を古代から全国一律へ広げない。既存の `label`、料理/加工・農業バランス、DefNameは維持する。テストは六作物の**承認済み日本語・英語・本番XMLの一致**と、PlantDef/陸稲Patchの所有境界を検証する。RimWorldでの実表示・言語切替・四構成ERROR 0は未検証。
+
+
+### 七穀の収穫→加工→粉食バランス監査（2026-10-08）
+
+七穀の相対収量と各工程・製粉・完成料理までを [Balance/Crops/SevenGrainFoodChainAudit.md](Balance/Crops/SevenGrainFoodChainAudit.md) にまとめ、`Tests/test_grains_balance_chain.py` で静的な歩留まり・作業量・Nutrition・保存期間・Mood・陸稲の同率首位を監査する。**既存の作物・Recipe・温度・栄養・画像設定は変えない。** 七穀全てに同率を含む最大収量セルがあるが、陸稲は6セル全て同率で独自の収量首位なし。ただし水田不要・収穫後加工ゼロの作業面の特徴がある。MO原本の小麦製粉一括workAmount 800は非MO石臼の300より大きい一方、MO小麦粉は90日保存（Baseは60日）。手動加工・製粉・調理の異なるworkSpeedStatを単純合算したものを実作業時間とはしない。MO原本の製粉効率や陸稲の労働優位は今後の実プレイ評価項目に残し、変更を要するかは別判断とする。CCTO/気象/播種労働・収穫技能・実機栄養/画面/保存・セーブ移行は未確認。
