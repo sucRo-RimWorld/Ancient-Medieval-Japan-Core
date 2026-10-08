@@ -4,7 +4,7 @@ This file owns only the **masu boxed-resource family**. Shared visual style come
 
 ## Current production model
 
-For new boxed resources, ImageGen is used only to create the **contents source layer**. The wooden masu is not generated.
+When ImageGen is used for new boxed resources, it creates only the **contents source layer**. Other privately screenable source-production methods may be used under the shared texture pipeline. The wooden masu is never generated.
 
 Do not rely on ImageGen to solve the masu projection. The generated subject/style layer is passed through the deterministic `Scripts/Art/normalize_masu_contents.py` perspective normalizer before it is treated as a placement candidate.
 
@@ -110,11 +110,11 @@ Reject internally when any of the following is true:
 - the generated layer contains any wood, container rim, box, background, UI, text, or decorative shadow;
 - the source or normalized output is not usable as a transparent contents-only layer.
 
-When a candidate fails this gate, regenerate automatically from the same approved reference set, up to three attempts total. Do not show rejected attempts as ordinary candidates. If the same failure persists through all attempts, stop and report the recurring failure class/capability limit.
+When a candidate fails this gate, diagnose it against the actual accepted references; do not use a fixed automatic regeneration count. Prefer correcting privately screenable contents sources or revising a genuinely changed production approach. In-chat ImageGen may display each output immediately, so it cannot serve as a hidden retry loop or satisfy pre-display QA retroactively. Do not trigger speculative repeated visible generations or attach known-bad candidates. If no screenable acceptable source can be prepared, report the limit without presenting a rejected image.
 
 Do not repair failures by adding more ad-hoc permanent rules. First determine whether the failure comes from a missing/ambiguous reference role, a wrong subject description, the projection normalization, or a capability limit. Only durable causes belong in this Golden Path.
 
-Only after mechanical QA, deterministic projection, agent semantic QA, and the generated review sheet all pass is the candidate shown to the author for the **single remaining human gate: final visual acceptance**.
+For privately screenable sources, only after mechanical QA, deterministic projection, agent semantic QA, and the generated review sheet all pass is the candidate shown to the author for the **single remaining human gate: final visual acceptance**. When the image-generation tool immediately shows its output, this pre-display guarantee cannot be claimed; follow Project `Docs/GoldenPaths/TextureAssetPipeline.md` instead.
 
 ## Manual composition
 
