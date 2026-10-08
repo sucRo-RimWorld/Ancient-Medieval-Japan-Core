@@ -106,7 +106,7 @@ AMJおよび関連Modでは、RimTest Redux・Pickleを積極的に用いた自�
 
 ## 非対話ランタイムテスト方針（AMJ共通）
 
-人間の目視判断を必要としない自動テストでは、RimWorldの可視ウィンドウをユーザーのデスクトップへ出さないことを標準とする。詳細な共通正本は Ancient-Medieval-Japan-Grains `Docs/DevelopmentGoldenPathGuidelines.md` の **Non-interactive runtime-test rule**。
+人間の目視判断を必要としない自動テストでは、RimWorldの可視ウィンドウをユーザーのデスクトップへ出さないことを標準とする。詳細な共通正本は Ancient-Medieval-Japan-Project Project `Docs/DevelopmentGoldenPathGuidelines.md` の **Non-interactive runtime-test rule**。
 
 - Pickle / RimTest Redux / Quickstarts / 統合回帰 / runtime ERROR gate / map・気候・土壌サンプリング等は、原則として非対話・非表示で実行する。
 - 描画・Texture Atlas・`Graphic.Draw`・BadTex等を検証する場合は、描画そのものを無効化しない。仮想／オフスクリーン／非表示の表示先など、プラットフォームに適した隔離実行で実描画経路を維持する。
@@ -125,7 +125,7 @@ Any new RimWorld runtime-test harness added to this repository must include this
 
 ## Public description writing rule (AMJ common)
 
-Public-facing descriptions must follow `Docs/ModDescriptionGuidelines.md`.
+Public-facing descriptions must follow Project `Docs/ModDescriptionGuidelines.md`.
 
 - Japanese public copy uses established Japanese terms for general concepts; keep English primarily for official Mod names, proper names, identifiers, and necessary technical names.
 - Prioritize player-visible changes and installation/compatibility decisions. Do not present implementation provenance, custom/AI artwork, or internal code technique as a feature by itself.
@@ -137,18 +137,18 @@ Public-facing descriptions must follow `Docs/ModDescriptionGuidelines.md`.
 
 AMJ Core, Environment, CCTO and future related Mods must not use ASCII `:` or full-width `：` in Mod names. Use ` - ` when a separator is needed. Apply this to `About/About.xml` `<name>` and the corresponding Workshop title / formal README name; check it when creating, renaming or preparing a Mod for publication. YADA uses the display name for an upload staging directory, and an ASCII colon causes that step to fail on Windows. Display-name corrections must preserve `packageId` and existing Workshop IDs.
 
-The shared source of truth is [Mod description guidelines — Mod名のコロン禁止](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Grains/blob/main/Docs/ModDescriptionGuidelines.md). Colons in description prose, URLs and code syntax are outside this naming rule.
+The shared source of truth is [Mod description guidelines — Mod名のコロン禁止](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/ModDescriptionGuidelines.md). Colons in description prose, URLs and code syntax are outside this naming rule.
 
 ## Public mod descriptions
 
 Public-description preparation and updates must also include the Japanese 2game summary in `Docs/2GameDescription-ja.txt` and its presentation policy in `Docs/2GamePresentation.md`. Follow the shared guideline's **2game向け説明（AMJ共通）** section and CCTO's six-section, plain-style template. Check README, Workshop English/Japanese, 2game Japanese and About.xml together; link named related mods and this mod's own GitHub repository. Record repository preparation separately from live-site publication.
 
-Use the CCTO-based shared [mod description guidelines](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Grains/blob/main/Docs/ModDescriptionGuidelines.md) when writing or updating public descriptions. Include save compatibility in every mod description, stating addition/removal conditions accurately for the mod's implementation. Keep README, Workshop English/Japanese BBCode, and About.xml consistent; refine the shared baseline as presentation improves.
+Use the CCTO-based shared [mod description guidelines](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/ModDescriptionGuidelines.md) when writing or updating public descriptions. Include save compatibility in every mod description, stating addition/removal conditions accurately for the mod's implementation. Keep README, Workshop English/Japanese BBCode, and About.xml consistent; refine the shared baseline as presentation improves.
 
 
 ## Retexture implementation rule (AMJ common)
 
-When AMJ retextures Vanilla, Medieval Overhaul, or another prerequisite Mod asset, follow `Docs/RetextureImplementationGuidelines.md` in addition to the owning repository's art pipeline.
+When AMJ retextures Vanilla, Medieval Overhaul, or another prerequisite Mod asset, follow Project `Docs/RetextureImplementationGuidelines.md` in addition to the owning repository's art pipeline.
 
 - AMJ-owned prerequisite graphics use AMJ-owned unique texPaths with explicit Def/Patch ownership by default; do not rely only on same-name texture shadowing/load order.
 - Treat one retexture target as the complete loaded graphic-state family, not one mature/base PNG.
@@ -158,11 +158,11 @@ When AMJ retextures Vanilla, Medieval Overhaul, or another prerequisite Mod asse
 
 ## Historical description audit (AMJ common)
 
-Use `Docs/HistoricalDescriptionGuidelines.md` whenever AMJ adopts, patches, retextures, selects, or localizes Vanilla / Medieval Overhaul items, plants, animals, or comparable content.
+Use Project `Docs/HistoricalDescriptionGuidelines.md` whenever AMJ adopts, patches, retextures, selects, or localizes Vanilla / Medieval Overhaul items, plants, animals, or comparable content.
 
 Audit inherited Vanilla/MO prose for historical fit with ancient/medieval Japan and rewrite unsuitable text. AMJ-authored descriptions should include supported historical facts and, where supportable, a meaningful difference from modern Japan, modern use, or modern distribution. Do not invent a medieval counterpart for historically unsuitable content; record it for a separate keep/replace/remove design decision.
 
-Historical description text is Japanese-first: research and draft Japanese, obtain author approval, then translate only the approved Japanese text into English. For Japanese descriptions, follow `Docs/HistoricalDescriptionGuidelines.md` name-form rules: begin with an established kanji form when one exists, and include recognized aliases / alternate names or common alternate written forms at the opening. Do not invent kanji or weakly sourced names. Keep source/rationale notes in durable design/localization documentation rather than only in Coordination.
+Historical description text is Japanese-first: research and draft Japanese, obtain author approval, then translate only the approved Japanese text into English. For Japanese descriptions, follow Project `Docs/HistoricalDescriptionGuidelines.md` name-form rules: begin with an established kanji form when one exists, and include recognized aliases / alternate names or common alternate written forms at the opening. Do not invent kanji or weakly sourced names. Keep source/rationale notes in durable design/localization documentation rather than only in Coordination.
 
 ## CCTO framework and crop-data ownership
 
@@ -176,7 +176,7 @@ AMJ Core, Environment, CCTO and future related Mods must exclude **all files unn
 - Adding a file/folder includes deciding whether subscribers need it and updating exclusions when they do not. Preserve development/source material in Git; exclusion is not deletion.
 - Every alternative publisher/archive/staging builder must produce the same subscriber-only payload. Keep adapters synchronized with `.rimignore`; do not maintain independent policy exceptions.
 - Run `python Tests/validate_workshop_payload.py` before publication. Validate the final staging/installed package too; runtime-required DLLs and assets must actually be present. Repository filtering PASS alone is not build/runtime/Steam publication PASS.
-- Shared procedure and payload contract: [Core Docs/WorkshopPackaging.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Grains/blob/main/Docs/WorkshopPackaging.md).
+- Shared procedure and payload contract: [Project Docs/WorkshopPackaging.md](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/WorkshopPackaging.md).
 
 ## Art / image work
 
@@ -184,23 +184,23 @@ Keep this file as a routing layer; do not duplicate asset-family procedures here
 
 For AMJ art, resolve rules in this order:
 
-1. `Docs/ArtStyle.md` — project-wide visual language and precedence.
+1. Project `Docs/ArtStyle.md` — project-wide visual language and precedence.
 2. The owning asset-class specification — adds subject-specific visual rules only.
-3. `Docs/GoldenPaths/TextureAssetPipeline.md` — source preservation, generation permission, export, and validation.
-4. `Docs/GoldenPaths/FixedImageTemplates.md` — only when visible parts are intentionally reused pixel-exactly.
+3. Project `Docs/GoldenPaths/TextureAssetPipeline.md` — source preservation, generation permission, export, and validation.
+4. Project `Docs/GoldenPaths/FixedImageTemplates.md` — only when visible parts are intentionally reused pixel-exactly.
 
 Current asset-class specifications:
 - boxed resources / masu: `Docs/GoldenPaths/BoxedResourceIconPipeline.md`;
-- Workshop covers: `Docs/WorkshopCoverStyle.md` + `Docs/GoldenPaths/WorkshopCoverPipeline.md`;
-- prerequisite-Mod retextures: `Docs/RetextureImplementationGuidelines.md` plus the owning repository's art specification.
+- Workshop covers: Project `Docs/WorkshopCoverStyle.md` + Project `Docs/GoldenPaths/WorkshopCoverPipeline.md`;
+- prerequisite-Mod retextures: Project `Docs/RetextureImplementationGuidelines.md` plus the owning repository's art specification.
 
 A family-specific document may narrow the shared style for its asset class, but it must not silently replace the AMJ-wide visual language. Any real exception belongs in the owning style specification, not in chat history or AGENTS.
 
-For generation intent and ImageGen use, follow `Docs/GoldenPaths/TextureAssetPipeline.md`. Interpret the user's requested image action semantically; do not use an exact-keyword gate, and never regenerate accepted fixed/shared parts merely because new image work was requested.
+For generation intent and ImageGen use, follow Project `Docs/GoldenPaths/TextureAssetPipeline.md`. Interpret the user's requested image action semantically; do not use an exact-keyword gate, and never regenerate accepted fixed/shared parts merely because new image work was requested.
 
 ## Golden Path closeout rule
 
-Follow `Docs/DevelopmentGoldenPathGuidelines.md`. Reusable procedures belong in the owning Golden Path or source-of-truth document; `Docs/Coordination.md` remains status/handoff only.
+Follow Project `Docs/DevelopmentGoldenPathGuidelines.md`. Reusable procedures belong in the owning Golden Path or source-of-truth document; `Docs/Coordination.md` remains status/handoff only.
 
 ## World Tech Level recommendation (AMJ common)
 
@@ -213,3 +213,9 @@ This is a conditional recommendation for assembling an era-limited AMJ world, no
 Canonical policy: [Project architecture — era-limited world recommendation](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/Architecture.md#era-limited-world-recommendation).
 
 The proposed **Ancient & Medieval Japan - World Rules** remains an uncommitted idea in Project `Docs/Ideas.md`; its ownership, filter scope and relationship/dependency to World Tech Level must be decided separately. Do not add global Incident/Quest/Trader/MapGen filtering to this Mod merely because the recommendation exists.
+
+## Shared rules owner — AMJ Project
+
+Project owns all AMJ-common policy. Before applying a shared rule, read the current [SharedRules index](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Docs/SharedRules.md) and the relevant canonical document there. This repository owns only its Mod-specific specification/procedure; do not develop shared rules in Grains or another runtime Mod.
+
+For AMJ Workshop previews (including text-only image ideas), read Project Project `Docs/WorkshopCoverStyle.md`, Project `Docs/GoldenPaths/WorkshopCoverPipeline.md` and `Docs/References/AMJ_WorkshopCover_Manifest.md`, and inspect the actual registered Project reference/base/mask. Present a text composition proposal before generating a new cover. An image-idea request alone does not authorize generation. Never regenerate the common pixels or restore an obsolete cover layout.

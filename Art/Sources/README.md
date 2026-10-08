@@ -1,3 +1,5 @@
+> Workshop common sources moved to Project on 2026-10-08. Workshop entries below retain recovery provenance; their authoritative bytes now live at the linked Project paths.
+
 # AMJ Authoritative Art Sources
 
 This directory stores accepted source artwork and authoring files that must survive independently of production-resolution exports.
@@ -23,10 +25,10 @@ The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 
 - `Shared/Containers/AMJ_Masu_Empty_Master.xcf`
 - `Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png`
 - `Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull/BuckwheatInHull.png`
-- `Workshop/AMJ_WorkshopCover_Template.svg`
-- `Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg`
-- `Workshop/AMJ_WorkshopCover_CommonBase.png`
-- `Workshop/AMJ_WorkshopCover_VariableMask.png`
+- [Workshop/AMJ_WorkshopCover_Template.svg](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Art/Sources/Workshop/AMJ_WorkshopCover_Template.svg)
+- [Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Art/Sources/Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg)
+- [Workshop/AMJ_WorkshopCover_CommonBase.png](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Art/Sources/Workshop/AMJ_WorkshopCover_CommonBase.png)
+- [Workshop/AMJ_WorkshopCover_VariableMask.png](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Art/Sources/Workshop/AMJ_WorkshopCover_VariableMask.png)
 - `Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
 - `Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png`
 - `Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png`
@@ -71,7 +73,7 @@ Additional accepted sources should be added to the corresponding mirrored path a
 
 ### Approved Core Workshop cover reference — 2026-10-07 JST
 
-- Archived file: `Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg`.
+- Archived file: [Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Art/Sources/Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg).
 - Original: `AMJ_WorkshopCover_Core_Approved_Reference.jpg`, Library identity `libfile_f0ec7d3c94f88191ab304f0fbdb13946`; registered at `/AMJ/References/AMJ_WorkshopCover_Core_Approved_Reference.jpg`.
 - Original dimensions: 960×540 RGB JPEG; 92,308 bytes. Preserved without resizing or re-encoding.
 - SHA-256: `ef662e1eb2e399c594adfb6a4d594f1e2727559a73e380f312638b1bc8585658`, matching `Docs/References/AMJ_WorkshopCover_Manifest.md` and `Docs/GoldenPaths/WorkshopCoverPipeline.md`.
@@ -80,7 +82,7 @@ Additional accepted sources should be added to the corresponding mirrored path a
 
 ### Workshop cover common raster — 2026-10-07 JST
 
-- Archived file: `Workshop/AMJ_WorkshopCover_CommonBase.png`.
+- Archived file: [Workshop/AMJ_WorkshopCover_CommonBase.png](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Art/Sources/Workshop/AMJ_WorkshopCover_CommonBase.png).
 - Original: `AMJ_WorkshopCover_CommonBase.png`, Library identity `libfile_1730eee945f8819198690f7cb988c96c`; registered at `/AMJ/References/AMJ_WorkshopCover_CommonBase.png`.
 - Original dimensions: 960×540 RGB PNG; 149,866 bytes. Preserved without resizing, color conversion, or re-encoding.
 - SHA-256: `a738d175bf1997e95f02456843686f8d2d59571d47849e55d04a957707514362`, matching `Docs/References/AMJ_WorkshopCover_Manifest.md` and `Docs/GoldenPaths/WorkshopCoverPipeline.md`.
@@ -90,7 +92,7 @@ Additional accepted sources should be added to the corresponding mirrored path a
 
 ### Workshop cover variable mask — 2026-10-07 JST
 
-- Archived file: `Workshop/AMJ_WorkshopCover_VariableMask.png`.
+- Archived file: [Workshop/AMJ_WorkshopCover_VariableMask.png](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Art/Sources/Workshop/AMJ_WorkshopCover_VariableMask.png).
 - Original: `AMJ_WorkshopCover_VariableMask.png`, Library identity `libfile_f831c30d1cac819192ed282dbf430698`; registered at `/AMJ/References/AMJ_WorkshopCover_VariableMask.png`.
 - Original dimensions: 960×540, 8-bit grayscale (L) PNG; 1,216 bytes. Preserved without resizing, color conversion, or re-encoding.
 - SHA-256: `e2bbf3547587eebafabc404f0adf3fdad7ffc29df84b0018b871af31c8689622`, matching the Workshop-cover manifest, template JSON and Golden Path.

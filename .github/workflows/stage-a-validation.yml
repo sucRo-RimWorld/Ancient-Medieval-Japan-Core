@@ -21,9 +21,6 @@ jobs:
       - name: Validate AMJ art-rule routing
         run: python Tests/test_art_rule_structure.py
 
-      - name: Regression-test Workshop cover template
-        run: python Tests/test_workshop_cover_template.py
-
       - name: Regression-test boxed reference integrity
         run: python Tests/test_boxed_resource_review.py
 

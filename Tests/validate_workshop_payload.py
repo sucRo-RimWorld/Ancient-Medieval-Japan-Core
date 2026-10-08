@@ -2,7 +2,7 @@
 """Audit YADA exclusions against the actual tracked inventory or a final payload.
 
 Scanner semantics: inherited case-insensitive basename patterns. Paths and
-negation are intentionally rejected. See Core Docs/WorkshopPackaging.md.
+negation are intentionally rejected. See Project Docs/WorkshopPackaging.md.
 """
 import argparse
 import io

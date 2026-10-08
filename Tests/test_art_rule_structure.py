@@ -17,6 +17,12 @@ def read(path: str) -> str:
 
 
 class ArtRuleStructureTest(unittest.TestCase):
+    def test_shared_documents_are_project_migration_pointers(self):
+        for path in ['Docs/ArtStyle.md', 'Docs/DevelopmentGoldenPathGuidelines.md', 'Docs/HistoricalDescriptionGuidelines.md', 'Docs/ModDescriptionGuidelines.md', 'Docs/RetextureImplementationGuidelines.md', 'Docs/WorkshopCoverStyle.md', 'Docs/WorkshopPackaging.md', 'Docs/GoldenPaths/TextureAssetPipeline.md', 'Docs/GoldenPaths/FixedImageTemplates.md', 'Docs/GoldenPaths/WorkshopCoverPipeline.md', 'Docs/References/AMJ_WorkshopCover_Manifest.md']:
+            text = read(path)
+            self.assertIn("migration pointer only", text)
+            self.assertIn("Ancient-Medieval-Japan-Project/blob/main/" + path, text)
+
     def test_agents_is_routing_layer(self):
         text = read("AGENTS.md")
         for required in (
@@ -28,48 +34,6 @@ class ArtRuleStructureTest(unittest.TestCase):
         ):
             self.assertIn(required, text)
         for forbidden in ("HardFixed", "ContactZone", "v4-contact-study", "blocked_pending_occlusion_validation"):
-            self.assertNotIn(forbidden, text)
-
-    def test_shared_art_style_has_no_family_implementation_contract(self):
-        text = read("Docs/ArtStyle.md")
-        self.assertIn("AMJ-wide invariants", text)
-        self.assertIn("Asset-class style specification", text)
-        self.assertIn("## 1. In-game asset primary target", text)
-        self.assertIn("## 8. Core Thing/Plant rejection criteria", text)
-        for forbidden in (
-            "HardFixed",
-            "ContactZone",
-            "ExtensionAllowed",
-            "v4-contact-study",
-            "blocked_pending_occlusion_validation",
-            "AMJ_Masu_Template",
-            "AMJ_WorkshopCover_CommonBase",
-            "Boxed-resource research",
-        ):
-            self.assertNotIn(forbidden, text)
-
-    def test_general_texture_pipeline_is_generic_and_intent_based(self):
-        text = read("Docs/GoldenPaths/TextureAssetPipeline.md")
-        self.assertEqual(text.count("# Texture Asset Pipeline — Golden Path"), 1)
-        self.assertIn("Interpret the user's image intent semantically", text)
-        self.assertIn("Shared/fixed parts are never regenerated", text)
-        self.assertIn("immutable master source", text)
-        self.assertIn("Art/Sources/", text)
-        self.assertIn("Acceptance closeout is not complete", text)
-        self.assertIn("write a **new file**", text)
-        self.assertIn("must not ship in Steam Workshop content", text)
-        self.assertIn("material stylistic redrawing", text)
-        self.assertIn("Scripts/Art/generated_asset_qa.py", text)
-        self.assertIn("AMJ_GeneratedAsset_BaseQA.json", text)
-        self.assertIn("author's remaining role is final visual acceptance", text)
-        self.assertNotIn("only when a genuinely new silhouette", text)
-        for forbidden in (
-            "v4-contact-study",
-            "blocked_pending_occlusion_validation",
-            "HardFixed",
-            "ContactZone",
-            "「生成」: ImageGen may be used only",
-        ):
             self.assertNotIn(forbidden, text)
 
     def test_boxed_resource_pipeline_is_contents_first_manual_composition(self):
@@ -90,14 +54,6 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertIn("Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.png", text)
         self.assertNotIn("HardFixed", text)
         self.assertNotIn("ContactZone", text)
-
-    def test_fixed_template_guarantee_requires_stable_region(self):
-        policy = read("Docs/GoldenPaths/FixedImageTemplates.md")
-        boxed = read("Docs/GoldenPaths/BoxedResourceIconPipeline.md")
-        self.assertIn("安定した保護範囲", policy)
-        self.assertIn("固定テンプレート保証を有効化しない", policy)
-        self.assertIn("does **not** claim the active fixed-template zero-difference guarantee", boxed)
-        self.assertIn("diagnostic only", boxed)
 
     def test_authoritative_sources_are_excluded_from_workshop_archive(self):
         ignore = read(".workshopignore")
@@ -136,12 +92,7 @@ class ArtRuleStructureTest(unittest.TestCase):
         self.assertTrue((ROOT / "Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.png").exists())
         self.assertTrue((ROOT / "Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.xcf").exists())
         self.assertTrue((ROOT / "Art/Sources/Things/Item/Resource/AMJC_Buckwheat/Buckwheat/Buckwheat.png").exists())
-        self.assertTrue((ROOT / "Art/Sources/Workshop/AMJ_WorkshopCover_Template.svg").exists())
-
-    def test_workshop_pipeline_has_no_mandatory_preapproval_loop(self):
-        text = read("Docs/GoldenPaths/WorkshopCoverPipeline.md")
-        self.assertIn("Do not insert a mandatory extra approval round", text)
-        self.assertNotIn("obtain author approval", text)
+        self.assertFalse((ROOT / "Art/Sources/Workshop/AMJ_WorkshopCover_Template.svg").exists())
 
     def test_archived_masu_manifest_cannot_activate_production(self):
         data = json.loads(read("Docs/References/AMJ_Masu_Template.json"))
@@ -162,7 +113,7 @@ class ArtRuleStructureTest(unittest.TestCase):
     def test_stage_a_runs_current_art_guards_not_archived_masu_gate(self):
         text = read(".github/workflows/stage-a-validation.yml")
         self.assertIn("Tests/test_art_rule_structure.py", text)
-        self.assertIn("Tests/test_workshop_cover_template.py", text)
+        self.assertNotIn("Tests/test_workshop_cover_template.py", text)
         self.assertIn("Tests/test_generated_asset_qa.py", text)
         self.assertIn("Tests/test_prepare_boxed_resource_candidate.py", text)
         self.assertNotIn("Tests/test_masu_template.py", text)

@@ -1,3 +1,5 @@
+> Workshop common sources moved to Project on 2026-10-08. Workshop entries below retain recovery provenance; their authoritative bytes now live at the linked Project paths.
+
 # Core 元画像保存対象の棚卸し
 
 確認日: 2026-10-07 JST。確認基準: `main` の `957bdd5`。
@@ -42,10 +44,10 @@
 | ID | 対象 | 状態 | 正本 / 保存先 |
 | --- | --- | --- | --- |
 | C01 | 現行空枡 | 保存済み | `Art/Sources/Shared/Containers/AMJ_Masu_Empty_Master.png`、1429×1100。隣の同名 `.xcf` も保存済み |
-| W01 | Workshop表紙SVGテンプレート | 保存済み | `Art/Sources/Workshop/AMJ_WorkshopCover_Template.svg`。`Docs/References/` の参照コピーと重複加算しない |
-| W02 | 承認済みCore表紙参照 | 保存済み | `Art/Sources/Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg`、960×540 RGB JPEG、92,308 bytes。登録SHA-256 `ef662e1eb2e399c594adfb6a4d594f1e2727559a73e380f312638b1bc8585658` 一致 |
-| W03 | 表紙共通ラスター | 保存済み | `Art/Sources/Workshop/AMJ_WorkshopCover_CommonBase.png`、960×540 RGB PNG、149,866 bytes。登録SHA-256 `a738d175bf1997e95f02456843686f8d2d59571d47849e55d04a957707514362` 一致 |
-| W04 | 表紙可変マスク | 保存済み | `Art/Sources/Workshop/AMJ_WorkshopCover_VariableMask.png`、960×540 L PNG、1,216 bytes。登録SHA-256 `e2bbf3547587eebafabc404f0adf3fdad7ffc29df84b0018b871af31c8689622` 一致 |
+| W01 | Workshop表紙SVGテンプレート | 保存済み | [Art/Sources/Workshop/AMJ_WorkshopCover_Template.svg](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Art/Sources/Workshop/AMJ_WorkshopCover_Template.svg)。`Docs/References/` の参照コピーと重複加算しない |
+| W02 | 承認済みCore表紙参照 | 保存済み | [Art/Sources/Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Art/Sources/Workshop/AMJ_WorkshopCover_Core_Approved_Reference.jpg)、960×540 RGB JPEG、92,308 bytes。登録SHA-256 `ef662e1eb2e399c594adfb6a4d594f1e2727559a73e380f312638b1bc8585658` 一致 |
+| W03 | 表紙共通ラスター | 保存済み | [Art/Sources/Workshop/AMJ_WorkshopCover_CommonBase.png](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Art/Sources/Workshop/AMJ_WorkshopCover_CommonBase.png)、960×540 RGB PNG、149,866 bytes。登録SHA-256 `a738d175bf1997e95f02456843686f8d2d59571d47849e55d04a957707514362` 一致 |
+| W04 | 表紙可変マスク | 保存済み | [Art/Sources/Workshop/AMJ_WorkshopCover_VariableMask.png](https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Project/blob/main/Art/Sources/Workshop/AMJ_WorkshopCover_VariableMask.png)、960×540 L PNG、1,216 bytes。登録SHA-256 `e2bbf3547587eebafabc404f0adf3fdad7ffc29df84b0018b871af31c8689622` 一致 |
 
 W02–W04は `Docs/References/AMJ_WorkshopCover_Manifest.md` と `Docs/GoldenPaths/WorkshopCoverPipeline.md` に登録された別ファイル。SVGの保存で置き換え済みと扱わない。`About/preview.png` は配布用画像として別途確認対象だが、この棚卸しでは表紙の追加正本1枚として加算しない。既存の表紙正本で生成元が説明できるかを回収時に確認する。
 
