@@ -70,6 +70,22 @@ def validate():
         for node in ET.parse(path).getroot():
             assert node.tag not in translations, f"Duplicate RecipeDef translation: {node.tag}"
             translations[node.tag] = node.text
+    # The 2026-10-08 approved *functional* wording correction removes the
+    # unsupported claim of a Straw byproduct in the common/Base locale.
+    # Preserve the immutable MO pre-split fixture, compare this exactly
+    # allowlisted translation delta, then compare ALL other keys unchanged.
+    # (MO still gets Straw from its conditional thresh Recipe.)
+    neutral_descriptions = {
+        'AMJC_ThreshMillet.description': '雑穀束を脱穀し、殻付き雑穀にする。',
+        'AMJC_ThreshMilletBulk.description': '雑穀束10個をまとめて脱穀し、殻付き雑穀にする。',
+        'AMJC_ThreshBuckwheat.description': 'ソバ束を脱穀し、殻付きソバにする。',
+        'AMJC_ThreshBuckwheatBulk.description': 'ソバ束10個をまとめて脱穀し、殻付きソバにする。',
+        'AMJC_ThreshBarley.description': '大麦束を脱穀し、殻付き大麦にする。',
+        'AMJC_ThreshBarleyBulk.description': '大麦束10個をまとめて脱穀し、殻付き大麦にする。',
+    }
+    for key, value in neutral_descriptions.items():
+        assert translations[key] == value, 'Approved neutral processing text changed: ' + key
+        translations[key] = golden["recipeTranslations"][key]
     assert translations == golden["recipeTranslations"], "MO recipe translations changed during split"
     actual = {}
     for node in mo:

@@ -29,6 +29,22 @@ class BaseBoundaryTests(unittest.TestCase):
     def test_current_payload(self):
         self.validate()
 
+    def test_unapproved_common_recipe_translation_rejected(self):
+        path = self.root / 'Languages/Japanese/DefInjected/RecipeDef/AMJC_StageA.xml'
+        xml = ET.parse(path)
+        xml.find('AMJC_HullMillet.description').text = '意図しない翻訳変更'
+        xml.write(path)
+        with self.assertRaisesRegex(AssertionError, 'MO recipe translations changed during split'):
+            self.validate()
+
+    def test_unapproved_thresh_wording_regression_rejected(self):
+        path = self.root / 'Languages/Japanese/DefInjected/RecipeDef/AMJC_StageA.xml'
+        xml = ET.parse(path)
+        xml.find('AMJC_ThreshMillet.description').text = '藁と殻付き雑穀を得る'
+        xml.write(path)
+        with self.assertRaisesRegex(AssertionError, 'Approved neutral processing text changed'):
+            self.validate()
+
     def test_unconditional_mo_reference_rejected(self):
         path = self.root / 'Defs/ThingDefs_Items/Items_StageA_Grains.xml'
         xml = ET.parse(path)
