@@ -19,6 +19,9 @@ class BaseBoundaryTests(unittest.TestCase):
         for name in ('Defs', 'Languages', 'Patches', 'Compatibility', 'BaseWithoutMO', 'LegacyStartingScenarios', 'Tests/Fixtures', 'Textures'):
             shutil.copytree(ROOT / name, self.root / name)
         shutil.copyfile(ROOT / 'loadFolders.xml', self.root / 'loadFolders.xml')
+        (self.root / 'Docs').mkdir(exist_ok=True)
+        shutil.copyfile(ROOT / 'Docs/LocalizationHistoricalReview.md',
+                        self.root / 'Docs/LocalizationHistoricalReview.md')
 
     def validate(self):
         with patch.object(gate, 'ROOT', self.root), patch.object(
@@ -28,6 +31,25 @@ class BaseBoundaryTests(unittest.TestCase):
 
     def test_current_payload(self):
         self.validate()
+
+    def test_unapproved_plant_description_rejected(self):
+        path = self.root / 'Defs/ThingDefs_Plants/Plants_StageA.xml'
+        tree = ET.parse(path)
+        tree.find('ThingDef[defName="AMJC_Plant_Barley"]/description').text = (
+            'Unexpected historical narrative')
+        tree.write(path)
+        with self.assertRaisesRegex(AssertionError, 'Approved English crop description changed'):
+            self.validate()
+
+    def test_approved_crop_review_drift_rejected(self):
+        path = self.root / 'Docs/LocalizationHistoricalReview.md'
+        text = path.read_text(encoding='utf-8')
+        original = 'Barley (omugi). A cereal introduced to Japan in the Yayoi period'
+        self.assertIn(original, text)
+        path.write_text(text.replace(original, 'Barley (omugi). A cereal found in another era'),
+                        encoding='utf-8')
+        with self.assertRaisesRegex(AssertionError, 'Approved English crop description changed'):
+            self.validate()
 
     def test_unapproved_common_recipe_translation_rejected(self):
         path = self.root / 'Languages/Japanese/DefInjected/RecipeDef/AMJC_StageA.xml'

@@ -148,3 +148,10 @@ These six English strings are translations of the author-approved Japanese §7 d
 | `Plant_Rice` | Upland rice (okabo, rikuto). Rice grown in dry fields rather than flooded paddies. It has been cultivated in Japan alongside paddy rice, but its cultivation declined sharply after the middle of the twentieth century. In AMJGrains Vanilla rice is treated as upland rice and requires warm temperatures and sufficiently fertile soil. It yields the existing rice item; paddy cultivation belongs to a separate mod. |
 
 **Static verification:** `Tests/test_grains_localization.py` checks approved Japanese/English text against loaded-source XML/DefInjected and verifies the `Plant_Rice` description Patch. Game-loaded language switching, UI readability and four-profile ERROR 0 are still pending.
+
+
+## 9. MO履歴Fixtureとの整合（2026-10-08）
+
+旧MO必須Coreの履歴Fixtureには、今回承認した5つの穀物PlantDefの旧英語descriptionもハッシュ計算の対象として含まれている。履歴Fixture自体は変更しない。 `Tests/validate_grains_base.py` は、現行の説明文を本書§8の承認済み英文と完全一致で検証してから、ハッシュ比較用のコピーに限って旧説明文へ戻す。これにより、説明文だけの承認済み変更を認めながら、作物数値・研究・製粉・画像参照など既存契約の検証は維持する。 Vanillaの陸稲 `Plant_Rice` は旧AMJC履歴ハッシュ対象外のため、翻訳テストと `Patches/UplandRice.xml` の照合で確認する。
+
+`Tests/test_grains_base.py` には実装英文と§8の改変をそれぞれ検出する負例を追加した。実機での翻訳ロード・表示確認は未実行。

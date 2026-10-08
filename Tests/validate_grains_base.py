@@ -29,6 +29,38 @@ AMJ_GRAPHICS = {
 }
 
 
+# Immutable MO pre-split hashes include the five shared PlantDef descriptions.
+# Do not rewrite that snapshot for author-approved historical localization.
+# Check all five present descriptions against the canonical approved English in
+# Docs/LocalizationHistoricalReview.md §8, then restore ONLY the historical
+# description text on a deep copy for the existing all-fields hash contract.
+HISTORICAL_MO_PLANT_DESCRIPTIONS = {
+    "AMJC_Plant_FoxtailMillet_Awa": "Foxtail millet (awa), a traditional dryland millet used as a staple grain. It takes longer to mature than kibi but produces more grain per harvest, making it well suited to ordinary main fields.",
+    "AMJC_Plant_BarnyardMillet_Hie": "Japanese barnyard millet (hie), a traditional grain crop suited to cool growing conditions. It can keep growing at lower temperatures than awa or kibi, but it is not especially frost hardy.",
+    "AMJC_Plant_ProsoMillet_Kibi": "Proso millet (kibi), a fast-growing traditional millet suited to short growing seasons and poorer soils. It matures faster than awa or hie but produces less grain per harvest.",
+    "AMJC_Plant_Buckwheat_Soba": "Buckwheat (soba), a very fast-growing grain crop suited to poor soils and short growing seasons. It performs well where richer-soil cereals are inefficient, but it is relatively vulnerable to frost.",
+    "AMJC_Plant_Barley": "Barley, a cool-season cereal crop suited to relatively poor soils and cold growing conditions. It takes longer to mature than the Stage A millets but yields a larger harvest and is useful as a staple grain.",
+}
+
+
+def approved_plant_descriptions(root):
+    text = (root / "Docs/LocalizationHistoricalReview.md").read_text(encoding="utf-8")
+    assert "## 8. English descriptions translated" in text, "Missing approved English crop section"
+    chapter = text.split("## 8.", 1)[1]
+    entries = {}
+    for row in chapter.splitlines():
+        if not row.startswith("| `"):
+            continue
+        cells = [value.strip() for value in row.split("|")]
+        name = cells[1].strip("`")
+        assert name not in entries, "Duplicate approved English crop description: " + name
+        entries[name] = cells[2]
+    assert set(entries) == set(HISTORICAL_MO_PLANT_DESCRIPTIONS) | {"Plant_Rice"}, (
+        "Approved English crop list changed"
+    )
+    return entries
+
+
 def validate():
     # MO identifiers/classes must be absent from Base Defs and localization.
     for folder in ("Defs", "Languages", "BaseWithoutMO", "LegacyStartingScenarios/Defs", "LegacyStartingScenarios/Languages"):
@@ -87,6 +119,7 @@ def validate():
         assert translations[key] == value, 'Approved neutral processing text changed: ' + key
         translations[key] = golden["recipeTranslations"][key]
     assert translations == golden["recipeTranslations"], "MO recipe translations changed during split"
+    crop_descriptions = approved_plant_descriptions(ROOT)
     actual = {}
     for node in mo:
         name = node.findtext("defName") or node.get("Name")
@@ -94,6 +127,11 @@ def validate():
             normalized = deepcopy(node)
             for element, (expected, historical) in AMJ_GRAPHICS.get(name, {}).items():
                 normalized.find(element).text = historical
+            if name in HISTORICAL_MO_PLANT_DESCRIPTIONS:
+                assert normalized.findtext("description") == crop_descriptions[name], (
+                    "Approved English crop description changed: " + name
+                )
+                normalized.find("description").text = HISTORICAL_MO_PLANT_DESCRIPTIONS[name]
             raw = json.dumps(contract_signature(normalized), ensure_ascii=False, separators=(",", ":"))
             actual[node.tag + ":" + name] = hashlib.sha256(raw.encode()).hexdigest()
     from validate_grains_chain import SHARED_NAMES
