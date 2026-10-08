@@ -134,6 +134,11 @@ def main():
             if actual != kept:
                 leaks.append("git archive differs from YADA filter: extra=" + repr(sorted(set(actual)-set(kept)))
                              + "; missing=" + repr(sorted(set(kept)-set(actual))))
+    # Release metadata must be present in both filtered checkout and actual upload root.
+    actual = paths if args.payload else kept
+    for required in ("About/Manifest.xml", "About/Changelog.txt"):
+        if required not in actual:
+            leaks.append("MISSING " + required)
     if leaks or lost:
         raise SystemExit("FAIL: subscriber-unnecessary files=" + repr(sorted(set(leaks)))
                          + "; excluded runtime/legal files=" + repr(lost))

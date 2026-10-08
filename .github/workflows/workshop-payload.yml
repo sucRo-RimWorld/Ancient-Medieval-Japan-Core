@@ -11,5 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - name: Verify Add Changenote version and changelog
+        run: python Tests/validate_add_changenote.py
       - name: Validate YADA filter and subscriber payload contract
         run: python Tests/validate_workshop_payload.py

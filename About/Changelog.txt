@@ -1,0 +1,7 @@
+# Ancient-Medieval-Japan-Grains
+# Add Changenote reads the heading for the current version from About/Manifest.xml.
+
+0.1.0-dev - Development metadata for the independent grain-processing module / 穀類Modの開発版メタデータを整備
+- Versioned Workshop changenotes prepared for the ongoing Grains development branch.
+- 穀類の開発中機能向けに、Workshop更新履歴の管理を整えました。
+- This does not certify a public release or completed runtime tests. / 公開済み・実機検証完了を意味しません。
