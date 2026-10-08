@@ -77,8 +77,13 @@ class JapaneseLocalizationAudit(unittest.TestCase):
             for recipe in document.findall('RecipeDef'):
                 if (recipe.findtext('defName') or '').startswith('AMJC_Thresh'):
                     self.assertIsNone(recipe.find('products/DankPyon_Straw'))
-        for recipe in ET.parse(
-                ROOT / 'Compatibility/MedievalOverhaul/Defs/Recipes_MOWheat.xml').getroot().findall('RecipeDef'):
+        mo_recipes = [
+            recipe for recipe in ET.parse(
+                ROOT / 'Compatibility/MedievalOverhaul/Defs/Recipes_MOWheat.xml').getroot().findall('RecipeDef')
+            if (recipe.findtext('defName') or '') in ('AMJC_ThreshWheat', 'AMJC_ThreshWheatBulk')
+        ]
+        self.assertEqual(len(mo_recipes), 2)
+        for recipe in mo_recipes:
             self.assertIsNotNone(recipe.find('products/DankPyon_Straw'))
 
     def test_shared_thing_explanations_do_not_claim_unimplemented_features(self):
