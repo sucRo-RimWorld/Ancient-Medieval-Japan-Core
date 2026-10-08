@@ -279,3 +279,8 @@ Pickle's `-pickle-run-timeout` is measured in **minutes** and applies to the ent
 ### MO millstone Hay byproduct regression (2026-10-08)
 
 The **unpatched MO 1.6 provider source** declares `Hay` alongside `DankPyon_Flour` in its three milling Recipes (manual, regular and bulk). Grains' MO-conditional `MedievalOverhaul_StageA_Wheat.xml` **removes `products/Hay` from all three Recipes**, so the expected loaded Grains+MO grinding output is flour only, not Hay. The native-Bill helper compares all *loaded* Recipe product counts, rejecting undeclared Hay/Straw; the loaded-MO Pickle contract additionally asserts all three Recipes are flour-only. The upstream-MO archive validator intentionally checks the provider's original Hay before AMJ patches apply, while the Grains static validator enforces the three removal operations. Neither static check substitutes for a real RimWorld test.
+
+
+### Upland rice translation and loaded Straw test hardening (2026-10-08)
+
+`Tests/test_grains_localization.py` now enforces the six §10 author-approved Japanese/English item/recipe labels and descriptions and the four bilingual jobStrings against actual Production DefInjected/Def XML. Negative mutations of the source, localization and approved document must fail. The four-profile loaded-Def Pickle step checks the **exact** MO rice-thresh products and quantities (`AMJC_RiceInHull` plus `DankPyon_Straw`) and requires the Base thresh and both hull Recipes to have only the specified main output. Static verification is not equivalent to C# compilation, game loading or ERROR-0 success.

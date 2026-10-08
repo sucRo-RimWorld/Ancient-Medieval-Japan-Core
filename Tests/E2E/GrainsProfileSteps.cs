@@ -88,9 +88,14 @@ namespace AncientMedievalJapanCore.E2E
                     ThingDef output = part == "Thresh" ? riceHull : rawRice;
                     ctx.Assert(rec.ingredients.Count == 1 && rec.ingredients[0].filter.Allows(input)
                         && rec.ingredients[0].GetBaseCount() == n, "Rice processing input differs: " + name);
-                    ctx.Assert(rec.products.Any(p => p.thingDef == output && p.count == n)
-                        && rec.products.Count == ((Active("dankpyon.medieval.overhaul") && part == "Thresh") ? 2 : 1),
-                        "Rice processing output or optional straw differs: " + name);
+                    bool withStraw = Active("dankpyon.medieval.overhaul") && part == "Thresh";
+                    ThingDef straw = withStraw ? DefDatabase<ThingDef>.GetNamed("DankPyon_Straw") : null;
+                    ctx.Assert(rec.products.Count == (withStraw ? 2 : 1)
+                        && rec.products.Any(p => p.thingDef == output && p.count == n)
+                        && rec.products.All(p => p.count == n
+                            && (p.thingDef == output || (withStraw && p.thingDef == straw)))
+                        && (!withStraw || rec.products.Any(p => p.thingDef == straw && p.count == n)),
+                        "Rice processing output must be the exact grain plus optional MO Straw: " + name);
                 }
                 ctx.Assert(rice.plant.growDays == 5f && rice.plant.harvestYield == 11f
                     && rice.plant.fertilityMin == 0.7f && rice.plant.fertilitySensitivity == 0.8f,

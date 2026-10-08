@@ -33,6 +33,55 @@ def all_localizations(*bases):
     return found
 
 
+RICE_ITEMS = {'AMJC_RiceSheaf', 'AMJC_RiceInHull'}
+RICE_RECIPES = {'AMJC_ThreshRice', 'AMJC_ThreshRiceBulk',
+                'AMJC_HullRice', 'AMJC_HullRiceBulk'}
+
+
+def validate_rice_localizations(root):
+    """Reject drift from the approved JP-first rice processing copy in §10.
+
+    Checks live JP labels/descriptions/jobStrings and English XML defaults.
+    It does not claim runtime UI language-switching or historical provenance.
+    """
+    import re
+    source = (root / 'Docs/LocalizationHistoricalReview.md').read_text(encoding='utf-8')
+    assert '## 10. 陸稲の新加工語彙' in source
+    chapter = source.split('## 10. 陸稲の新加工語彙', 1)[1]
+    entries, jobs = {}, {}
+    for line in chapter.splitlines():
+        matched = re.fullmatch(r'- `(AMJC_[A-Za-z]+)`：(.+?)。(.+?)English: \*\*([^*]+)\*\* — (.+)', line)
+        if matched:
+            name, jp_label, jp_desc, en_label, en_desc = matched.groups()
+            assert name not in entries, 'Duplicate approved rice description: ' + name
+            entries[name] = (jp_label.strip(' *'), jp_desc.strip(), en_label.strip(), en_desc.strip())
+        matched_job = re.fullmatch(r'- `(AMJC_[A-Za-z]+)\.jobString`：(.+?) / (.+)', line)
+        if matched_job:
+            name, jp, en = matched_job.groups()
+            assert name not in jobs, 'Duplicate approved rice jobString: ' + name
+            jobs[name] = (jp.strip(), en.strip())
+    assert set(entries) == RICE_ITEMS | RICE_RECIPES, 'Rice approved description inventory changed'
+    assert set(jobs) == RICE_RECIPES, 'Rice approved jobString inventory changed'
+
+    thing_source = ET.parse(root / 'Defs/ThingDefs_Items/Items_StageA_Grains.xml').getroot()
+    recipe_source = ET.parse(root / 'Defs/RecipeDefs/Recipes_GrainProcessing.xml').getroot()
+    jp_items = ET.parse(root / 'Languages/Japanese/DefInjected/ThingDef/AMJC_RiceProcessing.xml').getroot()
+    jp_recipes = ET.parse(root / 'Languages/Japanese/DefInjected/RecipeDef/AMJC_RiceProcessing.xml').getroot()
+    for name, (ja_label, ja_desc, en_label, en_desc) in entries.items():
+        source_group = thing_source if name in RICE_ITEMS else recipe_source
+        jp_group = jp_items if name in RICE_ITEMS else jp_recipes
+        nodes = [node for node in source_group if node.findtext('defName') == name]
+        assert len(nodes) == 1, 'Missing or duplicate rice Def: ' + name
+        node = nodes[0]
+        assert node.findtext('label') == en_label, 'English rice label drift: ' + name
+        assert node.findtext('description') == en_desc, 'English rice description drift: ' + name
+        assert jp_group.findtext(name + '.label') == ja_label, 'Japanese rice label drift: ' + name
+        assert jp_group.findtext(name + '.description') == ja_desc, 'Japanese rice description drift: ' + name
+        if name in RICE_RECIPES:
+            assert node.findtext('jobString') == jobs[name][1], 'English rice jobString drift: ' + name
+            assert jp_group.findtext(name + '.jobString') == jobs[name][0], 'Japanese rice jobString drift: ' + name
+
+
 class JapaneseLocalizationAudit(unittest.TestCase):
     def test_labels_and_approved_description_inventory(self):
         audit = (ROOT / 'Docs/LocalizationHistoricalReview.md').read_text(encoding='utf-8')
@@ -85,6 +134,38 @@ class JapaneseLocalizationAudit(unittest.TestCase):
         self.assertEqual(len(mo_recipes), 2)
         for recipe in mo_recipes:
             self.assertIsNotNone(recipe.find('products/DankPyon_Straw'))
+
+    def test_approved_rice_processing_copy_matches_source(self):
+        validate_rice_localizations(ROOT)
+
+    def test_rice_copy_mutations_are_rejected(self):
+        import shutil
+        import tempfile
+        relative = (
+            'Docs/LocalizationHistoricalReview.md',
+            'Defs/ThingDefs_Items/Items_StageA_Grains.xml',
+            'Defs/RecipeDefs/Recipes_GrainProcessing.xml',
+            'Languages/Japanese/DefInjected/ThingDef/AMJC_RiceProcessing.xml',
+            'Languages/Japanese/DefInjected/RecipeDef/AMJC_RiceProcessing.xml',
+        )
+        for target, old, new in (
+            (relative[1], '<label>rice sheaf</label>', '<label>unreviewed sheaf</label>'),
+            (relative[3], '収穫した稲を束ねたもの。', '収穫した稲を乾燥させたもの。'),
+            (relative[2], '<jobString>Hulling rice in bulk.</jobString>',
+             '<jobString>Milling rice in bulk.</jobString>'),
+            (relative[0], '籾10個をまとめて籾摺りし', '籾100個をまとめて籾摺りし'),
+        ):
+            with self.subTest(file=target), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                for name in relative:
+                    destination = root / name
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(ROOT / name, destination)
+                original = (root / target).read_text(encoding='utf-8')
+                self.assertIn(old, original)
+                (root / target).write_text(original.replace(old, new), encoding='utf-8')
+                with self.assertRaises(AssertionError):
+                    validate_rice_localizations(root)
 
     def test_shared_thing_explanations_do_not_claim_unimplemented_features(self):
         things = labels('Languages/Japanese/DefInjected/ThingDef/AMJC_StageA.xml')

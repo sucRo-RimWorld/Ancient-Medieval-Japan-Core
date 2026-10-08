@@ -171,3 +171,10 @@ These six English strings are translations of the author-approved Japanese §7 d
 - `AMJC_ThreshRiceBulk`：稲を脱穀する x10。稲束10個をまとめて脱穀し、籾10個にする。English: **thresh rice x10** — Thresh ten rice sheaves to obtain ten portions of rice in husk.
 - `AMJC_HullRice`：籾摺りをする。籾から籾殻を取り除き、食用の米に加工する。English: **hull rice** — Remove the husks from threshed rice to obtain edible Vanilla rice.
 - `AMJC_HullRiceBulk`：籾摺りをする x10。籾10個をまとめて籾摺りし、食用の米10個にする。English: **hull rice x10** — Remove the husks from ten portions of threshed rice to obtain edible Vanilla rice.
+
+**加工中表示（日本語 / English）**
+
+- `AMJC_ThreshRice.jobString`：稲を脱穀している。 / Threshing rice.
+- `AMJC_ThreshRiceBulk.jobString`：稲をまとめて脱穀している。 / Threshing rice in bulk.
+- `AMJC_HullRice.jobString`：籾摺りをしている。 / Hulling rice.
+- `AMJC_HullRiceBulk.jobString`：籾をまとめて籾摺りしている。 / Hulling rice in bulk.
