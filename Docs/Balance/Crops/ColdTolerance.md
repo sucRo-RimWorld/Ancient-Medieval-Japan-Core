@@ -97,3 +97,8 @@ Grainsは最終的な気候マップの選定を所有しない。既存7穀の�
 ## MO再検証結果（2026-10-08）
 
 `automated-gates(6).log` にて、正午・天空光の補正を施したネイティブ播種/生育テストを含むMO単独実機構成がPickle 6/6・ERROR 0を達成した。旧ログ(5)の失敗は当該再実行では再発せず、既存の最低成長温度0℃（大麦）/10℃（陸稲）と本番XMLの値は変更していない。Vanilla・Vanilla+CCTO・MO+CCTOは補正前版で各6/6・ERROR 0を確認済みだが、修正版の全4構成一括実行は未確認。試験は5/25℃へ固定した屋外温度・暦移動に限定し、CCTO固定枯死の実発生、自然天候/季節温度履歴の正否は未検証。証拠と運用は `Docs/GrainsProfileTesting.md` を参照。
+
+
+## 2026-10-08 制御温度テストの照明同期方式変更（実機再確認待ち）
+
+(7)の4構成実機ログでは3構成にPickle `NullReferenceException` が発生し、`mo-ccto` だけ6/6・ERROR 0となった。前回修正時の手動`SkyManagerUpdate()`呼び出しが描画・影・天候更新も実行するため原因候補となるが、スタックがないので未確定。より狭いテスト経路として、正午のネイティブ太陽光`GenCelestial.CurCelestialSunGlow(map)`を読み、隔離マップの`ForceSetCurSkyGlow`キャッシュだけ同期、復元する。Plantの休息や実成長処理は回避しない。ゲーム本番の気象・低温枯死やCCTO機能には手を加えていない。最終判定は`Docs/GrainsProfileTesting.md`。

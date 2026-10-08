@@ -289,6 +289,8 @@ namespace AncientMedievalJapanCore.E2E
                 IntVec3 riceCell = IntVec3.Invalid, barleyCell = IntVec3.Invalid;
                 int savedTicks = -1;
                 float? savedBiomeTemperature = null;
+                float savedSkyGlow = -1f;
+                string phase = "fixture setup";
                 var savedSnow = new Dictionary<IntVec3, float>();
                 float riceBeforeCold = 0f, riceBeforeWarm = 0f, barleyBeforeCold = 0f;
                 Job riceJob = null, barleyJob = null;
@@ -300,6 +302,7 @@ namespace AncientMedievalJapanCore.E2E
                         ctx.Require(deadline.Elapsed.TotalSeconds < 240, "Seasonal sow test exceeded fixture deadline.");
                         savedTicks = Find.TickManager.TicksGame;
                         savedBiomeTemperature = map.Biome.constantOutdoorTemperature;
+                        savedSkyGlow = map.skyManager.CurSkyGlow;
                         // Prefer unroofed clear fixture ground away from the
                         // active benches. The whole 15x15 area is disposable.
                         IntVec3[] cells = CellRect.CenteredOn(center, 7).Cells
@@ -338,6 +341,7 @@ namespace AncientMedievalJapanCore.E2E
 
                     await RuntimeThread.Run(delegate
                     {
+                        phase = "cold season transition";
                         ricePlant = riceCell.GetPlant(map);
                         ctx.Require(ricePlant != null && ricePlant.sown, "Real sow must produce sown Plant_Rice.");
                         int priorDay = GenLocalDate.DayOfYear(map);
@@ -356,6 +360,7 @@ namespace AncientMedievalJapanCore.E2E
                     await SimulatePlantTicks(2200, "RiceColdStall");
                     await RuntimeThread.Run(delegate
                     {
+                        phase = "barley cold sow";
                         ctx.Require(!ricePlant.Destroyed && Math.Abs(ricePlant.Growth - riceBeforeCold) < 0.00001f,
                             "Real TickLong must not advance rice growth below 10 C.");
                         zone.SetPlantDefToGrow(DefDatabase<ThingDef>.GetNamed("AMJC_Plant_Barley"));
@@ -372,6 +377,7 @@ namespace AncientMedievalJapanCore.E2E
                         barleyCell.GetPlant(map).LifeStage != PlantLifeStage.Sowing, "ColdSeason/BarleySow");
                     await RuntimeThread.Run(delegate
                     {
+                        phase = "barley cold growth";
                         barleyPlant = barleyCell.GetPlant(map);
                         ctx.Require(barleyPlant != null && barleyPlant.sown,
                             "Real sow must produce sown barley.");
@@ -382,6 +388,7 @@ namespace AncientMedievalJapanCore.E2E
                     await SimulatePlantTicks(2200, "BarleyColdGrowth");
                     await RuntimeThread.Run(delegate
                     {
+                        phase = "warm recovery calendar and daylight setup";
                         ctx.Assert(barleyPlant.Growth > barleyBeforeCold + 0.000001f,
                             "Native TickLong must grow barley at 5 C in daylight.");
                         // automated-gates(5).log: MO-only reaches the warm
@@ -389,12 +396,22 @@ namespace AncientMedievalJapanCore.E2E
                         // old assertion could run in Plant.Resting hours
                         // (local day percent <0.25 or >0.8), where vanilla
                         // Plant.GrowthPerTick is zero at *any* temperature.
-                        // Move to the next local noon, then refresh the sky's
-                        // actual light state; never manufacture plant growth.
+                        // Move to local noon and synchronize the cached sky
+                        // glow with the native celestial solar calculation.
+                        // SkyManagerUpdate() also touches weather, shaders and
+                        // camera objects; directly invoking that render update
+                        // from this headless Pickle step caused an intermittent
+                        // null reference in automated-gates(7).log (suspected).
+                        // ForceSetCurSkyGlow changes only the disposable map's
+                        // cached light, not Plant growth, terrain, or weather.
                         int warmHourShift = (12 - GenLocalDate.HourOfDay(map) + 24) % 24;
                         Find.TickManager.DebugSetTicksGame(
                             Find.TickManager.TicksGame + warmHourShift * GenDate.TicksPerHour);
-                        map.skyManager.SkyManagerUpdate();
+                        float solarGlow = GenCelestial.CurCelestialSunGlow(map);
+                        ctx.Require(solarGlow > 0.1f,
+                            "Warm recovery fixture requires actual daylight: "
+                            + "solarGlow=" + solarGlow + ", phase=" + phase);
+                        map.skyManager.ForceSetCurSkyGlow(solarGlow);
                         SetSeasonTemperature(25f, riceCell, barleyCell);
                         float warmDayPercent = GenLocalDate.DayPercent(map);
                         ctx.Require(warmDayPercent > 0.25f && warmDayPercent < 0.8f,
@@ -415,9 +432,11 @@ namespace AncientMedievalJapanCore.E2E
                             + ", lifeStage=" + ricePlant.LifeStage);
                         riceBeforeWarm = ricePlant.Growth;
                     });
+                    phase = "warm recovery native growth ticks";
                     await SimulatePlantTicks(2200, "RiceWarmRecovery");
                     await RuntimeThread.Run(delegate
                     {
+                        phase = "warm recovery growth assertion";
                         ctx.Assert(!ricePlant.Destroyed && ricePlant.Growth > riceBeforeWarm + 0.000001f,
                             "Native TickLong must resume rice growth after warming. "
                             + "start=" + riceBeforeWarm + ", end=" + ricePlant.Growth
@@ -429,7 +448,14 @@ namespace AncientMedievalJapanCore.E2E
                             + ", lifeStage=" + ricePlant.LifeStage);
                     });
                 }
-                catch (Exception error) { failure = ExceptionDispatchInfo.Capture(error); }
+                catch (Exception error)
+                {
+                    // Pickle often prints only the outer exception message.
+                    // Retain the original exception/stack in InnerException
+                    // and put the active native-fixture stage in the message.
+                    failure = ExceptionDispatchInfo.Capture(new InvalidOperationException(
+                        "NativeSeasonalSowAndGrowth failed at " + phase + ": " + error.Message, error));
+                }
 
                 // The test assembly uses the Framework C# 5 compiler: no await
                 // inside finally. Always undo test-only calendar/climate.
@@ -454,6 +480,8 @@ namespace AncientMedievalJapanCore.E2E
                             foreach (Room room in map.regionGrid.AllRooms)
                                 if (room.UsesOutdoorTemperature) room.TempTracker.EqualizeTemperature();
                             Find.TickManager.DebugSetTicksGame(savedTicks);
+                            if (savedSkyGlow >= 0f)
+                                map.skyManager.ForceSetCurSkyGlow(savedSkyGlow);
                         }
                     });
                 }

@@ -156,12 +156,19 @@ class ChainRegressionTests(unittest.TestCase):
         assert 'await SimulatePlantTicks(2200, "RiceWarmRecovery")' in seasonal
         assert 'private void SetSeasonTemperature(float temp' in seasonal
         assert 'room.TempTracker.EqualizeTemperature()' in seasonal
-        # Sunset / Plant.Resting caused the MO-only fifth native run to fail.
-        # Gate actual calendar daytime and updated game sky before recovering
-        # growth; merely moving the 25 C threshold is not a valid fix.
+        # Plant.Resting can invalidate a warm-growth test at night.
+        # Keep local daylight while avoiding a direct graphics/camera update
+        # on the isolated Pickle thread (automated-gates(7): three NREs).
         assert 'int warmHourShift = (12 - GenLocalDate.HourOfDay(map) + 24) % 24;' in seasonal
         assert 'Find.TickManager.TicksGame + warmHourShift * GenDate.TicksPerHour' in seasonal
-        assert 'map.skyManager.SkyManagerUpdate();' in seasonal
+        assert 'GenCelestial.CurCelestialSunGlow(map)' in seasonal
+        assert 'solarGlow > 0.1f' in seasonal
+        assert 'map.skyManager.ForceSetCurSkyGlow(solarGlow);' in seasonal
+        assert 'map.skyManager.SkyManagerUpdate();' not in seasonal
+        assert 'savedSkyGlow = map.skyManager.CurSkyGlow;' in seasonal
+        assert 'map.skyManager.ForceSetCurSkyGlow(savedSkyGlow);' in seasonal
+        assert 'NativeSeasonalSowAndGrowth failed at ' in seasonal
+        assert 'InnerException' in seasonal
         assert 'warmDayPercent > 0.25f && warmDayPercent < 0.8f' in seasonal
         assert 'ricePlant.GrowthRateFactor_Light > 0.001f' in seasonal
         assert 'ricePlant.GrowthRate > 0f' in seasonal
