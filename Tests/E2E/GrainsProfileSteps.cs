@@ -214,8 +214,9 @@ namespace AncientMedievalJapanCore.E2E
                         "Minimum powder food must be research-free and available at a campfire.");
                     ctx.Assert(Math.Abs(food.GetStatValueAbstract(StatDefOf.Nutrition) - 0.9f) < 0.001f
                         && food.ingestible.tasteThought.defName == "AMJC_AteFlourFood", "Food nutrition/thought differs.");
-                    ctx.Assert(food.comps.OfType<CompProperties_Rottable>().Single().daysToRotStart == 2.5f,
-                        "Minimum powder foods must not become long-storage bread.");
+                    var rottable = food.comps.OfType<CompProperties_Rottable>().ToList();
+                    ctx.Assert(rottable.Count == 1 && rottable[0].daysToRotStart == 2.5f,
+                        "Powder meals must contain exactly one 2.5-day rottable comp.");
                 }
                 ctx.Assert(DefDatabase<ThoughtDef>.GetNamed("AMJC_AteFlourFood").stages[0].baseMoodEffect == 2f,
                     "The extra flour processing reward must remain +2 mood.");

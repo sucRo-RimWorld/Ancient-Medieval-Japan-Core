@@ -29,6 +29,30 @@ class ChainRegressionTests(unittest.TestCase):
         self.mutate('BaseWithoutMO/Defs/Items_Flour.xml','ThingDef/statBases/Nutrition','0.1')
     def test_milling_does_not_create_straw(self):
         self.mutate('Defs/RecipeDefs/Recipes_GrainsMilling.xml','RecipeDef/products',new_element='<AMJC_Millet>1</AMJC_Millet>')
+    def test_meal_must_replace_inherited_comp_list(self):
+        target = self.root/'Defs/ThingDefs_Items/Items_GrainsFood.xml'
+        xml = ET.parse(target)
+        del xml.find('ThingDef/comps').attrib['Inherit']
+        xml.write(target)
+        with self.assertRaises(AssertionError): validate(self.root)
+
+    def test_meal_must_not_reference_missing_texture(self):
+        self.mutate('Defs/ThingDefs_Items/Items_GrainsFood.xml',
+                    'ThingDef/graphicData/texPath', 'Things/Item/Meal/SimpleMeal')
+
+    def test_mood_memory_must_have_stage_description(self):
+        self.mutate('Defs/ThoughtDefs/Thoughts_GrainsFood.xml',
+                    'ThoughtDef/stages/li/description', '')
+
+    def test_production_fixture_uses_prepared_disposable_center(self):
+        source = (ROOT/'Tests/E2E/GrainsSimulationSteps.cs').read_text(encoding='utf-8')
+        assert 'center = map.Center;' in source
+        assert 'CellRect.CenteredOn(center, 7).Cells' in source
+        assert 'Quickstart map needs a clear 15x15 test area.' not in source
+        assert 'foreach (Thing thing in cell.GetThingList(map).ToList()) thing.Destroy(DestroyMode.Vanish);' in source
+        assert 'map.terrainGrid.SetTerrain(cell, TerrainDefOf.Soil);' in source
+        assert 'foreach (KeyValuePair<IntVec3,TerrainDef> cell in terrain)' in source
+
     def test_powder_food_not_bread_storage(self):
         self.mutate('Defs/ThingDefs_Items/Items_GrainsFood.xml','ThingDef/comps/li/daysToRotStart','8')
     def test_cooking_remains_research_free(self):

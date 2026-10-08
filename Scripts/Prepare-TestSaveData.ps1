@@ -63,9 +63,23 @@ if ($Profile -ne 'fixture') {
     }
     $required = @(Get-GrainsActiveMods $spec $installed)
     foreach ($id in $required) {
-        if ($installed[$id].Duplicates.Count -gt 0) {
-            throw "Ambiguous installed package $id at $($installed[$id].Root), $($installed[$id].Duplicates -join ', ')"
+        if ($installed[$id].Duplicates.Count -eq 0) { continue }
+        $locations = @($installed[$id].Root) + @($installed[$id].Duplicates)
+        # Only CCTO has a defined preference for parallel local/Workshop
+        # installations. Do not modify the user's installed mod copies.
+        if ($id -ne 'sucro.cropcoldtoleranceoverhaul') {
+            throw "Ambiguous installed package $id at $($locations -join ', ')"
         }
+        $localRoot = [IO.Path]::GetFullPath((Join-Path $RimWorldRoot 'Mods')) + [IO.Path]::DirectorySeparatorChar
+        $localMatches = @($locations | Where-Object {
+            [IO.Path]::GetFullPath($_).StartsWith($localRoot, [StringComparison]::OrdinalIgnoreCase)
+        })
+        if ($localMatches.Count -ne 1) {
+            throw "Ambiguous installed CCTO provider; expected exactly one local Mods copy: $($locations -join ', ')"
+        }
+        $installed[$id].Root = $localMatches[0]
+        $installed[$id].Duplicates = @()
+        Write-Host "[OK] CCTO has local and Workshop copies; isolated provider manifest selects local Mods: $($localMatches[0])"
     }
     New-Item -ItemType Directory -Force -Path $OutputRoot | Out-Null
     @($required | ForEach-Object { [pscustomobject]@{ PackageId = $_; Root = $installed[$_].Root } }) |

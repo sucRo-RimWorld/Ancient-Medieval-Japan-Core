@@ -22,9 +22,13 @@ function Metadata([string]$Id, [string[]]$Deps = @(), [string[]]$After = @()) {
 $temp = Join-Path ([IO.Path]::GetTempPath()) ('AMJ-Grains-' + [Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Force -Path $temp | Out-Null
 try {
-    $game = Join-Path $temp 'RimWorld'
+    # Match the real Steam folder structure; keep the fake Workshop copy
+    # inside this test's disposable directory, not a shared temp parent.
+    $game = Join-Path $temp 'steamapps/common/RimWorld'
     $mods = Join-Path $game 'Mods'
+    $workshop = Join-Path $temp 'steamapps/workshop/content/294100'
     New-Item -ItemType Directory -Force -Path $mods | Out-Null
+    New-Item -ItemType Directory -Force -Path $workshop | Out-Null
     $originalAbout = (Get-FileHash -LiteralPath (Join-Path $repo 'About/About.xml')).Hash
     $sourceConfig = Join-Path $temp 'UserConfig'
     New-Item -ItemType Directory -Force -Path $sourceConfig | Out-Null
@@ -42,6 +46,11 @@ try {
         if ($id -eq 'sucro.cropcoldtoleranceoverhaul') { $deps = @('brrainz.harmony') }
         (Metadata $id $deps).Save((Join-Path $aboutDir 'About.xml'))
     }
+    # Simulate the user's simultaneous CCTO local + Workshop installs
+    # without modifying their actual installation or normal mod list.
+    $duplicateCcto = Join-Path $workshop '3812412548/About'
+    New-Item -ItemType Directory -Force -Path $duplicateCcto | Out-Null
+    Copy-Item -LiteralPath (Join-Path $mods 'sucro.cropcoldtoleranceoverhaul/About/About.xml') -Destination (Join-Path $duplicateCcto 'About.xml')
     foreach ($profile in @('vanilla','vanilla-ccto','mo','mo-ccto')) {
         $spec = Get-GrainsTestProfile $profile
         & (Join-Path $repo 'Scripts/Stage-GrainsTestProfile.ps1') -RepositoryRoot $repo -ModsRoot $mods -Profile $profile
@@ -62,6 +71,14 @@ try {
         $output = Join-Path $temp $profile
         & (Join-Path $repo 'Scripts/Prepare-TestSaveData.ps1') -OutputRoot $output -Profile $profile -RimWorldRoot $game -SourceModsConfigPath (Join-Path $sourceConfig 'ModsConfig.xml')
         Assert ($LASTEXITCODE -eq 0) 'Config generation failed.'
+        $resolved = @(Get-Content -LiteralPath (Join-Path $output 'providers.json') -Raw -Encoding UTF8 | ConvertFrom-Json)
+        $cctoRecords = @($resolved | Where-Object { $_.PackageId -eq 'sucro.cropcoldtoleranceoverhaul' })
+        Assert ($cctoRecords.Count -eq [int]$spec.UseCCTO) 'Unexpected CCTO manifest presence.'
+        if ($spec.UseCCTO) {
+            $chosen = [IO.Path]::GetFullPath([string]$cctoRecords[0].Root)
+            $expected = [IO.Path]::GetFullPath((Join-Path $mods 'sucro.cropcoldtoleranceoverhaul'))
+            Assert ($chosen -eq $expected) 'CCTO duplicate resolution did not select the local installed copy.'
+        }
         [xml]$config = Get-Content -LiteralPath (Join-Path $output 'Config/ModsConfig.xml') -Raw
         $active = @($config.ModsConfigData.activeMods.li)
         Assert (($active -contains 'dankpyon.medieval.overhaul') -eq $spec.UseMO) 'MO presence mismatch.'
@@ -87,6 +104,14 @@ try {
             ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $summaryPath
         MustFail { & (Join-Path $repo 'Scripts/Validate-GrainsPickleSummary.ps1') -SummaryPath $summaryPath -Profile $profile } 'Unrelated summary was accepted.'
     }
+    # An unrelated duplicate required provider must remain an error.
+    $ambiguousMO = Join-Path $workshop '9999999999/About'
+    New-Item -ItemType Directory -Force -Path $ambiguousMO | Out-Null
+    Copy-Item -LiteralPath (Join-Path $mods 'dankpyon.medieval.overhaul/About/About.xml') -Destination (Join-Path $ambiguousMO 'About.xml')
+    MustFail {
+        & (Join-Path $repo 'Scripts/Prepare-TestSaveData.ps1') -OutputRoot (Join-Path $temp 'ambiguous-MO') -Profile 'mo' -RimWorldRoot $game -SourceModsConfigPath (Join-Path $sourceConfig 'ModsConfig.xml')
+    } 'An unrelated duplicate MO provider was silently selected.'
+    Remove-Item -LiteralPath (Split-Path -Parent $ambiguousMO) -Recurse -Force
     & (Join-Path $repo 'Scripts/Prepare-FixtureLoadFolders.ps1') -TargetRoot $target
     [xml]$fixtureLoader = Get-Content -LiteralPath (Join-Path $target 'loadFolders.xml') -Raw
     Assert ($fixtureLoader.loadFolders.'v1.6'.li[1].IfModActive -eq 'sucro.ancientmedievaljapan.core.mofixture') 'Legacy fixture condition was not isolated.'

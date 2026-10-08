@@ -5,8 +5,8 @@
     <label>houtou</label>
     <description>Hakutaku (餺飥). A dish representing an old kind of wheat-flour food prepared by kneading flour and heating it. Hakutaku in Heian-period records has been linked to present-day Yamanashi hoto, but the two cannot be assumed to be the same dish. Here it represents a simple wheat-flour food, not a modern miso-simmered dish with many ingredients.</description>
     <graphicData>
-      <texPath>Things/Item/Meal/SimpleMeal</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <texPath>Things/Item/Meal/Simple</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.9</Nutrition>
@@ -16,7 +16,12 @@
       <preferability>MealSimple</preferability>
       <tasteThought>AMJC_AteFlourFood</tasteThought>
     </ingestible>
-    <comps>
+    <comps Inherit="False">
+      <!-- Keep the Vanilla cooked meal family components; do not append a
+           second rottable comp inherited through MealFineBase. -->
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Ingredients" />
+      <li Class="CompProperties_FoodPoisonable" />
       <li Class="CompProperties_Rottable">
         <daysToRotStart>2.5</daysToRotStart>
         <rotDestroys>true</rotDestroys>
@@ -28,8 +33,8 @@
     <label>sobagaki</label>
     <description>Sobagaki (蕎麦掻き). A flour-based dish made by stirring buckwheat flour into hot water instead of shaping it into noodles. Before soba noodles became widespread, buckwheat was also eaten as cooked grains or kneaded flour.</description>
     <graphicData>
-      <texPath>Things/Item/Meal/SimpleMeal</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <texPath>Things/Item/Meal/Simple</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.9</Nutrition>
@@ -39,7 +44,12 @@
       <preferability>MealSimple</preferability>
       <tasteThought>AMJC_AteFlourFood</tasteThought>
     </ingestible>
-    <comps>
+    <comps Inherit="False">
+      <!-- Keep the Vanilla cooked meal family components; do not append a
+           second rottable comp inherited through MealFineBase. -->
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Ingredients" />
+      <li Class="CompProperties_FoodPoisonable" />
       <li Class="CompProperties_Rottable">
         <daysToRotStart>2.5</daysToRotStart>
         <rotDestroys>true</rotDestroys>
@@ -51,8 +61,8 @@
     <label>millet dumplings</label>
     <description>Millet dumplings (雑穀団子). A single game dish representing dumpling-like foods made by mixing flour from awa, hie, or kibi with water and cooking it. It does not recreate the sweet confections of the early modern period or later.</description>
     <graphicData>
-      <texPath>Things/Item/Meal/SimpleMeal</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <texPath>Things/Item/Meal/Simple</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.9</Nutrition>
@@ -62,7 +72,12 @@
       <preferability>MealSimple</preferability>
       <tasteThought>AMJC_AteFlourFood</tasteThought>
     </ingestible>
-    <comps>
+    <comps Inherit="False">
+      <!-- Keep the Vanilla cooked meal family components; do not append a
+           second rottable comp inherited through MealFineBase. -->
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Ingredients" />
+      <li Class="CompProperties_FoodPoisonable" />
       <li Class="CompProperties_Rottable">
         <daysToRotStart>2.5</daysToRotStart>
         <rotDestroys>true</rotDestroys>

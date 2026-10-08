@@ -167,6 +167,16 @@ class JapaneseLocalizationAudit(unittest.TestCase):
                 with self.assertRaises(AssertionError):
                     validate_rice_localizations(root)
 
+    def test_flour_food_mood_stage_has_japanese_description(self):
+        source = labels('Defs/ThoughtDefs/Thoughts_GrainsFood.xml')
+        japanese = labels('Languages/Japanese/DefInjected/ThoughtDef/AMJC_GrainsFood.xml')
+        stage = source.find("ThoughtDef[defName='AMJC_AteFlourFood']/stages/li")
+        self.assertIsNotNone(stage)
+        self.assertEqual(stage.findtext('description'), 'I ate a dish made from ground grain.')
+        self.assertEqual(japanese.findtext('AMJC_AteFlourFood.stages.0.label'), '粉食を食べた')
+        self.assertEqual(japanese.findtext('AMJC_AteFlourFood.stages.0.description'),
+                         '挽いた穀物から作った料理を食べた。')
+
     def test_shared_thing_explanations_do_not_claim_unimplemented_features(self):
         things = labels('Languages/Japanese/DefInjected/ThingDef/AMJC_StageA.xml')
         barley = things.findtext('AMJC_Plant_Barley.description')

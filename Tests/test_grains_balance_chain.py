@@ -125,7 +125,7 @@ class SevenGrainChainBalance(unittest.TestCase):
                 self.assertEqual(item.findtext("workSpeedStat"), "CookSpeed")
                 self.assertAlmostEqual(float(foods[meal].findtext("statBases/Nutrition")), 0.9)
                 self.assertEqual(float(foods[meal].findtext(
-                    "comps/li/daysToRotStart")), 2.5)
+                    "comps/li[@Class='CompProperties_Rottable']/daysToRotStart")), 2.5)
                 self.assertEqual(foods[meal].findtext("ingestible/tasteThought"),
                                  "AMJC_AteFlourFood")
         wheat_meal = meals["AMJC_CookHoutou"]
@@ -136,7 +136,7 @@ class SevenGrainChainBalance(unittest.TestCase):
         self.assertEqual(float(wheat_meal.findtext("workAmount")), 300)
         self.assertEqual(float(foods["AMJC_Houtou"].findtext("statBases/Nutrition")), 0.9)
         self.assertEqual(float(foods["AMJC_Houtou"].findtext(
-            "comps/li/daysToRotStart")), 2.5)
+            "comps/li[@Class='CompProperties_Rottable']/daysToRotStart")), 2.5)
         mood = defined("Defs/ThoughtDefs/Thoughts_GrainsFood.xml", "ThoughtDef")[
             "AMJC_AteFlourFood"]
         self.assertEqual(float(mood.findtext("stages/li/baseMoodEffect")), 2)

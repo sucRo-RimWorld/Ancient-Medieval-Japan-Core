@@ -79,6 +79,10 @@ def validate(root=ROOT):
             assert rec.find('researchPrerequisite') is None and rec.find('researchPrerequisites') is None
             assert [n.text for n in rec.findall('recipeUsers/li')] == ['Campfire','ElectricStove','FueledStove']
         assert float(defs['AMJC_AteFlourFood'].findtext('stages/li/baseMoodEffect')) == 2
+    mood = ET.parse(root/'Defs/ThoughtDefs/Thoughts_GrainsFood.xml').getroot()
+    stage = mood.find("ThoughtDef[defName='AMJC_AteFlourFood']/stages/li")
+    assert stage is not None and (stage.findtext('description') or '').strip()
+    assert stage.findtext('baseMoodEffect') == '2'
     patch = ET.parse(root/'BaseWithoutMO/Patches/CCTO_Wheat.xml')
     assert patch.findtext('.//coldDeathTemperature') == '-6'
     assert patch.findtext('.//xpath') == '/Defs/ThingDef[defName="AMJC_Plant_Wheat"]'

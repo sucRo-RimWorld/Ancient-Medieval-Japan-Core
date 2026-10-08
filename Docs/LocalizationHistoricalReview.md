@@ -178,3 +178,8 @@ These six English strings are translations of the author-approved Japanese §7 d
 - `AMJC_ThreshRiceBulk.jobString`：稲をまとめて脱穀している。 / Threshing rice in bulk.
 - `AMJC_HullRice.jobString`：籾摺りをしている。 / Hulling rice.
 - `AMJC_HullRiceBulk.jobString`：籾をまとめて籾摺りしている。 / Hulling rice in bulk.
+
+
+## 11. 粉食心情の実機エラー修正（2026-10-08）
+
+`AMJC_AteFlourFood` の心情付与は+2（0.5日、重複1回）のまま維持する。実機ログでStageの説明が空であるため、英語 `I ate a dish made from ground grain.`、日本語ラベル「粉食を食べた」、日本語説明「挽いた穀物から作った料理を食べた。」を追加。歴史的な新説や未実装の調理法を主張せず、実装済みの粉食心情だけを説明する。

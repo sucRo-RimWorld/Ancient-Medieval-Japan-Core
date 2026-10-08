@@ -147,14 +147,12 @@ namespace AncientMedievalJapanCore.E2E
                 {
                     Find.TickManager.CurTimeSpeed = TimeSpeed.Paused;
                     ctx.Require(Find.TickManager.CurTimeSpeed == TimeSpeed.Paused, "Controlled tick advancement requires pause.");
-                    bool found = false;
-                    foreach (IntVec3 cell in map.AllCells.OrderBy(c => c.DistanceToSquared(map.Center)))
-                    {
-                        CellRect area = CellRect.CenteredOn(cell, 7);
-                        if (!area.Cells.All(c => c.InBounds(map) && c.Standable(map) && c.GetEdifice(map) == null)) continue;
-                        center = cell; found = true; break;
-                    }
-                    ctx.Require(found, "Quickstart map needs a clear 15x15 test area.");
+                    // This isolated Quickstart map is disposable. Do not depend
+                    // on naturally occurring empty terrain: ruins, plants and
+                    // rock can cover every 15x15 area before setup clears it.
+                    center = map.Center;
+                    ctx.Require(CellRect.CenteredOn(center, 7).Cells.All(c => c.InBounds(map)),
+                        "Quickstart map is too small for the 15x15 production fixture.");
                     foreach (Pawn pawn in map.mapPawns.AllPawnsSpawned.ToList())
                     {
                         parked.Add(pawn, pawn.Position);

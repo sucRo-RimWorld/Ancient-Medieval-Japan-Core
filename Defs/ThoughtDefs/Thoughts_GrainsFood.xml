@@ -8,7 +8,7 @@
     <stages>
       <li>
         <label>ate flour food</label>
-        <description />
+        <description>I ate a dish made from ground grain.</description>
         <baseMoodEffect>2</baseMoodEffect>
       </li>
     </stages>
