@@ -108,5 +108,95 @@ class GeneratedAssetQaTest(unittest.TestCase):
             self.assertIn("candidate has no visible content", result["failures"])
 
 
+GENERATOR_SCRIPT = ROOT / "Scripts/Art/grains_image_generator.py"
+generator_spec = importlib.util.spec_from_file_location(
+    "grains_image_generator",
+    GENERATOR_SCRIPT,
+)
+generator = importlib.util.module_from_spec(generator_spec)
+sys.modules["grains_image_generator"] = generator
+generator_spec.loader.exec_module(generator)
+
+
+class GrainsImageGeneratorTest(unittest.TestCase):
+    @staticmethod
+    def _png_bytes():
+        import io
+
+        out = io.BytesIO()
+        Image.new("RGBA", (32, 32), (0, 0, 0, 0)).save(out, format="PNG")
+        return out.getvalue()
+
+    def test_prompt_locks_single_asset_and_reference_roles(self):
+        ref = generator._reference_from_bytes(
+            "accepted AMJ style reference",
+            "fake.png",
+            "fake.png",
+            self._png_bytes(),
+        )
+        prompt = generator._build_prompt(
+            "wheat",
+            "plant-mature",
+            {"prompt_rules": ["No gradients."]},
+            [ref],
+            "upright mature head",
+        )
+        self.assertIn("exactly ONE NEW isolated source image", prompt)
+        self.assertIn("accepted AMJ style reference", prompt)
+        self.assertIn("No gradients.", prompt)
+        self.assertIn("upright mature head", prompt)
+        self.assertIn("transparent background", prompt.lower())
+
+    def test_generator_rejects_authoritative_output_tree(self):
+        old_roots = generator.PROTECTED_OUTPUT_ROOTS
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            protected = root / "Textures"
+            protected.mkdir()
+            generator.PROTECTED_OUTPUT_ROOTS = (protected,)
+            try:
+                with self.assertRaisesRegex(generator.GenerationError, "protected"):
+                    generator._assert_safe_output(protected / "bad")
+                generator._assert_safe_output(root / "Work" / "ok")
+            finally:
+                generator.PROTECTED_OUTPUT_ROOTS = old_roots
+
+    def test_generator_multipart_is_single_candidate_with_all_refs(self):
+        refs = [
+            generator._reference_from_bytes(
+                "accepted AMJ style reference",
+                "a.png",
+                "a.png",
+                self._png_bytes(),
+            ),
+            generator._reference_from_bytes(
+                "subject identity reference",
+                "b.png",
+                "b.png",
+                self._png_bytes(),
+            ),
+        ]
+        body, content_type = generator._multipart(
+            {"model": "test", "n": "1"},
+            refs,
+        )
+        self.assertIn("multipart/form-data; boundary=", content_type)
+        self.assertEqual(body.count(b'name="image[]"'), 2)
+        self.assertEqual(body.count(b'name="n"'), 1)
+        self.assertIn(b"\r\n1\r\n", body)
+
+    def test_generator_policy_references_exist_and_has_no_retry_batch(self):
+        policy_path = ROOT / "Docs/References/AMJ_Grains_ImageGenerator.json"
+        policy = json.loads(policy_path.read_text(encoding="utf-8"))
+        self.assertEqual(policy["schema_version"], 1)
+        self.assertIn("plant-mature", policy["families"])
+        self.assertIn("boxed-contents", policy["families"])
+        for family in policy["families"].values():
+            self.assertNotIn("retries", family)
+            self.assertNotIn("batch", family)
+            for relative in family.get("accepted_references", []):
+                self.assertTrue((ROOT / relative).is_file(), relative)
+
+
 if __name__ == "__main__":
     unittest.main()
