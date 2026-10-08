@@ -384,16 +384,49 @@ namespace AncientMedievalJapanCore.E2E
                     {
                         ctx.Assert(barleyPlant.Growth > barleyBeforeCold + 0.000001f,
                             "Native TickLong must grow barley at 5 C in daylight.");
+                        // automated-gates(5).log: MO-only reaches the warm
+                        // recovery after longer production/planting jobs. The
+                        // old assertion could run in Plant.Resting hours
+                        // (local day percent <0.25 or >0.8), where vanilla
+                        // Plant.GrowthPerTick is zero at *any* temperature.
+                        // Move to the next local noon, then refresh the sky's
+                        // actual light state; never manufacture plant growth.
+                        int warmHourShift = (12 - GenLocalDate.HourOfDay(map) + 24) % 24;
+                        Find.TickManager.DebugSetTicksGame(
+                            Find.TickManager.TicksGame + warmHourShift * GenDate.TicksPerHour);
+                        map.skyManager.SkyManagerUpdate();
                         SetSeasonTemperature(25f, riceCell, barleyCell);
+                        float warmDayPercent = GenLocalDate.DayPercent(map);
+                        ctx.Require(warmDayPercent > 0.25f && warmDayPercent < 0.8f,
+                            "Warm recovery fixture must run outside the plant resting hours: "
+                            + warmDayPercent);
                         ctx.Require(PlantUtility.GrowthSeasonNow(riceCell, map, ricePlant.def),
                             "Rice must resume the native growth season at 25 C.");
+                        ctx.Require(ricePlant.GrowthRateFactor_Light > 0.001f &&
+                            ricePlant.GrowthRateFactor_Temperature > 0f &&
+                            ricePlant.GrowthRate > 0f &&
+                            ricePlant.LifeStage == PlantLifeStage.Growing,
+                            "Warm recovery requires live growing rice and real sunlight. "
+                            + "dayPercent=" + warmDayPercent
+                            + ", sunGlow=" + map.skyManager.CurSkyGlow
+                            + ", lightFactor=" + ricePlant.GrowthRateFactor_Light
+                            + ", tempFactor=" + ricePlant.GrowthRateFactor_Temperature
+                            + ", growthRate=" + ricePlant.GrowthRate
+                            + ", lifeStage=" + ricePlant.LifeStage);
                         riceBeforeWarm = ricePlant.Growth;
                     });
                     await SimulatePlantTicks(2200, "RiceWarmRecovery");
                     await RuntimeThread.Run(delegate
                     {
                         ctx.Assert(!ricePlant.Destroyed && ricePlant.Growth > riceBeforeWarm + 0.000001f,
-                            "Native TickLong must resume rice growth after warming.");
+                            "Native TickLong must resume rice growth after warming. "
+                            + "start=" + riceBeforeWarm + ", end=" + ricePlant.Growth
+                            + ", dayPercent=" + GenLocalDate.DayPercent(map)
+                            + ", sunGlow=" + map.skyManager.CurSkyGlow
+                            + ", tempFactor=" + ricePlant.GrowthRateFactor_Temperature
+                            + ", lightFactor=" + ricePlant.GrowthRateFactor_Light
+                            + ", growthRate=" + ricePlant.GrowthRate
+                            + ", lifeStage=" + ricePlant.LifeStage);
                     });
                 }
                 catch (Exception error) { failure = ExceptionDispatchInfo.Capture(error); }

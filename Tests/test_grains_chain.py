@@ -156,6 +156,19 @@ class ChainRegressionTests(unittest.TestCase):
         assert 'await SimulatePlantTicks(2200, "RiceWarmRecovery")' in seasonal
         assert 'private void SetSeasonTemperature(float temp' in seasonal
         assert 'room.TempTracker.EqualizeTemperature()' in seasonal
+        # Sunset / Plant.Resting caused the MO-only fifth native run to fail.
+        # Gate actual calendar daytime and updated game sky before recovering
+        # growth; merely moving the 25 C threshold is not a valid fix.
+        assert 'int warmHourShift = (12 - GenLocalDate.HourOfDay(map) + 24) % 24;' in seasonal
+        assert 'Find.TickManager.TicksGame + warmHourShift * GenDate.TicksPerHour' in seasonal
+        assert 'map.skyManager.SkyManagerUpdate();' in seasonal
+        assert 'warmDayPercent > 0.25f && warmDayPercent < 0.8f' in seasonal
+        assert 'ricePlant.GrowthRateFactor_Light > 0.001f' in seasonal
+        assert 'ricePlant.GrowthRate > 0f' in seasonal
+        assert 'ricePlant.LifeStage == PlantLifeStage.Growing' in seasonal
+        assert 'dayPercent=' in seasonal and 'sunGlow=' in seasonal
+        assert 'growthRate=' in seasonal
+
 
     def test_mo_flour_job_accepts_declared_hay_only(self):
         source = (ROOT/'Tests/E2E/GrainsSimulationSteps.cs').read_text(encoding='utf-8')

@@ -346,3 +346,14 @@ python Scripts/grains_save_contract.py compare --before "D:\\AMJ-TestResults\\gr
 **このテストの限界：** `BiomeDef.constantOutdoorTemperature` をテスト中だけ25/5℃に設定するため、RimWorldの native sow/growth/long-tick 経路は通るが、地形・実際の季節曲線・降雪・天候変化を通じた自然発生の温度変化を検証するものではない。また固定枯死温度の**実際の枯死処理**は今回の条件（5℃）では試験していない。CCTOなし/あり、MOなし/ありの4構成での実機結果は追加変更後**未実行**。旧 `automated-gates(4).log` の6/6・ERROR 0は変更前の版の合格実績であり、新しい播種テストの実行結果として再使用しない。
 
 今回追加したのはテストソースと回帰検証のみ。必要なゲーム本体・Pickle・QuickstartsがないCIではC#ビルドと実ゲーム動作は判断できない。 `Tests/test_grains_chain.py` は Job/生育tick/保存復元の接続が失われないことを静的に確認する。新しい実機確認でも元の `run-grains-tests.bat` を使い、4構成の6/6とERROR 0を必須にする。
+
+
+### automated-gates(5).log の実機結果と再現修正（2026-10-08 JST）
+
+2026-10-08の作者提供ログにより、新しい暦＋5/25℃実播種/成長検証で `vanilla`, `vanilla-ccto`, `mo-ccto` は各Pickle **6/6・ERROR 0**、`mo` のみ **5/6・ERRORあり**だった。失敗したシナリオ名は `Grains mo real harvest and flour food Bills complete` で、末尾に追加された温度復帰検証の `Native TickLong must resume rice growth after warming.` で失敗した。4構成すべてC#ビルド成功、CS1684は非致命の警告のみ。**この実行を4構成完全合格とは扱わない。**
+
+RimWorld 1.6参照実装の `Plant.Resting` は現地日内割合が `<0.25` または `>0.8` の場合にtrueとなり、`Plant.GrowthPerTick` は `Resting` 時に**温度にかかわらず0**となる。旧テストは最初の昼固定後、実ジョブ時間と15日暦ジャンプ・2,200tickを重ねながら、復温直前には日内時刻を昼へ戻していなかった。MO単独での成長停止が日没/休息によるものだった可能性が高いが、ログには最後の時刻・光量がないため断定しない。
+
+修正では、**最後の復温直前だけローカル時刻を次の正午へ進める**（`GenLocalDate.HourOfDay` と `GenDate.TicksPerHour` を使用）。テスト用の元tickは終了時に復元する。 `map.skyManager.SkyManagerUpdate()` で実スカイライトを刷新し、日内休息外・実際の光量・成長率・生育段階と25℃の生育季節を確認してから、以前と同じ`DoSingleTick` 2,200tickによる成長増加を検査する。失敗時は光量/温度係数/日内割合/成長段階/初期・最終成長量を出力し、原因を判別できるようにした。夜間休息を無視するPlantパッチ、架空の太陽光追加、成長量の強制設定、期待値緩和は行っていない。
+
+対象はE2Eソースと静的回帰のみ。**この修正後の実機4構成＋ERROR 0は未実行**であり、旧(4)・(5)ログから合格を流用しない。本番穀物XMLや栽培数値・CCTO・MO互換挙動は不変。未完の旧セーブ、自然気候の経時検証、実際のCCTO凍害枯死、専用画像の検証は引き続き独立のゲート。
