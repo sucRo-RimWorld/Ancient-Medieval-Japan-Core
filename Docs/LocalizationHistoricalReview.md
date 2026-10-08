@@ -108,3 +108,27 @@ The following descriptions and jobStrings are the approved Japanese-first implem
 | `AMJC_CookHoutou` | Prepare one serving of hakutaku using wheat flour. | Cooking hakutaku. |
 | `AMJC_CookSobagaki` | Prepare one serving of sobagaki using buckwheat flour. | Cooking sobagaki. |
 | `AMJC_CookMilletDumplings` | Prepare one serving of millet dumplings using millet flour. | Cooking millet dumplings. |
+
+## 7. 既存六作物の歴史説明候補（2026-10-08・未承認）
+
+**本節は作者未承認の日本語案です。** 前回承認済みの§2の15件には含まれません。既存Plantの日本語DefInjected、英語Def原文、label、料理・栽培のXMLを現段階では変更しません。確定後に日本語を先に反映し、対応する英訳を作成します。
+
+| DefName | 日本語説明案 | 設計値の照合 |
+|---|---|---|
+| `AMJC_Plant_FoxtailMillet_Awa` | **粟（あわ）。** 弥生時代の遺跡でも栽培が確認される畑作の雑穀で、米だけに頼らない食料の一つだった。AMJGrainsではキビより生育に時間がかかるが、一度の収穫量が多い。収穫後は脱穀と殻取りを行う。 | 6日／収量13。遺跡資料は吉野ヶ里歴史公園。 |
+| `AMJC_Plant_BarnyardMillet_Hie` | **稗（ひえ）。** 古くから栽培され、地域によっては米よりも日常的に食べられた雑穀。山間部で稗をふだんの主食として利用した記録も残る。AMJGrainsではアワやキビより低温で生育できるが、霜への強さまで保証するものではない。収穫後は脱穀と殻取りを行う。 | 成長最低5℃（アワ・キビ8℃）。日常食は農水省の宮崎県北部事例であり全国一律の歴史ではない。 |
+| `AMJC_Plant_ProsoMillet_Kibi` | **黍（きび）。** 米・麦・粟などと並び、「五穀」の一つに数えられることもある雑穀。AMJGrainsではアワ・ヒエより早く成熟し、肥沃度の影響も比較的小さい一方、一度の収穫量は少ない。収穫後は脱穀と殻取りを行う。 | 5日／収量11／肥沃度感応0.3。「五穀」には黍に代えて稗を含める異説あり。 |
+| `AMJC_Plant_Buckwheat_Soba` | **蕎麦（そば）。** 古代には凶作に備える作物として栽培を勧められ、山間部や痩せた土地でも育てられてきた。AMJGrainsでは短期栽培に向くが霜には弱く、収穫後に脱穀・殻取りを行う。古い蕎麦の食べ方と、江戸期に広まる麺状の蕎麦切りは区別する。 | 4日／収量8／最低肥沃度0.4。農水省の救荒作物・蕎麦切り史。 |
+| `AMJC_Plant_Barley` | **大麦（おおむぎ）。** 弥生時代に日本へ伝わり、奈良時代にも栽培が確認される麦類。米とともに食生活を支えてきた。AMJGrainsでは冷涼な気温での栽培に向き、雑穀より生育期間は長いが収量が多い。収穫後は脱穀と殻取りを行う。 | 10日／収量22／成長最低0℃。農水省「特集1 麦(1)」。 |
+| `Plant_Rice` | **陸稲（おかぼ・りくとう）。** 水田で育てる水稲と異なり、畑に作付けする稲。日本でも水稲と併せて栽培されてきたが、20世紀半ば以降は栽培が大幅に縮小した。AMJGrainsではバニラの稲を陸稲として扱い、温暖な気温と一定以上の肥沃度を必要とする。収穫物は従来の米を使い、水田栽培は別Modに委ねる。 | Vanilla `Plant_Rice` Patch：5日／収量11／最低肥沃度0.7／成長10～42℃。陸稲の古代の普及割合は確定していない。 |
+
+### 根拠・留保
+
+- 粟・稗の弥生期遺跡：https://www.yoshinogari.jp/ym/episode04/foods01.html
+- 稗を日常食とした宮崎県北部の事例：https://www.maff.go.jp/j/keikaku/syokubunka/k_ryouri/search_menu/menu/hie_zushii_miyazaki.html
+- 黍と稗をめぐる「五穀」の異説：https://www.maff.go.jp/j/keikaku/syokubunka/traditional-foods/bunrui/mamerui-kakou.html
+- 蕎麦の救荒作物としての歴史と蕎麦切り：https://www.maff.go.jp/j/pr/aff/1811/characterinformation.html
+- 大麦の日本への伝来と奈良時代の栽培：https://www.maff.go.jp/j/pr/aff/1602/spe1_01.html
+- 陸稲・水稲の歴史と1955年頃以降の陸稲減少：https://www.maff.go.jp/j/syouan/keikaku/soukatu/okome_summary/07/environ_ment_03.html
+
+**史実・ゲーム値の線引き:** ゲームで設定した最低生育温度を史実の絶対的な耐霜性とは解釈しません。地域の郷土食の記録を古代から全国一律の慣習とすることも避けます。表示名を「アワ」から「粟」等へ改めるかは本節では決めません。追加機能（稲の田植えや酒造等）も予告しません。

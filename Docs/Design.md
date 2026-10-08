@@ -1439,3 +1439,8 @@ Grainsの通常6件から専用Scenario要件を外し、旧fixtureの8件には
 ### 日本語説明文・翻訳監査（2026-10-08）
 
 歴史説明の候補、根拠、翻訳対象、既存の不一致の一覧は [LocalizationHistoricalReview.md](LocalizationHistoricalReview.md) を正本とする。まず機能の事実関係（MOなしの大麦研究不要、藁が出るのはMO互換時だけ、麦茶・味噌は未実装、小麦製粉はBase/MOとも利用可能）を日本語DefInjectedで修正した。餺飥・蕎麦掻き・雑穀団子等の15件の歴史説明・作業表示について、作者は2026-10-08に日本語を承認した（`Grains` 表記をプレイヤー向け説明では `AMJGrains` へ変更し、小麦の「実は食材になる」の曖昧さを解消した）。日本語DefInjectedへ承認済み表現を反映し、対応する英語原文のdescription・jobStringを追加した。日英の正本文面と典拠は `Docs/LocalizationHistoricalReview.md` §2/§6。DefName・既存label・栽培/加工数値・MOとの依存/切替は変更しない。既存植物の追加史実説明、実ゲーム4構成での文字列ロード・UI表示・ERROR 0は未検証。
+
+
+### 既存六作物の歴史説明追加監査（2026-10-08）
+
+前回承認済みの15件（粉食・製粉・非MO小麦等）の日本語・英語説明は確定済みとし、その文面を変更しない。残る栽培対象の**粟・稗・黍・蕎麦・大麦・陸稲**について、原文・日本語DefInjected・現行Plant/陸稲Patchを再照合し、歴史的背景を含む**日本語の未承認候補6件**を [LocalizationHistoricalReview.md §7](LocalizationHistoricalReview.md) に追加した。新候補には史料・地域差・数値の根拠を付し、既存の生育温度・収量と霜耐性の推測を混同しない。日本語承認までは新候補を本番DefInjected/英語へ反映しない。既存の `label` も維持する。テストは候補6件と既存のPlantDef/陸稲Patchの接続・未承認境界を静的に確認する。RimWorldでの実表示・四構成ERROR 0は未検証。

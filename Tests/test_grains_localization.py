@@ -97,6 +97,54 @@ class JapaneseLocalizationAudit(unittest.TestCase):
         self.assertNotIn('Medieval Overhaul', wheat)
         self.assertIn('製粉', wheat)
 
+    def test_six_draft_crop_descriptions_are_separate_from_approved_copy(self):
+        review = (ROOT/'Docs/LocalizationHistoricalReview.md').read_text(encoding='utf-8')
+        self.assertIn('## 7. 既存六作物の歴史説明候補', review)
+        draft = review.split('## 7. 既存六作物の歴史説明候補', 1)[1]
+        self.assertIn('未承認', draft)
+        expected = {
+            'AMJC_Plant_FoxtailMillet_Awa': ('粟（あわ）', 'AMJGrains'),
+            'AMJC_Plant_BarnyardMillet_Hie': ('稗（ひえ）', 'AMJGrains'),
+            'AMJC_Plant_ProsoMillet_Kibi': ('黍（きび）', 'AMJGrains'),
+            'AMJC_Plant_Buckwheat_Soba': ('蕎麦（そば）', 'AMJGrains'),
+            'AMJC_Plant_Barley': ('大麦（おおむぎ）', 'AMJGrains'),
+            'Plant_Rice': ('陸稲（おかぼ・りくとう）', 'AMJGrains'),
+        }
+        candidates = {}
+        for row in draft.splitlines():
+            if not row.startswith('| `'):
+                continue
+            cells = [cell.strip() for cell in row.split('|')]
+            if len(cells) >= 5:
+                name = cells[1].strip('`')
+                self.assertNotIn(name, candidates, 'duplicate crop candidate: ' + name)
+                candidates[name] = cells[2].replace('**', '')
+        self.assertEqual(set(candidates), set(expected))
+        live = all_localizations('Languages/Japanese/DefInjected')
+        for name, (name_form, mod_name) in expected.items():
+            self.assertIn(name + '.description', live)
+            self.assertIn(name + '.label', live)
+            self.assertTrue(candidates[name].startswith(name_form), name)
+            self.assertIn(mod_name, candidates[name], name)
+            # The six *new* historical drafts must not overwrite current
+            # translations before their own Japanese-first approval.
+            self.assertNotEqual(live[name + '.description'], candidates[name])
+        plants = {
+            d.findtext('defName'): d.find('plant')
+            for d in ET.parse(ROOT/'Defs/ThingDefs_Plants/Plants_StageA.xml').getroot()
+            if d.tag == 'ThingDef'
+        }
+        self.assertLess(float(plants['AMJC_Plant_BarnyardMillet_Hie'].findtext('minGrowthTemperature')),
+                        float(plants['AMJC_Plant_FoxtailMillet_Awa'].findtext('minGrowthTemperature')))
+        self.assertLess(float(plants['AMJC_Plant_ProsoMillet_Kibi'].findtext('growDays')),
+                        float(plants['AMJC_Plant_FoxtailMillet_Awa'].findtext('growDays')))
+        self.assertLess(float(plants['AMJC_Plant_Buckwheat_Soba'].findtext('growDays')),
+                        float(plants['AMJC_Plant_Barley'].findtext('growDays')))
+        upland = (ROOT/'Patches/UplandRice.xml').read_text(encoding='utf-8')
+        self.assertIn('<fertilityMin>0.7</fertilityMin>', upland)
+        self.assertIn('<minGrowthTemperature>10</minGrowthTemperature>', upland)
+        self.assertIn('<maxGrowthTemperature>42</maxGrowthTemperature>', upland)
+
     def test_approved_japanese_english_parity_and_recipe_work_strings(self):
         audit = (ROOT/'Docs/LocalizationHistoricalReview.md').read_text(encoding='utf-8')
         self.assertIn('作者承認済み', audit)
