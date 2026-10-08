@@ -75,8 +75,10 @@ zero skips. Assertions check actual provider presence, fixture/production-Core
 absence, resolved primary crop/recipe/simple-meal contracts, loaded wheat/flour/milling/food contracts, and presence/absence of AMJ cold-tolerance extensions. Runtime log checking
 fails on **any ERROR**, including provider errors. Both summary and log gates
 run after a launched game even if the process or scenarios already failed.
-Missing fresh output is a failure. The game watchdog is five minutes per profile;
-the private-desktop matrix watchdog is forty minutes and terminates its own tree.
+Missing fresh output is a failure. The Grains game-process watchdog is nine minutes per profile;
+Pickle has a separate **seven-minute run-wide limit**, exceeding the production scenario's
+270-second allowance. The private-desktop matrix watchdog remains forty minutes and
+terminates its own tree. The legacy fixture suite retains its four-minute Pickle default.
 
 These are **migration smoke tests**, not the completed release matrix. Subsequent
 implementation must prove actual harvest/Bill cooking behavior, six-grain environmental-choice
@@ -259,7 +261,7 @@ The upland rice XML now uses conditional replace-or-add for all six PlantPropert
 
 The existing quickstart production scenario now adds **five real Vanilla `CookMealSimple` Bills** after native harvest and Grains' eleven existing thresh/hull/mill/flour-food Bills. Inputs must come from additional native thresh/hull Bills using the already-harvested millet, buckwheat, barley and wheat sheaves; two additional real Soba harvests provide enough sheaves for the second bulk route. Vanilla `RawRice` is taken directly from the native upland-rice harvest. The five edible ingredient Defs are `AMJC_Millet` (shared by Awa/Hie/Kibi), `AMJC_Buckwheat`, `AMJC_Barley`, `AMJC_Wheat`, and `RawRice`. Each meal Bill locks its ingredient filter to one raw grain and verifies its actual consumed stack count, recipe completion and additional `MealSimple` output. No harvested or cooked ingredient is manufactured by the fixture.
 
-A new static regression in `Tests/test_grains_chain.py` protects the E2E harness wiring and the identical four-profile feature tags. The long `@quickstart:AmjStageAQuickstart` scenario uses Pickle `@timeout:270`; the production helper's wall-clock watchdog is 240 seconds and the isolated game-runner timeout is 420 seconds. The profile suite still expects exactly six scenarios for each of four profiles, with strict scenario/ERROR-0 gating. **This is source/test harness implementation only, not a claim of successful game execution or C# compilation.** Dedicated production art, true native sow job, four-profile runtime, graphical checks, migration and release gating remain open.
+A new static regression in `Tests/test_grains_chain.py` protects the E2E harness wiring and the identical four-profile feature tags. The long `@quickstart:AmjStageAQuickstart` scenario uses Pickle `@timeout:270`; the production helper's wall-clock watchdog is 240 seconds, the isolated Pickle run-wide limit is 420 seconds, and the game-process watchdog is 540 seconds. The profile suite still expects exactly six scenarios for each of four profiles, with strict scenario/ERROR-0 gating. **This is source/test harness implementation only, not a claim of successful game execution or C# compilation.** Dedicated production art, true native sow job, four-profile runtime, graphical checks, migration and release gating remain open.
 
 
 ## MO 1.6 source/provider preflight (2026-10-08)
@@ -267,3 +269,8 @@ A new static regression in `Tests/test_grains_chain.py` protects the E2E harness
 The provided packaged MO archive `3219596926.zip` was checked as source evidence. All 263 XML files under the loaded `1.6/Defs` root parsed. It contains `DankPyon_Plant_Wheat` (12-day grow period, yield 28, `DankPyon_RawWheat`), `DankPyon_Flour` (nutrition 0.05), the researched `DankPyon_Millstone`, both 1× and 10× flour recipes, and `DankPyon_DoBillsMillstone` (`WorkGiver_DoBill` on Cooking, fixed to the MO millstone). This **does not prove loaded Defs, C# compilation or runtime job success**.
 
 The existing `Tests/validate_grains_chain.py --mo-root` source validator now accepts an extracted Medieval Overhaul installation **or** a Workshop ZIP directly. In ZIP mode it reads only version 1.6 XML and checks the native MO WorkGiver, both flour recipes and wheat provider. The static regression creates a synthetic versioned ZIP and confirms that an incompatible MO WorkGiver fails before the game is run. Example: `python Tests/validate_grains_chain.py --mo-root 3219596926.zip`. Game-run four-profile Pickle, strict runtime ERROR 0, actual native sow, art and migration gates remain pending.
+
+
+### Pickle run-wide timeout audit (2026-10-08)
+
+Pickle's `-pickle-run-timeout` is measured in **minutes** and applies to the entire feature run, whereas `@timeout:270` allows one long production scenario 270 **seconds**. The former shared 4-minute (240-second) global cap could terminate this scenario prematurely. The shared launcher now accepts `-PickleRunTimeoutMinutes` (default `4` for legacy tests); Grains' four-profile runner uses `7` minutes with a separate `540`-second process watchdog. The Windows static tooling verifies `scenario < Pickle run < process` and the 40-minute four-profile watchdog boundary. This is runner verification, not proof of game runtime or C# compilation.

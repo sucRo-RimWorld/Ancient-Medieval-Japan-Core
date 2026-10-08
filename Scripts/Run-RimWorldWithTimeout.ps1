@@ -13,10 +13,17 @@ param(
 
     [string]$RunFilter = "stage-a.feature",
 
-    [int]$TimeoutSeconds = 300
+    [int]$TimeoutSeconds = 300,
+
+    # Pickle run-wide timeout is in minutes; default preserves legacy callers.
+    [ValidateRange(1, 1440)]
+    [int]$PickleRunTimeoutMinutes = 4
 )
 
 $ErrorActionPreference = "Stop"
+if (($PickleRunTimeoutMinutes * 60) -ge $TimeoutSeconds) {
+    throw "Pickle run timeout must be shorter than the process timeout."
+}
 
 if (-not (Test-Path -LiteralPath $ExePath)) {
     Write-Host "[ERROR] RimWorld executable was not found:" -ForegroundColor Red
@@ -39,7 +46,7 @@ $arguments = @(
     '-pickle-mode=fast',
     '-pickle-report-dir="' + $ReportDir + '"',
     '-pickle-no-browser',
-    '-pickle-run-timeout=4'
+    ('-pickle-run-timeout={0}' -f $PickleRunTimeoutMinutes)
 ) -join ' '
 
 $psi = New-Object System.Diagnostics.ProcessStartInfo

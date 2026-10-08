@@ -122,6 +122,24 @@ try {
     $installed['rimworks.pickle'].Xml = Metadata 'rimworks.pickle' @() @('rimworks.quickstarts')
     $installed['rimworks.quickstarts'].Xml = Metadata 'rimworks.quickstarts' @() @('rimworks.pickle')
     MustFail { Get-GrainsActiveMods (Get-GrainsTestProfile 'vanilla') $installed } 'Active load-order cycle was accepted.'
+    # Pickle run-wide timeouts are in minutes, scenario timeouts in seconds.
+    $launcherSource = Get-Content -LiteralPath (Join-Path $repo 'Scripts/Run-RimWorldWithTimeout.ps1') -Raw
+    $runnerSource = Get-Content -LiteralPath (Join-Path $repo 'Scripts/Run-GrainsProfiles.ps1') -Raw
+    Assert ($launcherSource.Contains('[int]$PickleRunTimeoutMinutes = 4')) 'Legacy Pickle timeout default changed.'
+    Assert ($launcherSource.Contains("'-pickle-run-timeout={0}'")) 'Pickle run-wide option missing.'
+    $runMatch = [regex]::Match($runnerSource, '-TimeoutSeconds\s+(\d+)\s+-PickleRunTimeoutMinutes\s+(\d+)')
+    Assert $runMatch.Success 'Grains runner must set both timeout budgets.'
+    $processSeconds = [int]$runMatch.Groups[1].Value
+    $runSeconds = [int]$runMatch.Groups[2].Value * 60
+    Assert ($processSeconds -gt $runSeconds) 'Process watchdog can preempt the Pickle run cap.'
+    Assert ($processSeconds * 4 -lt 40 * 60) 'Four-profile maximum exceeds the desktop watchdog.'
+    foreach ($profile in @('vanilla','vanilla-ccto','mo','mo-ccto')) {
+        $feature = Get-Content -LiteralPath (Join-Path $repo "Tests/E2E/Profiles/grains-$profile.feature") -Raw
+        $scenarioTimeout = [regex]::Match($feature, '@timeout:(\d+)')
+        Assert $scenarioTimeout.Success "Production scenario timeout is missing: $profile"
+        Assert ($runSeconds -gt [int]$scenarioTimeout.Groups[1].Value) "Pickle run cap is shorter than the production scenario: $profile"
+    }
+
     MustFail { Get-GrainsTestProfile 'invalid' } 'Invalid profile was accepted.'
     Write-Host '[OK] Four-profile staging/config/summary/negative regressions PASS (no RimWorld runtime claim).'
 } finally { Remove-Item -LiteralPath $temp -Recurse -Force }

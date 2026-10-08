@@ -48,7 +48,7 @@ try {
             $hashes | Set-Content -LiteralPath (Join-Path $report 'payload-sha256.txt') -Encoding UTF8
             if (-not (Test-Path -LiteralPath (Join-Path $RimWorldRoot 'RimWorldWin64.exe'))) { throw 'RimWorld executable missing.' }
             $launched = $true
-            & (Join-Path $PSScriptRoot 'Run-RimWorldWithTimeout.ps1') -ExePath (Join-Path $RimWorldRoot 'RimWorldWin64.exe') -SavedataFolder $savedata -ReportDir $report -LogPath $log -RunFilter $spec.Feature -TimeoutSeconds 420
+            & (Join-Path $PSScriptRoot 'Run-RimWorldWithTimeout.ps1') -ExePath (Join-Path $RimWorldRoot 'RimWorldWin64.exe') -SavedataFolder $savedata -ReportDir $report -LogPath $log -RunFilter $spec.Feature -TimeoutSeconds 540 -PickleRunTimeoutMinutes 7
             $result = $LASTEXITCODE
         } catch { $diagnostic = $_.Exception.Message; Write-Host "[ERROR] $name - $diagnostic"; $result = 2 }
 
