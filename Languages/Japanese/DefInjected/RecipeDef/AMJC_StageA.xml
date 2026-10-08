@@ -2,11 +2,11 @@
 <LanguageData>
 
   <AMJC_ThreshMillet.label>雑穀を脱穀する</AMJC_ThreshMillet.label>
-  <AMJC_ThreshMillet.description>雑穀束を脱穀し、藁と殻付き雑穀に分ける。</AMJC_ThreshMillet.description>
+  <AMJC_ThreshMillet.description>雑穀束を脱穀し、殻付き雑穀にする。</AMJC_ThreshMillet.description>
   <AMJC_ThreshMillet.jobString>雑穀を脱穀している。</AMJC_ThreshMillet.jobString>
 
   <AMJC_ThreshMilletBulk.label>雑穀を脱穀する x10</AMJC_ThreshMilletBulk.label>
-  <AMJC_ThreshMilletBulk.description>雑穀束10個をまとめて脱穀し、藁と殻付き雑穀に分ける。</AMJC_ThreshMilletBulk.description>
+  <AMJC_ThreshMilletBulk.description>雑穀束10個をまとめて脱穀し、殻付き雑穀にする。</AMJC_ThreshMilletBulk.description>
   <AMJC_ThreshMilletBulk.jobString>雑穀をまとめて脱穀している。</AMJC_ThreshMilletBulk.jobString>
 
   <AMJC_HullMillet.label>雑穀の殻を取る</AMJC_HullMillet.label>
@@ -19,11 +19,11 @@
 
 
   <AMJC_ThreshBuckwheat.label>ソバを脱穀する</AMJC_ThreshBuckwheat.label>
-  <AMJC_ThreshBuckwheat.description>ソバ束を脱穀し、藁と殻付きソバに分ける。</AMJC_ThreshBuckwheat.description>
+  <AMJC_ThreshBuckwheat.description>ソバ束を脱穀し、殻付きソバにする。</AMJC_ThreshBuckwheat.description>
   <AMJC_ThreshBuckwheat.jobString>ソバを脱穀している。</AMJC_ThreshBuckwheat.jobString>
 
   <AMJC_ThreshBuckwheatBulk.label>ソバを脱穀する x10</AMJC_ThreshBuckwheatBulk.label>
-  <AMJC_ThreshBuckwheatBulk.description>ソバ束10個をまとめて脱穀し、藁と殻付きソバに分ける。</AMJC_ThreshBuckwheatBulk.description>
+  <AMJC_ThreshBuckwheatBulk.description>ソバ束10個をまとめて脱穀し、殻付きソバにする。</AMJC_ThreshBuckwheatBulk.description>
   <AMJC_ThreshBuckwheatBulk.jobString>ソバをまとめて脱穀している。</AMJC_ThreshBuckwheatBulk.jobString>
 
   <AMJC_HullBuckwheat.label>ソバの殻を取る</AMJC_HullBuckwheat.label>
@@ -36,11 +36,11 @@
 
 
   <AMJC_ThreshBarley.label>大麦を脱穀する</AMJC_ThreshBarley.label>
-  <AMJC_ThreshBarley.description>大麦束を脱穀し、藁と殻付き大麦に分ける。</AMJC_ThreshBarley.description>
+  <AMJC_ThreshBarley.description>大麦束を脱穀し、殻付き大麦にする。</AMJC_ThreshBarley.description>
   <AMJC_ThreshBarley.jobString>大麦を脱穀している。</AMJC_ThreshBarley.jobString>
 
   <AMJC_ThreshBarleyBulk.label>大麦を脱穀する x10</AMJC_ThreshBarleyBulk.label>
-  <AMJC_ThreshBarleyBulk.description>大麦束10個をまとめて脱穀し、藁と殻付き大麦に分ける。</AMJC_ThreshBarleyBulk.description>
+  <AMJC_ThreshBarleyBulk.description>大麦束10個をまとめて脱穀し、殻付き大麦にする。</AMJC_ThreshBarleyBulk.description>
   <AMJC_ThreshBarleyBulk.jobString>大麦をまとめて脱穀している。</AMJC_ThreshBarleyBulk.jobString>
 
   <AMJC_HullBarley.label>大麦の殻を取る</AMJC_HullBarley.label>
