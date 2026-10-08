@@ -37,6 +37,7 @@ For AMJ art, resolve rules in this order:
 4. Project `Docs/GoldenPaths/FixedImageTemplates.md` — only when visible parts are intentionally reused pixel-exactly.
 
 Current asset-class specifications:
+- grain/crop source generation: `Docs/GoldenPaths/GrainImageGeneration.md` (entry point: `Scripts/Art/grains_image_generator.py`);
 - boxed resources / masu: `Docs/GoldenPaths/BoxedResourceIconPipeline.md`;
 - Workshop covers: Project `Docs/WorkshopCoverStyle.md` + Project `Docs/GoldenPaths/WorkshopCoverPipeline.md`;
 - prerequisite-Mod retextures: Project `Docs/RetextureImplementationGuidelines.md` plus the owning repository's art specification.
