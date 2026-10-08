@@ -2,10 +2,11 @@
 import shutil
 import tempfile
 from pathlib import Path
+from zipfile import ZipFile
 import unittest
 import xml.etree.ElementTree as ET
 from amj_profile_xml import ROOT
-from validate_grains_chain import validate
+from validate_grains_chain import validate, validate_mo_source
 
 
 class ChainRegressionTests(unittest.TestCase):
@@ -66,6 +67,36 @@ class ChainRegressionTests(unittest.TestCase):
             assert '@quickstart:AmjStageAQuickstart @timeout:270' in feature
             assert 'Then Grains harvest and flour food Bills complete through real jobs' in feature
             assert feature.count('  Scenario:') == 6
+
+    def test_mo_16_archive_provider_contract(self):
+        # Synthetic compressed MO provider: run without the proprietary game.
+        things = """<Defs>
+          <ThingDef><defName>DankPyon_Flour</defName><statBases><Nutrition>0.05</Nutrition></statBases></ThingDef>
+          <ThingDef><defName>DankPyon_Millstone</defName><researchPrerequisites><li>DankPyon_BasicAgriculture</li></researchPrerequisites></ThingDef>
+          <ThingDef><defName>DankPyon_Plant_Wheat</defName><plant><growDays>12</growDays><harvestYield>28</harvestYield><harvestedThingDef>DankPyon_RawWheat</harvestedThingDef></plant></ThingDef>
+          <ThingDef><defName>DankPyon_RawWheat</defName></ThingDef>
+        </Defs>"""
+        recipes = """<Defs>
+          <RecipeDef><defName>DankPyon_CraftFlour</defName><recipeUsers><li>DankPyon_Millstone</li></recipeUsers><ingredients><li><count>1</count></li></ingredients><products><DankPyon_Flour>1</DankPyon_Flour><Hay>1</Hay></products></RecipeDef>
+          <RecipeDef><defName>DankPyon_CraftFlourBulk</defName><recipeUsers><li>DankPyon_Millstone</li></recipeUsers><ingredients><li><count>10</count></li></ingredients><products><DankPyon_Flour>10</DankPyon_Flour><Hay>10</Hay></products></RecipeDef>
+        </Defs>"""
+        worker = """<Defs><WorkGiverDef><defName>DankPyon_DoBillsMillstone</defName>
+          <giverClass>WorkGiver_DoBill</giverClass><workType>Cooking</workType>
+          <fixedBillGiverDefs><li>DankPyon_Millstone</li></fixedBillGiverDefs>
+        </WorkGiverDef></Defs>"""
+        archive = self.root/'3219596926.zip'
+        def package(work):
+            with ZipFile(archive,'w') as z:
+                z.writestr('3219596926/1.6/Defs/Things.xml',things)
+                z.writestr('3219596926/1.6/Defs/Recipes.xml',recipes)
+                z.writestr('3219596926/1.6/Defs/WorkGivers.xml',work)
+                z.writestr('3219596926/1.4/Defs/Things.xml',things)
+        package(worker)
+        validate_mo_source(archive)
+        package(worker.replace('WorkGiver_DoBill','WorkGiver_PlantsCut'))
+        with self.assertRaises(AssertionError):validate_mo_source(archive)
+        package(worker.replace('DankPyon_Millstone</li>','OtherMillstone</li>'))
+        with self.assertRaises(AssertionError):validate_mo_source(archive)
 
     def test_no_duplicate_fallback_in_mo(self):
         self.mutate('Defs/ThingDefs_Items/Items_GrainsFlour.xml','.',new_element='<ThingDef><defName>AMJC_WheatFlour</defName></ThingDef>')

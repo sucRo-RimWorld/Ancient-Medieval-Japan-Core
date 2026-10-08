@@ -1,6 +1,7 @@
 """Static Base/MO flour-chain contracts; no XML inheritance/game execution claim."""
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from zipfile import ZipFile
 from amj_profile_xml import ROOT, profile_xml
 
 SHARED_NAMES = {
@@ -89,12 +90,24 @@ def validate(root=ROOT):
 
 def validate_mo_source(mo_root):
     source = Path(mo_root)
-    defs_root = source/'1.6/Defs' if (source/'1.6/Defs').is_dir() else source/'Defs'
     index = {}
-    for path in defs_root.rglob('*.xml'):
-        for n in ET.parse(path).getroot():
-            name = n.findtext('defName')
-            if name:index.setdefault((n.tag,name),[]).append(n)
+    if source.is_file() and source.suffix.lower() == '.zip':
+        with ZipFile(source) as archive:
+            # Ignore older archived 1.4/1.5 defs: only 1.6 is loadable.
+            entries = [name for name in archive.namelist()
+                       if name.endswith('.xml') and '/1.6/Defs/' in ('/' + name)]
+            assert entries, 'MO archive has no 1.6/Defs XML files'
+            for entry in entries:
+                for node in ET.fromstring(archive.read(entry)):
+                    name = node.findtext('defName')
+                    if name:index.setdefault((node.tag,name),[]).append(node)
+    else:
+        defs_root = source/'1.6/Defs' if (source/'1.6/Defs').is_dir() else source/'Defs'
+        assert defs_root.is_dir(), 'MO 1.6 Defs directory is missing'
+        for path in defs_root.rglob('*.xml'):
+            for node in ET.parse(path).getroot():
+                name = node.findtext('defName')
+                if name:index.setdefault((node.tag,name),[]).append(node)
     def get(typ,name):
         matches=index.get((typ,name),[]);assert len(matches)==1, name
         return matches[0]
@@ -102,17 +115,29 @@ def validate_mo_source(mo_root):
     assert float(flour.findtext('statBases/Nutrition')) == 0.05
     stone=get('ThingDef','DankPyon_Millstone')
     assert stone.find('researchPrerequisites') is not None
-    recipe=get('RecipeDef','DankPyon_CraftFlour')
-    assert recipe.findtext('recipeUsers/li') == 'DankPyon_Millstone'
-    assert float(recipe.findtext('ingredients/li/count')) == float(recipe.findtext('products/DankPyon_Flour'))
-    assert recipe.find('products/Hay') is not None
-    print('Supplied MO 1.6 flour nutrition/mill/recipe/research patch target audit: PASS')
+    for recipe_name, count in (('DankPyon_CraftFlour', 1), ('DankPyon_CraftFlourBulk', 10)):
+        recipe = get('RecipeDef', recipe_name)
+        assert recipe.findtext('recipeUsers/li') == 'DankPyon_Millstone', recipe_name
+        assert float(recipe.findtext('ingredients/li/count')) == count, recipe_name
+        assert float(recipe.findtext('products/DankPyon_Flour')) == count, recipe_name
+        assert float(recipe.findtext('products/Hay')) == count, recipe_name
+    # MO's native WorkGiver must actually route bills to the millstone.
+    giver = get('WorkGiverDef','DankPyon_DoBillsMillstone')
+    assert giver.findtext('giverClass') == 'WorkGiver_DoBill'
+    assert giver.findtext('workType') == 'Cooking'
+    assert 'DankPyon_Millstone' in [n.text for n in giver.findall('fixedBillGiverDefs/li')]
+    wheat = get('ThingDef','DankPyon_Plant_Wheat')
+    assert float(wheat.findtext('plant/growDays')) == 12
+    assert float(wheat.findtext('plant/harvestYield')) == 28
+    assert wheat.findtext('plant/harvestedThingDef') == 'DankPyon_RawWheat'
+    get('ThingDef','DankPyon_RawWheat')
+    print('Supplied MO 1.6 flour/mill/WorkGiver/wheat source audit: PASS')
 
 
 if __name__ == '__main__':
     import argparse
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--mo-root',type=Path)
+    parser.add_argument('--mo-root',type=Path,help='Installed MO folder or Workshop ZIP archive')
     args=parser.parse_args()
     validate()
     if args.mo_root:validate_mo_source(args.mo_root)
