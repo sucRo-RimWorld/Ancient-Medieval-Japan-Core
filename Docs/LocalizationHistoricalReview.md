@@ -8,11 +8,11 @@
 
 | 対象 | 現状 | 対応 |
 |---|---|---|
-| アワ・ヒエ・キビ・ソバ・大麦、収穫物・穀粒 | 和訳descriptionあり、史実・地域情報は薄く、ゲーム数値中心 | 歴史説明の再審査は未承認。**Baseで研究不要の大麦**という実装に反する記載を訂正 |
+| アワ・ヒエ・キビ・ソバ・大麦、収穫物・穀粒 | Plant5件の史実・地域情報は§7で承認済み、収穫物・穀粒には既存の機能説明を維持 | Plant5件の説明を日英で本番反映。**Baseで研究不要の大麦**という実装に反する旧記載も訂正済み |
 | `AMJC_Wheat` と `AMJC_Barley` | 前者はMO醸造だけを説明、後者は未実装の麦茶・味噌を予告 | Base/MO共通の実装済み食材用途だけに訂正 |
 | 共通加工Recipe（雑穀・ソバ・大麦） | 日本語descriptionに「藁を得る」とあり、Baseでは藁を生成しない | Base/MO共通の「殻付き穀物を得る」説明に訂正 |
 | 小麦脱穀Recipe | BaseとMOで同じDefNameだがMOでのみ藁生成 | Base翻訳のみ訂正し、MO翻訳は維持 |
-| `Plant_Rice` / `RawRice` | Vanilla米を陸稲化。陸稲の和訳label/descriptionあり | 別の米Plant/食材を追加したと書かない。史実説明の拡張案は審査待ち |
+| `Plant_Rice` / `RawRice` | Vanilla米を陸稲化し、陸稲の史実説明§7を日英反映。`RawRice` は再利用 | 別の米Plant/食材を追加したと書かない。水田栽培は別Modの責務 |
 | 粉 `AMJC_BuckwheatFlour` / `AMJC_MilletFlour` | ThingDef本体description空、和訳labelのみ | 承認済み、日本語・英語へ反映 |
 | 料理 `AMJC_Houtou` / `AMJC_Sobagaki` / `AMJC_MilletDumplings` | ThingDef本体description空、和訳labelのみ | 承認済み、日本語・英語へ反映 |
 | 共有の製粉・料理Recipe5件 | description空、和訳labelのみ、英語jobStringが残る | 説明文と作業表示の承認済み、日本語・英語へ反映 |
@@ -55,7 +55,7 @@
 
 粉食Recipeは**Nutrition 0.5相当の粉**を要求する（粉1個のNutritionは0.05）。上表の製粉数量と混同しない。
 
-### 既存Plant和訳の次回レビュー候補
+### 既存Plant和訳の歴史説明（§7で承認・反映済み）
 
 - アワ・ヒエ・キビ: 「粟（あわ）」「稗（ひえ）」「黍（きび）」の名形を確認。史実の気候耐性とゲームの収量・枯死値は分けて説明する。
 - ソバ・大麦: 「蕎麦（そば）」「大麦（おおむぎ）」の名形を確認。江戸期の蕎麦切り普及を中世の標準食としない。
@@ -78,7 +78,7 @@
 1. §2の**日本語15件が作者承認済み**。共通/非MO各フォルダのThingDef/RecipeDef日本語descriptionと6件のjobStringへ反映した。Grainsの名称を表示文中では **AMJGrains** に統一し、小麦の「実は」の両義性も修正した。
 2. §6の英文は承認済み日本語から翻訳し、各ThingDef/RecipeDefの英語原文のdescriptionおよびjobStringへ反映した。日本語だけにない新しい歴史断定を追加しない。既存label・DefName・packageId・料理内容は変更しない。
 3. `Tests/test_grains_localization.py` は§2/§6の承認済み文面・ローカライズキー・読み込み対象ファイルと本番XMLの一致を静的検証し、将来の一方だけの文面改変を検出する。
-4. 追加の植物説明（アワ・ヒエ・キビ・ソバ・大麦・陸稲）の史実表現と、**実ゲーム4構成での表示・言語切替・ERROR 0** は別ゲートのまま。静的検証を実機成功と扱わない。
+4. §7の六作物の歴史説明は追加承認後に日英へ反映済み。**実ゲーム4構成での表示・言語切替・ERROR 0** は別ゲートのまま。静的検証を実機成功と扱わない。
 
 ## 5. 旧MO翻訳Fixtureとの整合（2026-10-08 CI回帰）
 
@@ -109,11 +109,11 @@ The following descriptions and jobStrings are the approved Japanese-first implem
 | `AMJC_CookSobagaki` | Prepare one serving of sobagaki using buckwheat flour. | Cooking sobagaki. |
 | `AMJC_CookMilletDumplings` | Prepare one serving of millet dumplings using millet flour. | Cooking millet dumplings. |
 
-## 7. 既存六作物の歴史説明候補（2026-10-08・未承認）
+## 7. 既存六作物の承認済み歴史説明（2026-10-08）
 
-**本節は作者未承認の日本語案です。** 前回承認済みの§2の15件には含まれません。既存Plantの日本語DefInjected、英語Def原文、label、料理・栽培のXMLを現段階では変更しません。確定後に日本語を先に反映し、対応する英訳を作成します。
+**本節の六作物は日本語説明を作者承認済みです。** 先に確定した§2の15件とは別に、§7の日本語を正本として日本語DefInjectedへ反映し、対応する英語を§8に収録して本番XMLへ反映しました。labelは既存の「アワ・ヒエ・キビ・ソバ・大麦・陸稲」を維持し、ゲーム挙動・栽培数値・料理・DefNameは変更していません。
 
-| DefName | 日本語説明案 | 設計値の照合 |
+| DefName | 承認済み日本語description | 設計値の照合 |
 |---|---|---|
 | `AMJC_Plant_FoxtailMillet_Awa` | **粟（あわ）。** 弥生時代の遺跡でも栽培が確認される畑作の雑穀で、米だけに頼らない食料の一つだった。AMJGrainsではキビより生育に時間がかかるが、一度の収穫量が多い。収穫後は脱穀と殻取りを行う。 | 6日／収量13。遺跡資料は吉野ヶ里歴史公園。 |
 | `AMJC_Plant_BarnyardMillet_Hie` | **稗（ひえ）。** 古くから栽培され、地域によっては米よりも日常的に食べられた雑穀。山間部で稗をふだんの主食として利用した記録も残る。AMJGrainsではアワやキビより低温で生育できるが、霜への強さまで保証するものではない。収穫後は脱穀と殻取りを行う。 | 成長最低5℃（アワ・キビ8℃）。日常食は農水省の宮崎県北部事例であり全国一律の歴史ではない。 |
@@ -131,4 +131,20 @@ The following descriptions and jobStrings are the approved Japanese-first implem
 - 大麦の日本への伝来と奈良時代の栽培：https://www.maff.go.jp/j/pr/aff/1602/spe1_01.html
 - 陸稲・水稲の歴史と1955年頃以降の陸稲減少：https://www.maff.go.jp/j/syouan/keikaku/soukatu/okome_summary/07/environ_ment_03.html
 
-**史実・ゲーム値の線引き:** ゲームで設定した最低生育温度を史実の絶対的な耐霜性とは解釈しません。地域の郷土食の記録を古代から全国一律の慣習とすることも避けます。表示名を「アワ」から「粟」等へ改めるかは本節では決めません。追加機能（稲の田植えや酒造等）も予告しません。
+**史実・ゲーム値の線引き:** ゲームで設定した最低生育温度を史実の絶対的な耐霜性とは解釈しません。地域の郷土食の記録を古代から全国一律の慣習とすることも避けます。表示名を「アワ」から「粟」等へ改めるかは本節では決めず、現行labelを維持しています。追加機能（稲の田植えや酒造等）も予告しません。
+
+
+## 8. English descriptions translated from §7 approved Japanese (2026-10-08)
+
+These six English strings are translations of the author-approved Japanese §7 descriptions. The five shared plants use `Defs/ThingDefs_Plants/Plants_StageA.xml`; the reused Vanilla `Plant_Rice` is patched by `Patches/UplandRice.xml`. Earlier §2/§6 approved food, milling, and non-MO wheat descriptions remain unchanged.
+
+| DefName | English description |
+|---|---|
+| `AMJC_Plant_FoxtailMillet_Awa` | Foxtail millet (awa). A dry-field millet found at archaeological sites from the Yayoi period, and one of the grain foods eaten alongside rice. In AMJGrains it takes longer to grow than kibi but yields more grain per harvest. Harvested grain must be threshed and dehulled. |
+| `AMJC_Plant_BarnyardMillet_Hie` | Japanese barnyard millet (hie). A grain cultivated since ancient times and eaten more routinely than rice in some regions. Records from mountain communities also describe its use as an everyday staple. In AMJGrains it grows at lower temperatures than awa or kibi, but this does not guarantee greater resistance to frost. Harvested grain must be threshed and dehulled. |
+| `AMJC_Plant_ProsoMillet_Kibi` | Proso millet (kibi). A millet sometimes counted among the traditional five grains, together with rice, mugi and awa. In AMJGrains it matures sooner than awa or hie and is relatively less affected by soil fertility, but yields less grain per harvest. It must be threshed and dehulled after harvest. |
+| `AMJC_Plant_Buckwheat_Soba` | Buckwheat (soba). In ancient Japan it was recommended as a crop to guard against poor harvests, and it has been grown in mountain regions and on less fertile land. In AMJGrains it grows quickly but is vulnerable to frost, and requires threshing and dehulling. Older ways of eating buckwheat are distinct from cut soba noodles, which became widespread in the Edo period. |
+| `AMJC_Plant_Barley` | Barley (omugi). A cereal introduced to Japan in the Yayoi period and known to have been cultivated during the Nara period. It has long contributed to diets alongside rice. In AMJGrains it grows well in cooler conditions, takes longer to mature than the millets, and yields a larger harvest. Harvested grain must be threshed and dehulled. |
+| `Plant_Rice` | Upland rice (okabo, rikuto). Rice grown in dry fields rather than flooded paddies. It has been cultivated in Japan alongside paddy rice, but its cultivation declined sharply after the middle of the twentieth century. In AMJGrains Vanilla rice is treated as upland rice and requires warm temperatures and sufficiently fertile soil. It yields the existing rice item; paddy cultivation belongs to a separate mod. |
+
+**Static verification:** `Tests/test_grains_localization.py` checks approved Japanese/English text against loaded-source XML/DefInjected and verifies the `Plant_Rice` description Patch. Game-loaded language switching, UI readability and four-profile ERROR 0 are still pending.

@@ -9,7 +9,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>AMJC_Plant_FoxtailMillet_Awa</defName>
     <label>foxtail millet plant</label>
-    <description>Foxtail millet (awa), a traditional dryland millet used as a staple grain. It takes longer to mature than kibi but produces more grain per harvest, making it well suited to ordinary main fields.</description>
+    <description>Foxtail millet (awa). A dry-field millet found at archaeological sites from the Yayoi period, and one of the grain foods eaten alongside rice. In AMJGrains it takes longer to grow than kibi but yields more grain per harvest. Harvested grain must be threshed and dehulled.</description>
     <descriptionHyperlinks>
       <ThingDef>AMJC_RawMillet</ThingDef>
     </descriptionHyperlinks>
@@ -50,7 +50,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>AMJC_Plant_BarnyardMillet_Hie</defName>
     <label>Japanese barnyard millet plant</label>
-    <description>Japanese barnyard millet (hie), a traditional grain crop suited to cool growing conditions. It can keep growing at lower temperatures than awa or kibi, but it is not especially frost hardy.</description>
+    <description>Japanese barnyard millet (hie). A grain cultivated since ancient times and eaten more routinely than rice in some regions. Records from mountain communities also describe its use as an everyday staple. In AMJGrains it grows at lower temperatures than awa or kibi, but this does not guarantee greater resistance to frost. Harvested grain must be threshed and dehulled.</description>
     <descriptionHyperlinks>
       <ThingDef>AMJC_RawMillet</ThingDef>
     </descriptionHyperlinks>
@@ -91,7 +91,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>AMJC_Plant_ProsoMillet_Kibi</defName>
     <label>proso millet plant</label>
-    <description>Proso millet (kibi), a fast-growing traditional millet suited to short growing seasons and poorer soils. It matures faster than awa or hie but produces less grain per harvest.</description>
+    <description>Proso millet (kibi). A millet sometimes counted among the traditional five grains, together with rice, mugi and awa. In AMJGrains it matures sooner than awa or hie and is relatively less affected by soil fertility, but yields less grain per harvest. It must be threshed and dehulled after harvest.</description>
     <descriptionHyperlinks>
       <ThingDef>AMJC_RawMillet</ThingDef>
     </descriptionHyperlinks>
@@ -133,7 +133,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>AMJC_Plant_Buckwheat_Soba</defName>
     <label>buckwheat plant</label>
-    <description>Buckwheat (soba), a very fast-growing grain crop suited to poor soils and short growing seasons. It performs well where richer-soil cereals are inefficient, but it is relatively vulnerable to frost.</description>
+    <description>Buckwheat (soba). In ancient Japan it was recommended as a crop to guard against poor harvests, and it has been grown in mountain regions and on less fertile land. In AMJGrains it grows quickly but is vulnerable to frost, and requires threshing and dehulling. Older ways of eating buckwheat are distinct from cut soba noodles, which became widespread in the Edo period.</description>
     <descriptionHyperlinks>
       <ThingDef>AMJC_RawBuckwheat</ThingDef>
     </descriptionHyperlinks>
@@ -177,7 +177,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>AMJC_Plant_Barley</defName>
     <label>barley plant</label>
-    <description>Barley, a cool-season cereal crop suited to relatively poor soils and cold growing conditions. It takes longer to mature than the Stage A millets but yields a larger harvest and is useful as a staple grain.</description>
+    <description>Barley (omugi). A cereal introduced to Japan in the Yayoi period and known to have been cultivated during the Nara period. It has long contributed to diets alongside rice. In AMJGrains it grows well in cooler conditions, takes longer to mature than the millets, and yields a larger harvest. Harvested grain must be threshed and dehulled.</description>
     <descriptionHyperlinks>
       <ThingDef>AMJC_RawBarley</ThingDef>
     </descriptionHyperlinks>

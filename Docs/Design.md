@@ -1443,4 +1443,4 @@ Grainsの通常6件から専用Scenario要件を外し、旧fixtureの8件には
 
 ### 既存六作物の歴史説明追加監査（2026-10-08）
 
-前回承認済みの15件（粉食・製粉・非MO小麦等）の日本語・英語説明は確定済みとし、その文面を変更しない。残る栽培対象の**粟・稗・黍・蕎麦・大麦・陸稲**について、原文・日本語DefInjected・現行Plant/陸稲Patchを再照合し、歴史的背景を含む**日本語の未承認候補6件**を [LocalizationHistoricalReview.md §7](LocalizationHistoricalReview.md) に追加した。新候補には史料・地域差・数値の根拠を付し、既存の生育温度・収量と霜耐性の推測を混同しない。日本語承認までは新候補を本番DefInjected/英語へ反映しない。既存の `label` も維持する。テストは候補6件と既存のPlantDef/陸稲Patchの接続・未承認境界を静的に確認する。RimWorldでの実表示・四構成ERROR 0は未検証。
+前回承認済みの15件（粉食・製粉・非MO小麦等）の日本語・英語説明は確定済みとし、その文面を変更しない。残る栽培対象の**粟・稗・黍・蕎麦・大麦・陸稲**について、原文・日本語DefInjected・現行Plant/陸稲Patchと史料を再照合した。2026-10-08に作者が**六作物の日本語説明も承認**したため、[LocalizationHistoricalReview.md §7](LocalizationHistoricalReview.md) の日本語を各DefInjectedへ反映し、§8の対応英訳を共有PlantDef5件とVanilla `Plant_Rice` の条件付きdescription Patchへ反映した。生育温度・収量と霜の耐性に関する表現は区別し、農村の地域的事例を古代から全国一律へ広げない。既存の `label`、料理/加工・農業バランス、DefNameは維持する。テストは六作物の**承認済み日本語・英語・本番XMLの一致**と、PlantDef/陸稲Patchの所有境界を検証する。RimWorldでの実表示・言語切替・四構成ERROR 0は未検証。

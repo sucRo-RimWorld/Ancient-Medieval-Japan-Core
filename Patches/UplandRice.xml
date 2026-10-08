@@ -9,7 +9,7 @@
       </li>
       <li Class="PatchOperationReplace">
         <xpath>/Defs/ThingDef[defName="Plant_Rice"]/description</xpath>
-        <value><description>Rice grown in ordinary dry fields without a paddy. It provides edible rice without water-control infrastructure but depends on warm growing conditions and adequately fertile soil.</description></value>
+        <value><description>Upland rice (okabo, rikuto). Rice grown in dry fields rather than flooded paddies. It has been cultivated in Japan alongside paddy rice, but its cultivation declined sharply after the middle of the twentieth century. In AMJGrains Vanilla rice is treated as upland rice and requires warm temperatures and sufficiently fertile soil. It yields the existing rice item; paddy cultivation belongs to a separate mod.</description></value>
       </li>
       <li Class="PatchOperationReplace">
         <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/growDays</xpath>

@@ -2,17 +2,17 @@
 <LanguageData>
 
   <AMJC_Plant_FoxtailMillet_Awa.label>アワ</AMJC_Plant_FoxtailMillet_Awa.label>
-  <AMJC_Plant_FoxtailMillet_Awa.description>古くから栽培されてきた雑穀の一種。キビより成熟は遅いが、一度の収穫量が多く、標準的な畑の主力作物として扱いやすい。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_FoxtailMillet_Awa.description>
+  <AMJC_Plant_FoxtailMillet_Awa.description>粟（あわ）。弥生時代の遺跡でも栽培が確認される畑作の雑穀で、米だけに頼らない食料の一つだった。AMJGrainsではキビより生育に時間がかかるが、一度の収穫量が多い。収穫後は脱穀と殻取りを行う。</AMJC_Plant_FoxtailMillet_Awa.description>
 
   <AMJC_Plant_BarnyardMillet_Hie.label>ヒエ</AMJC_Plant_BarnyardMillet_Hie.label>
-  <AMJC_Plant_BarnyardMillet_Hie.description>古くから栽培されてきた雑穀の一種。アワやキビより低い気温でも生育でき、寒冷地や春秋の栽培期間を活かしやすい。ただし、霜そのものへの耐性が特に高いわけではない。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_BarnyardMillet_Hie.description>
+  <AMJC_Plant_BarnyardMillet_Hie.description>稗（ひえ）。古くから栽培され、地域によっては米よりも日常的に食べられた雑穀。山間部で稗をふだんの主食として利用した記録も残る。AMJGrainsではアワやキビより低温で生育できるが、霜への強さまで保証するものではない。収穫後は脱穀と殻取りを行う。</AMJC_Plant_BarnyardMillet_Hie.description>
 
   <AMJC_Plant_ProsoMillet_Kibi.label>キビ</AMJC_Plant_ProsoMillet_Kibi.label>
-  <AMJC_Plant_ProsoMillet_Kibi.description>古くから栽培されてきた雑穀の一種。3種の雑穀の中で最も早く成熟し、肥沃度の低下による生育速度への影響も小さい。一度の収穫量はアワやヒエより少ない。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_ProsoMillet_Kibi.description>
+  <AMJC_Plant_ProsoMillet_Kibi.description>黍（きび）。米・麦・粟などと並び、「五穀」の一つに数えられることもある雑穀。AMJGrainsではアワ・ヒエより早く成熟し、肥沃度の影響も比較的小さい一方、一度の収穫量は少ない。収穫後は脱穀と殻取りを行う。</AMJC_Plant_ProsoMillet_Kibi.description>
 
 
   <AMJC_Plant_Buckwheat_Soba.label>ソバ</AMJC_Plant_Buckwheat_Soba.label>
-  <AMJC_Plant_Buckwheat_Soba.description>短い期間で収穫でき、痩せた土地でも生育速度が落ちにくい穀物。残りの生育期間が短い場合や低肥沃度の畑に向くが、霜には弱い。収穫後は脱穀と殻取りが必要になる。</AMJC_Plant_Buckwheat_Soba.description>
+  <AMJC_Plant_Buckwheat_Soba.description>蕎麦（そば）。古代には凶作に備える作物として栽培を勧められ、山間部や痩せた土地でも育てられてきた。AMJGrainsでは短期栽培に向くが霜には弱く、収穫後に脱穀・殻取りを行う。古い蕎麦の食べ方と、江戸期に広まる麺状の蕎麦切りは区別する。</AMJC_Plant_Buckwheat_Soba.description>
 
   <AMJC_RawBuckwheat.label>ソバ束</AMJC_RawBuckwheat.label>
   <AMJC_RawBuckwheat.description>茎と実が付いたまま刈り取った未脱穀のソバ束。保存性は高いが、このままでは食べられない。</AMJC_RawBuckwheat.description>
@@ -25,7 +25,7 @@
 
 
   <AMJC_Plant_Barley.label>大麦</AMJC_Plant_Barley.label>
-  <AMJC_Plant_Barley.description>冷涼な気候に強い穀物。雑穀より生育期間は長いが一度の収穫量が多く、寒冷側の主食作物として使いやすい。収穫後は脱穀と殻取りを行う。</AMJC_Plant_Barley.description>
+  <AMJC_Plant_Barley.description>大麦（おおむぎ）。弥生時代に日本へ伝わり、奈良時代にも栽培が確認される麦類。米とともに食生活を支えてきた。AMJGrainsでは冷涼な気温での栽培に向き、雑穀より生育期間は長いが収量が多い。収穫後は脱穀と殻取りを行う。</AMJC_Plant_Barley.description>
 
   <AMJC_RawBarley.label>大麦束</AMJC_RawBarley.label>
   <AMJC_RawBarley.description>茎と穂が付いたまま刈り取った未脱穀の大麦束。保存性は高いが、このままでは食べられない。</AMJC_RawBarley.description>
