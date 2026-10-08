@@ -2001,7 +2001,7 @@ AGENTS now routes through Project `Docs/SharedRules.md` stop conditions and task
 
 **Requested by:** author (2026-10-09 JST)  
 **Owner:** Art/tooling / Grains  
-**Status:** CORRECTED SOURCE IMPLEMENTATION — paid API path removed; repository QA/tooling update pending CI on this correction; no image accepted by this work
+**Status:** CORRECTED SOURCE IMPLEMENTATION — paid API path removed; no image accepted by this work
 
 The initial implementation called the OpenAI image API and therefore would have created separate API usage/cost outside the ChatGPT subscription. The author rejected that design. It is superseded.
 
