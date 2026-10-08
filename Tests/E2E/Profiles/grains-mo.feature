@@ -15,6 +15,6 @@ Feature: Grains real-provider migration smoke - mo
   Scenario: Grains mo seven grains retain environmental niches
     Then seven Grains retain environmental harvest niches
 
-  @quickstart:AmjStageAQuickstart
+  @quickstart:AmjStageAQuickstart @timeout:270
   Scenario: Grains mo real harvest and flour food Bills complete
     Then Grains harvest and flour food Bills complete through real jobs

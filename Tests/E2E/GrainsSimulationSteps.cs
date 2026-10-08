@@ -84,6 +84,24 @@ namespace AncientMedievalJapanCore.E2E
                     scope.MO ? "DankPyon_RawWheat" : "AMJC_RawWheat", 10);
                 await scope.Bill(scope.MO ? "DankPyon_CraftFlourBulk" : "AMJC_MillWheat", scope.Mill, "AMJC_Wheat", 10);
                 await scope.Bill("AMJC_CookHoutou", scope.Campfire, scope.MO ? "DankPyon_Flour" : "AMJC_WheatFlour", 10);
+                // Native simple meals must work with all five edible grain Defs.
+                // Awa/Hie/Kibi share AMJC_Millet after their native harvests.
+                // Produce new edible inputs with actual thresh/hull Bills rather
+                // than manufacturing test stacks.
+                await scope.Bill("AMJC_ThreshMilletBulk", scope.Processing, "AMJC_RawMillet", 10);
+                await scope.Bill("AMJC_HullMilletBulk", scope.Processing, "AMJC_MilletInHull", 10);
+                await scope.Bill("AMJC_ThreshBarleyBulk", scope.Processing, "AMJC_RawBarley", 10);
+                await scope.Bill("AMJC_HullBarleyBulk", scope.Processing, "AMJC_BarleyInHull", 10);
+                // Soba has only two harvested sheaves batches at this point:
+                // harvest two more plants to support the second bulk process.
+                await scope.Harvest("AMJC_Plant_Buckwheat_Soba", true);
+                await scope.Harvest("AMJC_Plant_Buckwheat_Soba", true);
+                await scope.Bill("AMJC_ThreshBuckwheatBulk", scope.Processing, "AMJC_RawBuckwheat", 10);
+                await scope.Bill("AMJC_HullBuckwheatBulk", scope.Processing, "AMJC_BuckwheatInHull", 10);
+                await scope.Bill("AMJC_ThreshWheatBulk", scope.Processing,
+                    scope.MO ? "DankPyon_RawWheat" : "AMJC_RawWheat", 10);
+                foreach (string grain in new[] { "AMJC_Millet", "AMJC_Buckwheat", "AMJC_Barley", "AMJC_Wheat", "RawRice" })
+                    await scope.SimpleMeal(grain);
             }
             catch (Exception error) { failure = ExceptionDispatchInfo.Capture(error); }
             // The repository builds with the Framework C# 5 compiler, which
@@ -208,7 +226,7 @@ namespace AncientMedievalJapanCore.E2E
                 {
                     await RuntimeThread.Run(delegate
                     {
-                        ctx.Require(deadline.Elapsed.TotalSeconds < 150, "Production suite exceeded 150 seconds: " + label);
+                        ctx.Require(deadline.Elapsed.TotalSeconds < 240, "Production suite exceeded 240 seconds: " + label);
                         for (int tick = 0; tick < 64; tick++)
                         {
                             if (done()) { complete = true; break; }
@@ -334,6 +352,70 @@ namespace AncientMedievalJapanCore.E2E
                         ctx.Assert(Count("DankPyon_Straw") == straw, recipeName + " must not create straw.");
                     ctx.Assert(Count("Hay") == hay, recipeName + " must not create hay.");
                     bench.BillStack.Delete(bill);
+                });
+            }
+
+            // Exercise the game's standard CookMealSimple Bill five times,
+            // restricting each iteration to a single real harvested/processed grain.
+            // The other available food sources must not satisfy this Bill.
+            public async Task SimpleMeal(string ingredient)
+            {
+                Job job = null; Bill_Production bill = null; RecipeDef recipe = null;
+                int beforeGrain = 0, beforeMeals = 0, neededCount = 0, outputCount = 0;
+                await RuntimeThread.Run(delegate
+                {
+                    ThingDef grain = DefDatabase<ThingDef>.GetNamed(ingredient);
+                    recipe = DefDatabase<RecipeDef>.GetNamed("CookMealSimple");
+                    ctx.Require(Campfire.def.AllRecipes.Contains(recipe),
+                        "The campfire must offer the Vanilla simple-meal recipe.");
+                    ctx.Require(recipe.fixedIngredientFilter != null
+                        && recipe.fixedIngredientFilter.Allows(grain),
+                        "Standard simple meal does not accept " + ingredient);
+                    ctx.Require(recipe.ingredients.Count == 1 && recipe.products.Count == 1
+                        && recipe.products[0].thingDef.defName == "MealSimple",
+                        "Unexpected Vanilla simple meal input/output contract.");
+                    float eachNutrition = grain.GetStatValueAbstract(StatDefOf.Nutrition);
+                    float requiredNutrition = recipe.ingredients[0].GetBaseCount();
+                    ctx.Require(eachNutrition > 0f && requiredNutrition > 0f,
+                        "Simple meal grain nutrition must be positive.");
+                    neededCount = (int)Math.Ceiling(requiredNutrition / eachNutrition - 0.00001f);
+                    ctx.Require(neededCount > 0
+                        && Math.Abs(neededCount * eachNutrition - requiredNutrition) < 0.001f,
+                        "Grain must satisfy the required simple meal nutrition exactly.");
+                    beforeGrain = Count(ingredient);
+                    beforeMeals = Count("MealSimple");
+                    outputCount = recipe.products[0].count;
+                    ctx.Require(beforeGrain >= neededCount,
+                        "Native jobs have not produced enough edible " + ingredient);
+                    bill = (Bill_Production)recipe.MakeNewBill();
+                    bill.repeatMode = BillRepeatModeDefOf.RepeatCount;
+                    bill.repeatCount = 1;
+                    bill.SetStoreMode(BillStoreModeDefOf.DropOnFloor);
+                    bill.ingredientSearchRadius = 10f;
+                    bill.ingredientFilter.SetDisallowAll();
+                    bill.ingredientFilter.SetAllow(grain, true);
+                    Campfire.BillStack.AddBill(bill);
+                    foreach (WorkGiverDef def in DefDatabase<WorkGiverDef>.AllDefsListForReading)
+                    {
+                        if (def.giverClass == null || !typeof(WorkGiver_DoBill).IsAssignableFrom(def.giverClass)) continue;
+                        WorkGiver_DoBill giver = def.Worker as WorkGiver_DoBill;
+                        if (giver == null || !giver.ThingIsUsableBillGiver(Campfire)) continue;
+                        Job offered = giver.JobOnThing(worker, Campfire, true);
+                        if (offered != null && offered.def == JobDefOf.DoBill && offered.bill == bill)
+                        { job = offered; break; }
+                    }
+                    Start(job, "CookMealSimple/" + ingredient);
+                });
+                await Complete(job, () => bill.repeatCount == 0
+                    && Count("MealSimple") == beforeMeals + outputCount,
+                    "CookMealSimple/" + ingredient);
+                await RuntimeThread.Run(delegate
+                {
+                    ctx.Assert(Count(ingredient) == beforeGrain - neededCount,
+                        "Simple meal consumed the wrong grain quantity: " + ingredient);
+                    ctx.Assert(Count("MealSimple") == beforeMeals + outputCount,
+                        "Simple meal output is missing: " + ingredient);
+                    Campfire.BillStack.Delete(bill);
                 });
             }
 

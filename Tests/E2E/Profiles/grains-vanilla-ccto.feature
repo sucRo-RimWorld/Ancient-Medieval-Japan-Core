@@ -15,6 +15,6 @@ Feature: Grains real-provider migration smoke - vanilla-ccto
   Scenario: Grains vanilla-ccto seven grains retain environmental niches
     Then seven Grains retain environmental harvest niches
 
-  @quickstart:AmjStageAQuickstart
+  @quickstart:AmjStageAQuickstart @timeout:270
   Scenario: Grains vanilla-ccto real harvest and flour food Bills complete
     Then Grains harvest and flour food Bills complete through real jobs
