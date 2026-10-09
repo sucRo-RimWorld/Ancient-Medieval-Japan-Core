@@ -1,10 +1,10 @@
 # Ancient & Medieval Japan - Grains（中世日本 - 穀類） — 設計書
 
-**文書状態:** Core→Grains再編設計確定・runtime移行前  
+**文書状態:** Core→Grains再編実装中。MO必須メタデータ解除（2026-10-10）、旧セーブ・最終画像・実機リリース検証は継続  
 **対象:** RimWorld 1.6  
 **公開表示名（名称方針）:** Ancient & Medieval Japan - Grains（中世日本 - 穀類）  
-**将来の機能位置づけ:** Grains系独立Mod（表示名はGrainsへ改称。既存`packageId`・DefNameは互換性維持のため変更しない。runtime移行およびMO依存解除は別途検証後に判断）  
-**基本方針:** 現CoreはAMJ全体の共通基盤ではなく、乾田穀物の栽培・一次加工・最低限の粉食を自己完結して提供するGrains系Modへ縮小再編する。Vanilla + Grainsだけで主要ループを成立させ、Medieval Overhaul（MO）は推奨環境・公式互換先とする。現行公開Coreはruntime移行と自動テストが完了するまでMO必須のまま維持する。
+**機能位置づけ:** 独立した穀類Mod。表示名はGrains、既存`packageId`・DefNameは互換維持。MO必須依存は解除、MO互換は条件付きで継続  
+**基本方針:** GrainsはAMJ全体の必須Coreではなく、乾田穀物の栽培・一次加工・最低限の粉食を自己完結して提供する。Vanilla + Grainsを基本経路とし、Medieval Overhaul（MO）は任意の公式互換先。MOありではMO固有の小麦・石臼等を条件付きで再利用し、Grains所有の設定を優先する。旧セーブからMOを実際に削除できるかは別途検証する。
 
 ---
 
@@ -247,7 +247,7 @@ AMJ各Modは、**AMJシリーズ内の別Modを理由なく必須依存にしな
 
 Grains移行後はVanilla + Grainsで、乾田穀物の栽培 → 一次加工 → 製粉 → 最低限の粉食まで成立させる。MO導入時は同じ概念のMO小麦・小麦粉・石臼・Straw等を条件付き互換から実Def供給元として再利用し、同等のAMJ資産を二重表示しない。
 
-Base XMLにはMO DefNameへの無条件参照を残さない。MO固有PatchはMO存在時だけ適用する。About.xmlのMO必須解除は、runtime移行とBase/MO自動テストが完了した最後に行う。
+Base XMLにはMO DefNameへの無条件参照を残さない。MO固有PatchはMO存在時だけ適用する。**本番About.xmlのMO必須依存は解除済み**。任意の`loadAfter`は互換Patchの適用順を守るため残す。旧セーブからのMO削除安全性と公開可否は別の検証対象とする。
 
 `AMJ - Medieval Overhaul Japanization` はMO本体を古代～中世日本向けに再構成するPatch + Retextureレイヤーであり、責務上MO必須を維持する。World Tech Levelは中世限定世界を作るための強い推奨Modとし、Japanization自身では包括的なTech Level制限を再実装しない。
 
@@ -356,7 +356,7 @@ MO併用の既存セーブでは、現在参照されているMO Defを急にAMJ
 
 「Core更新と同時にMOを既存セーブから外す」経路は別の移行ケースであり、依存メタデータを外しただけで安全とは扱わない。実装時に専用のロード/Def参照テストを通すまでは未保証とする。
 
-##### MO必須解除の実装順序
+##### MO必須解除の実装順序（移行履歴。現行結果は文書冒頭を優先）
 
 1. **テストを先に分岐**し、Production About.xmlを変更しなくてもMOなしのBase XMLをロードできるテスト用Vanillaプロファイルを用意する。
 2. BaseのMO直接参照を除去する。Straw / Cereal / RawWood等はMO互換へ移し、建設材料・研究・ScenarioはVanilla/AMJ側で自己完結させる。
@@ -364,9 +364,9 @@ MO併用の既存セーブでは、現在参照されているMO Defを急にAMJ
 4. Stage Aで小麦をVanillaプロファイルにも提供する場合は、AMJフォールバック小麦を追加し、MO時の重複を抑止する。粉食は必要な用途が確定した範囲だけ追加する。
 5. `Patches/MedievalOverhaul_StageA_Wheat.xml`、MOラベル、MOカテゴリ、MO Scenario/素材差分を明示的な条件付き互換へ隔離する。
 6. Vanilla / MO × CCTO有無の自動マトリクスをすべて通し、runtime ERROR 0を確認する。
-7. **最後に** About.xmlのMO必須依存・load orderとREADME/Workshop等の公開説明を一括変更する。About.xmlだけを先行変更しない。
+7. MOの必須指定をAbout.xmlと説明から解除し、MO用`loadAfter`・条件付き互換は残す。各テスト・説明の整合を確認する（2026-10-10反映）。
 
-**2026-10-08追加ゲート:** About.xmlのMO必須解除より前に、`Plant_Rice` の陸稲化、七穀環境回帰、Vanilla/MO両プロファイルでの実播種・実収穫、CCTO併用時の既存Rice耐寒設定との共存を完了する。六穀だけの従来PASSは最終リリース判定に使わない。
+**2026-10-10の状態修正:** `Plant_Rice` 陸稲化・七穀環境回帰は実装され、MOなしの実ゲームSmokeにも過去の合格実績がある。作者指示によりAboutのMO必須宣言を先行解除した。現在の改訂と全構成の実播種・実収穫・季節/保存互換等の検証は引き続き公開判断の要件であり、以前のPASSを転用しない。
 
 ##### 自動テスト・サポートマトリクス
 
@@ -456,7 +456,7 @@ Scenarioの旧具体値表は移行中のMOプロファイル互換契約とす�
 4. MO互換を条件化し、MO小麦/RawWheat/Flour/Millstone/Strawへ上表どおり収束させる。
 5. MO仮テクスチャをGrains所有Production画像へ置換する。2026-10-08の作者指示により、MO有無にかかわらずAMJ側の共有画像設定を優先する。現在は既存AMJ/Vanilla仮参照で、MO時の旧画像復元は廃止した。専用Production画像・実描画は未完了（`GrainsDependencyAudit.md`）。
 6. Vanilla + Grains / Vanilla + Grains + CCTO / MO + Grains / MO + Grains + CCTO の恒久マトリクスに、環境別穀物選択回帰を加えて通す。
-7. 最後にAbout.xml、load order、README/Workshop等の公開説明を同期する。
+7. About.xmlの必須依存を解除し、任意`loadAfter`とREADME/Workshop等の公開説明を同期する（2026-10-10反映）。
 
 この所有境界確定後の最初のruntime作業は、**テストハーネス分離**とする。
 

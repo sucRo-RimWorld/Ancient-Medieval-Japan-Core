@@ -2,8 +2,8 @@
 
 The single authoritative paste-ready description is `Docs/SteamWorkshopDescription.txt`. Paste **its entire English-then-Japanese body into Steam's English description field only**; do not paste it a second time into Japanese. `Docs/SteamWorkshopDescription-ja.txt` is the Japanese drafting source. No image is reused separately per language; any future images must appear exactly once with English/Japanese captions. Keep the full combined body under 8,000 UTF-8 bytes, omit license/AI/donation disclosures, preserve dependencies and save warnings. This repository draft does not mean the Mod is ready to publish.
 
-Title and About name: `Ancient & Medieval Japan - Grains（中世日本 - 穀類）`. The current `packageId` remains `sucro.ancientmedievaljapan.core`. Review the separate Scenario-owner migration before promising New Village content or Vanilla-without-MO support.
+Title and About name: `Ancient & Medieval Japan - Grains（中世日本 - 穀類）`. The current `packageId` remains `sucro.ancientmedievaljapan.core`. New Village belongs to the separate Scenarios Mod. Base wheat/processing and MO conditional integration are included; exact-current-runtime, legacy save and final-art release gates remain independently open.
 
-## Language divider and MO dependency gate
+## Language divider and optional MO ordering
 
-Place exactly one Steam `[hr][/hr]` after the complete English description and before the Japanese section. The Production `About.xml` still declares Medieval Overhaul as a hard dependency although real-game MO-free development profiles have passed; keep the distinction and do not publish standalone support until legacy saves, final art and dependency release gates close. Preserve the stable packageId.
+Place exactly one Steam `[hr][/hr]` after the complete English description and before the Japanese section. The Production `About.xml` has **no hard MO dependency** and retains MO and CCTO in optional `loadAfter`; `loadFolders.xml` selects MO compatibility only when present. This metadata decision does not certify old-save provider removal, final graphics or completed public-release testing. Preserve the stable packageId.
