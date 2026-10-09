@@ -15,6 +15,22 @@ FIELDS = {'growDays': 5, 'harvestYield': 11, 'fertilityMin': .7,
 
 
 def validate():
+    graphic_ops = ET.parse(ROOT / 'Patches/UplandRiceGraphics.xml').getroot().findall('Operation')
+    expected_graphics = {
+        '/Defs/ThingDef[defName="Plant_Rice"]/graphicData/texPath': ('texPath', 'FullGrown', 'Mature'),
+        '/Defs/ThingDef[defName="Plant_Rice"]/plant/immatureGraphicPath': ('immatureGraphicPath', 'Immature', 'Immature'),
+    }
+    assert len(graphic_ops) == len(expected_graphics)
+    assert {op.findtext('xpath') for op in graphic_ops} == set(expected_graphics)
+    for op in graphic_ops:
+        tag, folder, state = expected_graphics[op.findtext('xpath')]
+        assert op.get('Class') == 'PatchOperationReplace'
+        path = 'Things/Plants/' + folder + '/AMJC_Rice_Simple'
+        assert len(op.find('value')) == 1 and op.findtext('value/' + tag) == path
+        assert (ROOT / 'Textures' / path / ('AMJC_Rice_' + state + '.png')).is_file()
+    rice_slots = [(ROOT / 'Textures/Things/Item/Resource/AMJC_Rice/RiceSheafDense' /
+                   ('RiceSheafDense_' + suffix + '.png')).read_bytes() for suffix in 'abc']
+    assert rice_slots[0] == rice_slots[1] == rice_slots[2]
     operations = ET.parse(PATCH).getroot().findall('./Operation/operations/li')
     assert len(operations) == 12, 'Six replaces and six guarded additions'
     values, guarded, replaced = {}, set(), set()
@@ -92,7 +108,7 @@ def validate():
         projected = profile_xml(profile)
         defs = {node.findtext('defName'): node for node in projected if node.findtext('defName')}
         for name, graphic in (
-            ('AMJC_RiceSheaf', 'Things/Item/Resource/AMJC_Millet/RawMillet'),
+            ('AMJC_RiceSheaf', 'Things/Item/Resource/AMJC_Rice/RiceSheafDense'),
             ('AMJC_RiceInHull', 'Things/Item/Resource/AMJC_Millet/MilletInHull'),
         ):
             item = defs[name]

@@ -1,0 +1,212 @@
+[
+  {
+    "crop": "Awa",
+    "outline": "#4D4E3C",
+    "alpha_preserved": true,
+    "non_outline_preserved": true,
+    "qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.8287353515625,
+        "low_alpha_fraction_1_39": 0.007781982421875,
+        "opaque_fraction_180_255": 0.155059814453125,
+        "visible_bbox": [
+          38,
+          5,
+          193,
+          239
+        ],
+        "coarse_color_bins_16_at_64": 20,
+        "strong_edge_density_at_64": 0.38704581358609796,
+        "outer_dark_fraction_lt80": 0.9439509954058193,
+        "internal_dark_edge_fraction_lt140": 0.17670682730923695,
+        "internal_very_dark_edge_fraction_lt100": 0.07630522088353414,
+        "line_hierarchy_ratio": 5.341904496728386
+      }
+    }
+  },
+  {
+    "crop": "Hie",
+    "outline": "#4D4E3C",
+    "alpha_preserved": true,
+    "non_outline_preserved": true,
+    "qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.8283233642578125,
+        "low_alpha_fraction_1_39": 0.00830078125,
+        "opaque_fraction_180_255": 0.1565704345703125,
+        "visible_bbox": [
+          64,
+          28,
+          222,
+          252
+        ],
+        "coarse_color_bins_16_at_64": 24,
+        "strong_edge_density_at_64": 0.3744493392070485,
+        "outer_dark_fraction_lt80": 0.9536402220045707,
+        "internal_dark_edge_fraction_lt140": 0.1554524361948956,
+        "internal_very_dark_edge_fraction_lt100": 0.09280742459396751,
+        "line_hierarchy_ratio": 6.134610980357761
+      }
+    }
+  },
+  {
+    "crop": "Kibi",
+    "outline": "#4D4E3C",
+    "alpha_preserved": true,
+    "non_outline_preserved": true,
+    "qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.8135528564453125,
+        "low_alpha_fraction_1_39": 0.0112457275390625,
+        "opaque_fraction_180_255": 0.1650238037109375,
+        "visible_bbox": [
+          51,
+          16,
+          210,
+          244
+        ],
+        "coarse_color_bins_16_at_64": 24,
+        "strong_edge_density_at_64": 0.41963015647226176,
+        "outer_dark_fraction_lt80": 0.8104974704890388,
+        "internal_dark_edge_fraction_lt140": 0.11235955056179775,
+        "internal_very_dark_edge_fraction_lt100": 0.0,
+        "line_hierarchy_ratio": 7.213427487352445
+      }
+    }
+  },
+  {
+    "crop": "Soba",
+    "outline": "#4D4E3C",
+    "alpha_preserved": true,
+    "non_outline_preserved": true,
+    "qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.829010009765625,
+        "low_alpha_fraction_1_39": 0.0086517333984375,
+        "opaque_fraction_180_255": 0.154754638671875,
+        "visible_bbox": [
+          49,
+          19,
+          216,
+          243
+        ],
+        "coarse_color_bins_16_at_64": 25,
+        "strong_edge_density_at_64": 0.38226744186046513,
+        "outer_dark_fraction_lt80": 0.9645112781954888,
+        "internal_dark_edge_fraction_lt140": 0.2117039586919105,
+        "internal_very_dark_edge_fraction_lt100": 0.11187607573149742,
+        "line_hierarchy_ratio": 4.5559435173299105
+      }
+    }
+  },
+  {
+    "crop": "Barley",
+    "outline": "#4D4E3C",
+    "alpha_preserved": true,
+    "non_outline_preserved": true,
+    "qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.737335205078125,
+        "low_alpha_fraction_1_39": 0.0107574462890625,
+        "opaque_fraction_180_255": 0.2405853271484375,
+        "visible_bbox": [
+          39,
+          5,
+          231,
+          245
+        ],
+        "coarse_color_bins_16_at_64": 23,
+        "strong_edge_density_at_64": 0.37987012987012986,
+        "outer_dark_fraction_lt80": 0.9139190086302279,
+        "internal_dark_edge_fraction_lt140": 0.21480709071949947,
+        "internal_very_dark_edge_fraction_lt100": 0.08133472367049009,
+        "line_hierarchy_ratio": 4.254603540176643
+      }
+    }
+  },
+  {
+    "crop": "Wheat",
+    "outline": "#4D4E3C",
+    "alpha_preserved": true,
+    "non_outline_preserved": true,
+    "qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.7534027099609375,
+        "low_alpha_fraction_1_39": 0.0083465576171875,
+        "opaque_fraction_180_255": 0.2298126220703125,
+        "visible_bbox": [
+          50,
+          32,
+          207,
+          235
+        ],
+        "coarse_color_bins_16_at_64": 19,
+        "strong_edge_density_at_64": 0.32432432432432434,
+        "outer_dark_fraction_lt80": 0.947246525990736,
+        "internal_dark_edge_fraction_lt140": 0.2,
+        "internal_very_dark_edge_fraction_lt100": 0.06447368421052632,
+        "line_hierarchy_ratio": 4.73623262995368
+      }
+    }
+  },
+  {
+    "crop": "Rice",
+    "outline": "#4D4E3C",
+    "alpha_preserved": true,
+    "non_outline_preserved": true,
+    "qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.856689453125,
+        "low_alpha_fraction_1_39": 0.0081787109375,
+        "opaque_fraction_180_255": 0.1271820068359375,
+        "visible_bbox": [
+          67,
+          19,
+          194,
+          246
+        ],
+        "coarse_color_bins_16_at_64": 16,
+        "strong_edge_density_at_64": 0.39552238805970147,
+        "outer_dark_fraction_lt80": 0.8779472954230236,
+        "internal_dark_edge_fraction_lt140": 0.56353591160221,
+        "internal_very_dark_edge_fraction_lt100": 0.0,
+        "line_hierarchy_ratio": 1.5579260830545811
+      }
+    }
+  }
+]

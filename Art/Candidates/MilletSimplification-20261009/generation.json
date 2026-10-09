@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-09",
+  "status": "author accepted 2026-10-09: では一旦これでFixとする; local installation complete; not committed or published",
+  "generator": "built-in image_gen",
+  "scope": "Awa/Hie/Kibi immature and mature, mixed millet sheaf only",
+  "common_mature_prompt": "Use case: style-transfer. Edit target is image 1, a Grains crop. Image 2 is the Medieval Overhaul wheat STYLE reference only. Materially simplify target to the reference's extremely low detail level. Single isolated RimWorld crop sprite, transparent background, square canvas, centered with 6% clear margin. Completely REMOVE ALL LEAVES. Only seed-head silhouettes and plain bare stems. Flat solid muted ochre gold fill #B89A45 and medium warm ochre-brown contour #75602F; maximum two fill colors, no internal seed lines, no grain beads, no texture, no gradients, no lighting, no shading, no extra roots, no ground, no shadow, no text. Bold but not black outlines roughly like reference. Fewer internal lines than the existing target. Large readable forms at 64px. ",
+  "mature_subjects": [
+    [
+      "Awa_Mature",
+      "FullGrown/AMJC_Awa/AMJC_Awa_Mature.png",
+      "Three dense long foxtail seed heads, one slightly curved, on three simple bare stems. The heads are solid smooth chunky tapered capsules with at most 2 broad silhouette lobes, NO separate kernels."
+    ],
+    [
+      "Hie_Mature",
+      "FullGrown/AMJC_Hie/AMJC_Hie_Mature.png",
+      "Three short compact barnyard millet heads on three bare stems. Each head is a single compact slightly hooked drooping mass, with only two or three broad lobes conveying its compact branching. NOT long foxtail batons. NO individual grains."
+    ],
+    [
+      "Kibi_Mature",
+      "FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png",
+      "One open proso millet panicle with about five broad short branches and large elongated solid seed-cluster masses, clear gaps between major branches. A bare central stalk, NO leaves. NOT a dense foxtail baton, NOT a finely detailed branching tree. NO individual grains."
+    ]
+  ],
+  "common_immature_prompt": "Use case: style-transfer. Image 1 is the new mature crop to make an IMMATURE counterpart of. Image 2 is MO immature wheat STYLE AND COLOR reference. Single isolated crop sprite, transparent background square canvas 6% margin, same bare-stem leafless structure and same line weight as image 1. Make immature version with shorter slightly slimmer seed-head masses and more upright posture, preserving species identity. Replace gold fill with muted olive green #889951, warm brown contour #75602F. Only two solid colors, perfectly flat color planes. ABSOLUTELY NO LEAVES, no seeds delineated inside heads, no gradients, no lighting, no texture, no shadow, no ground, no text. Simple flat bold silhouette at 64px. ",
+  "bundle_prompt": "Use case: style-transfer. Edit image 1 (old harvested millet sheaf) into a MIXED AWA HIE KIBI sheaf. Image 2 is MO wheat harvested sheaf, simplicity/color reference. Images 3 4 5 are the newly simplified mature AWA HIE KIBI crops, respectively, shape references. Single isolated RimWorld harvested resource sprite, square canvas with generous clear margins, transparent background. One compact upright sheaf tied with one plain brown binding band across lower third; short cut stems flare below band. Top contains exactly three easily distinguished grain types: left one long dense foxtail AWA head, middle one short compact slightly drooping lobed HIE head, right one open branching KIBI panicle with three broad cluster tips and small gaps. Join all three stems into ONE coherent harvest bundle. NO LEAVES. Extreme MO-level simplification: solid flat muted ochre-gold masses, dark warm ochre-brown contour, brown binding band, at most 3 flat colors. No individual grains, no kernel interior lines, no highlights, no shading, no texture, no gradients, no fancy ribbon or bow. Do not make a wheat-only or awa-only bundle. No ground, no shadow, no text, no background. Very clear readable silhouette at 64px, keep line weight consistent with images 3-5.",
+  "source_files": {
+    "Awa_Mature": "C:/Users/sucRo/.codex/generated_images/01a12027-f5bb-70f1-b7ae-17120517de4b/exec-74fdddf7-850d-42e1-8963-2d02e39957a6.png",
+    "Hie_Mature": "C:/Users/sucRo/.codex/generated_images/01a12027-f5bb-70f1-b7ae-17120517de4b/exec-9ceb76d8-40ae-4b90-8007-831b2e1247dd.png",
+    "Kibi_Mature": "C:/Users/sucRo/.codex/generated_images/01a12027-f5bb-70f1-b7ae-17120517de4b/exec-2ca4bbab-7a1f-4564-8f41-da95259e3a19.png",
+    "Awa_Immature": "C:/Users/sucRo/.codex/generated_images/01a12027-f5bb-70f1-b7ae-17120517de4b/exec-a6278e42-268d-4c29-b679-3d8958ef2ade.png",
+    "Hie_Immature": "C:/Users/sucRo/.codex/generated_images/01a12027-f5bb-70f1-b7ae-17120517de4b/exec-df4c222e-12f7-4800-b08b-9d4274d09895.png",
+    "Kibi_Immature": "C:/Users/sucRo/.codex/generated_images/01a12027-f5bb-70f1-b7ae-17120517de4b/exec-750cb585-31e8-4a01-a2d3-f119233d9935.png",
+    "RawMillet": "C:/Users/sucRo/.codex/generated_images/01a12027-f5bb-70f1-b7ae-17120517de4b/exec-013f481c-25ea-4821-80b0-3bd33471c6da.png"
+  }
+}

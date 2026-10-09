@@ -401,3 +401,9 @@ Current source keeps `Scripts/Art/grains_image_generator.py` as a deterministic 
 
 Because in-chat image generation displays its result immediately, this no-extra-API-cost route cannot claim private pre-display screening. The generated image remains an immediately visible, not-yet-vetted draft until `review` and semantic comparison complete, per the shared Project texture pipeline. Candidate/work output remains blocked from `Textures/`, `Art/Sources/`, and `Docs/References/`. No gameplay XML, Def paths, production PNGs, dependency metadata, Workshop payload, or publication state changed.
 
+
+### GRAINS-GENERATED-ART-20261010
+
+**Owner:** Grains art. **Status:** Generated source and production-image integration; runtime visual acceptance remains OPEN.
+
+Author requested main integration of the 2026-10-09 generated grain images. Includes seven immature/mature crop families and five sheaf families, exact source/candidate bytes, XML paths and static contracts. MO wheat uses the same AMJ paths through its conditional compatibility folder. Latest immature outlines use #4D4E3C; Awa/Hie/Kibi heads are upright. Latest upstream dependency/research/material changes are preserved. See Docs/Design.md section 12.1 and Art/Candidates. PNG integrity (58 files), Stage A, Base/MO, grain-chain, upland-rice, environment/balance and payload checks passed locally. This is not real-game rendering, final acceptance of review candidates, or Steam publication.

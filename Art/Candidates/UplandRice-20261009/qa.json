@@ -1,0 +1,161 @@
+[
+  {
+    "key": "Rice_Mature",
+    "source_sha256": "5aba151d2be7cd5291f0bed1d20f04bae83234434b97b4e54d39dc680d16c24b",
+    "export_sha256": "52b1df22d57e33e1c425848f92872ab9f7172108955882e9d97b9e6c572e36ac",
+    "source_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 1254,
+        "height": 1254,
+        "transparent_fraction": 0.7372535478176375,
+        "low_alpha_fraction_1_39": 0.015384899104365234,
+        "opaque_fraction_180_255": 0.2437081721267065,
+        "visible_bbox": [
+          0,
+          21,
+          1222,
+          1230
+        ],
+        "coarse_color_bins_16_at_64": 28,
+        "strong_edge_density_at_64": 0.44988344988344986,
+        "outer_dark_fraction_lt80": 0.8926858513189448,
+        "internal_dark_edge_fraction_lt140": 0.15728155339805824,
+        "internal_very_dark_edge_fraction_lt100": 0.07572815533980583,
+        "line_hierarchy_ratio": 5.67571868431181
+      }
+    },
+    "export_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.7303009033203125,
+        "low_alpha_fraction_1_39": 0.0164031982421875,
+        "opaque_fraction_180_255": 0.2403106689453125,
+        "visible_bbox": [
+          20,
+          8,
+          248,
+          248
+        ],
+        "coarse_color_bins_16_at_64": 26,
+        "strong_edge_density_at_64": 0.45108695652173914,
+        "outer_dark_fraction_lt80": 0.8997263487099296,
+        "internal_dark_edge_fraction_lt140": 0.11677631578947369,
+        "internal_very_dark_edge_fraction_lt100": 0.046052631578947366,
+        "line_hierarchy_ratio": 7.704698873459679
+      }
+    }
+  },
+  {
+    "key": "Rice_Immature",
+    "source_sha256": "1776d135658653b69729c604639f6264987362a44360f023ae27a8ce581eec23",
+    "export_sha256": "9b51b1b48f59a3582c1849ed08d2d13c49177fd7f8fcb63b339cc4d1aaa93f8e",
+    "source_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 1254,
+        "height": 1254,
+        "transparent_fraction": 0.8621514820834891,
+        "low_alpha_fraction_1_39": 0.006199618954592513,
+        "opaque_fraction_180_255": 0.12913954452609702,
+        "visible_bbox": [
+          328,
+          95,
+          1103,
+          1203
+        ],
+        "coarse_color_bins_16_at_64": 16,
+        "strong_edge_density_at_64": 0.4022140221402214,
+        "outer_dark_fraction_lt80": 0.8716384807319102,
+        "internal_dark_edge_fraction_lt140": 0.33157894736842103,
+        "internal_very_dark_edge_fraction_lt100": 0.010526315789473684,
+        "line_hierarchy_ratio": 2.62875097363592
+      }
+    },
+    "export_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.856689453125,
+        "low_alpha_fraction_1_39": 0.0081787109375,
+        "opaque_fraction_180_255": 0.1271820068359375,
+        "visible_bbox": [
+          67,
+          19,
+          194,
+          246
+        ],
+        "coarse_color_bins_16_at_64": 17,
+        "strong_edge_density_at_64": 0.39925373134328357,
+        "outer_dark_fraction_lt80": 0.8793342579750347,
+        "internal_dark_edge_fraction_lt140": 0.5611111111111111,
+        "internal_very_dark_edge_fraction_lt100": 0.0,
+        "line_hierarchy_ratio": 1.5671303607475866
+      }
+    }
+  },
+  {
+    "key": "Rice_Sheaf",
+    "source_sha256": "b930fe1d11ec341763a9b921acfa1cfcf3700b707b74bd304e418ea8218dc1aa",
+    "export_sha256": "f23b34295c1807d18c5ad6134085e2b3011f8521ed02151f5ce8a50f0c6d9755",
+    "source_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 1254,
+        "height": 1254,
+        "transparent_fraction": 0.5250592044850418,
+        "low_alpha_fraction_1_39": 0.00803870993999425,
+        "opaque_fraction_180_255": 0.4640951189049905,
+        "visible_bbox": [
+          0,
+          63,
+          1236,
+          1200
+        ],
+        "coarse_color_bins_16_at_64": 27,
+        "strong_edge_density_at_64": 0.3240682248894504,
+        "outer_dark_fraction_lt80": 0.0859704641350211,
+        "internal_dark_edge_fraction_lt140": 0.19730941704035873,
+        "internal_very_dark_edge_fraction_lt100": 0.10513203786746388,
+        "line_hierarchy_ratio": 0.4357139432297661
+      }
+    },
+    "export_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.5194854736328125,
+        "low_alpha_fraction_1_39": 0.0093536376953125,
+        "opaque_fraction_180_255": 0.4613037109375,
+        "visible_bbox": [
+          7,
+          26,
+          249,
+          234
+        ],
+        "coarse_color_bins_16_at_64": 29,
+        "strong_edge_density_at_64": 0.30952380952380953,
+        "outer_dark_fraction_lt80": 0.0656321546680234,
+        "internal_dark_edge_fraction_lt140": 0.1637694419030192,
+        "internal_very_dark_edge_fraction_lt100": 0.06999085086916743,
+        "line_hierarchy_ratio": 0.40075946956508146
+      }
+    }
+  }
+]

@@ -1,0 +1,320 @@
+[
+  {
+    "key": "Awa_Immature",
+    "source_sha256": "15a5ea6d9b60b0a0f56be936c2425549f0465a5d4b63fe74edfff598c3c1ad7c",
+    "export_sha256": "eb5941e8186a5e17b6cd5349320648a5d46600257ecc23eeb56ff8ea83b39a43",
+    "source_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 1254,
+        "height": 1254,
+        "transparent_fraction": 0.7707196619939002,
+        "low_alpha_fraction_1_39": 0.006777037562733861,
+        "opaque_fraction_180_255": 0.21995197505144623,
+        "visible_bbox": [
+          160,
+          99,
+          1167,
+          1192
+        ],
+        "coarse_color_bins_16_at_64": 18,
+        "strong_edge_density_at_64": 0.3329875518672199,
+        "outer_dark_fraction_lt80": 0.8754235079489184,
+        "internal_dark_edge_fraction_lt140": 0.21946564885496184,
+        "internal_very_dark_edge_fraction_lt100": 0.1049618320610687,
+        "line_hierarchy_ratio": 3.9888862449150717
+      }
+    },
+    "export_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.7646026611328125,
+        "low_alpha_fraction_1_39": 0.009368896484375,
+        "opaque_fraction_180_255": 0.2178192138671875,
+        "visible_bbox": [
+          46,
+          20,
+          216,
+          244
+        ],
+        "coarse_color_bins_16_at_64": 18,
+        "strong_edge_density_at_64": 0.3315954118873827,
+        "outer_dark_fraction_lt80": 0.9594487145507554,
+        "internal_dark_edge_fraction_lt140": 0.22010398613518198,
+        "internal_very_dark_edge_fraction_lt100": 0.0658578856152513,
+        "line_hierarchy_ratio": 4.359070144061306
+      }
+    }
+  },
+  {
+    "key": "Hie_Immature",
+    "source_sha256": "22c10fb53004c45b1e11d89709aca8cbf7625e4758ed70261d8dd179c94fe140",
+    "export_sha256": "c989f8336ee55fec4835e35b025fa9b1fc1a13cb89bd044be935b352e2f95cc1",
+    "source_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 1254,
+        "height": 1254,
+        "transparent_fraction": 0.7614167359823366,
+        "low_alpha_fraction_1_39": 0.00694492138712738,
+        "opaque_fraction_180_255": 0.22905712883048568,
+        "visible_bbox": [
+          41,
+          0,
+          1214,
+          1188
+        ],
+        "coarse_color_bins_16_at_64": 20,
+        "strong_edge_density_at_64": 0.33726415094339623,
+        "outer_dark_fraction_lt80": 0.83265194875988,
+        "internal_dark_edge_fraction_lt140": 0.2787286063569682,
+        "internal_very_dark_edge_fraction_lt100": 0.1100244498777506,
+        "line_hierarchy_ratio": 2.9873214652876396
+      }
+    },
+    "export_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.7554473876953125,
+        "low_alpha_fraction_1_39": 0.0089874267578125,
+        "opaque_fraction_180_255": 0.2266082763671875,
+        "visible_bbox": [
+          33,
+          0,
+          233,
+          230
+        ],
+        "coarse_color_bins_16_at_64": 21,
+        "strong_edge_density_at_64": 0.33191940615058324,
+        "outer_dark_fraction_lt80": 0.99079754601227,
+        "internal_dark_edge_fraction_lt140": 0.13953488372093023,
+        "internal_very_dark_edge_fraction_lt100": 0.0,
+        "line_hierarchy_ratio": 7.100715746421268
+      }
+    }
+  },
+  {
+    "key": "Kibi_Immature",
+    "source_sha256": "160a9938881be9260a5485719dfc332fce8825ba739d1c09294416f9e2321916",
+    "export_sha256": "93296f615430f97827ee4004c3af8d5a918158d1cd6bba32ffa375d655d1089a",
+    "source_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 1254,
+        "height": 1254,
+        "transparent_fraction": 0.7528349473073724,
+        "low_alpha_fraction_1_39": 0.00968193646360355,
+        "opaque_fraction_180_255": 0.23424944483871707,
+        "visible_bbox": [
+          39,
+          48,
+          1246,
+          1222
+        ],
+        "coarse_color_bins_16_at_64": 19,
+        "strong_edge_density_at_64": 0.3539928486293206,
+        "outer_dark_fraction_lt80": 0.8129736959429336,
+        "internal_dark_edge_fraction_lt140": 0.2440944881889764,
+        "internal_very_dark_edge_fraction_lt100": 0.031496062992125984,
+        "line_hierarchy_ratio": 3.330569657572663
+      }
+    },
+    "export_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.7466888427734375,
+        "low_alpha_fraction_1_39": 0.011077880859375,
+        "opaque_fraction_180_255": 0.2315826416015625,
+        "visible_bbox": [
+          27,
+          31,
+          254,
+          244
+        ],
+        "coarse_color_bins_16_at_64": 17,
+        "strong_edge_density_at_64": 0.3292806484295846,
+        "outer_dark_fraction_lt80": 0.9041916167664671,
+        "internal_dark_edge_fraction_lt140": 0.22905027932960895,
+        "internal_very_dark_edge_fraction_lt100": 0.03910614525139665,
+        "line_hierarchy_ratio": 3.9475682780779904
+      }
+    }
+  },
+  {
+    "key": "Soba_Immature",
+    "source_sha256": "e21dc5ffc9ecdc5c5beec1ab3694384d6d2cc6df9c3e887a0518aa296c144189",
+    "export_sha256": "e2538dd29d2ff5672a7d7693f4f9e28a997c5452dea78f902df1ad35e9466058",
+    "source_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 1254,
+        "height": 1254,
+        "transparent_fraction": 0.8334357170292703,
+        "low_alpha_fraction_1_39": 0.007486092351365582,
+        "opaque_fraction_180_255": 0.15669220535752895,
+        "visible_bbox": [
+          146,
+          37,
+          1105,
+          1190
+        ],
+        "coarse_color_bins_16_at_64": 25,
+        "strong_edge_density_at_64": 0.4035656401944895,
+        "outer_dark_fraction_lt80": 0.5088646967340591,
+        "internal_dark_edge_fraction_lt140": 0.22832980972515857,
+        "internal_very_dark_edge_fraction_lt100": 0.11416490486257928,
+        "line_hierarchy_ratio": 2.228638903288981
+      }
+    },
+    "export_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.829010009765625,
+        "low_alpha_fraction_1_39": 0.0086517333984375,
+        "opaque_fraction_180_255": 0.154754638671875,
+        "visible_bbox": [
+          49,
+          19,
+          216,
+          243
+        ],
+        "coarse_color_bins_16_at_64": 26,
+        "strong_edge_density_at_64": 0.39098837209302323,
+        "outer_dark_fraction_lt80": 0.7479699248120301,
+        "internal_dark_edge_fraction_lt140": 0.19930675909878684,
+        "internal_very_dark_edge_fraction_lt100": 0.1022530329289428,
+        "line_hierarchy_ratio": 3.7528577966655767
+      }
+    }
+  },
+  {
+    "key": "Barley_Immature",
+    "source_sha256": "20c983c21da129a8439a1cfe7ad2ca49830d37120145bd6699317498ffe6d3e0",
+    "export_sha256": "b0cb0d2535a970731ad669358a70cf8d62f4e447468220533617c65e5cd53c63",
+    "source_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 1254,
+        "height": 1254,
+        "transparent_fraction": 0.743816915058416,
+        "low_alpha_fraction_1_39": 0.009223435564407611,
+        "opaque_fraction_180_255": 0.243527569830768,
+        "visible_bbox": [
+          25,
+          27,
+          1138,
+          1202
+        ],
+        "coarse_color_bins_16_at_64": 22,
+        "strong_edge_density_at_64": 0.3876889848812095,
+        "outer_dark_fraction_lt80": 0.8485977212971078,
+        "internal_dark_edge_fraction_lt140": 0.19896373056994818,
+        "internal_very_dark_edge_fraction_lt100": 0.09326424870466321,
+        "line_hierarchy_ratio": 4.265087505477651
+      }
+    },
+    "export_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.737335205078125,
+        "low_alpha_fraction_1_39": 0.0107574462890625,
+        "opaque_fraction_180_255": 0.2405853271484375,
+        "visible_bbox": [
+          39,
+          5,
+          231,
+          245
+        ],
+        "coarse_color_bins_16_at_64": 25,
+        "strong_edge_density_at_64": 0.38095238095238093,
+        "outer_dark_fraction_lt80": 0.9066165080770082,
+        "internal_dark_edge_fraction_lt140": 0.19162303664921465,
+        "internal_very_dark_edge_fraction_lt100": 0.060732984293193716,
+        "line_hierarchy_ratio": 4.731250083134114
+      }
+    }
+  },
+  {
+    "key": "Wheat_Immature",
+    "source_sha256": "10bc28521f9000fed9f3778f84feab599e21a03cc1cbdca7f612f6416a4d11b1",
+    "export_sha256": "da596bdefe903f9f8bae03debe593133d53cb8649fe849a5d68bb15169556e8c",
+    "source_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 1254,
+        "height": 1254,
+        "transparent_fraction": 0.7587776531367566,
+        "low_alpha_fraction_1_39": 0.0067388821480989704,
+        "opaque_fraction_180_255": 0.2320853969053415,
+        "visible_bbox": [
+          130,
+          76,
+          1152,
+          1166
+        ],
+        "coarse_color_bins_16_at_64": 23,
+        "strong_edge_density_at_64": 0.3320350535540409,
+        "outer_dark_fraction_lt80": 0.9181768259198243,
+        "internal_dark_edge_fraction_lt140": 0.16393442622950818,
+        "internal_very_dark_edge_fraction_lt100": 0.06659836065573771,
+        "line_hierarchy_ratio": 5.600878638110928
+      }
+    },
+    "export_qa": {
+      "passed": true,
+      "failures": [],
+      "metrics": {
+        "format": "PNG",
+        "width": 256,
+        "height": 256,
+        "transparent_fraction": 0.7534027099609375,
+        "low_alpha_fraction_1_39": 0.0083465576171875,
+        "opaque_fraction_180_255": 0.2298126220703125,
+        "visible_bbox": [
+          50,
+          32,
+          207,
+          235
+        ],
+        "coarse_color_bins_16_at_64": 21,
+        "strong_edge_density_at_64": 0.32186732186732187,
+        "outer_dark_fraction_lt80": 0.961914565105507,
+        "internal_dark_edge_fraction_lt140": 0.1771043771043771,
+        "internal_very_dark_edge_fraction_lt100": 0.04377104377104377,
+        "line_hierarchy_ratio": 5.431342696508281
+      }
+    }
+  }
+]

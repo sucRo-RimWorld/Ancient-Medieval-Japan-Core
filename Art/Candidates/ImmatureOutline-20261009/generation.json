@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-09",
+  "status": "review",
+  "generator": "built-in image_gen",
+  "target_outline": "#505345",
+  "assets": {
+    "Awa_Immature": {
+      "prompt": "Precise palette-only edit of image 1. Image 2 is MO immature wheat reference. Change ONLY the warm brown/ochre outline pixels of image 1 into the DARK GRAY OLIVE outline color from image 2: exact RGB(80,83,69), HEX #505345. Match its appearance. Preserve the green interior fills, silhouette, every stem/head shape, line thickness, spacing, composition, original canvas, and transparency. Do not redraw or simplify the plant. No added leaves. No other edits. Flat solid opaque outline color; no gradient, texture, noise, soft shadow, glow or shading. Background genuinely transparent. The only intended change is brown outline -> #505345 dark gray olive.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-e3193c75-e77a-490e-a1eb-d4b72f2ef845.png"
+    },
+    "Hie_Immature": {
+      "prompt": "Precise palette-only edit of image 1. Image 2 is MO immature wheat reference. Change ONLY the warm brown/ochre outline pixels of image 1 into the DARK GRAY OLIVE outline color from image 2: exact RGB(80,83,69), HEX #505345. Match its appearance. Preserve the green interior fills, silhouette, every stem/head shape, line thickness, spacing, composition, original canvas, and transparency. Do not redraw or simplify the plant. No added leaves. No other edits. Flat solid opaque outline color; no gradient, texture, noise, soft shadow, glow or shading. Background genuinely transparent. The only intended change is brown outline -> #505345 dark gray olive.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-b0605813-27d3-46a4-8fca-3566649eb99a.png"
+    },
+    "Kibi_Immature": {
+      "prompt": "Precise palette-only edit of image 1. Image 2 is MO immature wheat reference. Change ONLY the warm brown/ochre outline pixels of image 1 into the DARK GRAY OLIVE outline color from image 2: exact RGB(80,83,69), HEX #505345. Match its appearance. Preserve the green interior fills, silhouette, every stem/head shape, line thickness, spacing, composition, original canvas, and transparency. Do not redraw or simplify the plant. No added leaves. No other edits. Flat solid opaque outline color; no gradient, texture, noise, soft shadow, glow or shading. Background genuinely transparent. The only intended change is brown outline -> #505345 dark gray olive.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-7fdfd2f0-02a3-4023-b2c9-acadd1e60da1.png"
+    },
+    "Soba_Immature": {
+      "prompt": "Precise palette-only edit of image 1. Image 2 is MO immature wheat reference. Change ONLY the warm brown/ochre outline pixels of image 1 into the DARK GRAY OLIVE outline color from image 2: exact RGB(80,83,69), HEX #505345. Match its appearance. Preserve the green interior fills, silhouette, every stem/head shape, line thickness, spacing, composition, original canvas, and transparency. Do not redraw or simplify the plant. No added leaves. No other edits. Flat solid opaque outline color; no gradient, texture, noise, soft shadow, glow or shading. Background genuinely transparent. The only intended change is brown outline -> #505345 dark gray olive.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-71011cd4-64c2-45d3-9880-e274f6fcc289.png"
+    },
+    "Barley_Immature": {
+      "prompt": "Precise palette-only edit of image 1. Image 2 is MO immature wheat reference. Change ONLY the warm brown/ochre outline pixels of image 1 into the DARK GRAY OLIVE outline color from image 2: exact RGB(80,83,69), HEX #505345. Match its appearance. Preserve the green interior fills, silhouette, every stem/head shape, line thickness, spacing, composition, original canvas, and transparency. Do not redraw or simplify the plant. No added leaves. No other edits. Flat solid opaque outline color; no gradient, texture, noise, soft shadow, glow or shading. Background genuinely transparent. The only intended change is brown outline -> #505345 dark gray olive.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-e5ea95bd-32ad-40c2-adc7-6cfed1875d14.png"
+    },
+    "Wheat_Immature": {
+      "prompt": "Precise palette-only edit of image 1. Image 2 is MO immature wheat reference. Change ONLY the warm brown/ochre outline pixels of image 1 into the DARK GRAY OLIVE outline color from image 2: exact RGB(80,83,69), HEX #505345. Match its appearance. Preserve the green interior fills, silhouette, every stem/head shape, line thickness, spacing, composition, original canvas, and transparency. Do not redraw or simplify the plant. No added leaves. No other edits. Flat solid opaque outline color; no gradient, texture, noise, soft shadow, glow or shading. Background genuinely transparent. The only intended change is brown outline -> #505345 dark gray olive.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-5c6dc6ac-5f23-4f89-b0d2-04ae8c5848a1.png"
+    }
+  }
+}

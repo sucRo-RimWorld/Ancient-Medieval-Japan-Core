@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Stage A millets share the same harvested ThingDef and post-harvest chain.
+    Awa, Hie, and Kibi use crop-specific mature and immature plant textures;
+    their harvested states intentionally converge on the shared millet chain.
+  -->
+  <ThingDef ParentName="PlantBase">
+    <defName>AMJC_Plant_FoxtailMillet_Awa</defName>
+    <label>foxtail millet plant</label>
+    <description>Foxtail millet (awa). A dry-field millet found at archaeological sites from the Yayoi period, and one of the grain foods eaten alongside rice. In AMJGrains it takes longer to grow than kibi but yields more grain per harvest. Harvested grain must be threshed and dehulled.</description>
+    <descriptionHyperlinks>
+      <ThingDef>AMJC_RawMillet</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <maxMeshCount>4</maxMeshCount>
+      <harvestedThingDef>AMJC_RawMillet</harvestedThingDef>
+      <harvestYield>13</harvestYield>
+      <sowTags><li>Ground</li></sowTags>
+      <topWindExposure>0.20</topWindExposure>
+      <growDays>6</growDays>
+      <minGrowthTemperature>8</minGrowthTemperature>
+      <maxGrowthTemperature>42</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>18</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>32</maxOptimalGrowthTemperature>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Awa</immatureGraphicPath>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <sowMinSkill>0</sowMinSkill>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>AMJC_Plant_BarnyardMillet_Hie</defName>
+    <label>Japanese barnyard millet plant</label>
+    <description>Japanese barnyard millet (hie). A grain cultivated since ancient times and eaten more routinely than rice in some regions. Records from mountain communities also describe its use as an everyday staple. In AMJGrains it grows at lower temperatures than awa or kibi, but this does not guarantee greater resistance to frost. Harvested grain must be threshed and dehulled.</description>
+    <descriptionHyperlinks>
+      <ThingDef>AMJC_RawMillet</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plants/FullGrown/AMJC_Hie</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <maxMeshCount>4</maxMeshCount>
+      <harvestedThingDef>AMJC_RawMillet</harvestedThingDef>
+      <harvestYield>12</harvestYield>
+      <sowTags><li>Ground</li></sowTags>
+      <topWindExposure>0.20</topWindExposure>
+      <growDays>6</growDays>
+      <minGrowthTemperature>5</minGrowthTemperature>
+      <maxGrowthTemperature>40</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>15</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>30</maxOptimalGrowthTemperature>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Hie</immatureGraphicPath>
+      <wildOrder>3</wildOrder>
+      <purpose>Food</purpose>
+      <sowMinSkill>0</sowMinSkill>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>AMJC_Plant_ProsoMillet_Kibi</defName>
+    <label>proso millet plant</label>
+    <description>Proso millet (kibi). A millet sometimes counted among the traditional five grains, together with rice, mugi and awa. In AMJGrains it matures sooner than awa or hie and is relatively less affected by soil fertility, but yields less grain per harvest. It must be threshed and dehulled after harvest.</description>
+    <descriptionHyperlinks>
+      <ThingDef>AMJC_RawMillet</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plants/FullGrown/AMJC_Kibi</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <maxMeshCount>4</maxMeshCount>
+      <harvestedThingDef>AMJC_RawMillet</harvestedThingDef>
+      <harvestYield>11</harvestYield>
+      <sowTags><li>Ground</li></sowTags>
+      <topWindExposure>0.20</topWindExposure>
+      <growDays>5</growDays>
+      <minGrowthTemperature>8</minGrowthTemperature>
+      <maxGrowthTemperature>42</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>18</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>32</maxOptimalGrowthTemperature>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Kibi</immatureGraphicPath>
+      <wildOrder>4</wildOrder>
+      <purpose>Food</purpose>
+      <sowMinSkill>0</sowMinSkill>
+    </plant>
+  </ThingDef>
+
+
+  <ThingDef ParentName="PlantBase">
+    <defName>AMJC_Plant_Buckwheat_Soba</defName>
+    <label>buckwheat plant</label>
+    <description>Buckwheat (soba). In ancient Japan it was recommended as a crop to guard against poor harvests, and it has been grown in mountain regions and on less fertile land. In AMJGrains it grows quickly but is vulnerable to frost, and requires threshing and dehulling. Older ways of eating buckwheat are distinct from cut soba noodles, which became widespread in the Edo period.</description>
+    <descriptionHyperlinks>
+      <ThingDef>AMJC_RawBuckwheat</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plants/FullGrown/AMJC_Soba</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.4</fertilityMin>
+      <fertilitySensitivity>0.25</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <maxMeshCount>4</maxMeshCount>
+      <harvestedThingDef>AMJC_RawBuckwheat</harvestedThingDef>
+      <harvestYield>8</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <topWindExposure>0.20</topWindExposure>
+      <growDays>4</growDays>
+      <minGrowthTemperature>5</minGrowthTemperature>
+      <maxGrowthTemperature>35</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>12</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>25</maxOptimalGrowthTemperature>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Soba</immatureGraphicPath>
+      <wildOrder>5</wildOrder>
+      <purpose>Food</purpose>
+      <sowMinSkill>1</sowMinSkill>
+    </plant>
+  </ThingDef>
+
+
+  <ThingDef ParentName="PlantBase">
+    <defName>AMJC_Plant_Barley</defName>
+    <label>barley plant</label>
+    <description>Barley (omugi). A cereal introduced to Japan in the Yayoi period and known to have been cultivated during the Nara period. It has long contributed to diets alongside rice. In AMJGrains it grows well in cooler conditions, takes longer to mature than the millets, and yields a larger harvest. Harvested grain must be threshed and dehulled.</description>
+    <descriptionHyperlinks>
+      <ThingDef>AMJC_RawBarley</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <!-- TEMP: AMJ Awa art in all profiles until dedicated barley art is approved. -->
+      <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.6</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <maxMeshCount>4</maxMeshCount>
+      <harvestedThingDef>AMJC_RawBarley</harvestedThingDef>
+      <harvestYield>22</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <topWindExposure>0.20</topWindExposure>
+      <growDays>10</growDays>
+      <minGrowthTemperature>0</minGrowthTemperature>
+      <maxGrowthTemperature>35</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>5</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>22</maxOptimalGrowthTemperature>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Awa</immatureGraphicPath>
+      <wildOrder>6</wildOrder>
+      <purpose>Food</purpose>
+      <sowMinSkill>2</sowMinSkill>
+    </plant>
+  </ThingDef>
+
+</Defs>
