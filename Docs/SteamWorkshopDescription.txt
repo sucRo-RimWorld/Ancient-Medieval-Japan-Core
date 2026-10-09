@@ -15,11 +15,8 @@ This is a focused agriculture module, not an all-in-one AMJ Core. Rice paddies, 
 [h2]Requirements and compatibility[/h2]
 [b]RimWorld 1.6[/b]. [b]No additional Mod is required.[/b] Medieval Overhaul (MO) is optional: with MO, Grains reuses its wheat, flour, millstone and straw integration; without MO, Grains provides its own wheat and milling path. Grains' own crop and processing rules take priority in both configurations. [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3812412548]Crop Cold Tolerance Overhaul (CCTO)[/url] is also optional for crop-specific cold behavior.
 
-[h2]Save compatibility[/h2]
-Adding to or removing from an existing save has [b]not been verified[/b]. This build uses custom crops, items and processing content. Do not assume it is safe to uninstall from a save that uses them. Existing saves do not receive new-start scenario pawns or starting supplies.
-
 [h2]Development status[/h2]
-[b]Development build, not ready for public release.[/b] The hard MO requirement has been removed. Old-Core saves, mid-save changes, production artwork and actual-game validation of this revision still require verification.
+[b]Development build, not ready for public release.[/b] The hard MO requirement has been removed. Current-version fresh-start Vanilla/MO/CCTO runtime verification and final production artwork remain under review.
 
 Documentation: [url=https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Grains]GitHub README[/url]
 
@@ -42,10 +39,7 @@ AMJ全体の共通基盤Modではなく、穀類とその基本加工を担う�
 [h2]必須Mod・互換性[/h2]
 [b]RimWorld 1.6対応。追加の必須Modはありません。[/b] Medieval Overhaul（MO）は任意です。MO併用時はMOの小麦・小麦粉・石臼・藁を連携利用し、MOなしではGrains側の小麦・製粉を利用します。いずれもGrains所有の作物・加工設定を優先します。[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3812412548]Crop Cold Tolerance Overhaul（CCTO）[/url]も任意です。
 
-[h2]セーブ互換性[/h2]
-既存セーブへの[b]途中追加・削除は未検証[/b]です。独自の穀物・アイテム・加工要素を使用するセーブから安全に削除できるとは限りません。既存セーブに開始シナリオのポーンや初期物資が追加されることもありません。
-
 [h2]開発状況[/h2]
-[b]開発ビルドであり、公開準備は完了していません。[/b] MO必須指定は解除しました。旧Coreセーブの移行、途中導入・削除、専用画像、現行版の実機テストは引き続き確認が必要です。
+[b]開発ビルドであり、公開準備は完了していません。[/b] MO必須指定は解除しました。現行版の新規開始4構成実機テストと専用画像等の確認を継続しています。
 
 詳細：[url=https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Grains]GitHub README[/url]
