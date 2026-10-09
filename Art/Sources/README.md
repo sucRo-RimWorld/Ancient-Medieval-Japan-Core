@@ -21,6 +21,14 @@ Author accepted the Awa/Hie/Kibi immature and mature images and mixed millet she
 
 Prompts, source/export hashes and mechanical QA are in `Art/Candidates/MilletSimplification-20261009/`. Exports use uniform whole-canvas BOX downsampling onto 256×256 transparent canvases; this avoids LANCZOS low-alpha ringing for these sources. Three stack slots reuse identical bytes. Species are conveyed through seed-head silhouette with no leaves or individual grain outlines. Immature is green; mature is ochre. This is the author-approved narrower millet revision; other crop/resource art is unchanged.
 
+## Integrated crop-family source archive — 2026-10-10
+
+Nineteen player-visible crop/sheaf graphic states (seven mature, seven immature, five bundled sheaves) are linked from [the exact-byte manifest](../../Docs/References/GrainsCropSourceManifest.json). Three already archived mature millet sources were left byte-for-byte unchanged. Sixteen new high-resolution sources are copied from committed candidate sources without re-encoding, including seven normalized-outline immature sources. The three earlier accepted Awa/Hie/Kibi immature source masters are retained under their original filenames, while current upright/outlined revisions use `*_Outline20261009.png`.
+
+The untouched ImageGen sources, any intermediary outline edits, and final approved 256px exports remain under `Art/Candidates/ImmatureUpright-20261009/`. The high-resolution normalized immature inputs are not exact pixel derivatives of all final 256px exports because the final post-export palette pass applies. Do not substitute the old master for the latest displayed variant or silently overwrite either. Production `Textures/` and XML/patch paths already refer to the accepted outputs; game-render verification is still outstanding. `Tests/test_grains_art_source_archive.py` checks the bytes and all 19 mapped production images.
+
+The historical 2026-10-07 14-role inventory remains a separate legacy-source recovery exercise; its 7 pending cases are not automatically closed by this newer family.
+
 ## Inventory / recovery queue
 
 The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 12 already archived and 7 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters. G04 now has a separately verified high-resolution original.

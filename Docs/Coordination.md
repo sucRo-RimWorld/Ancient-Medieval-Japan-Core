@@ -76,33 +76,9 @@ Detailed names, research costs, production quantities, Steel-as-Base-general-met
 
 **Next smallest unit:** settle standalone sand-iron supply and usable general-metal endpoint, compare the initial furnace/Bill/fuel abstraction and review candidate balance. Then create/choose an owning Ironmaking repository, migrate this formal design and its handoff there, and implement/test only charcoal→small furnace→bloom→general metal before later furnaces. Keep research/balance proposals distinct from author-confirmed concept; no publishing/repository creation or background worker has been started.
 
-### AMJ-009 — Soba crop/item graphics
+### AMJ-011 — Barley post-harvest grain graphics
 
-**Requested by:** Agriculture/XML  \
-**Owner:** Art/graphics  \
-**Status:** OPEN
-
-The Soba data slice uses temporary Awa/millet graphics only. Under `Docs/Design.md §12.1.2`, Soba is a separate PlantDef and its three post-harvest ThingDefs are not shared with another crop, so the **immature plant, mature plant, sheaf, in-hull grain and edible grain all require Soba-specific production art before the public Alpha**. This does not block the already validated data slice, but it does block visual completion of the Soba vertical slice.
-
-**Next action:** Art/graphics should produce Soba-specific plant and item assets following `Docs/ArtStyle.md`, then wire them without changing the validated gameplay data.
-
-**Result / references:** data DefNames are `AMJC_Plant_Buckwheat_Soba`, `AMJC_RawBuckwheat`, `AMJC_BuckwheatInHull`, `AMJC_Buckwheat`; current temporary paths reuse Awa/millet assets.
-**2026-10-05 boxed-resource icon lock:** The author approved a dedicated empty **Japanese masu** as the canonical boxed-resource master. AMJ keeps the familiar Vanilla/MO boxed-item silhouette language, but all compatible AMJ/Vanilla/MO retextures should use the same masu treatment. The container geometry, viewing angle, rim, joinery, palette, shading and placement are fixed; only the contents change. Generate/draw contents separately and composite them into the fixed master. If whole-icon generation drifts twice, stop regenerating and use deterministic local compositing. Durable procedure: `Docs/GoldenPaths/TextureAssetPipeline.md`; visual source of truth: `Docs/ArtStyle.md`.
-Current master: **approved masu v2**. New-resource production: **v4 contact study BLOCKED pending visual validation**; see ART-TEMPLATE-019.
-
-**2026-10-05 Soba in-hull integration:** `AMJC_BuckwheatInHull` now uses Soba-specific production art at `Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull`. The approved filled exemplar is reused for stack variants a/b/c for now. Remaining AMJ-009 art backlog is Soba immature/mature plant integration, sheaf integration, and edible buckwheat grain. Master `Textures/Shared/Containers/AMJ_Masu_Empty_Master.png`; manifest `Docs/References/AMJ_Masu_Template.json`; allowed/editable mask `Docs/References/AMJ_Masu_EditableMask.png`; required-fill guide `Docs/References/AMJ_Masu_RequiredFill.png`; approved representative `Docs/References/AMJ_BuckwheatInHull_Ideal_256.png`.
-
-### AMJ-011 — Barley crop/item graphics
-
-**Requested by:** Agriculture/XML  \
-**Owner:** Art/graphics  \
-**Status:** OPEN
-
-The Barley data slice uses temporary MO wheat plant graphics and AMJ millet item graphics. Under `Docs/Design.md §12.1.2`, Barley is a separate PlantDef and its three post-harvest ThingDefs are not shared with another crop, so the **immature plant, mature plant, sheaf, in-hull grain and edible grain all require Barley-specific production art before the public Alpha**. This does not block the already validated data slice, but it does block visual completion of the Barley vertical slice.
-
-**Next action:** Art/graphics should create Barley-specific plant and item assets following `Docs/ArtStyle.md`, then wire them without changing the validated gameplay data.
-
-**Result / references:** data DefNames are `AMJC_Plant_Barley`, `AMJC_RawBarley`, `AMJC_BarleyInHull`, and `AMJC_Barley`; current temporary paths use MO wheat / AMJ millet assets.
+**Owner:** Art/graphics. **Status:** OPEN for grain items only. On main PR #20, dedicated immature/mature barley crop and densely bundled sheaf are implemented as AMJ-owned textures and XML paths. Barley in-hull and edible grain still use the shared millet item images, so those *two post-processing states* need dedicated final art before public release. Do not reopen crop/sheaf generation. Exact current crop/sheaf sources are documented in `Docs/References/GrainsCropSourceManifest.json`. Loaded-game visual appearance is a separate release gate.
 
 ### AMJ-017 — Grain-processing station graphics
 
@@ -133,27 +109,13 @@ The two buildings should remain visually related but clearly communicate the exi
 
 **Result / references:** target DefName is `AMJC_Wheat`; harvested `DankPyon_RawWheat` remains the MO wheat-sheaf asset/display override.
 
-### AMJ-018 — Public Alpha readiness gate
+### AMJ-018 — Current private-play and eventual public readiness
 
-**Requested by:** Core/design / Testing/release  \
-**Owner:** Testing/release / Art/graphics  \
-**Status:** BLOCKED
+**Owner:** Testing/release + Art/graphics. **Status:** BLOCKED for release; source/UI/gameplay smoke checks remain. Author currently prefers private Workshop upload and normal play before public release.
 
-The Stage A functional slice is now substantially complete: six dry-field crops and their primary processing are implemented, MO wheat is integrated, the New Village Scenario is implemented, and the current isolated automated gate has been confirmed at **7/7 Pickle PASS + zero runtime ERROR entries**.
+PR #20 integrates immature/mature crops and bundled sheaves: 7/7/5. The 2026-10-10 source archive maps all 19 states into the owning original source tree, preserving old accepted masters. Stage A/Workshop CI for PR #20 PASS only for that head. This does **not** imply in-game rendering, runtime four-profile validation or public publication.
 
-A 2026-10-04 audit also resolved the planned Food Drying step for the current scope. Food Drying remains priority-A optional compatibility, but Stage A grains are already dry-storage staples and the current Food Drying 1.6 outputs are crop-specific dried foods with rehydration paths. No compatibility Patch is added merely to convert AMJ grains into a different crop's dried item. `Docs/Design.md` now requires food-by-food semantic compatibility and defers actual Patch additions until suitable fresh AMJ foods such as wild greens, mushrooms, fruit or root vegetables exist.
-
-The public Alpha is therefore blocked primarily by **production-art completion**, not by missing Stage A gameplay:
-- AMJ-009: Soba plant + three post-harvest item states;
-- AMJ-011: Barley plant + three post-harvest item states;
-- AMJ-013: dedicated wheat-grain texture;
-- AMJ-017: simple grain-processing spot + grain-processing table graphics.
-
-After those assets are wired and visually checked, run the normal static/CI + isolated runtime gate again, then do only the minimum manual release checks that automation cannot cover: normal-zoom appearance/readability, Japanese public text, and starting feel.
-
-**Next action:** complete the remaining production-art backlog in the order AMJ-009 → AMJ-011 → AMJ-013 → AMJ-017, rerunning automated regression after each wiring change where practical.
-
-**Result / references:** current runtime baseline: local 7/7 + zero ERROR confirmed 2026-10-04 JST; Food Drying scope clarification `3e66838f5cf6cd2851aa11c11a7d723603057572`; Alpha-art backlog tracking `5c64ac39cc517ead52cacca88a3f9f661420ca49`.
+Remaining art: AMJ-011 dedicated hulled/edible barley items, AMJ-013 dedicated edible wheat grain, AMJ-017 AMJ processing spot/table, and other unfinished processing/meal graphics identified by production audits. Soba's mature/immature/sheaf/boxed resources already have AMJ paths; do not incorrectly count them as missing. Next: verify 7 crop plants and 5 bundle graphics at normal zoom and the real MO/no-MO Def paths, then finish remaining item/station art and rerun applicable runtime gates. Old save migration is explicitly out of scope (Grains was never installed).
 
 ### ART-TEMPLATE-001 — Pixel-exact shared component policy
 
@@ -210,49 +172,11 @@ repositories to exercise the newer suites; human visual acceptance stays separat
 **Procedure:** Core Docs/IntegratedRuntimeTesting.md and
 Scripts/IntegratedRuntimeDesktop/Run-AMJ-IsolatedDesktop.ps1.
 
-### AMJ-009-ART-SOBA-PLANT — Dedicated Soba plant textures
+### ART-SOURCE-ARCHIVE-023 — Original-source inventory
 
-**Requested by:** author (2026-10-05 JST)  
-**Owner:** AMJ Core art  
-**Status:** IMPLEMENTED; first CI exposed immature-path edit bug, fix pushed
+**Owner:** Art/graphics. **Status:** IN PROGRESS for the historical 2026-10-07 archive only. The previous **19 historical roles / 12 archived / 7 pending** are a *legacy-source recovery snapshot*, not the current crop-family count. Current 7 mature + 7 immature + 5 sheaf production states are mapped separately in `Docs/References/GrainsCropSourceManifest.json`. In this commit the 3 current existing mature source files are reused unchanged and 16 previously unarchived high-resolution crop/sheaf source inputs are added verbatim. Earlier accepted Awa/Hie/Kibi immature originals are preserved; their latest outlined versions have distinct source filenames. Image production and art approval are not release or game-rendering evidence.
 
-Recovered the previously approved Soba mature and immature source art from the persistent Library rather than regenerating it. Both were deterministically normalized to 256×256 transparent PNGs and wired into the Soba PlantDef:
-
-- mature: `Textures/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png`
-- immature: `Textures/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png`
-
-The former temporary Awa paths are removed from `AMJC_Plant_Buckwheat_Soba`. Stage A validation now asserts both dedicated Soba texture paths, PNG signatures, and 256×256 dimensions.
-
-The previously approved Soba sheaf source has not been wired in this commit because the persistent Library contains several adjacent sheaf iterations and the exact author-approved one cannot be proven from the retained metadata alone. Do not guess between those variants; resolve the authoritative sheaf source separately before replacing the current RawMillet placeholder. No new ImageGen was used.
-
-
-**AMJ-009 Soba plant CI follow-up (2026-10-05 JST):** The first integration CI run (#205) correctly failed Stage A because the Soba immature path was still the Awa placeholder. The write script had scoped the XML block by the first literal `</ThingDef>`, which accidentally matched the nested `descriptionHyperlinks/ThingDef` element before the plant section. The correction now scopes the replacement directly from the Soba defName through its immatureGraphicPath; no image bytes changed.
-
-### AMJ-009-ART-SOBA-SHEAF — Dedicated Soba sheaf texture
-
-**Requested by:** author / continuation of AMJ-009 art integration (2026-10-05 JST)  
-**Owner:** AMJ Core art  
-**Status:** IMPLEMENTED; CI pending
-
-Recovered the last Soba-sheaf iteration from the persistent Library sequence before the workstream moved on to boxed-resource art. It matches the accepted Soba-sheaf design: a compact tied bundle with tan/yellow/reddish stalks, large dark triangular buckwheat fruits, three broad leaves and a few pale flowers. No ImageGen was used in this integration step.
-
-The source was deterministically normalized to a 256×256 transparent production PNG and wired as `Graphic_StackCount` under:
-
-- `Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat/RawBuckwheat_a.png`
-- `.../RawBuckwheat_b.png`
-- `.../RawBuckwheat_c.png`
-
-All three stack slots intentionally reuse the same approved silhouette for now, matching the current buckwheat-in-hull handling. `AMJC_RawBuckwheat` no longer reuses the millet sheaf path. Stage A validation now locks the dedicated texPath plus all three 256×256 PNG slots.
-
-The edible `AMJC_Buckwheat` grain remains on its temporary millet-grain path; this commit does not create or infer that separate asset.
-
-### ART-SOURCE-ARCHIVE-023 — Recover pre-resize accepted image masters
-
-**Owner:** Grains Art/source recovery. **Status:** IN PROGRESS — original source archive recovery still incomplete.
-
-Canonical active ledger: `Art/Sources/Inventory.md`, with methods/source policy in `Art/Sources/README.md`. Last recorded summary: **19 roles / 12 archived / 7 pending** (game 14/7/7; Workshop/shared 5/5/0). Original sources already committed under `Art/Sources/` are not to be regenerated or replaced with 256px derivatives. Next smallest target: **G06 Kibi immature plant**, verify the accepted pre-resize identity and hash against production/approval before saving the proven unchanged source. Workshop assets are archived; no background worker or live Steam publication. Unique asset-by-asset SHA/provenance and historic closeouts remain in the original Git history and current `Art/Sources/Inventory.md`.
-
-**2026-10-10 Astra制作物の受け入れ:** 作者はGrains追加植物の未熟・成熟・束が全種制作・確認済みと明示。再制作・再レビュー依頼は不要。ただしAstra最終PNGの原本バイトと状態別識別情報はこの作業環境から取り込めず、Art/Sources/Textures/Defsへの新規統合は未完了。旧棚卸しの件数は不変。制作系統から確定ファイルをGrainsへ直接渡し、Art/Sources/Inventory.mdの2026-10-10節に従い原本保存→派生→接続→検証する。AMJ-009/011/018の本番画像未統合ブロッカーは解除しない。
+**Next:** recover only genuine missing *historical* accepted masters when author-approved identity can be proven; never replace an original with a 256px derivative.
 
 ### ARCH-MODULAR-001 — Grains modularity and optional MO dependency
 
@@ -310,12 +234,6 @@ Audited Grains Design, crop cold-tolerance source-of-truth, Scenarios extraction
 
 The author approved the existing 15 Japanese historical description/Recipe work-string candidates except two precise wording adjustments: use **AMJGrains** rather than Grains in player-facing prose, and replace the ambiguous wheat phrase `実は食材になるほか挽いて粉食に利用できる` with `小麦の穀粒は食事の材料に使え、石臼で挽けば小麦粉として粉食にも利用できる`. Apply the other approved Japanese text without extra historical claims. `Docs/LocalizationHistoricalReview.md` §2/§6 now records exact Japanese/English pairs. Source scopes: 5 shared grain-flour/food ThingDefs, 5 shared RecipeDefs, 4 non-MO wheat/millstone ThingDefs, one non-MO wheat milling Recipe. Japanese DefInjected describes all 15 and jobStrings for six Recipes; default English XML carries matching descriptions/jobStrings. Product labels, names/DefNames, gameplay XML, MO provider ownership and historical MO fixture unchanged. `Tests/test_grains_localization.py` checks exact docs–Japanese–English correspondence. Remaining: game-loaded language switching and four-provider Pickle/ERROR-0, extra plant prose review and images.
 
-### AMJGRAINS-SIX-CROP-HISTORICAL-REVIEW-20261008
-
-**Owner:** Grains localization/historical presentation. **Status:** Six new Japanese draft descriptions researched and archived; author approval pending; no runtime text changes.
-
-Following approval and shipping of 15 grain flour/food/manual-wheat descriptions in `eff3dd9c8e301d99d8d83b267f7bd15432897326`, audited the remaining shared Awa/Hie/Kibi/Soba/Barley plants and Vanilla `Plant_Rice` upland localization against committed PlantDefs/Patch and public archaeological/government evidence. `Docs/LocalizationHistoricalReview.md §7` owns six **unapproved Japanese-only** descriptions (recognized kanji first; AMJGrains name; gaming roles vs historic/ecological claims separated; near-modern rice decline limited to documented record). `Tests/test_grains_localization.py` confirms six candidate keys, live-language isolation, and key source agronomic contrasts. Do not translate or publish the six drafts before author approval. No DefName, packageId, label, CCTO ownership, harvested Def, balance, textures, or MO provider changed. Next after approval: JP DefInjected + aligned English, source/translation checks; real Pickle/UI/saves still outstanding.
-
 ### AMJGRAINS-SIX-CROP-APPROVAL-20261008 — approved and localized crop descriptions
 
 **Owner:** Grains localization/historical presentation. **Status:** Six Japanese crop texts approved; JP/EN production strings added with static parity checks. Runtime/UI verification pending.
@@ -334,12 +252,6 @@ After approved crop descriptions reached main in commit `81dc10ce0d9b83f8ae0945e
 
 The authoritative `Docs/Balance/Crops/SevenGrainFoodChainAudit.md` now compares 7 crop choices, 10-unit thresh/hull outputs, 1:1 retention, normalized workAmount, 60/90-day flour storage, 0.5 nutrition flour input to 0.9 food, +2 Mood, and the original MO 1.6 source grinding work costs. The 27-cell seven-crop projection has all seven tied-or-unique maxima but `Plant_Rice` is only tied in six and uniquely best in zero; earlier unqualified niche phrasing is corrected in the GrainsEnvironment design source. MO wheat bulk flour costs 800 nominal work versus 300 Base; no MO-global grinding work changes have been imposed. A new `Tests/test_grains_balance_chain.py` and Stage A workflow step guard source XML/recipe/food and exact current max-count signature. `validate_grains_chain.py --mo-root` additionally verifies 300/100/800 workAmount on 1.6 source; synthetic ZIP fixture gains a negative work drift case. All tests here are static. Verify Stage A/Workshop CI and then four-profile actual Pickle, C# compile, ERROR 0, season sow, grain storage behavior, artwork, old saves before release.
 
-### GRAINS-RICE-POSTHARVEST-CORRECTION-20261008 — mandatory rice processing design
-
-**Owner:** Grains harvest/processing. **Status:** Design corrected; production XML, localized new items/recipes, Pickle and real-game tests NOT implemented.
-
-The author questioned why upland Vanilla `Plant_Rice` yields edible `RawRice` without any thresh/hull, and indicated the processing should be required. Investigation confirmed that direct `RawRice` harvest is only an expedient Vanilla compatibility shortcut and contradicts Grains' earlier rice processing conception. Canonical replacement design: `Plant_Rice → AMJC_RiceSheaf → [thresh] AMJC_RiceInHull → [hull] RawRice`. Retain Vanilla `Plant_Rice`, `RawRice` and all third-party Vanilla rice references, but change the plant's harvest target and provide two common grain processing bills (single and 10-bulk). Proposed baseline work amounts 15/120 and 10/80 are **not final accepted balance values**. Keep MO Straw conditional; decide optional drying with future Rice Cultivation owner (Project until split). Accepted Japanese historical crop texts must not be silently rewritten; new item/recipe display copy is JP-first and requires author review before EN/production publication. The own-spec record is `Docs/Balance/Crops/RicePostHarvestProcessing.md`; `Docs/Design.md`, seven-crop balance audit and the environmental fixture commentary now distinguish the *current unprocessed XML* from this intended design. Next run strict static/XML regressions and actual native-Bill+four-profile Pickle after implementation; old RawRice inventories must remain edible. No user relay needed for other workstreams.
-
 ### GRAINS-RICE-POSTHARVEST-IMPLEMENTATION-20261008
 
 **Owner:** Grains production / E2E / localization. **Status:** Source implementation; full Python CI, C# compile, four-profile Pickle/ERROR-0, save migration and rendering pending.
@@ -354,10 +266,6 @@ Implemented Vanilla `Plant_Rice → AMJC_RiceSheaf → AMJC_RiceInHull → RawRi
 
 
 **CI follow-up on automated-gates fixes (2026-10-08):** GitHub Actions run 37733027245 confirmed two failing negative tests were not guarded because the refreshed chain validator omitted the meal-comp and graphic assertions; restored those assertions and fixed the now-changed 2.5-day XPath in an existing negative test. Windows synthetic duplicate CCTO provider passed source resolution, but its manifest assertion hit PowerShell cast/member precedence (`[string]$cctoRecords[0].Root`); parenthesized the `Root` access before conversion. Confirmed by job logs before this targeted correction; the original loaded-game four-profile gate is still pending.
-
-### GRAINS-OLD-SAVE-CONSERVATION-CONTRACT-20261008
-
-**Owner:** Grains save migration testing. **Status:** Read-only save XML fixture preparation and negative tests implemented; *actual legacy engine load/re-save pending*. The separate Scenarios repository continues owning New Village's scenario/faction/pawnkind migration inspector and runtime adapter. Grains owns preservation of saved `AMJC_` crop/food/equipment things, Vanilla `Plant_Rice` / `RawRice`, and persisted AMJC processing/cooking Bills across **same packageId** old-Core -> current Grains, with MO retained. `Scripts/grains_save_contract.py` preserves original .rws bytes, records claimed SHA/version/source IDs in a new evidence directory and compares paused-save snapshots with strict IDs/quantities/bills/ticks/mod sets. Reject missing required grain/rice witnesses and test-package aliases. No source save mutation, provider removal, Def renaming or gameplay source changes. `Tests/test_grains_save_contract.py` uses synthetic XML, added as a separate Stage A CI step. This is **not** a real save engine adapter, successful actual migrated save, nor confirmation of release readiness; further work requires a genuine old .rws from an older production Core and an installed-game production-ID isolated load/re-save + every-ERROR 0 gate. The 4×6 fresh smoke gate remains DONE.
 
 ### GRAINS-NATIVE-SEASONAL-SOW-20261008
 
@@ -402,8 +310,11 @@ Current source keeps `Scripts/Art/grains_image_generator.py` as a deterministic 
 Because in-chat image generation displays its result immediately, this no-extra-API-cost route cannot claim private pre-display screening. The generated image remains an immediately visible, not-yet-vetted draft until `review` and semantic comparison complete, per the shared Project texture pipeline. Candidate/work output remains blocked from `Textures/`, `Art/Sources/`, and `Docs/References/`. No gameplay XML, Def paths, production PNGs, dependency metadata, Workshop payload, or publication state changed.
 
 
-### GRAINS-GENERATED-ART-20261010
+### GRAINS-GENERATED-ART-20261010 — crops and sheaves
 
-**Owner:** Grains art. **Status:** Generated source and production-image integration; runtime visual acceptance remains OPEN.
+**Owner:** Grains art. **Status:** SOURCE INTEGRATED / STATIC VERIFIED; fresh-game rendering OPEN.
 
-Author requested main integration of the 2026-10-09 generated grain images. Includes seven immature/mature crop families and five sheaf families, exact source/candidate bytes, XML paths and static contracts. MO wheat uses the same AMJ paths through its conditional compatibility folder. Latest immature outlines use #4D4E3C; Awa/Hie/Kibi heads are upright. Latest upstream dependency/research/material changes are preserved. See Docs/Design.md section 12.1 and Art/Candidates. PNG integrity (58 files), Stage A, Base/MO, grain-chain, upland-rice, environment/balance and payload checks passed locally. This is not real-game rendering, final acceptance of review candidates, or Steam publication.
+PR #20 (`cd52a3d9e15467d2f6ebc1bdaac63cda84f98cbd`) wired seven immature and seven mature crop paths, five bundle families, Vanilla upland rice and MO wheat conditional graphical override. Latest immature outline is #4D4E3C with upright millet. The 2026-10-10 source archive preserves or maps all 19 source states via the hash-locked manifest (16 new sources, 3 preexisting originals). The author's crop image checks are acknowledged; no re-generation or repeat approval request. Static PNG / Stage A / Workshop tests are distinct from loaded-game visual acceptance.
+
+**Next:** fresh-start screen/render inspection across actual Vanilla and MO providers, address only concrete sprite/UI failures; independently complete postharvest barley/wheat items and processing station art. No Steam release or real-game PASS claimed.
+

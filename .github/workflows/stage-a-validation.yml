@@ -46,6 +46,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v5
 
+      - name: Verify current grain image source provenance and installed textures
+        run: python Tests/test_grains_art_source_archive.py
+
       - name: Reject Base MO references and compatibility regressions
         run: python Tests/test_grains_base.py
 
