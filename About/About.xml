@@ -19,5 +19,5 @@ Adds dry-field grains, harvesting and processing, flour milling, and basic grain
 
 Medieval Overhaul is optional: when loaded, AMJG uses conditional compatibility Defs and patches. Crop Cold Tolerance Overhaul is also optional. New Village is owned by the separate AMJ Scenarios mod (only a legacy compatibility copy remains when Scenarios is absent).
 
-Save compatibility: Safe addition/removal and migration of older Core saves remain unverified. The current build is not certified for public release.</description>
+Development status: Fresh-start Vanilla/MO/CCTO gameplay tests, final artwork and runtime validation remain outstanding. This development build has not been cleared for public release.</description>
 </ModMetaData>

@@ -1,10 +1,10 @@
 # Ancient & Medieval Japan - Grains（中世日本 - 穀類） — 設計書
 
-**文書状態:** Core→Grains再編実装中。MO必須メタデータ解除（2026-10-10）、旧セーブ・最終画像・実機リリース検証は継続  
+**文書状態:** Core→Grains再編実装中。MO必須依存解除（2026-10-10）。新規開始の実機・画像・UI・バランス検証を継続。旧セーブ移行は対象外  
 **対象:** RimWorld 1.6  
 **公開表示名（名称方針）:** Ancient & Medieval Japan - Grains（中世日本 - 穀類）  
 **機能位置づけ:** 独立した穀類Mod。表示名はGrains、既存`packageId`・DefNameは互換維持。MO必須依存は解除、MO互換は条件付きで継続  
-**基本方針:** GrainsはAMJ全体の必須Coreではなく、乾田穀物の栽培・一次加工・最低限の粉食を自己完結して提供する。Vanilla + Grainsを基本経路とし、Medieval Overhaul（MO）は任意の公式互換先。MOありではMO固有の小麦・石臼等を条件付きで再利用し、Grains所有の設定を優先する。旧セーブからMOを実際に削除できるかは別途検証する。
+**基本方針:** GrainsはAMJ全体の必須Coreではなく、乾田穀物の栽培・一次加工・最低限の粉食を自己完結して提供する。Vanilla + Grainsを基本経路とし、Medieval Overhaul（MO）は任意の公式互換先。MOありではMO固有の小麦・石臼等を条件付きで再利用し、Grains所有の設定を優先する。旧セーブからのMO削除・移行は、導入実績と対象セーブがないため今回の対象外。
 
 ---
 
@@ -247,7 +247,7 @@ AMJ各Modは、**AMJシリーズ内の別Modを理由なく必須依存にしな
 
 Grains移行後はVanilla + Grainsで、乾田穀物の栽培 → 一次加工 → 製粉 → 最低限の粉食まで成立させる。MO導入時は同じ概念のMO小麦・小麦粉・石臼・Straw等を条件付き互換から実Def供給元として再利用し、同等のAMJ資産を二重表示しない。
 
-Base XMLにはMO DefNameへの無条件参照を残さない。MO固有PatchはMO存在時だけ適用する。**本番About.xmlのMO必須依存は解除済み**。任意の`loadAfter`は互換Patchの適用順を守るため残す。旧セーブからのMO削除安全性と公開可否は別の検証対象とする。
+Base XMLにはMO DefNameへの無条件参照を残さない。MO固有PatchはMO存在時だけ適用する。**本番About.xmlのMO必須依存は解除済み**。任意の`loadAfter`は互換Patchの適用順を守るため残す。公開可否は新規導入での実機ロード・製粉・描画等で判断する。旧セーブ移行は対象外。
 
 `AMJ - Medieval Overhaul Japanization` はMO本体を古代～中世日本向けに再構成するPatch + Retextureレイヤーであり、責務上MO必須を維持する。World Tech Levelは中世限定世界を作るための強い推奨Modとし、Japanization自身では包括的なTech Level制限を再実装しない。
 
@@ -348,13 +348,11 @@ MO導入時は、既存の農業・研究・設備・素材を可能な限り再
 - SaltもAgriculture本体の主要ループではない。既存設計の「海水採取 → `DankPyon_Salt`」はMO併用時だけ成立する互換案として扱い、BaseにMO Saltへの直接出力を置かない。
 - 現行CoreはProcessor Frameworkのclass / ProcessDefを直接利用していない。MOがPFを依存に含めていることを理由に、将来AddonがPFを暗黙利用してはならない。Fermentation等がPFを主要ループに必要と判断した場合は、そのAddon自身が直接依存を宣言する。
 
-##### 識別子・セーブ互換
+##### 識別子と新規導入の互換方針（2026-10-10確定）
 
-MO依存解除で、既存の `packageId=sucro.ancientmedievaljapan.core`、公開名、`AMJC_` prefix、既存AMJC DefNameは変更しない。**Coreという名称は当面維持するが、アーキテクチャ上は「AMJ全体の共通必須基盤」ではなくAgriculture相当の独立コンテンツModとして扱う。** 「Core」は歴史的な公開名/識別子であり、他Addonが依存すべきという意味を持たせない。
+Grainsは作者確認時点でまだどこにも導入されておらず、旧Core/Grainsセーブが存在しない。**旧セーブの移行、途中導入・削除、既存セーブからのMO取り外しは開発・公開の必須ゲートから除外する。** 過去の移行検査器・記録は歴史的診断用として保持し、現行の必須作業とは扱わない。
 
-MO併用の既存セーブでは、現在参照されているMO Defを急にAMJ Defへ置換しない。MOが残っている更新経路では、現在のMO小麦・MO素材・AMJC既存DefNameを条件付き互換から維持する。新規のVanillaフォールバックDefはMO併用時に重複栽培・重複Recipeを標準表示しない。
-
-「Core更新と同時にMOを既存セーブから外す」経路は別の移行ケースであり、依存メタデータを外しただけで安全とは扱わない。実装時に専用のロード/Def参照テストを通すまでは未保証とする。
+`packageId=sucro.ancientmedievaljapan.core`、`AMJC_` prefix、既存DefNameはAMJモジュール間・外部Patchとの参照安定性のため保持する。MOなしではGrains独自の小麦・粉・石臼、MOありではMO提供の資産を条件付きで再利用し、重複Def/Recipeや意図しないMOによる上書きを許さない。新規開始のVanilla / MO × CCTO 4構成を検証する。
 
 ##### MO必須解除の実装順序（移行履歴。現行結果は文書冒頭を優先）
 
@@ -366,7 +364,7 @@ MO併用の既存セーブでは、現在参照されているMO Defを急にAMJ
 6. Vanilla / MO × CCTO有無の自動マトリクスをすべて通し、runtime ERROR 0を確認する。
 7. MOの必須指定をAbout.xmlと説明から解除し、MO用`loadAfter`・条件付き互換は残す。各テスト・説明の整合を確認する（2026-10-10反映）。
 
-**2026-10-10の状態修正:** `Plant_Rice` 陸稲化・七穀環境回帰は実装され、MOなしの実ゲームSmokeにも過去の合格実績がある。作者指示によりAboutのMO必須宣言を先行解除した。現在の改訂と全構成の実播種・実収穫・季節/保存互換等の検証は引き続き公開判断の要件であり、以前のPASSを転用しない。
+**2026-10-10の状態修正:** `Plant_Rice` 陸稲化・七穀環境回帰は実装され、MOなしの実ゲームSmokeにも過去の合格実績がある。作者指示によりAboutのMO必須宣言を先行解除した。現在の改訂と全構成の実播種・実収穫・季節・ロード契約等の検証は引き続き公開判断の要件であり、以前のPASSを転用しない。
 
 ##### 自動テスト・サポートマトリクス
 

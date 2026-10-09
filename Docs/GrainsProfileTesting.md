@@ -1,6 +1,6 @@
 # Grains dependency-migration test profiles
 
-**Latest seasonal-test evidence (2026-10-08 JST):** `automated-gates(8).log` confirms the post-sky-fix **vanilla 6/6, runtime ERROR 0**. The other three profiles on that corrected test source remain OPEN. Earlier `automated-gates(4).log` established four-profile fresh smoke **24/24, ERROR 0**, before seasonal-test changes; it does not certify the latest matrix. Legacy saved-game compatibility, natural seasonal weather, visual approval and release-readiness remain separate gates. Production MO hard dependency was removed on 2026-10-10; previous run results apply only to the revisions actually tested. The legacy-save/provider-removal and public-release gates are still open.
+**Latest seasonal-test evidence (2026-10-08 JST):** `automated-gates(8).log` confirms the post-sky-fix **vanilla 6/6, runtime ERROR 0**. The other three profiles on that corrected test source remain OPEN. Earlier `automated-gates(4).log` established four-profile fresh smoke **24/24, ERROR 0**, before seasonal-test changes; it does not certify the latest matrix. Natural seasonal weather, visual approval and release-readiness remain separate gates. There are no deployed Grains saves, so legacy migration is out of scope. Production MO hard dependency was removed on 2026-10-10; previous run results apply only to the revisions actually tested. The fresh-start runtime/art/public-release gates remain open; old-save/provider-removal is not a gate.
 
 The four-profile harness was established before changing production dependency metadata. The production `About.xml` now declares **no mandatory MO or other Mod**, while `loadAfter` retains an optional MO ordering hint. The MO conditional and BaseWithoutMO fallback paths remain exclusive. A successful metadata/static tooling test is not a real-game test or public-release clearance.
 
@@ -100,7 +100,7 @@ test assemblies or claim runtime success.
 
 ## Conditional runtime folders and static contracts
 
-AMJG-owned-field precedence (2026-10-09): Base and MO loaded profiles must both retain research-free `AMJC_Plant_Barley`, research-free `AMJC_GrainProcessingTable` costing exactly 30 Steel, and the four shared AMJ-chosen placeholder graphic paths. The earlier MO-specific research and IronIngot substitutions for those AMJG Defs are removed. MO-specific wheat/flour providers and thresh-time Straw integration remain unchanged. The XML projection and negative regression tests enforce these conditions; only an installed-game Pickle run establishes real loaded-Def behavior. Production hard MO dependency is now removed; existing-save provider removal remains a separate release/save gate.
+AMJG-owned-field precedence (2026-10-09): Base and MO loaded profiles must both retain research-free `AMJC_Plant_Barley`, research-free `AMJC_GrainProcessingTable` costing exactly 30 Steel, and the four shared AMJ-chosen placeholder graphic paths. The earlier MO-specific research and IronIngot substitutions for those AMJG Defs are removed. MO-specific wheat/flour providers and thresh-time Straw integration remain unchanged. The XML projection and negative regression tests enforce these conditions; only an installed-game Pickle run establishes real loaded-Def behavior. Production hard MO dependency is now removed; old-save provider removal is out of scope because no Grains saves exist.
 
 Production `loadFolders.xml` loads `/`, activates
 `Compatibility/MedievalOverhaul` only for `DankPyon.Medieval.Overhaul`, and activates
@@ -313,10 +313,12 @@ As a **temporary, unapproved visual placeholder only**, these three food Defs no
 
 実行スクリプトは六つの期待シナリオ名と失敗/skip 0を検証し、ERRORレベルのログがないことも確認した。全構成でテスト対象Def/Patch/Textureのバイト同一ステージが成功した。CCTOがローカル・Workshopに重複していても、テスト用manifestにローカル側を選択して正常に実行した。粉食3品をAMJ同梱穀物の仮画像へ切り替えた `6d0c791bca3424a8e97c73fb48f906beded01ed7` の後、以前の `Texture2D` / `MatFrom` のERRORは再発していない。C#コンパイルは成功、`CS1684` は非致命警告のみ。
 
-**この範囲のゲートはDONE：** 4構成のロード済み契約と、E2Eに組み込んだ作物収穫・加工/製粉/料理の実Bill、6シナリオ×4、隔離ランタイムERROR 0。**リリース前の残件：** 旧Core／既存セーブの読み込み・途中導入/削除・MO削除の安全性、季節別のネイティブ播種/経時低温検証、日本語/英語の実UI表示、完成料理/作物/設備の専用画像と通常ズームの目視、プレイ時間・バランス。本番のMO必須指定は2026-10-10に解除した（この旧実機PASSとは別の改訂）。既存節に残る「実機未実施」の文言は当時の作業記録であり、最新の合否は本節を正本とする。
+**この範囲のゲートはDONE：** 4構成のロード済み契約と、E2Eに組み込んだ作物収穫・加工/製粉/料理の実Bill、6シナリオ×4、隔離ランタイムERROR 0。**リリース前の残件：** 季節別のネイティブ播種/経時低温検証、日本語/英語の実UI表示、完成料理/作物/設備の専用画像と通常ズームの目視、プレイ時間・バランス。本番のMO必須指定は2026-10-10に解除した（この旧実機PASSとは別の改訂）。既存節に残る「実機未実施」の文言は当時の作業記録であり、最新の合否は本節を正本とする。
 
 
-### 旧Coreの穀物セーブ保存契約：読取専用・実機移行未実施（2026-10-08）
+### 旧Coreの穀物セーブ保存契約：保管する履歴診断（2026-10-08作成、10-10対象外化）
+
+**現行判断:** Grainsの導入実績・既存セーブはゼロ（作者確認）。この節の実セーブ作成/再保存と旧MOの削除試験は今回の開発・公開ゲートから除外する。検査器は過去の診断資料として残すが実施は要求しない。
 
 Grains固有の存続確認は新規の `Scripts/grains_save_contract.py` が担当する。独立Scenariosの `Scripts/scenario_save_contract.py` は開始Scenario/Faction/PawnKindの所有者切替を担当し、Grains側で重複実装しない。Grainsの検査器はRimWorld 1.6の UTF-8 XML形式の **production-ID** `.rws` に限定し、旧Core `sucro.ancientmedievaljapan.core` とMOが保存元/更新先の双方にある場合にだけ適用する。名前の改変や保存データの修復は一切実行しない。
 
@@ -370,7 +372,7 @@ RimWorld 1.6参照実装の `Plant.Resting` は現地日内割合が `<0.25` ま
 | `automated-gates(6).log` | mo | 6/6 | 0 | PASS（復温修正後） |
 | `automated-gates(5).log` | mo-ccto | 6/6 | 0 | PASS（復温修正前） |
 
-新しい季節別播種・制御温度下の成長処理について、**各プロバイダ構成の実機合格実績は揃った**。ただしこの表の3構成は修正前、MO単独だけが修正後のコードで実行されているため、**同一コミットの修正版を4構成で一括実行したことにはならない**。最終の4構成再実行を残す。旧セーブ移行・日本語/英語の実UI・自然季節気象・CCTO閾値を跨ぐ生死・画像/プレイバランス・MOを既存セーブから削除する安全性の各リリースゲートは別途OPEN。今回の結果は既存の制御温度テストの実機確認であり、自然季節曲線・霜の影響の実証ではない。
+新しい季節別播種・制御温度下の成長処理について、**各プロバイダ構成の実機合格実績は揃った**。ただしこの表の3構成は修正前、MO単独だけが修正後のコードで実行されているため、**同一コミットの修正版を4構成で一括実行したことにはならない**。最終の4構成再実行を残す。日本語/英語の実UI・自然季節気象・CCTO閾値を跨ぐ生死・画像/プレイバランスの各リリースゲートは別途OPEN（旧セーブ移行は対象外）。今回の結果は既存の制御温度テストの実機確認であり、自然季節曲線・霜の影響の実証ではない。
 
 
 ### automated-gates(7).log — 4構成最終回帰のNREとテスト専用照明同期修正（2026-10-08）
