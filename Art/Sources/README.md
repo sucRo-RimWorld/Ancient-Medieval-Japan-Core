@@ -15,6 +15,12 @@ This directory stores accepted source artwork and authoring files that must surv
 - If an already-approved master survives elsewhere (for example a persistent reference store), migrate the **exact accepted bytes** here when that asset is next touched. Do not substitute a production-resolution derivative or regenerated approximation for a missing source.
 - A source is not considered repository-preserved until the exact file is actually committed here.
 
+## Accepted leafless millet set — 2026-10-09
+
+Author accepted the Awa/Hie/Kibi immature and mature images and mixed millet sheaf with 「では一旦これでFixとする」. Exact built-in ImageGen originals are preserved locally under `Things/Plants/{FullGrown,Immature}/AMJC_{Awa,Hie,Kibi}_Simple/` and `Things/Item/Resource/AMJC_Millet/MixedMilletSheaf/MixedMilletSheaf.png`. Existing accepted sources remain unchanged. These exact originals are included in the 2026-10-10 GitHub integration; subsequent review revisions remain separately preserved under Art/Candidates.
+
+Prompts, source/export hashes and mechanical QA are in `Art/Candidates/MilletSimplification-20261009/`. Exports use uniform whole-canvas BOX downsampling onto 256×256 transparent canvases; this avoids LANCZOS low-alpha ringing for these sources. Three stack slots reuse identical bytes. Species are conveyed through seed-head silhouette with no leaves or individual grain outlines. Immature is green; mature is ochre. This is the author-approved narrower millet revision; other crop/resource art is unchanged.
+
 ## Inventory / recovery queue
 
 The complete Core source-recovery inventory is [Inventory.md](Inventory.md): 19 image roles, 12 already archived and 7 pending source verification/recovery, with 2 supplemental references counted separately. Original-file counts may differ where several assets share one source sheet. A candidate's presence does not establish final-source identity; three named immature-millet candidates were measured at 256×256 and must not be promoted to pre-resize masters. G04 now has a separately verified high-resolution original.

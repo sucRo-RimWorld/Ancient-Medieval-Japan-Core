@@ -5,7 +5,7 @@
     <label>wheat sheaf</label>
     <description>Wheat sheaf (komugitaba). Harvested wheat with the heads and stalks still attached. It cannot be eaten before threshing, which produces edible wheat grains.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/AMJC_Millet/RawMillet</texPath>
+      <texPath>Things/Item/Resource/AMJC_Wheat/RawWheatDense</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>

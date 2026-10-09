@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Shared millet states for Awa/Hie/Kibi.
+    These are deliberately excluded from DankPyon_Cereal so MO's generic
+    flour/ale routes cannot bypass AMJ's threshing and hulling steps.
+  -->
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_RawMillet</defName>
+    <label>millet sheaf</label>
+    <description>Harvested millet stalks and seed heads bundled together before threshing and hulling. They keep well in storage but are not yet suitable for eating.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/RawMillet</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.1</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_MilletInHull</defName>
+    <label>millet in hull</label>
+    <description>Millet grain after threshing but before the hulls have been removed. The hull protects the grain during storage, but it is not yet suitable for eating.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/MilletInHull</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.1</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>AMJC_Millet</defName>
+    <label>millet</label>
+    <description>Edible millet grain with its hull removed. A basic staple that can be eaten as grain or used as an ingredient in ordinary meals.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/Millet</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <tasteThought>AteRawFood</tasteThought>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>90</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+
+  <!--
+    Buckwheat processing states. They intentionally remain outside
+    DankPyon_Cereal so MO generic processing cannot bypass AMJ threshing/hulling.
+    Soba-specific production art is wired per state as it is approved. Each
+    approved state uses its dedicated AMJ-owned texture path.
+  -->
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_RawBuckwheat</defName>
+    <label>buckwheat sheaf</label>
+    <description>Harvested buckwheat stems and seed clusters before threshing. It stores well but is not yet suitable for eating.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_BuckwheatInHull</defName>
+    <label>buckwheat in hull</label>
+    <description>Threshed buckwheat grain with its hull still attached. The hull protects it in storage, but it is not yet suitable for eating.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Buckwheat/BuckwheatInHull</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>AMJC_Buckwheat</defName>
+    <label>buckwheat</label>
+    <description>Edible buckwheat grain with its hull removed. It is a short-lived staple grain suited to direct cooking; flour is introduced only when a concrete flour-based use is implemented.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Buckwheat/Buckwheat</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <tasteThought>AteRawFood</tasteThought>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>60</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+
+  <!--
+    Barley processing states. Straw is produced at threshing rather than
+    harvest, matching the shared AMJ grain-processing model. Temporary graphics
+    reuse existing AMJ grain assets until Barley-specific art is available.
+  -->
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_RawBarley</defName>
+    <label>barley sheaf</label>
+    <description>Harvested barley stalks and heads before threshing. It stores well but is not yet suitable for eating.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/RawMillet</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.1</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_BarleyInHull</defName>
+    <label>barley in hull</label>
+    <description>Threshed barley grain with its hull still attached. The hull protects it during storage, but it is not yet suitable for eating.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/MilletInHull</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.1</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Seed</foodType>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>120</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <thingCategories>
+      <li>Foods</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>AMJC_Barley</defName>
+    <label>barley</label>
+    <description>Edible barley grain with its hull removed. A durable staple grain that can be cooked directly and can support additional barley-based processing in later content.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/Millet</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <tasteThought>AteRawFood</tasteThought>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>90</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+
+  <!--
+    Processed MO wheat grain. DankPyon_RawWheat remains the harvested sheaf;
+    this edible state is the only Stage A wheat item placed in DankPyon_Cereal,
+    so MO milling/brewing routes cannot bypass threshing.
+    TEMP graphic: shared AMJ edible-grain art until Art/graphics supplies wheat grain.
+  -->
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>AMJC_Wheat</defName>
+    <label>wheat grain</label>
+    <description>Edible wheat grain separated from the harvested stalks by threshing. It can be cooked directly or used by Medieval Overhaul cereal-processing recipes such as milling.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AMJC_Millet/Millet</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <tasteThought>AteRawFood</tasteThought>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>90</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Temporary shared AMJ textures; final rice art follows runtime checks. -->
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_RiceSheaf</defName>
+    <label>rice sheaf</label>
+    <description>Harvested rice stalks and ears tied into sheaves. Threshing and hulling are needed before this rice can be eaten.</description>
+    <graphicData><texPath>Things/Item/Resource/AMJC_Millet/RawMillet</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
+    <statBases><MarketValue>1.1</MarketValue></statBases>
+    <ingestible><foodType>Seed</foodType><preferability>NeverForNutrition</preferability></ingestible>
+    <comps><li Class="CompProperties_Rottable"><daysToRotStart>120</daysToRotStart><rotDestroys>true</rotDestroys></li></comps>
+    <thingCategories><li>Foods</li></thingCategories>
+  </ThingDef>
+  <ThingDef ParentName="RoughPlantBase">
+    <defName>AMJC_RiceInHull</defName>
+    <label>rice in hull</label>
+    <description>Rice grains after threshing, still enclosed in their husks. Remove the husks to obtain edible Vanilla rice.</description>
+    <graphicData><texPath>Things/Item/Resource/AMJC_Millet/MilletInHull</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
+    <statBases><MarketValue>1.1</MarketValue></statBases>
+    <ingestible><foodType>Seed</foodType><preferability>NeverForNutrition</preferability></ingestible>
+    <comps><li Class="CompProperties_Rottable"><daysToRotStart>120</daysToRotStart><rotDestroys>true</rotDestroys></li></comps>
+    <thingCategories><li>Foods</li></thingCategories>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Both profiles use AMJ artwork; retain MO Def identities and gameplay. -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/graphicData/texPath</xpath>
+    <value><texPath>Things/Plants/FullGrown/AMJC_Wheat_Simple</texPath></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_Plant_Wheat"]/plant/immatureGraphicPath</xpath>
+    <value><immatureGraphicPath>Things/Plants/Immature/AMJC_Wheat_Simple</immatureGraphicPath></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="DankPyon_RawWheat"]/graphicData/texPath</xpath>
+    <value><texPath>Things/Item/Resource/AMJC_Wheat/RawWheatDense</texPath></value>
+  </Operation>
+</Patch>
