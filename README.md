@@ -2,7 +2,7 @@
 
 **RimWorld 1.6 — Development build**
 
-A standalone grain-growing and food-processing Mod inspired by agriculture in pre-Edo Japan. Formerly AMJ Core; the historical `sucro.ancientmedievaljapan.core` packageId and existing AMJC DefNames remain unchanged to preserve references in older saves.
+A standalone grain-growing and food-processing Mod inspired by agriculture in pre-Edo Japan. Formerly AMJ Core; the historical `sucro.ancientmedievaljapan.core` packageId and existing AMJC DefNames remain unchanged to retain stable identifiers for cross-Mod compatibility.
 
 ## Features
 
@@ -24,11 +24,11 @@ The `loadAfter` entry for MO is an **optional ordering hint, not a hard dependen
 
 New Village is now owned by the separate AMJ Scenarios Mod. Grains keeps a conditional legacy compatibility copy only when Scenarios is absent.
 
-## Save compatibility and development status
+## Development status
 
-The MO requirement has been removed from production metadata. This **does not prove** that removing MO from an existing save is safe. Old-Core save migration, enabling/disabling Grains mid-save and removing an installed provider still require actual save load/re-save verification. Preserve backups; do not assume safe removal.
+The author confirmed on 2026-10-10 that Grains has not been installed or used. **There are no existing Grains saves to migrate.** Historical save migration, enabling/disabling mid-save and removing MO from old saves are **out of scope**, not release blockers.
 
-Previous four-profile real-game fresh-start tests passed at their tested revisions, but the exact current revision, inherited providers, historical saves, final images and public-release checklist have not all been validated. The Mod remains an unpublished development build; GitHub metadata changes do not mean Workshop content has been uploaded.
+The mandatory MO dependency has been removed. Previous fresh-start Vanilla / MO × CCTO tests passed on their tested revisions; current-revision game loading and native Bills, final graphics, UI/language and gameplay balance remain to be verified. This development build has not been publicly released.
 
 ## Documentation
 
