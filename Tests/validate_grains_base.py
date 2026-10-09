@@ -78,6 +78,17 @@ def validate():
 
     base = profile_xml("vanilla")
     mo = profile_xml("mo")
+    # AMJG-owned fields must not inherit obsolete MO research/material rules.
+    for document in (base, mo):
+        barley = document.find('ThingDef[defName="AMJC_Plant_Barley"]')
+        table = document.find('ThingDef[defName="AMJC_GrainProcessingTable"]')
+        assert barley is not None and barley.find("plant/sowResearchPrerequisites") is None, (
+            "AMJ MO field priority lost: barley sow research")
+        assert table is not None and table.find("researchPrerequisites") is None, (
+            "AMJ MO field priority lost: processing table research")
+        cost = table.find("costList") if table is not None else None
+        assert cost is not None and len(cost) == 1 and cost.findtext("Steel") == "30", (
+            "AMJ MO field priority lost: processing table cost")
     for name, paths in AMJ_GRAPHICS.items():
         for document in (base, mo):
             target = document.find('ThingDef[defName="' + name + '"]')
@@ -127,6 +138,17 @@ def validate():
             normalized = deepcopy(node)
             for element, (expected, historical) in AMJ_GRAPHICS.get(name, {}).items():
                 normalized.find(element).text = historical
+            # Normalize only the three superseded MO settings on a deepcopy
+            # for the immutable historical fixture, never in production XML.
+            if name == "AMJC_Plant_Barley":
+                sow = ET.SubElement(normalized.find("plant"), "sowResearchPrerequisites")
+                ET.SubElement(sow, "li").text = "DankPyon_BasicAgriculture"
+            if name == "AMJC_GrainProcessingTable":
+                cost = normalized.find("costList")
+                cost.remove(cost.find("Steel"))
+                ET.SubElement(cost, "DankPyon_IronIngot").text = "30"
+                research = ET.SubElement(normalized, "researchPrerequisites")
+                ET.SubElement(research, "li").text = "DankPyon_BasicAgriculture"
             if name in HISTORICAL_MO_PLANT_DESCRIPTIONS:
                 assert normalized.findtext("description") == crop_descriptions[name], (
                     "Approved English crop description changed: " + name
@@ -160,7 +182,7 @@ def validate():
         if (node.findtext("defName") or "").startswith("AMJC_Thresh"):
             assert len(node.findall("products/*")) == 1
     assert any(n.findtext("defName") == "AMJC_ThreshWheat" for n in base)
-    print("Grains Base MO identifier/class references 0; 38 pre-split MO contracts preserved except 4 approved AMJ-priority texture paths: PASS")
+    print("Grains Base MO identifier/class references 0; 38 pre-split MO contracts preserved except 4 AMJ-priority graphics paths and 3 MO-only research/material overrides: PASS")
     print("Known MO texture paths absent from Base: PASS; inherited/full game references and runtime texture resolution are not validated; see Docs/GrainsDependencyAudit.md")
 
 

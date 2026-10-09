@@ -140,7 +140,7 @@ hie = assert_crop("AMJC_Plant_BarnyardMillet_Hie", 6, 12, 0.5, 0.5, 5, 40, 15, 3
 kibi = assert_crop("AMJC_Plant_ProsoMillet_Kibi", 5, 11, 0.5, 0.3, 8, 42, 18, 32, 0, "AMJC_RawMillet")
 soba = assert_crop("AMJC_Plant_Buckwheat_Soba", 4, 8, 0.4, 0.25, 5, 35, 12, 25, 1, "AMJC_RawBuckwheat")
 barley = assert_crop("AMJC_Plant_Barley", 10, 22, 0.5, 0.6, 0, 35, 5, 22, 2, "AMJC_RawBarley")
-assert text(barley, "plant/sowResearchPrerequisites/li") == "DankPyon_BasicAgriculture"
+assert barley.find("plant/sowResearchPrerequisites") is None, "AMJG barley must not regain the MO research gate"
 
 assert_ccto_patch("AMJC_Plant_FoxtailMillet_Awa", -3)
 assert_ccto_patch("AMJC_Plant_BarnyardMillet_Hie", -2)
@@ -424,9 +424,9 @@ spot = find_def(buildings, "ThingDef", "AMJC_GrainProcessingSpot")
 table = find_def(buildings, "ThingDef", "AMJC_GrainProcessingTable")
 assert num(spot, "costStuffCount") == 10
 assert num(spot, "statBases/WorkTableWorkSpeedFactor") == 0.5
-assert num(table, "costList/DankPyon_IronIngot") == 30
+assert num(table, "costList/Steel") == 30 and len(table.find("costList")) == 1
 assert num(table, "statBases/WorkTableWorkSpeedFactor") == 1.0
-assert text(table, "researchPrerequisites/li") == "DankPyon_BasicAgriculture"
+assert table.find("researchPrerequisites") is None, "AMJG processing table must remain research-free"
 
 def recipe(name):
     return find_def(recipes, "RecipeDef", name)
