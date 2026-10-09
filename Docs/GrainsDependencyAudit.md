@@ -1,10 +1,10 @@
-# Grains MO依存監査（2026-10-07）
+# Grains MO依存監査（2026-10-07初回、2026-10-10必須解除反映）
 
 対象はGrains main `644c2c9c60e7fa695d4b50f4aee16eae58b9835c` のProduction XMLと画像参照。所有境界の正本は [`Design.md`](Design.md)、実機検証の正本は [`GrainsProfileTesting.md`](GrainsProfileTesting.md)。Scenariosの静的検証・CIに問題が検出されていないため、作者の指示により追加のセーブ実行アダプター作業を保留し、Grains監査へ戻った。
 
 ## 監査時点の結論（以下の実装追記で更新）
 
-**MOのDef識別子・クラス参照はBaseから分離済みだが、3Defの4画像パスがMO提供画像に依存している。Grains単独動作・公開準備の完了ではない。** Production AboutのMO必須依存は維持する。packageId `sucro.ancientmedievaljapan.core` と既存AMJC DefNameも維持する。
+**初回監査時点の結論（現在は一部解消済み）:** BaseからMOの識別子・クラス参照は分離した。旧MO画像4パスの問題は2026-10-08以降AMJ/Vanilla仮画像参照へ分離済み。**2026-10-10、作者指示により本番About.xmlからMO必須依存を削除した。** packageId `sucro.ancientmedievaljapan.core` と既存AMJC DefNameは維持する。画像完成・既存セーブ互換・本番実機完了を意味しない。
 
 | 対象 | 確認結果 | 残る条件 |
 |---|---|---|
@@ -13,7 +13,7 @@
 | 小麦・粉・石臼の供給 | MO不在のフォールバックとMO時の既存供給元を静的検証 | 4構成の実際のロード・工程実行 |
 | Straw・研究・材料 | BaseのMO参照を除去、MO互換のみで再接続 | 継承後の実際の値・既存セーブ |
 | 画像 | 下表のMO提供4パスを共有Defから無条件参照 | Grains所有画像への置換と全表示状態の検証 |
-| About | MO必須依存が残る | 画像・実機・セーブ等のリリースゲート完了後に変更 |
+| About（2026-10-10） | **MO必須依存なし**。MOとCCTOの`loadAfter`は任意の順序ヒントとして維持 | 旧セーブでMO除去可否、実機・配布・完成画像は別途検証 |
 | シナリオ | Scenariosへ物理分離済み。Grains旧コピーはScenarios不在時のみ | 旧セーブ・追加・削除・再保存の実機検証 |
 
 ## 監査時点のMO画像の残存依存
@@ -39,7 +39,7 @@ Base小麦の既存アワ画像、粉類の既存雑穀画像、手動石臼・�
 
 本監査で選定した単位は上記3Defの画像依存解消（下記の仮参照分離を実装済み）。専用画像制作・レビュー後、4構成（Vanilla / MO / CCTO / MO+CCTO）をGrainsの6穀物ケースでコンパイル・実行し、描画・Bill実行・ERRORを確認する。旧セーブでのMO削除安全性は独立した検証が必要。Scenariosの実開始・旧セーブ試験はScenarios所有の未完了ゲートとして残す。
 
-このクラウド環境ではRimWorld本体・Managed assembly・実セーブがないため、C#コンパイル、ゲーム実行、保存移行は検証していない。静的検証を理由にProductionのMO依存や公開メタデータを変更しない。
+このクラウド環境ではRimWorld本体・Managed assembly・実セーブがないため、C#コンパイル、ゲーム実行、保存移行は検証していない。当初は静的検証だけでProductionの依存宣言を変更していなかった。2026-10-10、作者判断により必須指定を解除したが、当時未実施の旧セーブ移行と実機検証は依然未完了。
 
 ## 現行方針：MO併用時もAMJGの所有設定を優先（2026-10-09）
 
@@ -49,4 +49,4 @@ MO提供の小麦Plant／RawWheat／Flour／MillstoneはMO併用時の実Def供�
 
 旧38件の固定履歴fixtureは書き換えない。静的検証では作者承認済みの **4画像パス＋3旧MO研究・建材上書き** のみ検証用コピーへ過去値を復元し、その他すべての履歴契約を照合する。現在のBase/MO両projectionは7項目でAMJG優先を直接検証し、旧MO上書きを再導入する負例テストを実装する。履歴上の旧MO優先表と旧PatchはGit履歴に保管し、現行仕様として参照しない。
 
-Production `About.xml` のMO必須依存は**別の配布・旧セーブ検証ゲート**により現時点では維持する。この依存宣言はMO併用時の設定優先順位を意味しない。実RimWorldでのロード後優先順位・他Mod競合・旧セーブ・専用画像の検証は別途必要。
+**2026-10-10：MO必須指定解除。** Production `About/About.xml` の `modDependencies` からMOを削除し、MO/CCTOの`loadAfter`は任意の順序制約として保持する。`loadFolders.xml` はMO存在時だけ `Compatibility/MedievalOverhaul`、不在時だけ `BaseWithoutMO` を読み込む。`About/Manifest.xml` の `<dependencies />` は変更不要。旧Coreの実セーブでMOを削除する動作は未検証であり、無条件に安全とは案内しない。実RimWorldでの最終ロード・Patch競合・描画・保存移行・完成画像は別途必要。

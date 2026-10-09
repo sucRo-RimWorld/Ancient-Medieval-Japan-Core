@@ -8,13 +8,6 @@
   </supportedVersions>
   <modVersion>0.1.0-dev</modVersion>
 
-  <modDependencies>
-    <li>
-      <packageId>DankPyon.Medieval.Overhaul</packageId>
-      <displayName>Medieval Overhaul</displayName>
-    </li>
-  </modDependencies>
-
   <loadAfter>
     <li>DankPyon.Medieval.Overhaul</li>
     <li>sucro.cropcoldtoleranceoverhaul</li>
@@ -24,7 +17,7 @@
 
 Adds dry-field grains, harvesting and processing, flour milling, and basic grain foods inspired by pre-Edo Japan. When used with Medieval Overhaul, AMJG's owned crop and processing settings take precedence, while shared MO wheat, flour, milling, and straw assets are reused where appropriate.
 
-The production dependency declaration still requires Medieval Overhaul; removing this hard dependency is gated separately on release and existing-save verification. Crop Cold Tolerance Overhaul is optional. New Village is owned by the separate AMJ Scenarios mod (only a legacy compatibility copy remains when Scenarios is absent).
+Medieval Overhaul is optional: when loaded, AMJG uses conditional compatibility Defs and patches. Crop Cold Tolerance Overhaul is also optional. New Village is owned by the separate AMJ Scenarios mod (only a legacy compatibility copy remains when Scenarios is absent).
 
 Save compatibility: Safe addition/removal and migration of older Core saves remain unverified. The current build is not certified for public release.</description>
 </ModMetaData>
