@@ -102,6 +102,8 @@ test assemblies or claim runtime success.
 
 ## Conditional runtime folders and static contracts
 
+AMJG-owned-field precedence (2026-10-09): Base and MO loaded profiles must both retain research-free `AMJC_Plant_Barley`, research-free `AMJC_GrainProcessingTable` costing exactly 30 Steel, and the four shared AMJ-chosen placeholder graphic paths. The earlier MO-specific research and IronIngot substitutions for those AMJG Defs are removed. MO-specific wheat/flour providers and thresh-time Straw integration remain unchanged. The XML projection and negative regression tests enforce these conditions; only an installed-game Pickle run establishes real loaded-Def behavior. Production hard MO dependency is a separate release/save gate.
+
 Production `loadFolders.xml` loads `/`, activates
 `Compatibility/MedievalOverhaul` only for `DankPyon.Medieval.Overhaul`, and activates
 `BaseWithoutMO` only when that provider is absent.

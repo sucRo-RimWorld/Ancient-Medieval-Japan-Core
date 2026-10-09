@@ -41,27 +41,12 @@ Base小麦の既存アワ画像、粉類の既存雑穀画像、手動石臼・�
 
 このクラウド環境ではRimWorld本体・Managed assembly・実セーブがないため、C#コンパイル、ゲーム実行、保存移行は検証していない。静的検証を理由にProductionのMO依存や公開メタデータを変更しない。
 
-## 2026-10-08 単体用仮画像の分離（MO復元方針は下記の作者指示で廃止）
+## 現行方針：MO併用時もAMJGの所有設定を優先（2026-10-09）
 
-共有Defの4パスをMO以外の開発用参照へ変更し、既存のMO条件付き `MedievalOverhaul_StageA_Base.xml` に4つのReplaceを追加した。MO導入時の明示Def契約38件は画像設定も含めて従来と一致する。これは**参照の条件分離**であり、専用Production画像の完成ではない。
+**MO有無にかかわらず、AMJG所有Defの画像・研究・加工台建材はGrainsの確定設定を維持する。** 大麦の成熟・未成熟画像は既存AMJアワの仮画像、脱穀場所・加工台はAMJG側が選択したVanilla石切台の仮画像。大麦は研究不要、`AMJC_GrainProcessingTable` は研究不要かつ Steel 30。これらのMO側旧画像・`DankPyon_BasicAgriculture`・`DankPyon_IronIngot` への復元Patchは廃止した。完成画像や実機表示のPASSを意味しない。
 
-| Def / 状態 | MOなし | MOあり |
-|---|---|---|
-| 大麦・成熟 | `Things/Plants/FullGrown/AMJC_Awa` | 従来のMO WheatPlant |
-| 大麦・未成熟 | `Things/Plants/Immature/AMJC_Awa` | 従来のMO WheatPlant |
-| 脱穀場所 | `Things/Building/Production/TableStonecutter` | 従来のMO StonecuttingSpot |
-| 脱穀台 | `Things/Building/Production/TableStonecutter` | 従来のMO Millstone |
+MO提供の小麦Plant／RawWheat／Flour／MillstoneはMO併用時の実Def供給元として引き続き利用するが、Grainsが責務を持つ生育バランス・脱穀工程・副産物はGrainsの条件付きPatchを優先する。MO石臼の研究制限除去、MOの素材カテゴリ追加、脱穀時のStraw接続など、重複機能を増やさないための互換は維持する。MO提供の小麦Plantが元から持つ農業研究条件はそのままとし、AMJG所有の大麦には伝播させない。
 
-AMJ植物画像は既存PNGファミリーをそのまま参照する。設備は既存のBase手動石臼と同じVanilla仮参照を採用し、既存の方向・描画サイズ等を保持する。両設備は同じ仮画像となり、建物サイズに合う見た目や方向・マスクの実描画は未確認。専用画の制作と実機確認を公開前ゲートに残す。
+旧38件の固定履歴fixtureは書き換えない。静的検証では作者承認済みの **4画像パス＋3旧MO研究・建材上書き** のみ検証用コピーへ過去値を復元し、その他すべての履歴契約を照合する。現在のBase/MO両projectionは7項目でAMJG優先を直接検証し、旧MO上書きを再導入する負例テストを実装する。履歴上の旧MO優先表と旧PatchはGit履歴に保管し、現行仕様として参照しない。
 
-Base境界検証は既知のMO4パス再侵入を拒否し、大麦の既存AMJ PNGファミリーの存在も確認する。MO画像復元の欠落は旧38契約照合で拒否する。未知の第三者画像パス・Vanilla全在庫・継承後の全参照・実際のTextureロードまで網羅する検証ではない。新規画像生成・既存PNG変更はない。Production AboutのMO必須依存は引き続き維持する。
-
-## 現行方針：MO併用時もAMJの画像設定を優先
-
-作者の指示により、MO併用時に旧画像へ戻す4つのReplaceを削除した。**AMJ所有DefはMO有無にかかわらずAMJが選んだ共有画像設定を使う。** 現在の大麦成熟・未成熟は既存AMJアワ、脱穀場所・脱穀台はAMJが選んだVanilla石切台の仮参照。AMJ専用設備画像が完成したという意味ではない。今後の専用画像差し替えも共有Def側で行う。
-
-前節の表の「MOあり」列は現在すべて「MOなし」列と同じ参照となる。MO画像への復元Patch、復元漏れを拒否する旧テストは廃止した。数値・工程・研究・材料・Straw・供給元・DefName・packageIdは変更しない。
-
-旧38契約の履歴fixtureは書き換えず、**作者が変更を指示した3Defの4パスだけ**を検証用コピーで旧値に正規化して歴史的ハッシュと照合する。その前にBase/MO両projectionでAMJ側の現行4パスを明示検証する。画像以外の変更は正規化対象にせず、対象設備の耐久値変更も回帰テストで拒否する。「旧38契約完全一致」ではなく「承認済み4画像パス以外は旧38契約を保持」と報告する。
-
-MO併用時の旧画像上書きを再追加する変更も検証で拒否する。実ゲームの他ModとのPatch競合・ロード順・描画は未検証。専用画像、実機・セーブ等のゲートとAboutのMO必須指定は維持する。
+Production `About.xml` のMO必須依存は**別の配布・旧セーブ検証ゲート**により現時点では維持する。この依存宣言はMO併用時の設定優先順位を意味しない。実RimWorldでのロード後優先順位・他Mod競合・旧セーブ・専用画像の検証は別途必要。
