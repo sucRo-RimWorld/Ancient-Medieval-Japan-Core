@@ -252,6 +252,8 @@ The edible `AMJC_Buckwheat` grain remains on its temporary millet-grain path; th
 
 Canonical active ledger: `Art/Sources/Inventory.md`, with methods/source policy in `Art/Sources/README.md`. Last recorded summary: **19 roles / 12 archived / 7 pending** (game 14/7/7; Workshop/shared 5/5/0). Original sources already committed under `Art/Sources/` are not to be regenerated or replaced with 256px derivatives. Next smallest target: **G06 Kibi immature plant**, verify the accepted pre-resize identity and hash against production/approval before saving the proven unchanged source. Workshop assets are archived; no background worker or live Steam publication. Unique asset-by-asset SHA/provenance and historic closeouts remain in the original Git history and current `Art/Sources/Inventory.md`.
 
+**2026-10-10 Astra制作物の受け入れ:** 作者はGrains追加植物の未熟・成熟・束が全種制作・確認済みと明示。再制作・再レビュー依頼は不要。ただしAstra最終PNGの原本バイトと状態別識別情報はこの作業環境から取り込めず、Art/Sources/Textures/Defsへの新規統合は未完了。旧棚卸しの件数は不変。制作系統から確定ファイルをGrainsへ直接渡し、Art/Sources/Inventory.mdの2026-10-10節に従い原本保存→派生→接続→検証する。AMJ-009/011/018の本番画像未統合ブロッカーは解除しない。
+
 ### ARCH-MODULAR-001 — Grains modularity and optional MO dependency
 
 **Owner:** Grains agriculture/compatibility, Scenarios owner for starting scenarios. **Status:** IN PROGRESS for current-revision fresh-start real-game verification; mandatory MO dependency removal implemented. Old-save migration is out of scope.
