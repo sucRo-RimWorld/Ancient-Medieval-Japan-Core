@@ -241,9 +241,9 @@ Use every input only for its stated role. Do not collage, trace, copy exact pixe
 
 AMJ / MEDIEVAL OVERHAUL VISUAL CONTRACT
 - Flat vector-like 2D game art; silhouette first, detail second.
-- Restrained palette and information density; hard-edged color planes.
+- Restrained palette and information density; clear large color regions with optional very subtle MO-like tonal gradients.
 - Thick warm medium-dark brown outer outline; internal linework is subordinate.
-- No gradients, no soft airbrush modeling, no photorealism, no painterly noise.
+- No strong/glossy or airbrushed gradients, no realistic volume modeling, no photorealism, no painterly noise. Flat fills and restrained MO-like tonal transitions are both acceptable.
 - No text, UI, frame, scenery, background, decorative cast shadow, watermark, or unrelated objects.
 - Transparent background. Center the subject with generous transparent margin.
 - Must remain clear around 64 px; do not add detail that exists only to impress at full resolution.
