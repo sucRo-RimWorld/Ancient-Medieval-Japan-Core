@@ -58,6 +58,24 @@ def main():
     assert "<graphicClass>Graphic_StackCount</graphicClass>" in graphic
     print("PASS: exact accepted millet in-hull master, three identical 256px textures and loaded Def path")
 
+    # AMJ-011: exact author-accepted hulled-barley source and isolated StackCount art.
+    barley_source = ROOT / "Art/Sources/Things/Item/Resource/AMJC_Barley/BarleyInHull/BarleyInHull.png"
+    barley_source_bytes = barley_source.read_bytes()
+    assert git_blob_sha1(barley_source_bytes) == "2cb0f5eb972e3b0f574ae61c7b4150336c5adbff", "hulled barley source drift"
+    assert barley_source_bytes[:8] == b"\x89PNG\r\n\x1a\n"
+    assert struct.unpack(">II", barley_source_bytes[16:24]) == (1429, 1100)
+    barley_base = ROOT / "Textures/Things/Item/Resource/AMJC_Barley/BarleyInHull"
+    barley_pngs = [(barley_base / f"BarleyInHull_{suffix}.png").read_bytes() for suffix in ("a", "b", "c")]
+    assert barley_pngs[0] == barley_pngs[1] == barley_pngs[2], "hulled barley stack drift"
+    assert git_blob_sha1(barley_pngs[0]) == "b047aaccdbbc3f31c3a0be3eb57f4077eb42c3d4", "hulled barley PNG drift"
+    assert barley_pngs[0][:8] == b"\x89PNG\r\n\x1a\n"
+    assert struct.unpack(">II", barley_pngs[0][16:24]) == (256, 256)
+    assert xml.count("<defName>AMJC_BarleyInHull</defName>") == 1
+    barley_xml = xml.split("<defName>AMJC_BarleyInHull</defName>", 1)[1].split("</ThingDef>", 1)[0]
+    assert "<texPath>Things/Item/Resource/AMJC_Barley/BarleyInHull</texPath>" in barley_xml
+    assert "<graphicClass>Graphic_StackCount</graphicClass>" in barley_xml
+    print("PASS: author-accepted hulled barley source, 3 stack PNGs and dedicated graphic path")
+
     print("PASS: 19 exact original-source blob identities, 19 production texture mappings, five three-stack families")
 
 if __name__ == "__main__":
