@@ -11,6 +11,8 @@
 採用済みの既存原本は上書きせず、アワ・ヒエ・キビ未熟の新しい輪郭調整版を別名で保存。最新の未熟7原本は生成原本の輪郭色を正規化した高解像度版で、生成直後の完全な原本は `Art/Candidates/ImmatureUpright-20261009/Sources/` に保持。256px本番はさらに書き出し後の輪郭処理を経ており、元原本の単純縮小とバイト一致するとは主張しない。
 **正本対応表：** [Docs/References/GrainsCropSourceManifest.json](../../Docs/References/GrainsCropSourceManifest.json)。原本Git blob SHA、元候補、ゲーム出力パスを固定。検証: `Tests/test_grains_art_source_archive.py`。実ゲームでの描画・ロード後競合確認は未実施。
 
+**加工後の雑穀2状態（未完成）:** 上記19状態に `AMJC_MilletInHull`（殻付き）と `AMJC_Millet`（殻なし）は含まれない。両方とも旧PNGと実際のDef参照が存在するが、作者指定の新しい完成画にはなっていない。旧棚卸しの **G10/G11** に候補が残るものの、旧元画像の回収と現行画像の制作・採用は別工程。2種類それぞれを完成させるまではGrainsの画像全体を完了扱いしない。作業内容の正本は `Docs/Design.md §12.1.3`、作業状態は `main:Docs/Coordination.md` の `AMJ-019` に記録する。
+
 | 作物 | 段階 | 原本（Art/Sources） |
 | --- | --- | --- |
 | Awa | immature | `Things/Plants/Immature/AMJC_Awa_Simple/AMJC_Awa_Immature_Outline20261009.png` |

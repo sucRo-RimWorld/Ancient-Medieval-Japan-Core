@@ -109,13 +109,21 @@ The two buildings should remain visually related but clearly communicate the exi
 
 **Result / references:** target DefName is `AMJC_Wheat`; harvested `DankPyon_RawWheat` remains the MO wheat-sheaf asset/display override.
 
+### AMJ-019 — Millet hulled / edible grain production artwork
+
+**Owner:** Grains Art/graphics. **Status:** OPEN — two post-harvest images remain unfinished (author correction 2026-10-10 JST).
+
+`AMJC_MilletInHull` (殻付き雑穀) currently uses older `Things/Item/Resource/AMJC_Millet/MilletInHull` art; `AMJC_Millet` (殻なし・可食雑穀) uses older `Things/Item/Resource/AMJC_Millet/Millet` art. Existing PNGs and Def paths are not evidence of accepted new finished artwork. These two are **not part of the 7 immature + 7 mature + 5 sheaf = 19 integrated crop/sheaf states**, and must remain OPEN. Awa/Hie/Kibi share the same two grain ThingDefs; no separate post-harvest item art for each species.
+
+**Confirmed production scope:** replace only grain *contents* in the accepted masu container, following `Docs/GoldenPaths/BoxedResourceIconPipeline.md`. Preserve old accepted masters and production PNGs until an exact replacement is accepted. Archive accepted full-resolution sources in `Art/Sources`, export required StackCount `_a/_b/_c` PNGs, update graphic paths as necessary, then run static integrity, provider checks and real-game sprite review. No grain balance, recipes or DefName changes. Old `Art/Sources/Inventory.md` G10/G11 source recovery is historical and not final artwork approval. Canonical specification: `Docs/Design.md §12.1.3`.
+
 ### AMJ-018 — Current private-play and eventual public readiness
 
 **Owner:** Testing/release + Art/graphics. **Status:** BLOCKED for release; source/UI/gameplay smoke checks remain. Author currently prefers private Workshop upload and normal play before public release.
 
 PR #20 integrates immature/mature crops and bundled sheaves: 7/7/5. The 2026-10-10 source archive maps all 19 states into the owning original source tree, preserving old accepted masters. Stage A/Workshop CI for PR #20 PASS only for that head. This does **not** imply in-game rendering, runtime four-profile validation or public publication.
 
-Remaining art: AMJ-011 dedicated hulled/edible barley items, AMJ-013 dedicated edible wheat grain, AMJ-017 AMJ processing spot/table, and other unfinished processing/meal graphics identified by production audits. Soba's mature/immature/sheaf/boxed resources already have AMJ paths; do not incorrectly count them as missing. Next: verify 7 crop plants and 5 bundle graphics at normal zoom and the real MO/no-MO Def paths, then finish remaining item/station art and rerun applicable runtime gates. Old save migration is explicitly out of scope (Grains was never installed).
+Remaining art: **AMJ-019 millet in-hull and edible (two shared post-harvest images)**; AMJ-011 dedicated hulled/edible barley items; AMJ-013 dedicated edible wheat grain; AMJ-017 AMJ processing spot/table; plus other unfinished processing/meal graphics identified by production audits. The 19 integrated crop/sheaf states do not include either AMJ-019 item. Soba's mature/immature/sheaf/boxed resources already have AMJ paths; do not incorrectly count them as missing. Next: verify 7 crop plants and 5 bundle graphics at normal zoom and the real MO/no-MO Def paths, then finish remaining item/station art and rerun applicable runtime gates. Old save migration is explicitly out of scope (Grains was never installed).
 
 ### ART-TEMPLATE-001 — Pixel-exact shared component policy
 
@@ -316,5 +324,5 @@ Because in-chat image generation displays its result immediately, this no-extra-
 
 PR #20 (`cd52a3d9e15467d2f6ebc1bdaac63cda84f98cbd`) wired seven immature and seven mature crop paths, five bundle families, Vanilla upland rice and MO wheat conditional graphical override. Latest immature outline is #4D4E3C with upright millet. The 2026-10-10 source archive preserves or maps all 19 source states via the hash-locked manifest (16 new sources, 3 preexisting originals). The author's crop image checks are acknowledged; no re-generation or repeat approval request. Static PNG / Stage A / Workshop tests are distinct from loaded-game visual acceptance.
 
-**Next:** fresh-start screen/render inspection across actual Vanilla and MO providers, address only concrete sprite/UI failures; independently complete postharvest barley/wheat items and processing station art. No Steam release or real-game PASS claimed.
+**Next:** fresh-start screen/render inspection across actual Vanilla and MO providers, address only concrete sprite/UI failures; independently complete postharvest **millet in-hull and edible grain** (AMJ-019), barley/wheat item images and processing station art. No Steam release or real-game PASS claimed.
 
