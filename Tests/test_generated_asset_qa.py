@@ -103,13 +103,14 @@ class GrainsImageGeneratorTest(unittest.TestCase):
         prompt = generator._build_prompt(
             "wheat",
             "plant-mature",
-            {"prompt_rules": ["No gradients."]},
+            {"prompt_rules": ["Subtle MO-like tonal gradients are allowed."]},
             [ref],
             "upright mature head",
         )
         self.assertIn("exactly ONE NEW isolated source image", prompt)
         self.assertIn("accepted AMJ style reference", prompt)
-        self.assertIn("No gradients.", prompt)
+        self.assertIn("Subtle MO-like tonal gradients are allowed.", prompt)
+        self.assertNotIn("No gradients", prompt)
         self.assertIn("upright mature head", prompt)
         self.assertIn("transparent background", prompt.lower())
 
@@ -156,6 +157,7 @@ class GrainsImageGeneratorTest(unittest.TestCase):
         self.assertIn("plant-mature", policy["families"])
         self.assertIn("boxed-contents", policy["families"])
         for family in policy["families"].values():
+            self.assertNotIn("no gradients", " ".join(family["prompt_rules"]).lower())
             self.assertNotIn("retries", family)
             self.assertNotIn("batch", family)
             for relative in family.get("accepted_references", []):

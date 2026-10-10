@@ -17,9 +17,9 @@
       "prompt_rules": [
         "Mature cereal crop plant; preserve the subject-specific seed-head silhouette from the subject reference.",
         "Use only a small number of broad leaves and stems; suppress individual grains and botanical micro-detail unless essential for recognition.",
-        "Foliage normally uses two flat fills; grain/flower uses one or two flat fills; total visible fill colors should normally remain within the accepted 3-5 color budget.",
+        "Foliage normally uses two principal fill regions; grain/flower uses one or two; retain roughly 3-5 distinct principal color regions and permit subtle MO-like tonal gradients within them.",
         "Use the same warm medium-dark brown outline language as the accepted Awa/Hie/Kibi trio; do not vary outline hue by plant part.",
-        "No leaf veins, no fine hair, no many-step highlights, no gradients."
+        "No leaf veins, fine hair, many-step highlights, or strong/airbrushed gradients; subtle broad MO-like tonal variation is allowed."
       ],
       "postprocess": "standard"
     },
@@ -37,9 +37,9 @@
       "prompt_rules": [
         "Immature cereal crop plant; keep the same crop identity and silhouette language as its mature form while clearly reading as immature.",
         "Use a small number of broad leaves/stems and simplified developing seed heads; no botanical micro-detail.",
-        "Foliage normally uses two flat fills; total visible fill colors should normally remain within the accepted 3-5 color budget.",
+        "Foliage normally uses two principal fill regions; retain roughly 3-5 distinct principal color regions and permit subtle MO-like tonal gradients within them.",
         "Use the same warm medium-dark brown outline language as the accepted Awa/Hie/Kibi trio.",
-        "No leaf veins, no fine hair, no many-step highlights, no gradients."
+        "No leaf veins, fine hair, many-step highlights, or strong/airbrushed gradients; subtle broad MO-like tonal variation is allowed."
       ],
       "postprocess": "standard"
     },
@@ -56,7 +56,7 @@
       "prompt_rules": [
         "A compact pile represented by a small number of large simplified pieces, not dozens of individually rendered grains.",
         "The entire pile has the strongest/darkest outer silhouette; internal grain boundaries are thinner and lighter.",
-        "One base fill and at most one secondary plane per material unless a third fill is necessary for identity.",
+        "Use few principal color regions per material; subtle broad MO-like gradients within a region are allowed, while separate modeled light-dark shading on each individual grain is not.",
         "No per-grain glossy highlights and no deep ambient-occlusion shadow between every piece."
       ],
       "postprocess": "standard"
@@ -73,7 +73,7 @@
       "prompt_rules": [
         "A harvested grain sheaf/bundle, simplified into a few broad stems/strips and one simple binding band.",
         "No fiber texture, no dozens of individual straw lines, and no fine seed-by-seed modeling.",
-        "Strong outer silhouette; minimal internal divisions; one base fill and at most one secondary plane per material."
+        "Strong outer silhouette; minimal internal divisions; few principal color planes and optional restrained MO-like tonal variation."
       ],
       "postprocess": "standard"
     },
