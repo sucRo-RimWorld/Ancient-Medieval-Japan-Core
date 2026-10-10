@@ -73,7 +73,7 @@ python Scripts/Art/prepare_boxed_resource_candidate.py \
 
 It automatically:
 
-1. verifies that the source is a decodable PNG with visible content and transparency;
+1. runs `Scripts/Art/generated_asset_qa.py` with `Docs/References/AMJ_BoxedResource_GenerationQA.json` to verify that the source is a decodable PNG with visible content and transparency;
 2. calls `Scripts/Art/normalize_masu_contents.py` to create the transparent placement guide;
 3. checks that the derived PNG is still decodable, visible and transparent;
 4. writes diagnostic JSON reports and a comparison sheet of raw contents, projected contents and a 64 px view.
