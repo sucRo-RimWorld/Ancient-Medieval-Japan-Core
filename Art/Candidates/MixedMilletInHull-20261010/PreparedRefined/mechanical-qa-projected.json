@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "failures": [],
+  "metrics": {
+    "format": "PNG",
+    "width": 1024,
+    "height": 1024,
+    "transparent_fraction": 0.8333311080932617,
+    "low_alpha_fraction_1_39": 0.0002498626708984375,
+    "opaque_fraction_180_255": 0.1657867431640625,
+    "visible_bbox": [
+      222,
+      317,
+      746,
+      755
+    ],
+    "coarse_color_bins_16_at_64": 50,
+    "strong_edge_density_at_64": 0.23669201520912547,
+    "outer_dark_fraction_lt80": 0.7603092783505154,
+    "internal_dark_edge_fraction_lt140": 0.04316546762589928,
+    "internal_very_dark_edge_fraction_lt100": 0.009310198899703767,
+    "line_hierarchy_ratio": 17.613831615120272
+  }
+}

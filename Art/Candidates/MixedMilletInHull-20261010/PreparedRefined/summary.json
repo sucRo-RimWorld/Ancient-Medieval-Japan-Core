@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "raw_source": "AncientMedievalJapanGrains\\Art\\Candidates\\MixedMilletInHull-20261010\\Contents_Refined.png",
+  "projected": "AncientMedievalJapanGrains\\Art\\Candidates\\MixedMilletInHull-20261010\\PreparedRefined\\contents-projected.png",
+  "review_sheet": "AncientMedievalJapanGrains\\Art\\Candidates\\MixedMilletInHull-20261010\\PreparedRefined\\review-sheet.png",
+  "raw_report": "AncientMedievalJapanGrains\\Art\\Candidates\\MixedMilletInHull-20261010\\PreparedRefined\\mechanical-qa-raw.json",
+  "projected_report": "AncientMedievalJapanGrains\\Art\\Candidates\\MixedMilletInHull-20261010\\PreparedRefined\\mechanical-qa-projected.json",
+  "next_gate": "agent semantic visual QA, then author final visual approval"
+}

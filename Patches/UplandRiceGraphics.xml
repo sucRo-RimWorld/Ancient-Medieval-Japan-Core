@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Grains owns Vanilla Plant_Rice as upland rice. Visual paths only. -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Plant_Rice"]/graphicData/texPath</xpath>
+    <value><texPath>Things/Plants/FullGrown/AMJC_Rice_Simple</texPath></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/ThingDef[defName="Plant_Rice"]/plant/immatureGraphicPath</xpath>
+    <value><immatureGraphicPath>Things/Plants/Immature/AMJC_Rice_Simple</immatureGraphicPath></value>
+  </Operation>
+</Patch>

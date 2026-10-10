@@ -1,0 +1,27 @@
+{
+  "passed": false,
+  "failures": [
+    "outer_dark_fraction_lt80=0 < min 0.2",
+    "line_hierarchy_ratio=0 < min 12.0"
+  ],
+  "metrics": {
+    "format": "PNG",
+    "width": 1254,
+    "height": 1254,
+    "transparent_fraction": 0.5874795550569915,
+    "low_alpha_fraction_1_39": 0.005496923401733273,
+    "opaque_fraction_180_255": 0.4053020764176644,
+    "visible_bbox": [
+      0,
+      134,
+      1234,
+      1254
+    ],
+    "coarse_color_bins_16_at_64": 68,
+    "strong_edge_density_at_64": 0.34408602150537637,
+    "outer_dark_fraction_lt80": 0.0,
+    "internal_dark_edge_fraction_lt140": 0.01864456939923054,
+    "internal_very_dark_edge_fraction_lt100": 0.0,
+    "line_hierarchy_ratio": 0.0
+  }
+}

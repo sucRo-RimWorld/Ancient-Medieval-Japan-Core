@@ -1,3 +1,5 @@
+> 2026-10-10: The author explicitly instructed replacement of old Grains artwork with the Astra-generated revision. The current crop/sheaf source and legacy texture files have been overwritten accordingly; historical recovery hashes below describe the superseded files, not the current files. Current exact source/target hashes and provenance are in [AstraReplacement-20261010.json](AstraReplacement-20261010.json). Generated originals retain their original resolution; immature outline-normalized high-resolution working sources are stored separately. Kernel/masu art is outside this replacement. Local installation only; GitHub publication and runtime rendering are not claimed.
+
 > Workshop common sources moved to Project on 2026-10-08. Workshop entries below retain recovery provenance; their authoritative bytes now live at the linked Project paths.
 
 # Core 元画像保存対象の棚卸し

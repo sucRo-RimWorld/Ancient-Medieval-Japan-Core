@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-09",
+  "status": "review",
+  "generator": "built-in image_gen",
+  "assets": {
+    "Rice_Mature": {
+      "prompt": "Background extraction / alpha cleanup ONLY. Preserve this exact mature rice sprite's shape, pose, fill, outline, dimensions and placement. Remove ALL stray faint translucent pixels, speckles, haze and low-opacity residue outside the solid plant silhouette. Background must be truly empty transparent alpha zero. Main plant must be opaque, with only a narrow clean antialiased edge. No redraw, no added detail, no color or shape changes. This is a technical cutout cleanup, not a new design.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-8ced902e-4252-4f5e-ab32-4c225b732742.png"
+    },
+    "Rice_Immature": {
+      "prompt": "Correct the IMMATURE rice plant in image 1. It wrongly has heavy hanging mature panicles. Redraw ONLY the immature growth pose: three upright or diagonally upward slender bare stalks topped by SMALL LIGHT UPRIGHT rice panicles, pointing up. NO downward hooks, NO drooping seed heads, NO hanging arcs, NO heavy plump grain clusters. Each young panicle is a narrow airy spear-like cluster of only 3 elongated simplified lobes along a straight upward axis, distinct from fat wheat ears. Taller middle shoot, shorter sides. NO leaves, no individual grain detail. Image 2 gives required outline color: MO immature wheat dark gray olive RGB(80,83,69) #505345. Muted olive green interior #839151. Flat opaque colors, no shading/texture/gradient. Transparent square canvas, same simple AMJ family style, centered 7% margins, clean at 64px. This is BEFORE grain weight bends the stalks.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-d7ab8fff-519e-466b-b7b0-4a8b6f043e93.png"
+    },
+    "Rice_Sheaf": {
+      "prompt": "Use case: style-transfer. Image 1 is the CURRENT sheaf to REVISE. Image 2 is the Medieval Overhaul wheat sheaf, the PRIMARY composition/density/volume reference. The current sheaf has only three exposed stems and looks like a bouquet; REPLACE that composition with a BIG DENSE HARVEST BUNDLE like image 2. Broad compact fan-shaped upper half formed from MANY closely packed overlapping ears, approximately 9-12 stalks suggested by the outer edge, with almost NO gaps and almost NO exposed individual stems. The whole upper mass is one unified solid silhouette: show only a few broad contour lobes identifying crop, not each individual grain or ear. Binding band directly under the dense head mass at the narrow waist, and one thick short sheaf base flaring below the band. Lower cut stalks should be one broad mass, not three separate sticks. Overall width comparable to height, squat full bundle rather than tall thin bouquet. Very simple flat muted ochre gold fill with medium ochre-brown contour and one brown binding band, at most 3 fill colors. Match the low detail of image 2. NO interior grain lines, NO realistic detail, NO leaves, NO bow, NO gradients, NO shading, NO texture, NO background/ground/shadow/text. One isolated transparent sprite on square canvas with 7% margins. Readable at 64px. RICE sheaf: many densely packed long arching rice panicles, hanging elongated rounded lobes around the sides of a broad upper canopy. One continuous muted straw-gold mass with an irregular gently cascading top/side silhouette, not wheat spikes or barley awns. One brown band, thick short stalk base. Primary composition reference is image 2 MO wheat; crop identity is image 1 rice. No isolated long stems above band.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-f9bd343d-173a-495e-a723-aee0bcae7c36.png"
+    }
+  }
+}

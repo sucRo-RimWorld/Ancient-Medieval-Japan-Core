@@ -1,0 +1,28 @@
+{
+  "status": "local visual review; not author accepted or published",
+  "changes": [
+    "Defs/ThingDefs_Plants/Plants_StageA.xml",
+    "Defs/ThingDefs_Items/Items_StageA_Grains.xml",
+    "BaseWithoutMO/Defs/Plants_Wheat.xml",
+    "BaseWithoutMO/Defs/Items_Wheat.xml",
+    "Textures\\Things\\Plants\\FullGrown\\AMJC_Soba_Simple\\AMJC_Soba_Mature.png",
+    "Textures\\Things\\Plants\\Immature\\AMJC_Soba_Simple\\AMJC_Soba_Immature.png",
+    "Textures\\Things\\Plants\\FullGrown\\AMJC_Barley_Simple\\AMJC_Barley_Mature.png",
+    "Textures\\Things\\Plants\\Immature\\AMJC_Barley_Simple\\AMJC_Barley_Immature.png",
+    "Textures\\Things\\Plants\\FullGrown\\AMJC_Wheat_Simple\\AMJC_Wheat_Mature.png",
+    "Textures\\Things\\Plants\\Immature\\AMJC_Wheat_Simple\\AMJC_Wheat_Immature.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Millet\\MixedMilletSheafDense\\MixedMilletSheafDense_a.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Millet\\MixedMilletSheafDense\\MixedMilletSheafDense_b.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Millet\\MixedMilletSheafDense\\MixedMilletSheafDense_c.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Buckwheat\\RawBuckwheatDense\\RawBuckwheatDense_a.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Buckwheat\\RawBuckwheatDense\\RawBuckwheatDense_b.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Buckwheat\\RawBuckwheatDense\\RawBuckwheatDense_c.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Barley\\RawBarleyDense\\RawBarleyDense_a.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Barley\\RawBarleyDense\\RawBarleyDense_b.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Barley\\RawBarleyDense\\RawBarleyDense_c.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Wheat\\RawWheatDense\\RawWheatDense_a.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Wheat\\RawWheatDense\\RawWheatDense_b.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Wheat\\RawWheatDense\\RawWheatDense_c.png",
+    "Tests/validate_stage_a.py"
+  ]
+}

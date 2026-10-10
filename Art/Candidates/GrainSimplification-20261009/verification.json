@@ -1,0 +1,8 @@
+{
+  "status": "review",
+  "verified_image_count": 18,
+  "png_integrity": "53 files PASS",
+  "static_contracts": "PASS in isolated copy with unchanged fixture bytes restored from HEAD",
+  "runtime": "not run",
+  "published": false
+}

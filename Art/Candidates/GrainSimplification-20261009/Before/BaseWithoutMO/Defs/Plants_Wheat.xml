@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Defs>
+  <ThingDef ParentName="PlantBase">
+    <defName>AMJC_Plant_Wheat</defName>
+    <label>wheat plant</label>
+    <description>Wheat (komugi). A cereal introduced to Japan in the Yayoi period and known to have been cultivated during the Nara period. Wheat grains can be used in meals or ground into flour for flour-based dishes. In AMJGrains, harvested wheat sheaves must be threshed before use.</description>
+    <descriptionHyperlinks>
+      <ThingDef>AMJC_RawWheat</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plants/FullGrown/AMJC_Awa</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.7</fertilityMin>
+      <fertilitySensitivity>0.9</fertilitySensitivity>
+      <dieIfLeafless>true</dieIfLeafless>
+      <harvestTag>Standard</harvestTag>
+      <maxMeshCount>4</maxMeshCount>
+      <harvestedThingDef>AMJC_RawWheat</harvestedThingDef>
+      <harvestYield>28</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <topWindExposure>0.20</topWindExposure>
+      <growDays>12</growDays>
+      <minGrowthTemperature>0</minGrowthTemperature>
+      <maxGrowthTemperature>58</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>10</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>42</maxOptimalGrowthTemperature>
+      <visualSizeRange>0.5~1.0</visualSizeRange>
+      <immatureGraphicPath>Things/Plants/Immature/AMJC_Awa</immatureGraphicPath>
+      <wildOrder>7</wildOrder>
+      <purpose>Food</purpose>
+      <sowMinSkill>0</sowMinSkill>
+    </plant>
+  </ThingDef>
+</Defs>

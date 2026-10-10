@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-09",
+  "status": "review",
+  "generator": "built-in image_gen",
+  "assets": {
+    "Awa_Immature": {
+      "prompt": "Edit image 1 into a botanically YOUNG UPRIGHT immature panicle pose. Image 2 is the IMMATURE RICE reference and absolute outline-color reference. Match its dark muted gray-olive outline exactly; use the same color across all stems and panicles. Preserve image 1 species identity and simple graphic style, NO leaves, NO added detail. Small light panicles before grain weight bends them. NO drooping or hanging heads, NO downward stem arcs. Flat green fill, one flat outline color, no gradients, texture, shading, noise, ground, shadows or text. Transparent square canvas, same bold contour and scale, 7% margins. Young AWA foxtail millet: three slim compact elongated foxtail panicles pointing UP, one central vertical, two slightly outward but rising. Short lightweight heads with straight axes; no sagging, no downward bend. Preserve foxtail rounded compact head identity.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-090190ed-b988-42f8-8dec-2653655c9990.png"
+    },
+    "Hie_Immature": {
+      "prompt": "Edit image 1 into a botanically YOUNG UPRIGHT immature panicle pose. Image 2 is the IMMATURE RICE reference and absolute outline-color reference. Match its dark muted gray-olive outline exactly; use the same color across all stems and panicles. Preserve image 1 species identity and simple graphic style, NO leaves, NO added detail. Small light panicles before grain weight bends them. NO drooping or hanging heads, NO downward stem arcs. Flat green fill, one flat outline color, no gradients, texture, shading, noise, ground, shadows or text. Transparent square canvas, same bold contour and scale, 7% margins. Young HIE barnyard millet: three compact short branched panicles pointing UP, NOT the downward hook-shaped mature panicles of image 1. Each is one small upright clustered fan, with two or three broad lobes directed upward. All tips above their stem junctions, no hanging fingers, no arch or downward curl.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-b614181f-b287-4d0f-8135-d18d983fc692.png"
+    },
+    "Kibi_Immature": {
+      "prompt": "Edit image 1 into a botanically YOUNG UPRIGHT immature panicle pose. Image 2 is the IMMATURE RICE reference and absolute outline-color reference. Match its dark muted gray-olive outline exactly; use the same color across all stems and panicles. Preserve image 1 species identity and simple graphic style, NO leaves, NO added detail. Small light panicles before grain weight bends them. NO drooping or hanging heads, NO downward stem arcs. Flat green fill, one flat outline color, no gradients, texture, shading, noise, ground, shadows or text. Transparent square canvas, same bold contour and scale, 7% margins. Young KIBI proso millet: airy open branched panicle with five main branch axes all pointing diagonally UP or straight UP. Small elongated cluster tips above the branch junctions. NONE of the bottom or side branches may sag or hook downward. Preserve clear transparent gaps between branches. No leaves.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-13727d3a-1b70-4600-b8bd-14326eba882b.png"
+    },
+    "Soba_Immature": {
+      "prompt": "Precise palette-only edit of image 1. Image 2 is MO immature wheat reference. Change ONLY the warm brown/ochre outline pixels of image 1 into the DARK GRAY OLIVE outline color from image 2: exact RGB(80,83,69), HEX #505345. Match its appearance. Preserve the green interior fills, silhouette, every stem/head shape, line thickness, spacing, composition, original canvas, and transparency. Do not redraw or simplify the plant. No added leaves. No other edits. Flat solid opaque outline color; no gradient, texture, noise, soft shadow, glow or shading. Background genuinely transparent. The only intended change is brown outline -> #505345 dark gray olive.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-71011cd4-64c2-45d3-9880-e274f6fcc289.png"
+    },
+    "Barley_Immature": {
+      "prompt": "Precise palette-only edit of image 1. Image 2 is MO immature wheat reference. Change ONLY the warm brown/ochre outline pixels of image 1 into the DARK GRAY OLIVE outline color from image 2: exact RGB(80,83,69), HEX #505345. Match its appearance. Preserve the green interior fills, silhouette, every stem/head shape, line thickness, spacing, composition, original canvas, and transparency. Do not redraw or simplify the plant. No added leaves. No other edits. Flat solid opaque outline color; no gradient, texture, noise, soft shadow, glow or shading. Background genuinely transparent. The only intended change is brown outline -> #505345 dark gray olive.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-e5ea95bd-32ad-40c2-adc7-6cfed1875d14.png"
+    },
+    "Wheat_Immature": {
+      "prompt": "Precise palette-only edit of image 1. Image 2 is MO immature wheat reference. Change ONLY the warm brown/ochre outline pixels of image 1 into the DARK GRAY OLIVE outline color from image 2: exact RGB(80,83,69), HEX #505345. Match its appearance. Preserve the green interior fills, silhouette, every stem/head shape, line thickness, spacing, composition, original canvas, and transparency. Do not redraw or simplify the plant. No added leaves. No other edits. Flat solid opaque outline color; no gradient, texture, noise, soft shadow, glow or shading. Background genuinely transparent. The only intended change is brown outline -> #505345 dark gray olive.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-5c6dc6ac-5f23-4f89-b0d2-04ae8c5848a1.png"
+    },
+    "Rice_Immature": {
+      "prompt": "Correct the IMMATURE rice plant in image 1. It wrongly has heavy hanging mature panicles. Redraw ONLY the immature growth pose: three upright or diagonally upward slender bare stalks topped by SMALL LIGHT UPRIGHT rice panicles, pointing up. NO downward hooks, NO drooping seed heads, NO hanging arcs, NO heavy plump grain clusters. Each young panicle is a narrow airy spear-like cluster of only 3 elongated simplified lobes along a straight upward axis, distinct from fat wheat ears. Taller middle shoot, shorter sides. NO leaves, no individual grain detail. Image 2 gives required outline color: MO immature wheat dark gray olive RGB(80,83,69) #505345. Muted olive green interior #839151. Flat opaque colors, no shading/texture/gradient. Transparent square canvas, same simple AMJ family style, centered 7% margins, clean at 64px. This is BEFORE grain weight bends the stalks.",
+      "path": "C:\\Users\\sucRo\\.codex\\generated_images\\01a12027-f5bb-70f1-b7ae-17120517de4b\\exec-d7ab8fff-519e-466b-b7b0-4a8b6f043e93.png"
+    }
+  }
+}

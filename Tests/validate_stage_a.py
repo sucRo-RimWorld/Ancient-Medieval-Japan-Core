@@ -267,15 +267,15 @@ assert text(jp, "AMJC_Wheat.label") == "小麦穀粒"
 mo_jp = load("Compatibility/MedievalOverhaul/Languages/Japanese/DefInjected/ThingDef/AMJC_MO_Overrides.xml")
 assert text(mo_jp, "DankPyon_RawWheat.label") == "小麦束"
 assert text(awa, "graphicData/graphicClass") == "Graphic_Random"
-assert text(awa, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Awa"
-awa_texture = ROOT / "Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png"
+assert text(awa, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Awa_Simple"
+awa_texture = ROOT / "Textures/Things/Plants/FullGrown/AMJC_Awa_Simple/AMJC_Awa_Mature.png"
 assert awa_texture.is_file()
 png = awa_texture.read_bytes()
 assert png[:8] == b"\x89PNG\r\n\x1a\n"
 assert int.from_bytes(png[16:20], "big") == 256
 assert int.from_bytes(png[20:24], "big") == 256
-assert text(awa, "plant/immatureGraphicPath") == "Things/Plants/Immature/AMJC_Awa"
-awa_immature_texture = ROOT / "Textures/Things/Plants/Immature/AMJC_Awa/AMJC_Awa_Immature.png"
+assert text(awa, "plant/immatureGraphicPath") == "Things/Plants/Immature/AMJC_Awa_Simple"
+awa_immature_texture = ROOT / "Textures/Things/Plants/Immature/AMJC_Awa_Simple/AMJC_Awa_Immature.png"
 assert awa_immature_texture.is_file()
 png = awa_immature_texture.read_bytes()
 assert png[:8] == b"\x89PNG\r\n\x1a\n"
@@ -283,15 +283,15 @@ assert int.from_bytes(png[16:20], "big") == 256
 assert int.from_bytes(png[20:24], "big") == 256
 
 assert text(hie, "graphicData/graphicClass") == "Graphic_Random"
-assert text(hie, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Hie"
-hie_texture = ROOT / "Textures/Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png"
+assert text(hie, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Hie_Simple"
+hie_texture = ROOT / "Textures/Things/Plants/FullGrown/AMJC_Hie_Simple/AMJC_Hie_Mature.png"
 assert hie_texture.is_file()
 png = hie_texture.read_bytes()
 assert png[:8] == b"\x89PNG\r\n\x1a\n"
 assert int.from_bytes(png[16:20], "big") == 256
 assert int.from_bytes(png[20:24], "big") == 256
-assert text(hie, "plant/immatureGraphicPath") == "Things/Plants/Immature/AMJC_Hie"
-hie_immature_texture = ROOT / "Textures/Things/Plants/Immature/AMJC_Hie/AMJC_Hie_Immature.png"
+assert text(hie, "plant/immatureGraphicPath") == "Things/Plants/Immature/AMJC_Hie_Simple"
+hie_immature_texture = ROOT / "Textures/Things/Plants/Immature/AMJC_Hie_Simple/AMJC_Hie_Immature.png"
 assert hie_immature_texture.is_file()
 png = hie_immature_texture.read_bytes()
 assert png[:8] == b"\x89PNG\r\n\x1a\n"
@@ -299,15 +299,15 @@ assert int.from_bytes(png[16:20], "big") == 256
 assert int.from_bytes(png[20:24], "big") == 256
 
 assert text(kibi, "graphicData/graphicClass") == "Graphic_Random"
-assert text(kibi, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Kibi"
-kibi_texture = ROOT / "Textures/Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png"
+assert text(kibi, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Kibi_Simple"
+kibi_texture = ROOT / "Textures/Things/Plants/FullGrown/AMJC_Kibi_Simple/AMJC_Kibi_Mature.png"
 assert kibi_texture.is_file()
 png = kibi_texture.read_bytes()
 assert png[:8] == b"\x89PNG\r\n\x1a\n"
 assert int.from_bytes(png[16:20], "big") == 256
 assert int.from_bytes(png[20:24], "big") == 256
-assert text(kibi, "plant/immatureGraphicPath") == "Things/Plants/Immature/AMJC_Kibi"
-kibi_immature_texture = ROOT / "Textures/Things/Plants/Immature/AMJC_Kibi/AMJC_Kibi_Immature.png"
+assert text(kibi, "plant/immatureGraphicPath") == "Things/Plants/Immature/AMJC_Kibi_Simple"
+kibi_immature_texture = ROOT / "Textures/Things/Plants/Immature/AMJC_Kibi_Simple/AMJC_Kibi_Immature.png"
 assert kibi_immature_texture.is_file()
 png = kibi_immature_texture.read_bytes()
 assert png[:8] == b"\x89PNG\r\n\x1a\n"
@@ -315,15 +315,15 @@ assert int.from_bytes(png[16:20], "big") == 256
 assert int.from_bytes(png[20:24], "big") == 256
 
 assert text(soba, "graphicData/graphicClass") == "Graphic_Random"
-assert text(soba, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Soba"
-soba_texture = ROOT / "Textures/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png"
+assert text(soba, "graphicData/texPath") == "Things/Plants/FullGrown/AMJC_Soba_Simple"
+soba_texture = ROOT / "Textures/Things/Plants/FullGrown/AMJC_Soba_Simple/AMJC_Soba_Mature.png"
 assert soba_texture.is_file()
 png = soba_texture.read_bytes()
 assert png[:8] == b"\x89PNG\r\n\x1a\n"
 assert int.from_bytes(png[16:20], "big") == 256
 assert int.from_bytes(png[20:24], "big") == 256
-assert text(soba, "plant/immatureGraphicPath") == "Things/Plants/Immature/AMJC_Soba"
-soba_immature_texture = ROOT / "Textures/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png"
+assert text(soba, "plant/immatureGraphicPath") == "Things/Plants/Immature/AMJC_Soba_Simple"
+soba_immature_texture = ROOT / "Textures/Things/Plants/Immature/AMJC_Soba_Simple/AMJC_Soba_Immature.png"
 assert soba_immature_texture.is_file()
 png = soba_immature_texture.read_bytes()
 assert png[:8] == b"\x89PNG\r\n\x1a\n"
@@ -354,9 +354,9 @@ def assert_stack_graphic(node, tex_path, rel_dir, stem):
 
 assert_stack_graphic(
     raw,
-    "Things/Item/Resource/AMJC_Millet/RawMillet",
-    "Textures/Things/Item/Resource/AMJC_Millet/RawMillet",
-    "RawMillet",
+    "Things/Item/Resource/AMJC_Millet/MixedMilletSheafDense",
+    "Textures/Things/Item/Resource/AMJC_Millet/MixedMilletSheafDense",
+    "MixedMilletSheafDense",
 )
 assert_stack_graphic(
     in_hull,
@@ -373,9 +373,9 @@ assert_stack_graphic(
 
 assert_stack_graphic(
     raw_buckwheat,
-    "Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat",
-    "Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat",
-    "RawBuckwheat",
+    "Things/Item/Resource/AMJC_Buckwheat/RawBuckwheatDense",
+    "Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheatDense",
+    "RawBuckwheatDense",
 )
 
 assert_stack_graphic(

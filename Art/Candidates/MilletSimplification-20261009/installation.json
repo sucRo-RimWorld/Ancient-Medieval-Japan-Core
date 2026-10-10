@@ -1,0 +1,17 @@
+{
+  "status": "author accepted 2026-10-09: では一旦これでFixとする; local installation complete; not committed or published",
+  "changed": [
+    "Textures\\Things\\Plants\\FullGrown\\AMJC_Awa_Simple\\AMJC_Awa_Mature.png",
+    "Textures\\Things\\Plants\\Immature\\AMJC_Awa_Simple\\AMJC_Awa_Immature.png",
+    "Textures\\Things\\Plants\\FullGrown\\AMJC_Hie_Simple\\AMJC_Hie_Mature.png",
+    "Textures\\Things\\Plants\\Immature\\AMJC_Hie_Simple\\AMJC_Hie_Immature.png",
+    "Textures\\Things\\Plants\\FullGrown\\AMJC_Kibi_Simple\\AMJC_Kibi_Mature.png",
+    "Textures\\Things\\Plants\\Immature\\AMJC_Kibi_Simple\\AMJC_Kibi_Immature.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Millet\\MixedMilletSheaf\\MixedMilletSheaf_a.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Millet\\MixedMilletSheaf\\MixedMilletSheaf_b.png",
+    "Textures\\Things\\Item\\Resource\\AMJC_Millet\\MixedMilletSheaf\\MixedMilletSheaf_c.png",
+    "Defs/ThingDefs_Plants/Plants_StageA.xml",
+    "Defs/ThingDefs_Items/Items_StageA_Grains.xml",
+    "Tests/validate_stage_a.py"
+  ]
+}

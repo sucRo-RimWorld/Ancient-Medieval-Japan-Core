@@ -11,7 +11,7 @@
     <label>millet sheaf</label>
     <description>Harvested millet stalks and seed heads bundled together before threshing and hulling. They keep well in storage but are not yet suitable for eating.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/AMJC_Millet/RawMillet</texPath>
+      <texPath>Things/Item/Resource/AMJC_Millet/MixedMilletSheafDense</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
@@ -94,7 +94,7 @@
     <label>buckwheat sheaf</label>
     <description>Harvested buckwheat stems and seed clusters before threshing. It stores well but is not yet suitable for eating.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat</texPath>
+      <texPath>Things/Item/Resource/AMJC_Buckwheat/RawBuckwheatDense</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
@@ -169,14 +169,14 @@
   <!--
     Barley processing states. Straw is produced at threshing rather than
     harvest, matching the shared AMJ grain-processing model. Temporary graphics
-    reuse existing AMJ grain assets until Barley-specific art is available.
+    use dedicated sheaf art; hulled grain placeholders retain existing AMJ grain assets.
   -->
   <ThingDef ParentName="RoughPlantBase">
     <defName>AMJC_RawBarley</defName>
     <label>barley sheaf</label>
     <description>Harvested barley stalks and heads before threshing. It stores well but is not yet suitable for eating.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/AMJC_Millet/RawMillet</texPath>
+      <texPath>Things/Item/Resource/AMJC_Barley/RawBarleyDense</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
@@ -283,7 +283,7 @@
     <defName>AMJC_RiceSheaf</defName>
     <label>rice sheaf</label>
     <description>Harvested rice stalks and ears tied into sheaves. Threshing and hulling are needed before this rice can be eaten.</description>
-    <graphicData><texPath>Things/Item/Resource/AMJC_Millet/RawMillet</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
+    <graphicData><texPath>Things/Item/Resource/AMJC_Rice/RiceSheafDense</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
     <statBases><MarketValue>1.1</MarketValue></statBases>
     <ingestible><foodType>Seed</foodType><preferability>NeverForNutrition</preferability></ingestible>
     <comps><li Class="CompProperties_Rottable"><daysToRotStart>120</daysToRotStart><rotDestroys>true</rotDestroys></li></comps>

@@ -1,3 +1,5 @@
+> 2026-10-10: The author explicitly instructed replacement of old Grains artwork with the Astra-generated revision. The current crop/sheaf source and legacy texture files have been overwritten accordingly; historical recovery hashes below describe the superseded files, not the current files. Current exact source/target hashes and provenance are in [AstraReplacement-20261010.json](AstraReplacement-20261010.json). Generated originals retain their original resolution; immature outline-normalized high-resolution working sources are stored separately. Kernel/masu art is outside this replacement. Local installation only; GitHub publication and runtime rendering are not claimed.
+
 > Workshop common sources moved to Project on 2026-10-08. Workshop entries below retain recovery provenance; their authoritative bytes now live at the linked Project paths.
 
 # AMJ Authoritative Art Sources
@@ -14,6 +16,12 @@ This directory stores accepted source artwork and authoring files that must surv
 - Mirror the `Textures/` relative asset path beneath `Art/Sources/` where practical so source and derivative are easy to pair.
 - If an already-approved master survives elsewhere (for example a persistent reference store), migrate the **exact accepted bytes** here when that asset is next touched. Do not substitute a production-resolution derivative or regenerated approximation for a missing source.
 - A source is not considered repository-preserved until the exact file is actually committed here.
+
+## Accepted leafless millet set — 2026-10-09
+
+Author accepted the Awa/Hie/Kibi immature and mature images and mixed millet sheaf with 「では一旦これでFixとする」. Exact built-in ImageGen originals are preserved locally under `Things/Plants/{FullGrown,Immature}/AMJC_{Awa,Hie,Kibi}_Simple/` and `Things/Item/Resource/AMJC_Millet/MixedMilletSheaf/MixedMilletSheaf.png`. Existing accepted sources remain unchanged. Commit/publication is not yet performed.
+
+Prompts, source/export hashes and mechanical QA are in `Art/Candidates/MilletSimplification-20261009/`. Exports use uniform whole-canvas BOX downsampling onto 256×256 transparent canvases; this avoids LANCZOS low-alpha ringing for these sources. Three stack slots reuse identical bytes. Species are conveyed through seed-head silhouette with no leaves or individual grain outlines. Immature is green; mature is ochre. This is the author-approved narrower millet revision; other crop/resource art is unchanged.
 
 ## Inventory / recovery queue
 
