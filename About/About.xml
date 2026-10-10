@@ -21,7 +21,7 @@ Medieval Overhaul is optional: when loaded, AMJG uses conditional compatibility 
 
 Development status: Fresh-start Vanilla/MO/CCTO gameplay tests, final artwork and runtime validation remain outstanding. This development build has not been cleared for public release.
 
-Ancient & Medieval Japan - Grainsの開発版。
+Ancient &amp; Medieval Japan - Grainsの開発版。
 
 江戸以前の日本を参考に、畑作穀類、収穫と加工、製粉、基本的な穀物料理を追加する。Medieval Overhaulとの併用時はAMJ Grainsが所有する作物・加工の設定を優先し、MOの既存の小麦・粉・製粉設備・藁の素材は適切な場合に再利用する。
 
