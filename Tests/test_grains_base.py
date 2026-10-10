@@ -67,6 +67,16 @@ class BaseBoundaryTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, 'Approved neutral processing text changed'):
             self.validate()
 
+    def test_hulled_barley_image_override_rejected(self):
+        path = self.root / 'Defs/ThingDefs_Items/Items_StageA_Grains.xml'
+        xml = ET.parse(path)
+        xml.find('ThingDef[defName="AMJC_BarleyInHull"]/graphicData/texPath').text = (
+            'Things/Item/Resource/AMJC_Millet/MilletInHull'
+        )
+        xml.write(path)
+        with self.assertRaisesRegex(AssertionError, 'AMJ graphics priority lost'):
+            self.validate()
+
     def test_unconditional_mo_reference_rejected(self):
         path = self.root / 'Defs/ThingDefs_Items/Items_StageA_Grains.xml'
         xml = ET.parse(path)
