@@ -12,6 +12,15 @@ def git_blob_sha1(data):
     return hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\x00" + data).hexdigest()
 
 def main():
+    replacements = json.loads((ROOT / "Art/Sources/AstraReplacement-20261010.json").read_text(encoding="utf-8"))
+    targets = set()
+    for row in replacements["copies"]:
+        assert row["target"] not in targets, "duplicate replacement target"
+        targets.add(row["target"])
+        candidate = (ROOT / row["source"]).read_bytes()
+        assert hashlib.sha256(candidate).hexdigest() == row["sha256"], row["source"]
+        assert (ROOT / row["target"]).read_bytes() == candidate, "stale crop/sheaf image: " + row["target"]
+    print(f"PASS: {len(targets)} Astra source/texture targets, including overwritten legacy paths")
     data = json.loads(M.read_text(encoding="utf-8"))
     assets = data["assets"]
     assert len(assets) == 19, len(assets)

@@ -3,13 +3,13 @@
   "owner": "Ancient-Medieval-Japan-Grains",
   "state": "production-wired; game-render validation outstanding",
   "archive_commit_base": "cd52a3d9e15467d2f6ebc1bdaac63cda84f98cbd",
-  "notes": "All source paths are exact-byte copies of their candidate input. The immature high-resolution paths contain the post-generation normalized-outline image; the untouched generated versions remain in Art/Candidates/ImmatureUpright-20261009/Sources. Immature 256px production images receive an additional final outline pass. Original already-accepted Awa/Hie/Kibi immature masters remain unchanged. Earlier archived 2026-10-07 inventory is separate.",
+  "notes": "All 19 mapped sources are exact-byte copies of their candidate inputs. Immature normalized high-resolution sources use the OutlineNormalized filename; untouched latest generated sources use the unsuffixed filename, and final 256px production images include the final outline pass. The author explicitly requested the Astra-generated revision to overwrite the old image files on 2026-10-10. Legacy source/texture paths now contain the current revision; superseded bytes remain in Git history. See Art/Sources/AstraReplacement-20261010.json for the exact replacement inventory. Stack quantity variations and runtime appearance remain separate work.",
   "assets": [
     {
       "crop": "Awa",
       "state": "immature",
       "candidate": "Art/Candidates/ImmatureUpright-20261009/Normalized/Awa_Immature.png",
-      "source": "Art/Sources/Things/Plants/Immature/AMJC_Awa_Simple/AMJC_Awa_Immature_Outline20261009.png",
+      "source": "Art/Sources/Things/Plants/Immature/AMJC_Awa_Simple/AMJC_Awa_Immature_OutlineNormalized.png",
       "production": "Textures/Things/Plants/Immature/AMJC_Awa_Simple/AMJC_Awa_Immature.png",
       "git_blob_sha1": "4f511ce32bcbe422101cd56c12ff4ed0529f8c6a"
     },
@@ -17,7 +17,7 @@
       "crop": "Hie",
       "state": "immature",
       "candidate": "Art/Candidates/ImmatureUpright-20261009/Normalized/Hie_Immature.png",
-      "source": "Art/Sources/Things/Plants/Immature/AMJC_Hie_Simple/AMJC_Hie_Immature_Outline20261009.png",
+      "source": "Art/Sources/Things/Plants/Immature/AMJC_Hie_Simple/AMJC_Hie_Immature_OutlineNormalized.png",
       "production": "Textures/Things/Plants/Immature/AMJC_Hie_Simple/AMJC_Hie_Immature.png",
       "git_blob_sha1": "d00874fc055cc02582219b0ac3633ecd07057a8c"
     },
@@ -25,7 +25,7 @@
       "crop": "Kibi",
       "state": "immature",
       "candidate": "Art/Candidates/ImmatureUpright-20261009/Normalized/Kibi_Immature.png",
-      "source": "Art/Sources/Things/Plants/Immature/AMJC_Kibi_Simple/AMJC_Kibi_Immature_Outline20261009.png",
+      "source": "Art/Sources/Things/Plants/Immature/AMJC_Kibi_Simple/AMJC_Kibi_Immature_OutlineNormalized.png",
       "production": "Textures/Things/Plants/Immature/AMJC_Kibi_Simple/AMJC_Kibi_Immature.png",
       "git_blob_sha1": "fec761199c82816233fb779f9a5cd0587bb14310"
     },
@@ -33,7 +33,7 @@
       "crop": "Soba",
       "state": "immature",
       "candidate": "Art/Candidates/ImmatureUpright-20261009/Normalized/Soba_Immature.png",
-      "source": "Art/Sources/Things/Plants/Immature/AMJC_Soba_Simple/AMJC_Soba_Immature.png",
+      "source": "Art/Sources/Things/Plants/Immature/AMJC_Soba_Simple/AMJC_Soba_Immature_OutlineNormalized.png",
       "production": "Textures/Things/Plants/Immature/AMJC_Soba_Simple/AMJC_Soba_Immature.png",
       "git_blob_sha1": "c0937a6a9f5e8139d12fbfaab1a64933cd144bf3"
     },
@@ -41,7 +41,7 @@
       "crop": "Barley",
       "state": "immature",
       "candidate": "Art/Candidates/ImmatureUpright-20261009/Normalized/Barley_Immature.png",
-      "source": "Art/Sources/Things/Plants/Immature/AMJC_Barley_Simple/AMJC_Barley_Immature.png",
+      "source": "Art/Sources/Things/Plants/Immature/AMJC_Barley_Simple/AMJC_Barley_Immature_OutlineNormalized.png",
       "production": "Textures/Things/Plants/Immature/AMJC_Barley_Simple/AMJC_Barley_Immature.png",
       "git_blob_sha1": "2c51fd97e4cd5e962f79ddd785c3f43a45f5f87a"
     },
@@ -49,7 +49,7 @@
       "crop": "Wheat",
       "state": "immature",
       "candidate": "Art/Candidates/ImmatureUpright-20261009/Normalized/Wheat_Immature.png",
-      "source": "Art/Sources/Things/Plants/Immature/AMJC_Wheat_Simple/AMJC_Wheat_Immature.png",
+      "source": "Art/Sources/Things/Plants/Immature/AMJC_Wheat_Simple/AMJC_Wheat_Immature_OutlineNormalized.png",
       "production": "Textures/Things/Plants/Immature/AMJC_Wheat_Simple/AMJC_Wheat_Immature.png",
       "git_blob_sha1": "6e28544ae9c9ae447e4d67f53e1365591d0bc91b"
     },
@@ -57,7 +57,7 @@
       "crop": "Rice",
       "state": "immature",
       "candidate": "Art/Candidates/ImmatureUpright-20261009/Normalized/Rice_Immature.png",
-      "source": "Art/Sources/Things/Plants/Immature/AMJC_Rice_Simple/AMJC_Rice_Immature.png",
+      "source": "Art/Sources/Things/Plants/Immature/AMJC_Rice_Simple/AMJC_Rice_Immature_OutlineNormalized.png",
       "production": "Textures/Things/Plants/Immature/AMJC_Rice_Simple/AMJC_Rice_Immature.png",
       "git_blob_sha1": "efa790f7afac7c03c085bbd42f0b9736ab98978c"
     },
