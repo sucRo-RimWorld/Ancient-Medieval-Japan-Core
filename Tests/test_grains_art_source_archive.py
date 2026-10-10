@@ -39,6 +39,25 @@ def main():
                 sibling = production.with_name(production.name[:-6] + suffix)
                 assert sibling.is_file(), f"missing stack variant: {sibling}"
                 assert production.read_bytes() == sibling.read_bytes(), f"stack drift: {sibling}"
+    # AMJ-019: preserve the author's exact accepted high-resolution image and all StackCount variants.
+    hulled_source = ROOT / "Art/Sources/Things/Item/Resource/AMJC_Millet/MilletInHull/MilletInHull.png"
+    source_bytes = hulled_source.read_bytes()
+    assert git_blob_sha1(source_bytes) == "4e90800baeeafaea974a4d9a96736f711ee255fc", "hulled millet master drift"
+    assert source_bytes[:8] == b"\x89PNG\r\n\x1a\n"
+    assert struct.unpack(">II", source_bytes[16:24]) == (1429, 1100)
+    base = ROOT / "Textures/Things/Item/Resource/AMJC_Millet/MilletInHull"
+    pngs = [(base / f"MilletInHull_{suffix}.png").read_bytes() for suffix in ("a", "b", "c")]
+    assert pngs[0] == pngs[1] == pngs[2], "millet in-hull StackCount variants differ"
+    assert git_blob_sha1(pngs[0]) == "18899fa7b663faecb77ac25e03140d297a73b6b3", "hulled millet production drift"
+    assert pngs[0][:8] == b"\x89PNG\r\n\x1a\n"
+    assert struct.unpack(">II", pngs[0][16:24]) == (256, 256)
+    xml = (ROOT / "Defs/ThingDefs_Items/Items_StageA_Grains.xml").read_text(encoding="utf-8")
+    assert xml.count("<defName>AMJC_MilletInHull</defName>") == 1
+    graphic = xml.split("<defName>AMJC_MilletInHull</defName>", 1)[1].split("</ThingDef>", 1)[0]
+    assert "<texPath>Things/Item/Resource/AMJC_Millet/MilletInHull</texPath>" in graphic
+    assert "<graphicClass>Graphic_StackCount</graphicClass>" in graphic
+    print("PASS: exact accepted millet in-hull master, three identical 256px textures and loaded Def path")
+
     print("PASS: 19 exact original-source blob identities, 19 production texture mappings, five three-stack families")
 
 if __name__ == "__main__":
