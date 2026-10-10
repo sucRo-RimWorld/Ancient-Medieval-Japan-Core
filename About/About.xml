@@ -19,5 +19,13 @@ Adds dry-field grains, harvesting and processing, flour milling, and basic grain
 
 Medieval Overhaul is optional: when loaded, AMJG uses conditional compatibility Defs and patches. Crop Cold Tolerance Overhaul is also optional. New Village is owned by the separate AMJ Scenarios mod (only a legacy compatibility copy remains when Scenarios is absent).
 
-Development status: Fresh-start Vanilla/MO/CCTO gameplay tests, final artwork and runtime validation remain outstanding. This development build has not been cleared for public release.</description>
+Development status: Fresh-start Vanilla/MO/CCTO gameplay tests, final artwork and runtime validation remain outstanding. This development build has not been cleared for public release.
+
+Ancient &amp; Medieval Japan - Grainsの開発版。
+
+江戸以前の日本を参考に、畑作穀類、収穫と加工、製粉、基本的な穀物料理を追加する。Medieval Overhaulとの併用時はAMJ Grainsが所有する作物・加工の設定を優先し、MOの既存の小麦・粉・製粉設備・藁の素材は適切な場合に再利用する。
+
+Medieval Overhaulは任意。導入時は条件付きの互換Defおよびパッチを使用する。Crop Cold Tolerance Overhaulも任意。新しい村シナリオは別ModのAMJ Scenariosが担当する（Scenariosがない場合のみ、旧版との互換用コピーが残る）。
+
+開発状況：バニラ／MO／CCTOでの新規開始プレイテスト、最終画像、実行時検証には未完了の作業がある。この開発版は一般公開に必要な確認を終えていない。</description>
 </ModMetaData>
