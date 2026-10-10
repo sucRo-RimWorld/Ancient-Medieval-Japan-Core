@@ -113,7 +113,7 @@ The two buildings should remain visually related but clearly communicate the exi
 
 **Owner:** Grains Art/graphics. **Status:** IN PROGRESS — author-accepted in-hull image integrated; edible image and in-game review OPEN (2026-10-10 JST).
 
-`AMJC_MilletInHull`（殻付き雑穀）は作者が提示したPNGを完成画像として承認。原画（1429×1100）を `Art/Sources/Things/Item/Resource/AMJC_Millet/MilletInHull/MilletInHull.png` に無加工で保存し、既存 `texPath` の `Graphic_StackCount` 用 `MilletInHull_a/b/c.png` を256×256、3枚同一データで置換した。元原画Git blob `4e90800baeeafaea974a4d9a96736f711ee255fc`、出力Git blob `18899fa7b663faecb77ac25e03140d297a73b6b3`。定量・レシピ・DefName・既存texPathは変更なし。PNG整合性・静的契約はCI結果で確定すること。実ゲームの見た目は未検証。
+`AMJC_MilletInHull`（殻付き雑穀）は作者が新たに提示・承認した**枡入り**PNGへPR #31で差し替え済み。原画（1429×1100）を `Art/Sources/Things/Item/Resource/AMJC_Millet/MilletInHull/MilletInHull.png` に無加工で保存し、既存 `texPath` の `Graphic_StackCount` 用 `MilletInHull_a/b/c.png` を256×256、3枚同一データで置換した。新原画Git blob `61d6720c7354107424400dd9abf0edc0a118b859`、出力Git blob `039c6f11bbe5426d169b011a706cfcb3e6802c2f`。旧採用原画はGit履歴に保持。定量・レシピ・DefName・既存texPathは変更なし。PR #31の4チェックはPASS、main反映コミット `604ac338ac344981c101d3fbeb186e2c239bbc69`。実ゲームの見た目は未検証。
 
 `AMJC_Millet`（殻なし・可食雑穀）は旧テクスチャのままで、作者採用済みの新画像がないため引き続きOPEN。アワ・ヒエ・キビの加工後状態は同一ThingDefを共有し、種別ごとの重複画像は不要。19種の栽培・束画像とは別計上する。正本: `Docs/Design.md §12.1.3`。
 
