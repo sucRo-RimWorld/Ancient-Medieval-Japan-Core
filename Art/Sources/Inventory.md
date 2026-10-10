@@ -1,3 +1,5 @@
+> This is the historical 2026-10-07 recovery inventory. Current crop/sheaf paths and source identities are in [GrainsCropSourceManifest.json](../../Docs/References/GrainsCropSourceManifest.json) and [AstraReplacement-20261010.json](AstraReplacement-20261010.json). The author-requested Astra replacement overwrites the old crop/sheaf files; historical hashes below are not current-file assertions.
+
 > Workshop common sources moved to Project on 2026-10-08. Workshop entries below retain recovery provenance; their authoritative bytes now live at the linked Project paths.
 
 # Core 元画像保存対象の棚卸し

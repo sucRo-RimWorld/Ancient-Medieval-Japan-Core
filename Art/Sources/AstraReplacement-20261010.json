@@ -1,0 +1,660 @@
+{
+  "date": "2026-10-10",
+  "generation_thread": "01a12027-f5bb-70f1-b7ae-17120517de4b",
+  "model": "gpt-6-astra",
+  "scope": "7 crops x 2 growth stages, 5 sheaves; existing legacy PNG paths overwritten with the same revision. Grain kernels, masu and other art excluded.",
+  "roles": [
+    "Awa_Mature",
+    "Awa_Immature",
+    "Hie_Mature",
+    "Hie_Immature",
+    "Kibi_Mature",
+    "Kibi_Immature",
+    "Soba_Mature",
+    "Soba_Immature",
+    "Barley_Mature",
+    "Barley_Immature",
+    "Wheat_Mature",
+    "Wheat_Immature",
+    "Rice_Mature",
+    "Rice_Immature",
+    "Millet_Sheaf",
+    "Soba_Sheaf",
+    "Barley_Sheaf",
+    "Wheat_Sheaf",
+    "Rice_Sheaf"
+  ],
+  "copies": [
+    {
+      "source": "Art/Candidates/MilletSimplification-20261009/Sources/Awa_Mature.png",
+      "target": "Art/Sources/Things/Plants/FullGrown/AMJC_Awa_Simple/AMJC_Awa_Mature.png",
+      "sha256": "50c9bd7ad7472f018deeb14dfbadf2f1496ad2be57a016cd1849284b83aac4b5",
+      "role": "Awa_Mature",
+      "installed_previous_sha256": "50c9bd7ad7472f018deeb14dfbadf2f1496ad2be57a016cd1849284b83aac4b5",
+      "main_before_sha256": "50c9bd7ad7472f018deeb14dfbadf2f1496ad2be57a016cd1849284b83aac4b5"
+    },
+    {
+      "source": "Art/Candidates/MilletSimplification-20261009/Exports/Awa_Mature.png",
+      "target": "Textures/Things/Plants/FullGrown/AMJC_Awa_Simple/AMJC_Awa_Mature.png",
+      "sha256": "1f2eaf62e47e63f53ff69cdf67c83a201d40f758986b0d011cb5580896a0b04f",
+      "role": "Awa_Mature",
+      "installed_previous_sha256": "1f2eaf62e47e63f53ff69cdf67c83a201d40f758986b0d011cb5580896a0b04f",
+      "main_before_sha256": "1f2eaf62e47e63f53ff69cdf67c83a201d40f758986b0d011cb5580896a0b04f"
+    },
+    {
+      "source": "Art/Candidates/MilletSimplification-20261009/Exports/Awa_Mature.png",
+      "target": "Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png",
+      "sha256": "1f2eaf62e47e63f53ff69cdf67c83a201d40f758986b0d011cb5580896a0b04f",
+      "role": "Awa_Mature_legacy_overwrite",
+      "installed_previous_sha256": "23d7a5225025e83c9aea25a287e8d5122e7b000669c18249f417c8a06c796708",
+      "main_before_sha256": "23d7a5225025e83c9aea25a287e8d5122e7b000669c18249f417c8a06c796708"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Sources/Awa_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Awa_Simple/AMJC_Awa_Immature.png",
+      "sha256": "d1000f4f0b24b7fc8744c8fea66f650fdea66754e7478b5d7340d477408b69ba",
+      "role": "Awa_Immature",
+      "installed_previous_sha256": "dfc680e91d65cdead2f1f3348053f14a5d438df2bec1ae6c78520086734a5f57",
+      "main_before_sha256": "dfc680e91d65cdead2f1f3348053f14a5d438df2bec1ae6c78520086734a5f57"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Final/Awa_Immature.png",
+      "target": "Textures/Things/Plants/Immature/AMJC_Awa_Simple/AMJC_Awa_Immature.png",
+      "sha256": "2b1942c444fcfcc06802e952889c3cb7149fa221bf6d29edc36a026743133f45",
+      "role": "Awa_Immature",
+      "installed_previous_sha256": "2b1942c444fcfcc06802e952889c3cb7149fa221bf6d29edc36a026743133f45",
+      "main_before_sha256": "2b1942c444fcfcc06802e952889c3cb7149fa221bf6d29edc36a026743133f45"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Normalized/Awa_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Awa_Simple/AMJC_Awa_Immature_OutlineNormalized.png",
+      "sha256": "07cbedf1b30d2b574a98bc4754d41a106cb28f2a4edd27ea52d4d578389777af",
+      "role": "Awa_Immature_processed_high_resolution",
+      "installed_previous_sha256": null,
+      "main_before_sha256": null
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Final/Awa_Immature.png",
+      "target": "Textures/Things/Plants/Immature/AMJC_Awa/AMJC_Awa_Immature.png",
+      "sha256": "2b1942c444fcfcc06802e952889c3cb7149fa221bf6d29edc36a026743133f45",
+      "role": "Awa_Immature_legacy_overwrite",
+      "installed_previous_sha256": "317a1ef2056c0554ff61b95d993e57af631ac6403238051e0e1bc4dd739a35ea",
+      "main_before_sha256": "317a1ef2056c0554ff61b95d993e57af631ac6403238051e0e1bc4dd739a35ea"
+    },
+    {
+      "source": "Art/Candidates/MilletSimplification-20261009/Sources/Hie_Mature.png",
+      "target": "Art/Sources/Things/Plants/FullGrown/AMJC_Hie_Simple/AMJC_Hie_Mature.png",
+      "sha256": "7968d561dfb4a80f8502b0c6e3b23afbe51b3f6e22fb1cfcd159fee60312c01c",
+      "role": "Hie_Mature",
+      "installed_previous_sha256": "7968d561dfb4a80f8502b0c6e3b23afbe51b3f6e22fb1cfcd159fee60312c01c",
+      "main_before_sha256": "7968d561dfb4a80f8502b0c6e3b23afbe51b3f6e22fb1cfcd159fee60312c01c"
+    },
+    {
+      "source": "Art/Candidates/MilletSimplification-20261009/Exports/Hie_Mature.png",
+      "target": "Textures/Things/Plants/FullGrown/AMJC_Hie_Simple/AMJC_Hie_Mature.png",
+      "sha256": "d104c722c6ffbe94a68dc92c3f0df1772b63bc9193001cfe13d10bec20149e25",
+      "role": "Hie_Mature",
+      "installed_previous_sha256": "d104c722c6ffbe94a68dc92c3f0df1772b63bc9193001cfe13d10bec20149e25",
+      "main_before_sha256": "d104c722c6ffbe94a68dc92c3f0df1772b63bc9193001cfe13d10bec20149e25"
+    },
+    {
+      "source": "Art/Candidates/MilletSimplification-20261009/Sources/Hie_Mature.png",
+      "target": "Art/Sources/Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png",
+      "sha256": "7968d561dfb4a80f8502b0c6e3b23afbe51b3f6e22fb1cfcd159fee60312c01c",
+      "role": "Hie_Mature_legacy_overwrite",
+      "installed_previous_sha256": "58bc4a98f4557d5df112f97c2094d7cbb5681ea8f46c36246064b10da3c573db",
+      "main_before_sha256": "58bc4a98f4557d5df112f97c2094d7cbb5681ea8f46c36246064b10da3c573db"
+    },
+    {
+      "source": "Art/Candidates/MilletSimplification-20261009/Exports/Hie_Mature.png",
+      "target": "Textures/Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png",
+      "sha256": "d104c722c6ffbe94a68dc92c3f0df1772b63bc9193001cfe13d10bec20149e25",
+      "role": "Hie_Mature_legacy_overwrite",
+      "installed_previous_sha256": "b1348a888a4eb05e5b30a051b112530947cdf5699d663046bfdae39be43becd1",
+      "main_before_sha256": "b1348a888a4eb05e5b30a051b112530947cdf5699d663046bfdae39be43becd1"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Sources/Hie_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Hie_Simple/AMJC_Hie_Immature.png",
+      "sha256": "0f638c5f71f6ba0196924bf7d3e32d2849981440f847c44a820cb8141d7d26d1",
+      "role": "Hie_Immature",
+      "installed_previous_sha256": "fe446a73ed817bdb8c16e10744195fe8c205b7cc615964788e046fb02eaaf3d9",
+      "main_before_sha256": "fe446a73ed817bdb8c16e10744195fe8c205b7cc615964788e046fb02eaaf3d9"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Final/Hie_Immature.png",
+      "target": "Textures/Things/Plants/Immature/AMJC_Hie_Simple/AMJC_Hie_Immature.png",
+      "sha256": "a606a9d77686742bf36d1b1d285a4fdf02138495c9192b6e82def165a0df4cdc",
+      "role": "Hie_Immature",
+      "installed_previous_sha256": "a606a9d77686742bf36d1b1d285a4fdf02138495c9192b6e82def165a0df4cdc",
+      "main_before_sha256": "a606a9d77686742bf36d1b1d285a4fdf02138495c9192b6e82def165a0df4cdc"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Normalized/Hie_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Hie_Simple/AMJC_Hie_Immature_OutlineNormalized.png",
+      "sha256": "1198aab2f6ec41d5aface292ad63952449a5f0b420ede73e84dab911142529a8",
+      "role": "Hie_Immature_processed_high_resolution",
+      "installed_previous_sha256": null,
+      "main_before_sha256": null
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Sources/Hie_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Hie/AMJC_Hie_Immature.png",
+      "sha256": "0f638c5f71f6ba0196924bf7d3e32d2849981440f847c44a820cb8141d7d26d1",
+      "role": "Hie_Immature_legacy_overwrite",
+      "installed_previous_sha256": "1d1d8bd67d1bd2c28cbb3e783dab043d07f5e6877eab053a7df869b8ad703538",
+      "main_before_sha256": "1d1d8bd67d1bd2c28cbb3e783dab043d07f5e6877eab053a7df869b8ad703538"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Final/Hie_Immature.png",
+      "target": "Textures/Things/Plants/Immature/AMJC_Hie/AMJC_Hie_Immature.png",
+      "sha256": "a606a9d77686742bf36d1b1d285a4fdf02138495c9192b6e82def165a0df4cdc",
+      "role": "Hie_Immature_legacy_overwrite",
+      "installed_previous_sha256": "8faaa28ae522b5fd1727e1f522042539e3e74ace6131bcd4760fcbfe42ede144",
+      "main_before_sha256": "8faaa28ae522b5fd1727e1f522042539e3e74ace6131bcd4760fcbfe42ede144"
+    },
+    {
+      "source": "Art/Candidates/MilletSimplification-20261009/Sources/Kibi_Mature.png",
+      "target": "Art/Sources/Things/Plants/FullGrown/AMJC_Kibi_Simple/AMJC_Kibi_Mature.png",
+      "sha256": "b32127bd323768c3bf8d205dc18ebf26512f0a98fd14717d69191e119919b5e1",
+      "role": "Kibi_Mature",
+      "installed_previous_sha256": "b32127bd323768c3bf8d205dc18ebf26512f0a98fd14717d69191e119919b5e1",
+      "main_before_sha256": "b32127bd323768c3bf8d205dc18ebf26512f0a98fd14717d69191e119919b5e1"
+    },
+    {
+      "source": "Art/Candidates/MilletSimplification-20261009/Exports/Kibi_Mature.png",
+      "target": "Textures/Things/Plants/FullGrown/AMJC_Kibi_Simple/AMJC_Kibi_Mature.png",
+      "sha256": "047231f40913c64fa0d798907a6c57a935c5625e17624085d069765260a87a3b",
+      "role": "Kibi_Mature",
+      "installed_previous_sha256": "047231f40913c64fa0d798907a6c57a935c5625e17624085d069765260a87a3b",
+      "main_before_sha256": "047231f40913c64fa0d798907a6c57a935c5625e17624085d069765260a87a3b"
+    },
+    {
+      "source": "Art/Candidates/MilletSimplification-20261009/Sources/Kibi_Mature.png",
+      "target": "Art/Sources/Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png",
+      "sha256": "b32127bd323768c3bf8d205dc18ebf26512f0a98fd14717d69191e119919b5e1",
+      "role": "Kibi_Mature_legacy_overwrite",
+      "installed_previous_sha256": "53af394e4bcef8b9f45fe97237a05c9c7606fef71bdacc3e743fc64644d831e2",
+      "main_before_sha256": "53af394e4bcef8b9f45fe97237a05c9c7606fef71bdacc3e743fc64644d831e2"
+    },
+    {
+      "source": "Art/Candidates/MilletSimplification-20261009/Exports/Kibi_Mature.png",
+      "target": "Textures/Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png",
+      "sha256": "047231f40913c64fa0d798907a6c57a935c5625e17624085d069765260a87a3b",
+      "role": "Kibi_Mature_legacy_overwrite",
+      "installed_previous_sha256": "f78fec6a28703a275644b171966dbbe8961923d459d56c239e4ba00f4bd966c5",
+      "main_before_sha256": "f78fec6a28703a275644b171966dbbe8961923d459d56c239e4ba00f4bd966c5"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Sources/Kibi_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Kibi_Simple/AMJC_Kibi_Immature.png",
+      "sha256": "f644268322d791a7f340598a058afcabf62e256220f4ab4a5558976e3b1ea288",
+      "role": "Kibi_Immature",
+      "installed_previous_sha256": "5565504f7bac013bdefffc4fd080da8c4a7d184291c71db2f51ac445d095b043",
+      "main_before_sha256": "5565504f7bac013bdefffc4fd080da8c4a7d184291c71db2f51ac445d095b043"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Final/Kibi_Immature.png",
+      "target": "Textures/Things/Plants/Immature/AMJC_Kibi_Simple/AMJC_Kibi_Immature.png",
+      "sha256": "4e27a9ad76970ebd82fb6b75bfcc8cc886e3a9b3b923a8a8d280f94909036088",
+      "role": "Kibi_Immature",
+      "installed_previous_sha256": "4e27a9ad76970ebd82fb6b75bfcc8cc886e3a9b3b923a8a8d280f94909036088",
+      "main_before_sha256": "4e27a9ad76970ebd82fb6b75bfcc8cc886e3a9b3b923a8a8d280f94909036088"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Normalized/Kibi_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Kibi_Simple/AMJC_Kibi_Immature_OutlineNormalized.png",
+      "sha256": "53c15f18886a70fbba030ca6bb9f108e8603145124ed98940ca153e3086c8dcc",
+      "role": "Kibi_Immature_processed_high_resolution",
+      "installed_previous_sha256": null,
+      "main_before_sha256": null
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Final/Kibi_Immature.png",
+      "target": "Textures/Things/Plants/Immature/AMJC_Kibi/AMJC_Kibi_Immature.png",
+      "sha256": "4e27a9ad76970ebd82fb6b75bfcc8cc886e3a9b3b923a8a8d280f94909036088",
+      "role": "Kibi_Immature_legacy_overwrite",
+      "installed_previous_sha256": "66024c7b7379753301a75d2ac1f7ca437dc2e61c3689d06b6730e6bca140e272",
+      "main_before_sha256": "66024c7b7379753301a75d2ac1f7ca437dc2e61c3689d06b6730e6bca140e272"
+    },
+    {
+      "source": "Art/Candidates/GrainSimplification-20261009/Sources/Soba_Mature.png",
+      "target": "Art/Sources/Things/Plants/FullGrown/AMJC_Soba_Simple/AMJC_Soba_Mature.png",
+      "sha256": "cd95767c2c82ef7d6ae4d47975b5d9a9992ae6eccf1b88cc9ea12c256f1138f9",
+      "role": "Soba_Mature",
+      "installed_previous_sha256": "cd95767c2c82ef7d6ae4d47975b5d9a9992ae6eccf1b88cc9ea12c256f1138f9",
+      "main_before_sha256": "cd95767c2c82ef7d6ae4d47975b5d9a9992ae6eccf1b88cc9ea12c256f1138f9"
+    },
+    {
+      "source": "Art/Candidates/GrainSimplification-20261009/Exports/Soba_Mature.png",
+      "target": "Textures/Things/Plants/FullGrown/AMJC_Soba_Simple/AMJC_Soba_Mature.png",
+      "sha256": "72f03e9fb57434343754efadb9229598db6d03c62cc25aec4ab70fdf2ebdf333",
+      "role": "Soba_Mature",
+      "installed_previous_sha256": "72f03e9fb57434343754efadb9229598db6d03c62cc25aec4ab70fdf2ebdf333",
+      "main_before_sha256": "72f03e9fb57434343754efadb9229598db6d03c62cc25aec4ab70fdf2ebdf333"
+    },
+    {
+      "source": "Art/Candidates/GrainSimplification-20261009/Sources/Soba_Mature.png",
+      "target": "Art/Sources/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png",
+      "sha256": "cd95767c2c82ef7d6ae4d47975b5d9a9992ae6eccf1b88cc9ea12c256f1138f9",
+      "role": "Soba_Mature_legacy_overwrite",
+      "installed_previous_sha256": "4899ea7fa6aed00d87b78819b26148b74ff5404c6e28ab050b5ad4042c08d97c",
+      "main_before_sha256": "4899ea7fa6aed00d87b78819b26148b74ff5404c6e28ab050b5ad4042c08d97c"
+    },
+    {
+      "source": "Art/Candidates/GrainSimplification-20261009/Exports/Soba_Mature.png",
+      "target": "Textures/Things/Plants/FullGrown/AMJC_Soba/AMJC_Soba_Mature.png",
+      "sha256": "72f03e9fb57434343754efadb9229598db6d03c62cc25aec4ab70fdf2ebdf333",
+      "role": "Soba_Mature_legacy_overwrite",
+      "installed_previous_sha256": "625d8807781bfe2c2d36f9e6ad968d48df4e7837db607e04c3e742000a4a5a01",
+      "main_before_sha256": "625d8807781bfe2c2d36f9e6ad968d48df4e7837db607e04c3e742000a4a5a01"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Sources/Soba_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Soba_Simple/AMJC_Soba_Immature.png",
+      "sha256": "e21dc5ffc9ecdc5c5beec1ab3694384d6d2cc6df9c3e887a0518aa296c144189",
+      "role": "Soba_Immature",
+      "installed_previous_sha256": "e21dc5ffc9ecdc5c5beec1ab3694384d6d2cc6df9c3e887a0518aa296c144189",
+      "main_before_sha256": "2d5abc8df86033e3e6e210cd553e04ac37c82bb29b13a3ecafc6dc5c3e839b82"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Final/Soba_Immature.png",
+      "target": "Textures/Things/Plants/Immature/AMJC_Soba_Simple/AMJC_Soba_Immature.png",
+      "sha256": "8c13a25083d6b4e5f572034f55a5fa1f391083f65dc8902093da08bfa2b13e4d",
+      "role": "Soba_Immature",
+      "installed_previous_sha256": "8c13a25083d6b4e5f572034f55a5fa1f391083f65dc8902093da08bfa2b13e4d",
+      "main_before_sha256": "8c13a25083d6b4e5f572034f55a5fa1f391083f65dc8902093da08bfa2b13e4d"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Normalized/Soba_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Soba_Simple/AMJC_Soba_Immature_OutlineNormalized.png",
+      "sha256": "2d5abc8df86033e3e6e210cd553e04ac37c82bb29b13a3ecafc6dc5c3e839b82",
+      "role": "Soba_Immature_processed_high_resolution",
+      "installed_previous_sha256": "2d5abc8df86033e3e6e210cd553e04ac37c82bb29b13a3ecafc6dc5c3e839b82",
+      "main_before_sha256": null
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Sources/Soba_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png",
+      "sha256": "e21dc5ffc9ecdc5c5beec1ab3694384d6d2cc6df9c3e887a0518aa296c144189",
+      "role": "Soba_Immature_legacy_overwrite",
+      "installed_previous_sha256": "194e4b67ea25ab77d73a07f973bbbf7bfaba4ededbda9eb1366c08bc7a2e75b4",
+      "main_before_sha256": "194e4b67ea25ab77d73a07f973bbbf7bfaba4ededbda9eb1366c08bc7a2e75b4"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Final/Soba_Immature.png",
+      "target": "Textures/Things/Plants/Immature/AMJC_Soba/AMJC_Soba_Immature.png",
+      "sha256": "8c13a25083d6b4e5f572034f55a5fa1f391083f65dc8902093da08bfa2b13e4d",
+      "role": "Soba_Immature_legacy_overwrite",
+      "installed_previous_sha256": "8da48fb4ca4d80f3dc7f048f86d3423d6c7f92c4eefee606c0e8610c54f83f1b",
+      "main_before_sha256": "8da48fb4ca4d80f3dc7f048f86d3423d6c7f92c4eefee606c0e8610c54f83f1b"
+    },
+    {
+      "source": "Art/Candidates/GrainSimplification-20261009/Sources/Barley_Mature.png",
+      "target": "Art/Sources/Things/Plants/FullGrown/AMJC_Barley_Simple/AMJC_Barley_Mature.png",
+      "sha256": "f8743b7c671a5dadd85877763f448fcf23f778c8479798183676c6a316182f2f",
+      "role": "Barley_Mature",
+      "installed_previous_sha256": null,
+      "main_before_sha256": "f8743b7c671a5dadd85877763f448fcf23f778c8479798183676c6a316182f2f"
+    },
+    {
+      "source": "Art/Candidates/GrainSimplification-20261009/Exports/Barley_Mature.png",
+      "target": "Textures/Things/Plants/FullGrown/AMJC_Barley_Simple/AMJC_Barley_Mature.png",
+      "sha256": "6ad46dfb805ccdcf15d6057fd00ad3a6d5a04750d1c3e37e85ee5ea5f34356ad",
+      "role": "Barley_Mature",
+      "installed_previous_sha256": "6ad46dfb805ccdcf15d6057fd00ad3a6d5a04750d1c3e37e85ee5ea5f34356ad",
+      "main_before_sha256": "6ad46dfb805ccdcf15d6057fd00ad3a6d5a04750d1c3e37e85ee5ea5f34356ad"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Sources/Barley_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Barley_Simple/AMJC_Barley_Immature.png",
+      "sha256": "20c983c21da129a8439a1cfe7ad2ca49830d37120145bd6699317498ffe6d3e0",
+      "role": "Barley_Immature",
+      "installed_previous_sha256": null,
+      "main_before_sha256": "c9a15292540509d4db4bc1a4f1691c9599ce870dc3ed3a48f9996cae5570c5f7"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Final/Barley_Immature.png",
+      "target": "Textures/Things/Plants/Immature/AMJC_Barley_Simple/AMJC_Barley_Immature.png",
+      "sha256": "7caf2613114bf1dc26cddf14a54281fc05c63990d6a7dfaea551b8e9ea87b52e",
+      "role": "Barley_Immature",
+      "installed_previous_sha256": "7caf2613114bf1dc26cddf14a54281fc05c63990d6a7dfaea551b8e9ea87b52e",
+      "main_before_sha256": "7caf2613114bf1dc26cddf14a54281fc05c63990d6a7dfaea551b8e9ea87b52e"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Normalized/Barley_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Barley_Simple/AMJC_Barley_Immature_OutlineNormalized.png",
+      "sha256": "c9a15292540509d4db4bc1a4f1691c9599ce870dc3ed3a48f9996cae5570c5f7",
+      "role": "Barley_Immature_processed_high_resolution",
+      "installed_previous_sha256": null,
+      "main_before_sha256": null
+    },
+    {
+      "source": "Art/Candidates/GrainSimplification-20261009/Sources/Wheat_Mature.png",
+      "target": "Art/Sources/Things/Plants/FullGrown/AMJC_Wheat_Simple/AMJC_Wheat_Mature.png",
+      "sha256": "3caa72db1ef8439a042508e88bf7e4ff16e8d308a97f1e554a9659b866a56cfb",
+      "role": "Wheat_Mature",
+      "installed_previous_sha256": null,
+      "main_before_sha256": "3caa72db1ef8439a042508e88bf7e4ff16e8d308a97f1e554a9659b866a56cfb"
+    },
+    {
+      "source": "Art/Candidates/GrainSimplification-20261009/Exports/Wheat_Mature.png",
+      "target": "Textures/Things/Plants/FullGrown/AMJC_Wheat_Simple/AMJC_Wheat_Mature.png",
+      "sha256": "deefc3278c291bc2e54179faca6ccc5eea065c6b9c2fda15c0faf1cdea7e5723",
+      "role": "Wheat_Mature",
+      "installed_previous_sha256": "deefc3278c291bc2e54179faca6ccc5eea065c6b9c2fda15c0faf1cdea7e5723",
+      "main_before_sha256": "deefc3278c291bc2e54179faca6ccc5eea065c6b9c2fda15c0faf1cdea7e5723"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Sources/Wheat_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Wheat_Simple/AMJC_Wheat_Immature.png",
+      "sha256": "10bc28521f9000fed9f3778f84feab599e21a03cc1cbdca7f612f6416a4d11b1",
+      "role": "Wheat_Immature",
+      "installed_previous_sha256": null,
+      "main_before_sha256": "55b8386ef408eacebcaee834584ad8d13546a48178f7b8c0b81bee6ac09291ab"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Final/Wheat_Immature.png",
+      "target": "Textures/Things/Plants/Immature/AMJC_Wheat_Simple/AMJC_Wheat_Immature.png",
+      "sha256": "f399007f44905641a9d1e5542c9a2378697475abd338135a664fa5d4e2d504af",
+      "role": "Wheat_Immature",
+      "installed_previous_sha256": "f399007f44905641a9d1e5542c9a2378697475abd338135a664fa5d4e2d504af",
+      "main_before_sha256": "f399007f44905641a9d1e5542c9a2378697475abd338135a664fa5d4e2d504af"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Normalized/Wheat_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Wheat_Simple/AMJC_Wheat_Immature_OutlineNormalized.png",
+      "sha256": "55b8386ef408eacebcaee834584ad8d13546a48178f7b8c0b81bee6ac09291ab",
+      "role": "Wheat_Immature_processed_high_resolution",
+      "installed_previous_sha256": null,
+      "main_before_sha256": null
+    },
+    {
+      "source": "Art/Candidates/UplandRice-20261009/Sources/Rice_Mature.png",
+      "target": "Art/Sources/Things/Plants/FullGrown/AMJC_Rice_Simple/AMJC_Rice_Mature.png",
+      "sha256": "5aba151d2be7cd5291f0bed1d20f04bae83234434b97b4e54d39dc680d16c24b",
+      "role": "Rice_Mature",
+      "installed_previous_sha256": null,
+      "main_before_sha256": "5aba151d2be7cd5291f0bed1d20f04bae83234434b97b4e54d39dc680d16c24b"
+    },
+    {
+      "source": "Art/Candidates/UplandRice-20261009/Exports/Rice_Mature.png",
+      "target": "Textures/Things/Plants/FullGrown/AMJC_Rice_Simple/AMJC_Rice_Mature.png",
+      "sha256": "52b1df22d57e33e1c425848f92872ab9f7172108955882e9d97b9e6c572e36ac",
+      "role": "Rice_Mature",
+      "installed_previous_sha256": "52b1df22d57e33e1c425848f92872ab9f7172108955882e9d97b9e6c572e36ac",
+      "main_before_sha256": "52b1df22d57e33e1c425848f92872ab9f7172108955882e9d97b9e6c572e36ac"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Sources/Rice_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Rice_Simple/AMJC_Rice_Immature.png",
+      "sha256": "1776d135658653b69729c604639f6264987362a44360f023ae27a8ce581eec23",
+      "role": "Rice_Immature",
+      "installed_previous_sha256": null,
+      "main_before_sha256": "372bfbed294a541aa01486856db25f479f6aaf0968594cbe28ffaf98c811cf81"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Final/Rice_Immature.png",
+      "target": "Textures/Things/Plants/Immature/AMJC_Rice_Simple/AMJC_Rice_Immature.png",
+      "sha256": "28ac87f7f511ea0b717db060111d08b544958ec1b58001c0c3c552608b25d614",
+      "role": "Rice_Immature",
+      "installed_previous_sha256": "28ac87f7f511ea0b717db060111d08b544958ec1b58001c0c3c552608b25d614",
+      "main_before_sha256": "28ac87f7f511ea0b717db060111d08b544958ec1b58001c0c3c552608b25d614"
+    },
+    {
+      "source": "Art/Candidates/ImmatureUpright-20261009/Normalized/Rice_Immature.png",
+      "target": "Art/Sources/Things/Plants/Immature/AMJC_Rice_Simple/AMJC_Rice_Immature_OutlineNormalized.png",
+      "sha256": "372bfbed294a541aa01486856db25f479f6aaf0968594cbe28ffaf98c811cf81",
+      "role": "Rice_Immature_processed_high_resolution",
+      "installed_previous_sha256": null,
+      "main_before_sha256": null
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Sources/Millet_Sheaf.png",
+      "target": "Art/Sources/Things/Item/Resource/AMJC_Millet/MixedMilletSheafDense/MixedMilletSheafDense.png",
+      "sha256": "f7031e3820b93f90a8e4edfabc6aa9b854d8018f5249ca0a0a46b8322d6f75fc",
+      "role": "Millet_Sheaf",
+      "installed_previous_sha256": null,
+      "main_before_sha256": "f7031e3820b93f90a8e4edfabc6aa9b854d8018f5249ca0a0a46b8322d6f75fc"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Millet_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Millet/MixedMilletSheafDense/MixedMilletSheafDense_a.png",
+      "sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae",
+      "role": "Millet_Sheaf",
+      "installed_previous_sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae",
+      "main_before_sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Millet_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Millet/MixedMilletSheafDense/MixedMilletSheafDense_b.png",
+      "sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae",
+      "role": "Millet_Sheaf",
+      "installed_previous_sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae",
+      "main_before_sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Millet_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Millet/MixedMilletSheafDense/MixedMilletSheafDense_c.png",
+      "sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae",
+      "role": "Millet_Sheaf",
+      "installed_previous_sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae",
+      "main_before_sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Millet_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Millet/RawMillet/RawMillet_a.png",
+      "sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae",
+      "role": "Millet_Sheaf_legacy_overwrite",
+      "installed_previous_sha256": "f53aaf564246088e09b824e61ff46985b1c9a6a625c5e0bc5a48b7907c3a4a4a",
+      "main_before_sha256": "f53aaf564246088e09b824e61ff46985b1c9a6a625c5e0bc5a48b7907c3a4a4a"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Millet_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Millet/RawMillet/RawMillet_b.png",
+      "sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae",
+      "role": "Millet_Sheaf_legacy_overwrite",
+      "installed_previous_sha256": "f53aaf564246088e09b824e61ff46985b1c9a6a625c5e0bc5a48b7907c3a4a4a",
+      "main_before_sha256": "f53aaf564246088e09b824e61ff46985b1c9a6a625c5e0bc5a48b7907c3a4a4a"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Millet_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Millet/RawMillet/RawMillet_c.png",
+      "sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae",
+      "role": "Millet_Sheaf_legacy_overwrite",
+      "installed_previous_sha256": "f53aaf564246088e09b824e61ff46985b1c9a6a625c5e0bc5a48b7907c3a4a4a",
+      "main_before_sha256": "f53aaf564246088e09b824e61ff46985b1c9a6a625c5e0bc5a48b7907c3a4a4a"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Millet_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Millet/MixedMilletSheaf/MixedMilletSheaf_a.png",
+      "sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae",
+      "role": "Millet_Sheaf_legacy_overwrite",
+      "installed_previous_sha256": "381547b85c48637978d66e7782e769aabf132ee659bcc371a39f629c9228017b",
+      "main_before_sha256": "381547b85c48637978d66e7782e769aabf132ee659bcc371a39f629c9228017b"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Millet_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Millet/MixedMilletSheaf/MixedMilletSheaf_b.png",
+      "sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae",
+      "role": "Millet_Sheaf_legacy_overwrite",
+      "installed_previous_sha256": "381547b85c48637978d66e7782e769aabf132ee659bcc371a39f629c9228017b",
+      "main_before_sha256": "381547b85c48637978d66e7782e769aabf132ee659bcc371a39f629c9228017b"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Millet_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Millet/MixedMilletSheaf/MixedMilletSheaf_c.png",
+      "sha256": "8c3ce052c753d1b3864270d7f764dc94bc051cd7cb5fdd58b46f9254a2a33eae",
+      "role": "Millet_Sheaf_legacy_overwrite",
+      "installed_previous_sha256": "381547b85c48637978d66e7782e769aabf132ee659bcc371a39f629c9228017b",
+      "main_before_sha256": "381547b85c48637978d66e7782e769aabf132ee659bcc371a39f629c9228017b"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Sources/Millet_Sheaf.png",
+      "target": "Art/Sources/Things/Item/Resource/AMJC_Millet/MixedMilletSheaf/MixedMilletSheaf.png",
+      "sha256": "f7031e3820b93f90a8e4edfabc6aa9b854d8018f5249ca0a0a46b8322d6f75fc",
+      "role": "Millet_Sheaf_legacy_overwrite",
+      "installed_previous_sha256": "3cb467619399d20a4ee09139e30c75546b5e414a4c6f6f01893556395b73b062",
+      "main_before_sha256": "3cb467619399d20a4ee09139e30c75546b5e414a4c6f6f01893556395b73b062"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Sources/Soba_Sheaf.png",
+      "target": "Art/Sources/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheatDense/RawBuckwheatDense.png",
+      "sha256": "e4e7b85740a0ebf60e352548d2d73e535c54f95b0627ecd09da4d2ae5f3888b0",
+      "role": "Soba_Sheaf",
+      "installed_previous_sha256": null,
+      "main_before_sha256": "e4e7b85740a0ebf60e352548d2d73e535c54f95b0627ecd09da4d2ae5f3888b0"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Soba_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheatDense/RawBuckwheatDense_a.png",
+      "sha256": "bc3da2a885ecc1093264d2e54868c61ac547d2b990b55d4d069052f637e5194c",
+      "role": "Soba_Sheaf",
+      "installed_previous_sha256": "bc3da2a885ecc1093264d2e54868c61ac547d2b990b55d4d069052f637e5194c",
+      "main_before_sha256": "bc3da2a885ecc1093264d2e54868c61ac547d2b990b55d4d069052f637e5194c"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Soba_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheatDense/RawBuckwheatDense_b.png",
+      "sha256": "bc3da2a885ecc1093264d2e54868c61ac547d2b990b55d4d069052f637e5194c",
+      "role": "Soba_Sheaf",
+      "installed_previous_sha256": "bc3da2a885ecc1093264d2e54868c61ac547d2b990b55d4d069052f637e5194c",
+      "main_before_sha256": "bc3da2a885ecc1093264d2e54868c61ac547d2b990b55d4d069052f637e5194c"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Soba_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheatDense/RawBuckwheatDense_c.png",
+      "sha256": "bc3da2a885ecc1093264d2e54868c61ac547d2b990b55d4d069052f637e5194c",
+      "role": "Soba_Sheaf",
+      "installed_previous_sha256": "bc3da2a885ecc1093264d2e54868c61ac547d2b990b55d4d069052f637e5194c",
+      "main_before_sha256": "bc3da2a885ecc1093264d2e54868c61ac547d2b990b55d4d069052f637e5194c"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Soba_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat/RawBuckwheat_a.png",
+      "sha256": "bc3da2a885ecc1093264d2e54868c61ac547d2b990b55d4d069052f637e5194c",
+      "role": "Soba_Sheaf_legacy_overwrite",
+      "installed_previous_sha256": "d467a4ac3f2b137fc54df583769852ecf31b9b3a15587abca9786547e2e28007",
+      "main_before_sha256": "d467a4ac3f2b137fc54df583769852ecf31b9b3a15587abca9786547e2e28007"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Soba_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat/RawBuckwheat_b.png",
+      "sha256": "bc3da2a885ecc1093264d2e54868c61ac547d2b990b55d4d069052f637e5194c",
+      "role": "Soba_Sheaf_legacy_overwrite",
+      "installed_previous_sha256": "d467a4ac3f2b137fc54df583769852ecf31b9b3a15587abca9786547e2e28007",
+      "main_before_sha256": "d467a4ac3f2b137fc54df583769852ecf31b9b3a15587abca9786547e2e28007"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Soba_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Buckwheat/RawBuckwheat/RawBuckwheat_c.png",
+      "sha256": "bc3da2a885ecc1093264d2e54868c61ac547d2b990b55d4d069052f637e5194c",
+      "role": "Soba_Sheaf_legacy_overwrite",
+      "installed_previous_sha256": "d467a4ac3f2b137fc54df583769852ecf31b9b3a15587abca9786547e2e28007",
+      "main_before_sha256": "d467a4ac3f2b137fc54df583769852ecf31b9b3a15587abca9786547e2e28007"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Sources/Barley_Sheaf.png",
+      "target": "Art/Sources/Things/Item/Resource/AMJC_Barley/RawBarleyDense/RawBarleyDense.png",
+      "sha256": "8d5de732cccb354a1b2998cc23503bd2929c96a1f72557885c0d10d6bd2f3664",
+      "role": "Barley_Sheaf",
+      "installed_previous_sha256": null,
+      "main_before_sha256": "8d5de732cccb354a1b2998cc23503bd2929c96a1f72557885c0d10d6bd2f3664"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Barley_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Barley/RawBarleyDense/RawBarleyDense_a.png",
+      "sha256": "5451a7e2e23fc2c0dadf9610a4300151c2cd99fcd572817a9fd9086c4bb0d6ec",
+      "role": "Barley_Sheaf",
+      "installed_previous_sha256": "5451a7e2e23fc2c0dadf9610a4300151c2cd99fcd572817a9fd9086c4bb0d6ec",
+      "main_before_sha256": "5451a7e2e23fc2c0dadf9610a4300151c2cd99fcd572817a9fd9086c4bb0d6ec"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Barley_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Barley/RawBarleyDense/RawBarleyDense_b.png",
+      "sha256": "5451a7e2e23fc2c0dadf9610a4300151c2cd99fcd572817a9fd9086c4bb0d6ec",
+      "role": "Barley_Sheaf",
+      "installed_previous_sha256": "5451a7e2e23fc2c0dadf9610a4300151c2cd99fcd572817a9fd9086c4bb0d6ec",
+      "main_before_sha256": "5451a7e2e23fc2c0dadf9610a4300151c2cd99fcd572817a9fd9086c4bb0d6ec"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Barley_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Barley/RawBarleyDense/RawBarleyDense_c.png",
+      "sha256": "5451a7e2e23fc2c0dadf9610a4300151c2cd99fcd572817a9fd9086c4bb0d6ec",
+      "role": "Barley_Sheaf",
+      "installed_previous_sha256": "5451a7e2e23fc2c0dadf9610a4300151c2cd99fcd572817a9fd9086c4bb0d6ec",
+      "main_before_sha256": "5451a7e2e23fc2c0dadf9610a4300151c2cd99fcd572817a9fd9086c4bb0d6ec"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Sources/Wheat_Sheaf.png",
+      "target": "Art/Sources/Things/Item/Resource/AMJC_Wheat/RawWheatDense/RawWheatDense.png",
+      "sha256": "7d66a6452304400b2fed723a9ed7fa8050d437d0a54d57005a2c5ad4e50c6d22",
+      "role": "Wheat_Sheaf",
+      "installed_previous_sha256": null,
+      "main_before_sha256": "7d66a6452304400b2fed723a9ed7fa8050d437d0a54d57005a2c5ad4e50c6d22"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Wheat_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Wheat/RawWheatDense/RawWheatDense_a.png",
+      "sha256": "d0a8399f510b509a71e212e2eacc2312cc383312463d76aa52c3e19ae3ad2ee1",
+      "role": "Wheat_Sheaf",
+      "installed_previous_sha256": "d0a8399f510b509a71e212e2eacc2312cc383312463d76aa52c3e19ae3ad2ee1",
+      "main_before_sha256": "d0a8399f510b509a71e212e2eacc2312cc383312463d76aa52c3e19ae3ad2ee1"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Wheat_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Wheat/RawWheatDense/RawWheatDense_b.png",
+      "sha256": "d0a8399f510b509a71e212e2eacc2312cc383312463d76aa52c3e19ae3ad2ee1",
+      "role": "Wheat_Sheaf",
+      "installed_previous_sha256": "d0a8399f510b509a71e212e2eacc2312cc383312463d76aa52c3e19ae3ad2ee1",
+      "main_before_sha256": "d0a8399f510b509a71e212e2eacc2312cc383312463d76aa52c3e19ae3ad2ee1"
+    },
+    {
+      "source": "Art/Candidates/DenseSheaves-20261009/Exports/Wheat_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Wheat/RawWheatDense/RawWheatDense_c.png",
+      "sha256": "d0a8399f510b509a71e212e2eacc2312cc383312463d76aa52c3e19ae3ad2ee1",
+      "role": "Wheat_Sheaf",
+      "installed_previous_sha256": "d0a8399f510b509a71e212e2eacc2312cc383312463d76aa52c3e19ae3ad2ee1",
+      "main_before_sha256": "d0a8399f510b509a71e212e2eacc2312cc383312463d76aa52c3e19ae3ad2ee1"
+    },
+    {
+      "source": "Art/Candidates/UplandRice-20261009/Sources/Rice_Sheaf.png",
+      "target": "Art/Sources/Things/Item/Resource/AMJC_Rice/RiceSheafDense/RiceSheafDense.png",
+      "sha256": "b930fe1d11ec341763a9b921acfa1cfcf3700b707b74bd304e418ea8218dc1aa",
+      "role": "Rice_Sheaf",
+      "installed_previous_sha256": null,
+      "main_before_sha256": "b930fe1d11ec341763a9b921acfa1cfcf3700b707b74bd304e418ea8218dc1aa"
+    },
+    {
+      "source": "Art/Candidates/UplandRice-20261009/Exports/Rice_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Rice/RiceSheafDense/RiceSheafDense_a.png",
+      "sha256": "f23b34295c1807d18c5ad6134085e2b3011f8521ed02151f5ce8a50f0c6d9755",
+      "role": "Rice_Sheaf",
+      "installed_previous_sha256": "f23b34295c1807d18c5ad6134085e2b3011f8521ed02151f5ce8a50f0c6d9755",
+      "main_before_sha256": "f23b34295c1807d18c5ad6134085e2b3011f8521ed02151f5ce8a50f0c6d9755"
+    },
+    {
+      "source": "Art/Candidates/UplandRice-20261009/Exports/Rice_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Rice/RiceSheafDense/RiceSheafDense_b.png",
+      "sha256": "f23b34295c1807d18c5ad6134085e2b3011f8521ed02151f5ce8a50f0c6d9755",
+      "role": "Rice_Sheaf",
+      "installed_previous_sha256": "f23b34295c1807d18c5ad6134085e2b3011f8521ed02151f5ce8a50f0c6d9755",
+      "main_before_sha256": "f23b34295c1807d18c5ad6134085e2b3011f8521ed02151f5ce8a50f0c6d9755"
+    },
+    {
+      "source": "Art/Candidates/UplandRice-20261009/Exports/Rice_Sheaf.png",
+      "target": "Textures/Things/Item/Resource/AMJC_Rice/RiceSheafDense/RiceSheafDense_c.png",
+      "sha256": "f23b34295c1807d18c5ad6134085e2b3011f8521ed02151f5ce8a50f0c6d9755",
+      "role": "Rice_Sheaf",
+      "installed_previous_sha256": "f23b34295c1807d18c5ad6134085e2b3011f8521ed02151f5ce8a50f0c6d9755",
+      "main_before_sha256": "f23b34295c1807d18c5ad6134085e2b3011f8521ed02151f5ce8a50f0c6d9755"
+    }
+  ],
+  "verification": {
+    "all_targets_byte_identical": true,
+    "all_target_png_integrity": true,
+    "unrelated_png_and_runtime_xml_unchanged": true,
+    "runtime": "not run"
+  },
+  "base_main": "8531c7c"
+}

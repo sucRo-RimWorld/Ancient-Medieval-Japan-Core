@@ -15,19 +15,15 @@ This directory stores accepted source artwork and authoring files that must surv
 - If an already-approved master survives elsewhere (for example a persistent reference store), migrate the **exact accepted bytes** here when that asset is next touched. Do not substitute a production-resolution derivative or regenerated approximation for a missing source.
 - A source is not considered repository-preserved until the exact file is actually committed here.
 
-## Accepted leafless millet set — 2026-10-09
+## Current Astra crop and sheaf revision — 2026-10-10
 
-Author accepted the Awa/Hie/Kibi immature and mature images and mixed millet sheaf with 「では一旦これでFixとする」. Exact built-in ImageGen originals are preserved locally under `Things/Plants/{FullGrown,Immature}/AMJC_{Awa,Hie,Kibi}_Simple/` and `Things/Item/Resource/AMJC_Millet/MixedMilletSheaf/MixedMilletSheaf.png`. Existing accepted sources remain unchanged. These exact originals are included in the 2026-10-10 GitHub integration; subsequent review revisions remain separately preserved under Art/Candidates.
+The author explicitly requested the Astra-generated crop/sheaf images to **overwrite the old image files**, rather than coexist only in new folders. The seven immature, seven mature and five sheaf states are mapped by [GrainsCropSourceManifest.json](../../Docs/References/GrainsCropSourceManifest.json). [AstraReplacement-20261010.json](AstraReplacement-20261010.json) records exact candidate/target SHA-256 values for the current source and production paths, including legacy filenames overwritten by this correction.
 
-Prompts, source/export hashes and mechanical QA are in `Art/Candidates/MilletSimplification-20261009/`. Exports use uniform whole-canvas BOX downsampling onto 256×256 transparent canvases; this avoids LANCZOS low-alpha ringing for these sources. Three stack slots reuse identical bytes. Species are conveyed through seed-head silhouette with no leaves or individual grain outlines. Immature is green; mature is ochre. This is the author-approved narrower millet revision; other crop/resource art is unchanged.
+The latest untouched generated originals occupy the ordinary source filenames. Immature high-resolution outline-normalized working sources use `*_OutlineNormalized.png`; their final 256px production exports include the subsequent outline pass. Existing `*_Outline20261009.png` copies are byte-identical historical aliases. The superseded leafed plants, drooping immature millet and sparse sheaves survive in Git history and historical `Art/Candidates` records, not as the current artwork at legacy source/texture paths.
 
-## Integrated crop-family source archive — 2026-10-10
+All exports retain their existing 256px bytes and the existing XML paths. No new generation or gameplay change is involved. This replacement does not implement the separately planned low/medium/high sheaf variants, change kernel/masu images, publish to Steam, or establish in-game rendering acceptance.
 
-Nineteen player-visible crop/sheaf graphic states (seven mature, seven immature, five bundled sheaves) are linked from [the exact-byte manifest](../../Docs/References/GrainsCropSourceManifest.json). Three already archived mature millet sources were left byte-for-byte unchanged. Sixteen new high-resolution sources are copied from committed candidate sources without re-encoding, including seven normalized-outline immature sources. The three earlier accepted Awa/Hie/Kibi immature source masters are retained under their original filenames, while current upright/outlined revisions use `*_Outline20261009.png`.
-
-The untouched ImageGen sources, any intermediary outline edits, and final approved 256px exports remain under `Art/Candidates/ImmatureUpright-20261009/`. The high-resolution normalized immature inputs are not exact pixel derivatives of all final 256px exports because the final post-export palette pass applies. Do not substitute the old master for the latest displayed variant or silently overwrite either. Production `Textures/` and XML/patch paths already refer to the accepted outputs; game-render verification is still outstanding. `Tests/test_grains_art_source_archive.py` checks the bytes and all 19 mapped production images.
-
-The historical 2026-10-07 14-role inventory remains a separate legacy-source recovery exercise; its 7 pending cases are not automatically closed by this newer family.
+`Tests/test_grains_art_source_archive.py` validates both the 19 current source mappings and every replacement target, so leaving a legacy file on the old revision fails the existing CI gate.
 
 ## Inventory / recovery queue
 
@@ -54,6 +50,8 @@ Do not copy a `Textures/` derivative into this tree merely to make the inventory
 Additional accepted sources should be added to the corresponding mirrored path as they are finalized or recovered.
 
 ## Recovered historical sources
+
+The plant recovery dimensions and hashes below describe superseded historical files. Those plant paths now contain the Astra revision recorded above; retrieve the old bytes from Git history when investigating provenance. Unrelated kernel and shared-container sources remain unchanged.
 
 ### Soba mature plant — 2026-10-07 JST
 

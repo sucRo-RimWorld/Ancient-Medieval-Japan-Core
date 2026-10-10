@@ -109,3 +109,5 @@ Only after explicit author visual acceptance:
 4. run the repository PNG integrity and affected source/runtime gates.
 
 A prepared request, generated draft, review sheet, or automatic-QA PASS alone is not production-art acceptance or release readiness.
+
+For an explicitly authorized replacement of existing artwork, overwrite the named existing source and texture files with the selected source/export bytes; adding a parallel folder alone does not complete that request. Reconcile the current source manifest and its existing CI validator, including legacy filenames that remain in the repository. Preserve superseded bytes in Git history and generation records. Audit current main before transferring a local art change so newer unrelated artwork and gameplay remain intact. Follow the Project PR/main integration gate when repository publication is requested.
