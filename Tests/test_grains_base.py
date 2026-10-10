@@ -67,6 +67,16 @@ class BaseBoundaryTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, 'Approved neutral processing text changed'):
             self.validate()
 
+    def test_hulled_barley_image_override_rejected(self):
+        path = self.root / 'Defs/ThingDefs_Items/Items_StageA_Grains.xml'
+        xml = ET.parse(path)
+        xml.find('ThingDef[defName="AMJC_BarleyInHull"]/graphicData/texPath').text = (
+            'Things/Item/Resource/AMJC_Millet/MilletInHull'
+        )
+        xml.write(path)
+        with self.assertRaisesRegex(AssertionError, 'AMJ graphics priority lost'):
+            self.validate()
+
     def test_unconditional_mo_reference_rejected(self):
         path = self.root / 'Defs/ThingDefs_Items/Items_StageA_Grains.xml'
         xml = ET.parse(path)
@@ -109,6 +119,39 @@ class BaseBoundaryTests(unittest.TestCase):
         </Operation>'''))
         xml.write(path)
         with self.assertRaisesRegex(AssertionError, 'AMJ graphics priority lost'):
+            self.validate()
+
+    def test_mo_barley_research_override_rejected(self):
+        path = self.root / MO_FOLDER / 'Patches/MedievalOverhaul_StageA_Base.xml'
+        xml = ET.parse(path)
+        xml.getroot().append(ET.fromstring('''<Operation Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="AMJC_Plant_Barley"]/plant</xpath>
+          <value><sowResearchPrerequisites><li>DankPyon_BasicAgriculture</li></sowResearchPrerequisites></value>
+        </Operation>'''))
+        xml.write(path)
+        with self.assertRaisesRegex(AssertionError, 'AMJ MO field priority lost'):
+            self.validate()
+
+    def test_mo_processing_table_cost_override_rejected(self):
+        path = self.root / MO_FOLDER / 'Patches/MedievalOverhaul_StageA_Base.xml'
+        xml = ET.parse(path)
+        xml.getroot().append(ET.fromstring('''<Operation Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AMJC_GrainProcessingTable"]/costList</xpath>
+          <value><costList><DankPyon_IronIngot>30</DankPyon_IronIngot></costList></value>
+        </Operation>'''))
+        xml.write(path)
+        with self.assertRaisesRegex(AssertionError, 'AMJ MO field priority lost'):
+            self.validate()
+
+    def test_mo_processing_table_research_override_rejected(self):
+        path = self.root / MO_FOLDER / 'Patches/MedievalOverhaul_StageA_Base.xml'
+        xml = ET.parse(path)
+        xml.getroot().append(ET.fromstring('''<Operation Class="PatchOperationAdd">
+          <xpath>/Defs/ThingDef[defName="AMJC_GrainProcessingTable"]</xpath>
+          <value><researchPrerequisites><li>DankPyon_BasicAgriculture</li></researchPrerequisites></value>
+        </Operation>'''))
+        xml.write(path)
+        with self.assertRaisesRegex(AssertionError, 'AMJ MO field priority lost'):
             self.validate()
 
     def test_visual_exception_does_not_hide_gameplay_change(self):

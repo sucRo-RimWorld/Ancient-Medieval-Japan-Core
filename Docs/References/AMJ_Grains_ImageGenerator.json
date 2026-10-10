@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "policy_version": "grains-imagegen-v2-no-api",
+  "base_qa_policy": "Docs/References/AMJ_GeneratedAsset_BaseQA.json",
+  "families": {
+    "plant-mature": {
+      "require_subject_reference": true,
+      "require_mo_reference": true,
+      "accepted_references": [
+        "Textures/Things/Plants/FullGrown/AMJC_Awa/AMJC_Awa_Mature.png",
+        "Textures/Things/Plants/FullGrown/AMJC_Hie/AMJC_Hie_Mature.png",
+        "Textures/Things/Plants/FullGrown/AMJC_Kibi/AMJC_Kibi_Mature.png"
+      ],
+      "mo_reference_filenames": [
+        "PlantWheat_Mature.png"
+      ],
+      "prompt_rules": [
+        "Mature cereal crop plant; preserve the subject-specific seed-head silhouette from the subject reference.",
+        "Use only a small number of broad leaves and stems; suppress individual grains and botanical micro-detail unless essential for recognition.",
+        "Foliage normally uses two principal fill regions; grain/flower uses one or two; retain roughly 3-5 distinct principal color regions and permit subtle MO-like tonal gradients within them.",
+        "Use the same warm medium-dark brown outline language as the accepted Awa/Hie/Kibi trio; do not vary outline hue by plant part.",
+        "No leaf veins, fine hair, many-step highlights, or strong/airbrushed gradients; subtle broad MO-like tonal variation is allowed."
+      ],
+      "postprocess": "standard"
+    },
+    "plant-immature": {
+      "require_subject_reference": true,
+      "require_mo_reference": true,
+      "accepted_references": [
+        "Textures/Things/Plants/Immature/AMJC_Awa/AMJC_Awa_Immature.png",
+        "Textures/Things/Plants/Immature/AMJC_Hie/AMJC_Hie_Immature.png",
+        "Textures/Things/Plants/Immature/AMJC_Kibi/AMJC_Kibi_Immature.png"
+      ],
+      "mo_reference_filenames": [
+        "PlantWheat_Immature.png"
+      ],
+      "prompt_rules": [
+        "Immature cereal crop plant; keep the same crop identity and silhouette language as its mature form while clearly reading as immature.",
+        "Use a small number of broad leaves/stems and simplified developing seed heads; no botanical micro-detail.",
+        "Foliage normally uses two principal fill regions; retain roughly 3-5 distinct principal color regions and permit subtle MO-like tonal gradients within them.",
+        "Use the same warm medium-dark brown outline language as the accepted Awa/Hie/Kibi trio.",
+        "No leaf veins, fine hair, many-step highlights, or strong/airbrushed gradients; subtle broad MO-like tonal variation is allowed."
+      ],
+      "postprocess": "standard"
+    },
+    "loose-grain": {
+      "require_subject_reference": true,
+      "require_mo_reference": false,
+      "accepted_references": [
+        "Textures/Things/Item/Resource/AMJC_Millet/RawMillet/RawMillet_a.png",
+        "Textures/Things/Item/Resource/AMJC_Millet/MilletInHull/MilletInHull_a.png"
+      ],
+      "mo_reference_filenames": [
+        "Wheat_a.png"
+      ],
+      "prompt_rules": [
+        "A compact pile represented by a small number of large simplified pieces, not dozens of individually rendered grains.",
+        "The entire pile has the strongest/darkest outer silhouette; internal grain boundaries are thinner and lighter.",
+        "Use few principal color regions per material; subtle broad MO-like gradients within a region are allowed, while separate modeled light-dark shading on each individual grain is not.",
+        "No per-grain glossy highlights and no deep ambient-occlusion shadow between every piece."
+      ],
+      "postprocess": "standard"
+    },
+    "sheaf": {
+      "require_subject_reference": true,
+      "require_mo_reference": false,
+      "accepted_references": [
+        "Textures/Things/Item/Resource/AMJC_Millet/Millet/Millet_a.png"
+      ],
+      "mo_reference_filenames": [
+        "PlantWheat_Mature.png"
+      ],
+      "prompt_rules": [
+        "A harvested grain sheaf/bundle, simplified into a few broad stems/strips and one simple binding band.",
+        "No fiber texture, no dozens of individual straw lines, and no fine seed-by-seed modeling.",
+        "Strong outer silhouette; minimal internal divisions; few principal color planes and optional restrained MO-like tonal variation."
+      ],
+      "postprocess": "standard"
+    },
+    "boxed-contents": {
+      "require_subject_reference": true,
+      "require_mo_reference": false,
+      "accepted_references": [
+        "Textures/Things/Item/Resource/AMJC_Millet/RawMillet/RawMillet_a.png",
+        "Textures/Things/Item/Resource/AMJC_Millet/MilletInHull/MilletInHull_a.png"
+      ],
+      "mo_reference_filenames": [
+        "Wheat_a.png"
+      ],
+      "prompt_rules": [
+        "Generate CONTENTS ONLY on transparency. Absolutely no masu, wooden box, rim, container, background, text, UI, or decorative shadow.",
+        "Use a neutral or near-top source view; do not attempt final masu perspective, clipping, contact edge, or rim occlusion.",
+        "Form one compact continuous pile with broadly consistent piece size; do not bake in an artificial near/far scale gradient.",
+        "The contents outer silhouette is stronger than internal piece boundaries; internal boundaries are lighter opaque RGB, not faint low-alpha strokes.",
+        "No glossy per-piece highlights, deep AO between every grain, photorealism, or painterly texture."
+      ],
+      "postprocess": "boxed-resource"
+    }
+  },
+  "generation_workflow": {
+    "provider": "ChatGPT built-in image generation",
+    "python_calls_image_api": false,
+    "api_key_required": false,
+    "stages": [
+      "prepare",
+      "ChatGPT image generation",
+      "review"
+    ],
+    "automatic_retry": false
+  }
+}

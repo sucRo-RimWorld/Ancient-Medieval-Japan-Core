@@ -4,7 +4,7 @@ This file owns only the **masu boxed-resource family**. Shared visual style come
 
 ## Current production model
 
-For new boxed resources, ImageGen is used only to create the **contents source layer**. The wooden masu is not generated.
+When ImageGen is used for new boxed resources, it creates only the **contents source layer**. Other privately screenable source-production methods may be used under the shared texture pipeline. The wooden masu is never generated.
 
 Do not rely on ImageGen to solve the masu projection. The generated subject/style layer is passed through the deterministic `Scripts/Art/normalize_masu_contents.py` perspective normalizer before it is treated as a placement candidate.
 
@@ -73,13 +73,12 @@ python Scripts/Art/prepare_boxed_resource_candidate.py \
 
 It automatically:
 
-1. runs `Scripts/Art/generated_asset_qa.py` with `Docs/References/AMJ_BoxedResource_GenerationQA.json`;
-2. rejects excessive low-alpha residue, excessive game-size color complexity, weak outer contour, overly dark/heavy internal grain lines, and line-hierarchy failures before projection;
-3. calls `Scripts/Art/normalize_masu_contents.py`;
-4. verifies the projected PNG still has usable transparency and no excessive low-alpha residue;
-5. writes JSON reports plus `review-sheet.png` containing raw contents, projected contents, and an enlarged 64 px check.
+1. runs `Scripts/Art/generated_asset_qa.py` with `Docs/References/AMJ_BoxedResource_GenerationQA.json` to verify that the source is a decodable PNG with visible content and transparency;
+2. calls `Scripts/Art/normalize_masu_contents.py` to create the transparent placement guide;
+3. checks that the derived PNG is still decodable, visible and transparent;
+4. writes diagnostic JSON reports and a comparison sheet of raw contents, projected contents and a 64 px view.
 
-The QA policy is calibrated in part against the author-selected line-hierarchy reference stored at Library `/AMJ/References/AMJ_BoxedResource_LineHierarchy_Rice_Test.png` (SHA-256 `8e808c75763e8bcd63e9826a4224044dafb4f5d8c786b28ee325641b3e229e81`). That image is a **line-hierarchy/information-density calibration reference only**; it is not an approved production rice icon and not a perspective reference.
+**Color-bin counts, edge density, dark outline ratios, arbitrary canvas-fill percentages, and low-alpha percentages do not reject candidates.** They cannot establish art quality and can reject legitimate subject-specific shapes, antialiased edges or author-accepted art. The previous numeric rice line-hierarchy calibration is no longer a validation standard. Judge line hierarchy, material identity, simplification, placement and perspective from the actual accepted references, at game size. Structural QA does not constitute visual acceptance.
 
 The perspective normalizer:
 
@@ -110,11 +109,9 @@ Reject internally when any of the following is true:
 - the generated layer contains any wood, container rim, box, background, UI, text, or decorative shadow;
 - the source or normalized output is not usable as a transparent contents-only layer.
 
-When a candidate fails this gate, regenerate automatically from the same approved reference set, up to three attempts total. Do not show rejected attempts as ordinary candidates. If the same failure persists through all attempts, stop and report the recurring failure class/capability limit.
+Failure/retry behavior and the boundary for immediately visible image generation follow Project `Docs/GoldenPaths/TextureAssetPipeline.md`; this family defines no separate attempt quota. Before adding a boxed-resource-specific rule, determine whether the failure is caused by the reference role, subject description, deterministic projection, or a capability limit.
 
-Do not repair failures by adding more ad-hoc permanent rules. First determine whether the failure comes from a missing/ambiguous reference role, a wrong subject description, the projection normalization, or a capability limit. Only durable causes belong in this Golden Path.
-
-Only after mechanical QA, deterministic projection, agent semantic QA, and the generated review sheet all pass is the candidate shown to the author for the **single remaining human gate: final visual acceptance**.
+For privately screenable sources, mechanical QA, deterministic projection, agent semantic QA and the review sheet must pass before the **single remaining human gate: final visual acceptance**.
 
 ## Manual composition
 

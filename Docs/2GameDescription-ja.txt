@@ -7,12 +7,11 @@
 
 ▼ 対応
 ・RimWorld 1.6
-・現行の本番依存宣言ではMedieval Overhaul必須
+・追加の必須Modなし
+・MOは任意。併用時は小麦・製粉・藁を連携し、Grains側の設定を優先
 ・CCTOは任意
-・MOなしの開発用構成を検証済みだが、正式な依存解除前
 
-▼ セーブ互換性
-・既存セーブへの追加・途中削除は未検証
-・現在は公開準備未完了
+▼ 開発状況
+・公開準備未完了。新規開始の実機・画像確認を継続
 
 詳細：https://github.com/sucRo-RimWorld/Ancient-Medieval-Japan-Grains

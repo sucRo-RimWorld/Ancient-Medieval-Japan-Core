@@ -1,10 +1,10 @@
 # Ancient & Medieval Japan - Grains（中世日本 - 穀類） — 設計書
 
-**文書状態:** Core→Grains再編設計確定・runtime移行前  
+**文書状態:** Core→Grains再編実装中。MO必須依存解除（2026-10-10）。新規開始の実機・画像・UI・バランス検証を継続。旧セーブ移行は対象外  
 **対象:** RimWorld 1.6  
 **公開表示名（名称方針）:** Ancient & Medieval Japan - Grains（中世日本 - 穀類）  
-**将来の機能位置づけ:** Grains系独立Mod（表示名はGrainsへ改称。既存`packageId`・DefNameは互換性維持のため変更しない。runtime移行およびMO依存解除は別途検証後に判断）  
-**基本方針:** 現CoreはAMJ全体の共通基盤ではなく、乾田穀物の栽培・一次加工・最低限の粉食を自己完結して提供するGrains系Modへ縮小再編する。Vanilla + Grainsだけで主要ループを成立させ、Medieval Overhaul（MO）は推奨環境・公式互換先とする。現行公開Coreはruntime移行と自動テストが完了するまでMO必須のまま維持する。
+**機能位置づけ:** 独立した穀類Mod。表示名はGrains、既存`packageId`・DefNameは互換維持。MO必須依存は解除、MO互換は条件付きで継続  
+**基本方針:** GrainsはAMJ全体の必須Coreではなく、乾田穀物の栽培・一次加工・最低限の粉食を自己完結して提供する。Vanilla + Grainsを基本経路とし、Medieval Overhaul（MO）は任意の公式互換先。MOありではMO固有の小麦・石臼等を条件付きで再利用し、Grains所有の設定を優先する。旧セーブからのMO削除・移行は、導入実績と対象セーブがないため今回の対象外。
 
 ---
 
@@ -247,7 +247,7 @@ AMJ各Modは、**AMJシリーズ内の別Modを理由なく必須依存にしな
 
 Grains移行後はVanilla + Grainsで、乾田穀物の栽培 → 一次加工 → 製粉 → 最低限の粉食まで成立させる。MO導入時は同じ概念のMO小麦・小麦粉・石臼・Straw等を条件付き互換から実Def供給元として再利用し、同等のAMJ資産を二重表示しない。
 
-Base XMLにはMO DefNameへの無条件参照を残さない。MO固有PatchはMO存在時だけ適用する。About.xmlのMO必須解除は、runtime移行とBase/MO自動テストが完了した最後に行う。
+Base XMLにはMO DefNameへの無条件参照を残さない。MO固有PatchはMO存在時だけ適用する。**本番About.xmlのMO必須依存は解除済み**。任意の`loadAfter`は互換Patchの適用順を守るため残す。公開可否は新規導入での実機ロード・製粉・描画等で判断する。旧セーブ移行は対象外。
 
 `AMJ - Medieval Overhaul Japanization` はMO本体を古代～中世日本向けに再構成するPatch + Retextureレイヤーであり、責務上MO必須を維持する。World Tech Levelは中世限定世界を作るための強い推奨Modとし、Japanization自身では包括的なTech Level制限を再実装しない。
 
@@ -348,15 +348,13 @@ MO導入時は、既存の農業・研究・設備・素材を可能な限り再
 - SaltもAgriculture本体の主要ループではない。既存設計の「海水採取 → `DankPyon_Salt`」はMO併用時だけ成立する互換案として扱い、BaseにMO Saltへの直接出力を置かない。
 - 現行CoreはProcessor Frameworkのclass / ProcessDefを直接利用していない。MOがPFを依存に含めていることを理由に、将来AddonがPFを暗黙利用してはならない。Fermentation等がPFを主要ループに必要と判断した場合は、そのAddon自身が直接依存を宣言する。
 
-##### 識別子・セーブ互換
+##### 識別子と新規導入の互換方針（2026-10-10確定）
 
-MO依存解除で、既存の `packageId=sucro.ancientmedievaljapan.core`、公開名、`AMJC_` prefix、既存AMJC DefNameは変更しない。**Coreという名称は当面維持するが、アーキテクチャ上は「AMJ全体の共通必須基盤」ではなくAgriculture相当の独立コンテンツModとして扱う。** 「Core」は歴史的な公開名/識別子であり、他Addonが依存すべきという意味を持たせない。
+Grainsは作者確認時点でまだどこにも導入されておらず、旧Core/Grainsセーブが存在しない。**旧セーブの移行、途中導入・削除、既存セーブからのMO取り外しは開発・公開の必須ゲートから除外する。** 過去の移行検査器・記録は歴史的診断用として保持し、現行の必須作業とは扱わない。
 
-MO併用の既存セーブでは、現在参照されているMO Defを急にAMJ Defへ置換しない。MOが残っている更新経路では、現在のMO小麦・MO素材・AMJC既存DefNameを条件付き互換から維持する。新規のVanillaフォールバックDefはMO併用時に重複栽培・重複Recipeを標準表示しない。
+`packageId=sucro.ancientmedievaljapan.core`、`AMJC_` prefix、既存DefNameはAMJモジュール間・外部Patchとの参照安定性のため保持する。MOなしではGrains独自の小麦・粉・石臼、MOありではMO提供の資産を条件付きで再利用し、重複Def/Recipeや意図しないMOによる上書きを許さない。新規開始のVanilla / MO × CCTO 4構成を検証する。
 
-「Core更新と同時にMOを既存セーブから外す」経路は別の移行ケースであり、依存メタデータを外しただけで安全とは扱わない。実装時に専用のロード/Def参照テストを通すまでは未保証とする。
-
-##### MO必須解除の実装順序
+##### MO必須解除の実装順序（移行履歴。現行結果は文書冒頭を優先）
 
 1. **テストを先に分岐**し、Production About.xmlを変更しなくてもMOなしのBase XMLをロードできるテスト用Vanillaプロファイルを用意する。
 2. BaseのMO直接参照を除去する。Straw / Cereal / RawWood等はMO互換へ移し、建設材料・研究・ScenarioはVanilla/AMJ側で自己完結させる。
@@ -364,9 +362,9 @@ MO併用の既存セーブでは、現在参照されているMO Defを急にAMJ
 4. Stage Aで小麦をVanillaプロファイルにも提供する場合は、AMJフォールバック小麦を追加し、MO時の重複を抑止する。粉食は必要な用途が確定した範囲だけ追加する。
 5. `Patches/MedievalOverhaul_StageA_Wheat.xml`、MOラベル、MOカテゴリ、MO Scenario/素材差分を明示的な条件付き互換へ隔離する。
 6. Vanilla / MO × CCTO有無の自動マトリクスをすべて通し、runtime ERROR 0を確認する。
-7. **最後に** About.xmlのMO必須依存・load orderとREADME/Workshop等の公開説明を一括変更する。About.xmlだけを先行変更しない。
+7. MOの必須指定をAbout.xmlと説明から解除し、MO用`loadAfter`・条件付き互換は残す。各テスト・説明の整合を確認する（2026-10-10反映）。
 
-**2026-10-08追加ゲート:** About.xmlのMO必須解除より前に、`Plant_Rice` の陸稲化、七穀環境回帰、Vanilla/MO両プロファイルでの実播種・実収穫、CCTO併用時の既存Rice耐寒設定との共存を完了する。六穀だけの従来PASSは最終リリース判定に使わない。
+**2026-10-10の状態修正:** `Plant_Rice` 陸稲化・七穀環境回帰は実装され、MOなしの実ゲームSmokeにも過去の合格実績がある。作者指示によりAboutのMO必須宣言を先行解除した。現在の改訂と全構成の実播種・実収穫・季節・ロード契約等の検証は引き続き公開判断の要件であり、以前のPASSを転用しない。
 
 ##### 自動テスト・サポートマトリクス
 
@@ -398,8 +396,8 @@ Fermentation / Brewingは、GrainsやMOをハード依存にしない設計を�
 | 石臼 / 最低限の製粉設備 | Grains単体で使えるAMJ所有の手動石臼を持つ。最低限経路はMO研究なしで成立 | MOの DankPyon_Millstone を標準設備として再利用し、AMJ石臼は重複表示しない | **BaseはGrains、MO時の実Def供給元はMO** |
 | DankPyon_Cereal | 存在しない前提。Base主要ループに使わない | MO既存製粉/醸造へ参加させる対象だけ登録。未脱穀束・ソバ・雑穀を一律登録しない | **MO互換専用** |
 | Straw | **AMJ Straw ThingDefを作らない。** Base脱穀では茎葉残渣を非アイテム化 | 脱穀時だけ DankPyon_Straw を副産物として追加。収穫時Hay・製粉時Hay/Strawは出さない | **MO時のみMO所有資産を利用** |
-| 作物・加工研究 | Base主要ループからMO ResearchDef参照を除去。最低限の栽培・一次加工・手動製粉はMO研究なしで成立 | MO研究との接続は条件付き互換。MO研究がないとGrains主要ループが止まる構成にしない | **BaseはGrains/MO非依存** |
-| 建築材料 | Vanilla / Grains所有のStuff・Thingだけで建設可能 | RawWood / IronIngot等への材料置換・追加は条件付き互換 | **BaseはVanilla/Grains** |
+| 作物・加工研究 | Grains所有の大麦・一次加工台は初期利用可能。手動製粉をMO研究で止めない | MO併用時もGrains所有の大麦・一次加工台にMO研究条件を追加しない。MO所有小麦Plant側の研究条件は維持 | **Grains所有Defの解禁はGrains優先** |
+| 建築材料 | Vanilla / Grains所有のStuff・Thingだけで建設可能 | Grains加工台はMO併用でもSteel 30を維持。MO原木カテゴリ等は互換として追加可能だがGrains側の確定コストを置換しない | **Grains設備の確定コストはGrains優先** |
 | New Village Scenario | **独立Scenarios Modが所有**。Grainsの旧版互換コピーはScenarios不在時だけ読み込む | ScenariosがGrains/MO導入時の物資・研究差分を任意互換として所有 | **Grainsの最終責務から除外。物理分離済み、実ゲーム・旧セーブ移行は未検証** |
 | CCTO | なくてもGrains作物は成立 | CCTO存在時だけ既存互換Patch | **任意互換** |
 | 陸稲 / `RawRice` | Vanilla `Plant_Rice` / `RawRice` を再利用し、Plantを陸稲としてAMJ向けに上書きする | 同じAMJ側設定を維持 | **Grains**。新規陸稲Plant/米ThingDefは増やさない |
@@ -456,7 +454,7 @@ Scenarioの旧具体値表は移行中のMOプロファイル互換契約とす�
 4. MO互換を条件化し、MO小麦/RawWheat/Flour/Millstone/Strawへ上表どおり収束させる。
 5. MO仮テクスチャをGrains所有Production画像へ置換する。2026-10-08の作者指示により、MO有無にかかわらずAMJ側の共有画像設定を優先する。現在は既存AMJ/Vanilla仮参照で、MO時の旧画像復元は廃止した。専用Production画像・実描画は未完了（`GrainsDependencyAudit.md`）。
 6. Vanilla + Grains / Vanilla + Grains + CCTO / MO + Grains / MO + Grains + CCTO の恒久マトリクスに、環境別穀物選択回帰を加えて通す。
-7. 最後にAbout.xml、load order、README/Workshop等の公開説明を同期する。
+7. About.xmlの必須依存を解除し、任意`loadAfter`とREADME/Workshop等の公開説明を同期する（2026-10-10反映）。
 
 この所有境界確定後の最初のruntime作業は、**テストハーネス分離**とする。
 
@@ -492,7 +490,7 @@ Production About.xmlを変えずにruntimeファイルをそのままテスト�
 AMJを導入している場合、**AMJが責務を持つ機能・資源・バランスについてはAMJの設計を最終優先する。**
 
 - 外部Modと競合しない要素は可能な限り共存させる
-- 同じ作物・設備・研究・加工経路・栽培条件等を双方が変更する場合は、AMJ側の定義・数値・研究位置・加工設計へ統一する
+- 同じ作物・設備・研究・加工経路・栽培条件等を双方が変更する場合は、AMJ側の定義・数値・研究位置・加工設計へ統一する。具体的には大麦のMO研究条件復元、およびAMJG加工台のMO鉄材・研究条件への置換を行わない
 - 外部Modの仕様へAMJを合わせるために、AMJ内で確定した肥沃度感応度・温度特性・収量・加工工程等を崩さない
 - これは他Modを文化的理由だけで削除する方針ではなく、**AMJが扱う領域の整合性を守るための競合解決規則**である
 - 外部Modにしか存在しない非重複要素は、そのまま利用できることを優先する
@@ -816,7 +814,7 @@ AMJC固有作物の耐寒値と保存候補範囲の正本は [AMJC作物の耐�
 
 ### 4.2.1 Stage A畑作6作物の確定バランス
 
-2026-10-01〜02のStage A詳細設計で確定していた数値を、現行公開版のMO併用プロファイルとCCTO独立姉妹Mod方針に基づく初期値として正本化する。**この表のMO研究名・小麦供給元は現行MO必須実装のスナップショットであり、Grains移行後の所有境界は §2.8 の最終Base / MO所有境界を優先する。** growDays・収量・肥沃度・温度等の6穀物バランス値は移行後も原則維持し、変更する場合は競合作物をまとめて再監査する。
+2026-10-01〜02のStage A詳細設計で確定していた数値を、MO併用プロファイルとCCTO独立姉妹Mod方針に基づく初期値として正本化する。**MO本体が提供する小麦Plantの研究条件・供給元はMOに属し、AMJG所有の大麦や加工台には波及させない。Grains移行後の所有境界は §2.8 を優先する。** growDays・収量・肥沃度・温度等の6穀物バランス値は移行後も原則維持し、変更する場合は競合作物をまとめて再監査する。
 
 | 作物 | growDays | 可食穀粒の基準収量 | fertilityMin | fertilitySensitivity | 成長可能温度 | 最適温度 | CCTO固定枯死温度 | sowMinSkill | 栽培解禁 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---|
@@ -824,7 +822,7 @@ AMJC固有作物の耐寒値と保存候補範囲の正本は [AMJC作物の耐�
 | キビ | 5 | 11 | 0.5 | 0.3 | 8～42℃ | 18～32℃ | -3℃ | 0 | 初期 |
 | アワ | 6 | 13 | 0.5 | 0.4 | 8～42℃ | 18～32℃ | -3℃ | 0 | 初期 |
 | ヒエ | 6 | 12 | 0.5 | 0.5 | 5～40℃ | 15～30℃ | -2℃ | 0 | 初期 |
-| 大麦 | 10 | 22 | 0.5 | 0.6 | 0～35℃ | 5～22℃ | -8℃ | 2 | MO `DankPyon_BasicAgriculture` |
+| 大麦 | 10 | 22 | 0.5 | 0.6 | 0～35℃ | 5～22℃ | -8℃ | 2 | 初期（MO併用時も同じ） |
 | 小麦（MO） | 12 | 28 | 0.7 | 0.9 | 最低0℃。高温側はMO/RimWorld基準を維持 | MO/RimWorld基準 | -6℃ | 0（MO 1.6で明示なし） | MO `DankPyon_BasicAgriculture` |
 
 アワ・ヒエ・キビについて、プレイヤーが「どの土地・気温・残り生育期間ならどれを植えるか」を判断できるよう、肥沃度・温度のゲーム内式を含む比較資料を [`Docs/Balance/Crops/Millet_Cultivation_Balance.md`](Balance/Crops/Millet_Cultivation_Balance.md) に置く。そこに掲載する数値・グラフは**現実の農業値ではなく、史実・農学的特徴を参考にAMJへ落とし込んだゲーム内バランス値**である。
@@ -1369,7 +1367,11 @@ Medieval Overhaulと並べても違和感が少ない、**ベクター画像的�
 
 #### ソバ・大麦・AMJ小麦および密集した束への拡張（2026-10-09）
 
+<<<<<<< HEAD
 作者の追加依頼により、ソバ・大麦・AMJ小麦の未熟／成熟を同じ葉なし・輪郭主体の画風で制作。ソバは三角形の実と赤みのある成熟茎、大麦は長い芒、小麦は短い先端を持つ太い穂で区別する。参照先は `Things/Plants/{FullGrown,Immature}/AMJC_{Soba,Barley,Wheat}_Simple`。AMJ小麦は `BaseWithoutMO` の独自作物に適用し、MO小麦の原本・画像参照は変更しない。
+=======
+作者の追加依頼により、ソバ・大麦・AMJ小麦の未熟／成熟を同じ葉なし・輪郭主体の画風で制作。ソバは三角形の実と赤みのある成熟茎、大麦は長い芒、小麦は短い先端を持つ太い穂で区別する。参照先は `Things/Plants/{FullGrown,Immature}/AMJC_{Soba,Barley,Wheat}_Simple`。AMJ小麦は `BaseWithoutMO` の独自作物に適用する。MO併用時も `WheatGraphics.xml` でMO小麦の未熟・成熟・束を同じAMJ画像へ割り当て、MOのDef識別子・ゲーム仕様は維持する。
+>>>>>>> b9b5cfdeeae17e98f0546e532e088fae2db90768
 
 さらに「雑穀束、ソバ束、大麦束、AMJ小麦束はよりMO小麦束に似せてほしい／よりたくさんの穂が束ねられてるようにする」という作者指示により、束4種を幅広く密集した穂・実の塊、単純な帯、太く短い裾へ改稿。雑穀束はアワ・ヒエ・キビの特徴を外周に残す。現在のローカル参照は `AMJC_Millet/MixedMilletSheafDense`、`AMJC_Buckwheat/RawBuckwheatDense`、`AMJC_Barley/RawBarleyDense`、`AMJC_Wheat/RawWheatDense`（共通接頭辞 `Things/Item/Resource/`）。各3スタックスロットは同一PNG。
 
@@ -1387,6 +1389,14 @@ PNG全53枚の構造検査と生成原本／書き出しの機械QAは合格。�
 
 生成原本・プロンプト・QA・比較画像は `Art/Candidates/UplandRice-20261009/` と `Art/Candidates/ImmatureOutline-20261009/` に保存。既存の採用原本を保持し、変更前のゲーム用未熟画像も後者の `Before/` に保存。今回の画像はローカル確認用 `review`。PNG全58枚、陸稲の7作物比較27条件／構成の静的回帰、隔離コピーでのStage A・Base/MO契約が合格（`TestResults/RiceArtStatic-20261009/static-result.txt`）。隔離コピーでは未変更移管ファイルのCRLFだけをGit原本バイトへ戻して検査した。実ゲーム表示・作者の最終採用・コミット／公開は未実施。
 
+<<<<<<< HEAD
+=======
+2026-10-10 GitHub反映: 作者依頼により生成済み画像・原本・参照設定を統合する。最新の未熟7種は `Art/Candidates/ImmatureUpright-20261009/` の工程で輪郭色 `#4D4E3C` に統一し、アワ・ヒエ・キビの未熟穂を上向きへ修正済み。上記の未公開記述は各制作時点の記録。実ゲーム表示とreview画像の最終視覚採用は別途未確認。
+
+
+2026-10-10 原本整理: PR #20で本番に参照された7種の成熟株・7種の未熟株・5種の束について、当該制作用高解像度原本19件を `Art/Sources/` に対応付け（従来保存済み3件を保持・未保存16件を原本バイトで追加）。現行の未熟株は `Art/Candidates/ImmatureUpright-20261009/Normalized/` の輪郭調整済み高解像度原本を用い、元の生成画像は同系列の `Sources/` に残す。対応とバイト同一性は `Docs/References/GrainsCropSourceManifest.json` と `Tests/test_grains_art_source_archive.py` に固定。実描画検証は未実施。旧Core元画像の回収状況は別の棚卸しとして保持。
+
+>>>>>>> b9b5cfdeeae17e98f0546e532e088fae2db90768
 #### 12.1.2 縦切り実装の画像完了条件
 
 機能単位の縦切り開発では、成熟画像1枚だけを完成させて「画像完了」としない。**その実装でプレイヤーが通常見る主要な表示状態を一通り本番画像へ置き換え、ゲーム内で確認してから次の機能へ進む。**
@@ -1402,6 +1412,38 @@ PNG全53枚の構造検査と生成原本／書き出しの機械QAは合格。�
 設備も、その機能でAMJ固有BuildingDefを追加した場合は仮画像のまま機能完了とせず、数値・動作確認後に本番画像へ置き換えて通常ズームで確認する。
 
 これにより「仮画像で実装 → 動作/数値確認 → 主要な可視状態を本番画像化 → ゲーム内見た目確認 → 次機能」の順を守る。
+
+#### 12.1.3 加工後の雑穀画像の採用状況（2026-10-10更新）
+
+2026-10-10に統合済みの **7種の未熟株・7種の成熟株・5種の収穫束（19表示状態）** に、加工後の雑穀2状態は含まれない。殻付き雑穀は作者が新たに提示・採用した枡入り画像に同日差し替え、その原画を本節の専用パスへ無加工保存してゲーム用3枚へ書き出した（旧画像の履歴はGitに保持）。殻なし雑穀は引き続き未完成。
+
+| 表示状態 | DefName | `texPath` | 画像・検証状態 |
+| --- | --- | --- | --- |
+| 殻付き雑穀（脱穀後・殻取り前） | `AMJC_MilletInHull` | `Things/Item/Resource/AMJC_Millet/MilletInHull` | 作者採用済み。元画像 `Art/Sources/Things/Item/Resource/AMJC_Millet/MilletInHull/MilletInHull.png` を無加工保存、256×256の `_a/_b/_c` を同一バイトで導入。実ゲーム表示は未検証 |
+| 殻なし雑穀（殻取り後・可食） | `AMJC_Millet` | `Things/Item/Resource/AMJC_Millet/Millet` | 旧画像のまま。完成画像の採用・原本保存・書き出しが未完了 |
+
+アワ・ヒエ・キビの収穫後は `AMJC_RawMillet → AMJC_MilletInHull → AMJC_Millet` の共通ThingDefへ統合するため、作物ごとに加工後画像を増やさない。殻付き／殻なしの違いは穀粒の内容物で表す。枡の画像管理は `Docs/GoldenPaths/BoxedResourceIconPipeline.md` を準拠とする。
+
+殻付き雑穀の新原画のGit blob SHA-1は `61d6720c7354107424400dd9abf0edc0a118b859`、ゲーム用3枚共通のGit blob SHA-1は `039c6f11bbe5426d169b011a706cfcb3e6802c2f`。既存Defの `texPath` を維持し、穀物の歩留まり・保存日数・Recipe・加工設備は変更しない。元画像・本番PNG・Def参照は静的検証し、ゲーム実機でのサイズ・視認性は別途確認する。
+
+殻なし雑穀、殻なし大麦・小麦の加工後画像、籾の専用画像、Vanilla `RawRice` の食用米リテクスチャ、粉・料理・加工設備の未完成は引き続き別件で管理する。殻付き大麦（`AMJC_BarleyInHull`）は作者採用の元画像を `Art/Sources/Things/Item/Resource/AMJC_Barley/BarleyInHull/BarleyInHull.png` に保存し、専用 `Things/Item/Resource/AMJC_Barley/BarleyInHull` パスの256pxスタック画像3枚へ反映済み（ゲーム内表示は未検証）。食用米はGrainsが担当し、既存の `RawRice` DefName・料理互換性・数値を維持して画像参照だけをAMJ画風へ差し替える（画像制作・実装・ゲーム表示検証は未完了）。
+
+#### 12.1.4 穀物・製粉品のスタック画像（2026-10-10確定）
+
+作者がMO 1.6の小麦束・小麦粉とVanilla `RawRice` の実Def／画像構成を比較し、Grainsの制作単位を次のように確定した。**数量別の本番画像制作は未実施**であり、この仕様確定だけで現行テクスチャ・Def・テストは変更しない。
+
+| 表示対象 | 必要な異なる画像数 | 表示ルール |
+|---|---:|---|
+| 収穫直後の穀束（雑穀／ソバ／大麦／小麦／稲） | 3 | MO小麦束を基準として `Graphic_StackCount` の `_a`／`_b`／`_c` に少量・中量・大量の異なる外観を割り当てる |
+| 殻付き穀粒・籾 | 1 | 数量による外観変化を設けない |
+| 殻なしの可食穀粒・米 | 1 | Vanilla `RawRice` の単一画像表示に準じ、数量による外観変化を設けない |
+| 製粉後の粉（小麦粉／蕎麦粉／雑穀粉） | 3 | MO小麦粉を基準に少量・中量・大量の異なる外観を用意する |
+
+アワ・ヒエ・キビは収穫後に同一ThingDefへ統合するため、雑穀束・殻付き雑穀・可食雑穀はそれぞれ共有画像とし、品種別の重複画像は作らない。MO併用時の小麦束・小麦粉・石臼は、既存のMO ThingDef／設備を条件付きで再利用する。Grainsは製粉工程の仕様と非MO製粉・蕎麦粉・雑穀粉の資産を所有する（§2.8、§5.2）。
+
+過去の制作記録にある穀束「3スタックスロット同一PNG」は**現行本番ファイルの状態**を指し、本節の確定目標ではない。既存の採用済み密集束・枡原本を保持し、穀束は採用済みの大量用画像を基に不足する少量・中量を制作する。粉についても数量別の画像を完成させる。穀粒については `Graphic_StackCount` を維持する場合も3ファイルの同一画像割当でよく、画像数を増やすことを要求しない。Vanilla `RawRice` は独立Defを新設せず、リテクスチャ時に元の単一画像表示を維持する。
+
+差分画像の導入時には `Docs/References/GrainsCropSourceManifest.json` および `Tests/test_grains_art_source_archive.py` の現行「束3枚同一」前提を対象画像に限って改訂し、原本保全・PNG整合性・通常ズームでのスタック表示を検証する。今回はDef、採用原画、PNG、Recipe、数量・栄養・加工仕様を変更しない。
 
 ### 12.2 制作環境
 

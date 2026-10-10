@@ -202,7 +202,7 @@
     <label>barley in hull</label>
     <description>Threshed barley grain with its hull still attached. The hull protects it during storage, but it is not yet suitable for eating.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/AMJC_Millet/MilletInHull</texPath>
+      <texPath>Things/Item/Resource/AMJC_Barley/BarleyInHull</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>

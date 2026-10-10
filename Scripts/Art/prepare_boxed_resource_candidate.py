@@ -2,7 +2,7 @@
 """Prepare an AMJ boxed-resource ImageGen candidate for final visual review.
 
 The script runs raw mechanical QA, applies deterministic masu-plane projection,
-runs post-projection structural QA, and writes a compact review sheet. Semantic
+runs post-projection PNG/alpha integrity QA, and writes a compact review sheet. Semantic
 visual QA (subject identity/style/forbidden objects) is still performed by the
 agent before the sheet is shown to the author.
 """
@@ -102,28 +102,16 @@ def prepare(source: Path, output_dir: Path, policy: Path) -> dict:
 
     normalizer.normalize(source, projected_path)
 
-    projected_metrics = qa.analyze(projected_path)
-    post_failures = []
-    if projected_metrics["transparent_fraction"] < 0.25:
-        post_failures.append(
-            "projected output does not retain enough transparent canvas"
-        )
-    if projected_metrics["low_alpha_fraction_1_39"] > 0.01:
-        post_failures.append(
-            "projected output retains excessive low-alpha residue"
-        )
-    projected_result = {
-        "passed": not post_failures,
-        "failures": post_failures,
-        "metrics": projected_metrics,
-    }
+    # Verify the derivative is still a valid, non-empty transparent PNG.
+    # Its canvas occupancy and antialiasing are subject-dependent.
+    projected_result = qa.validate(projected_path, policy)
     projected_report_path.write_text(
         json.dumps(projected_result, indent=2), encoding="utf-8"
     )
-    if post_failures:
+    if not projected_result["passed"]:
         raise ValueError(
             "projected candidate failed structural QA: "
-            + "; ".join(post_failures)
+            + "; ".join(projected_result["failures"])
         )
 
     _review_sheet(source, projected_path, review_path)

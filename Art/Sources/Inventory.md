@@ -6,6 +6,40 @@
 
 確認日: 2026-10-07 JST。確認基準: `main` の `957bdd5`。
 
+
+## 現行の穀類植物・束原本（2026-10-10統合画像）
+
+**19表示状態＝成熟7・未熟7・収穫束5。** この19点は旧Core画像14点の棚卸し件数と別集計。Grainsの本番 `Textures/` およびDef参照はPR #20（`cd52a3d`）で統合済み。今回、既存3点を照合し、不足16点の高解像度制作用原本を同一Git blobで `Art/Sources/` に追加した。
+採用済みの既存原本は上書きせず、アワ・ヒエ・キビ未熟の新しい輪郭調整版を別名で保存。最新の未熟7原本は生成原本の輪郭色を正規化した高解像度版で、生成直後の完全な原本は `Art/Candidates/ImmatureUpright-20261009/Sources/` に保持。256px本番はさらに書き出し後の輪郭処理を経ており、元原本の単純縮小とバイト一致するとは主張しない。
+**正本対応表：** [Docs/References/GrainsCropSourceManifest.json](../../Docs/References/GrainsCropSourceManifest.json)。原本Git blob SHA、元候補、ゲーム出力パスを固定。検証: `Tests/test_grains_art_source_archive.py`。実ゲームでの描画・ロード後競合確認は未実施。
+
+**加工後の雑穀2状態（未完成）:** 上記19状態に `AMJC_MilletInHull`（殻付き）と `AMJC_Millet`（殻なし）は含まれない。両方とも旧PNGと実際のDef参照が存在するが、作者指定の新しい完成画にはなっていない。旧棚卸しの **G10/G11** に候補が残るものの、旧元画像の回収と現行画像の制作・採用は別工程。2種類それぞれを完成させるまではGrainsの画像全体を完了扱いしない。作業内容の正本は `Docs/Design.md §12.1.3`、作業状態は `main:Docs/Coordination.md` の `AMJ-019` に記録する。
+
+| 作物 | 段階 | 原本（Art/Sources） |
+| --- | --- | --- |
+| Awa | immature | `Things/Plants/Immature/AMJC_Awa_Simple/AMJC_Awa_Immature_Outline20261009.png` |
+| Hie | immature | `Things/Plants/Immature/AMJC_Hie_Simple/AMJC_Hie_Immature_Outline20261009.png` |
+| Kibi | immature | `Things/Plants/Immature/AMJC_Kibi_Simple/AMJC_Kibi_Immature_Outline20261009.png` |
+| Soba | immature | `Things/Plants/Immature/AMJC_Soba_Simple/AMJC_Soba_Immature.png` |
+| Barley | immature | `Things/Plants/Immature/AMJC_Barley_Simple/AMJC_Barley_Immature.png` |
+| Wheat | immature | `Things/Plants/Immature/AMJC_Wheat_Simple/AMJC_Wheat_Immature.png` |
+| Rice | immature | `Things/Plants/Immature/AMJC_Rice_Simple/AMJC_Rice_Immature.png` |
+| Awa | mature | `Things/Plants/FullGrown/AMJC_Awa_Simple/AMJC_Awa_Mature.png` |
+| Hie | mature | `Things/Plants/FullGrown/AMJC_Hie_Simple/AMJC_Hie_Mature.png` |
+| Kibi | mature | `Things/Plants/FullGrown/AMJC_Kibi_Simple/AMJC_Kibi_Mature.png` |
+| Soba | mature | `Things/Plants/FullGrown/AMJC_Soba_Simple/AMJC_Soba_Mature.png` |
+| Barley | mature | `Things/Plants/FullGrown/AMJC_Barley_Simple/AMJC_Barley_Mature.png` |
+| Wheat | mature | `Things/Plants/FullGrown/AMJC_Wheat_Simple/AMJC_Wheat_Mature.png` |
+| Rice | mature | `Things/Plants/FullGrown/AMJC_Rice_Simple/AMJC_Rice_Mature.png` |
+| Millet | sheaf | `Things/Item/Resource/AMJC_Millet/MixedMilletSheafDense/MixedMilletSheafDense.png` |
+| Soba | sheaf | `Things/Item/Resource/AMJC_Buckwheat/RawBuckwheatDense/RawBuckwheatDense.png` |
+| Barley | sheaf | `Things/Item/Resource/AMJC_Barley/RawBarleyDense/RawBarleyDense.png` |
+| Wheat | sheaf | `Things/Item/Resource/AMJC_Wheat/RawWheatDense/RawWheatDense.png` |
+| Rice | sheaf | `Things/Item/Resource/AMJC_Rice/RiceSheafDense/RiceSheafDense.png` |
+
+---
+
+## 旧Core画像の回収棚卸し（2026-10-07時点）
 ## 件数と数え方
 
 | 範囲 | 保存対象点数 | Art/Sources 保存済み | 未保存・要照合 |

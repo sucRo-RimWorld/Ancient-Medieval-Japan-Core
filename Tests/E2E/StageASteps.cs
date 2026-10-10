@@ -69,10 +69,17 @@ namespace AncientMedievalJapanCore.E2E
             AssertLoadedCrop(ctx, "AMJC_Plant_Buckwheat_Soba", 4f, 8f, 0.4f, 0.25f, 5f, 35f, 12f, 25f, 1, "AMJC_RawBuckwheat");
             AssertLoadedCrop(ctx, "AMJC_Plant_Barley", 10f, 22f, 0.5f, 0.6f, 0f, 35f, 5f, 22f, 2, "AMJC_RawBarley");
             ThingDef barleyPlant = RequireThingDef(ctx, "AMJC_Plant_Barley");
-            ctx.Assert(
-                barleyPlant.plant.sowResearchPrerequisites != null
-                && barleyPlant.plant.sowResearchPrerequisites.Any(x => x != null && x.defName == "DankPyon_BasicAgriculture"),
-                "Barley must require DankPyon_BasicAgriculture to sow.");
+            ctx.Assert(barleyPlant.plant.sowResearchPrerequisites == null
+                || barleyPlant.plant.sowResearchPrerequisites.Count == 0,
+                "AMJG barley must remain research-free with MO enabled.");
+            ThingDef grainTable = RequireThingDef(ctx, "AMJC_GrainProcessingTable");
+            ctx.Assert(grainTable.researchPrerequisites == null
+                || grainTable.researchPrerequisites.Count == 0,
+                "AMJG processing table must remain research-free with MO enabled.");
+            ctx.Assert(grainTable.costList != null && grainTable.costList.Count == 1
+                && grainTable.costList[0].thingDef.defName == "Steel"
+                && grainTable.costList[0].count == 30,
+                "AMJG processing table must retain its 30 Steel cost with MO enabled.");
 
                 checkpoint = "grain ThingDef lookup and storage";
             ThingDef raw = RequireThingDef(ctx, "AMJC_RawMillet");
@@ -364,8 +371,9 @@ namespace AncientMedievalJapanCore.E2E
             ctx.Assert(
                 barley.plant.minGrowthTemperature < soba.plant.minGrowthTemperature
                 && barley.plant.growDays > soba.plant.growDays
-                && HasSowResearch(barley, "DankPyon_BasicAgriculture"),
-                "Barley's cold-growth advantage must retain a longer season and research gate.");
+                && (barley.plant.sowResearchPrerequisites == null
+                    || barley.plant.sowResearchPrerequisites.Count == 0),
+                "Barley's cold-growth advantage must retain its longer season without an MO research gate.");
             ctx.Assert(
                 wheat.plant.harvestYield > barley.plant.harvestYield
                 && wheat.plant.growDays > barley.plant.growDays

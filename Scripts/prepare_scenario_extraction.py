@@ -99,9 +99,14 @@ def build(output, grains_id, scenario_id, source=ROOT):
     about.find('packageId').text = grains_id
     about.find('description').text = 'Disposable extraction test. Not a release; save compatibility is unverified.'
     deps = about.find('modDependencies')
-    for dep in list(deps):
-        if dep.findtext('packageId','').lower() == MO.lower():deps.remove(dep)
-    if len(deps) == 0:about.remove(deps)
+    # Production Grains may already be standalone (no modDependencies node).
+    # Legacy test sources with an MO hard dependency must still be normalized.
+    if deps is not None:
+        for dep in list(deps):
+            if dep.findtext('packageId', '').lower() == MO.lower():
+                deps.remove(dep)
+        if len(deps) == 0:
+            about.remove(deps)
     write_xml(grains/'About/About.xml',about)
     about = ET.Element('ModMetaData')
     for tag,text in (('name','AMJ Starting Scenarios extraction test'),('author','sucRo0629'),('packageId',scenario_id)):

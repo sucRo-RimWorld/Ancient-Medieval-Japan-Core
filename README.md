@@ -2,55 +2,38 @@
 
 **RimWorld 1.6 — Development build**
 
-Ancient & Medieval Japan - Grains（中世日本 - 穀類） (formerly AMJ Core; internal identifiers retained during migration) currently extends Medieval Overhaul with agriculture, primary processing, materials, and village-life systems inspired by ordinary life in pre-Edo Japan.
+A standalone grain-growing and food-processing Mod inspired by agriculture in pre-Edo Japan. Formerly AMJ Core; the historical `sucro.ancientmedievaljapan.core` packageId and existing AMJC DefNames remain unchanged to retain stable identifiers for cross-Mod compatibility.
 
-The current development slice focuses on field crops and the processing needed to make them useful in a small colony.
+## Features
 
-## New Village scenario / 新しい村
+- Awa, Hie and Kibi, with different growing seasons, soil fertility requirements and temperature preferences.
+- Soba, barley, wheat and upland rice (using Vanilla `Plant_Rice`).
+- Harvested sheaves, threshing and hulling, grain milling, and basic flour foods.
+- Vanilla-only wheat, wheat flour and manual millstone when Medieval Overhaul is absent.
+- MO wheat/RawWheat/flour/millstone reuse and thresh-time Straw integration when MO is present, without duplicate default wheat or milling routes. AMJG-owned balance and processing settings take priority.
 
-Choose five ordinary villagers from eight candidates and establish a small village on foot. Start with basic woodworking, rustic furniture, and basic cooking already researched, plus limited food, building materials, and simple weapons. Awa, Hie, Kibi, Soba, and simple grain processing are available before Basic Agriculture; barley, wheat, and the full processing table follow that research.
+The balancing model and crops are specified in [Design](Docs/Design.md) and [cultivation balance](Docs/Balance/Crops/Millet_Cultivation_Balance.md).
 
-AMJ Backgrounds is not required. The standard start uses human villagers with Vanilla/MO backgrounds and ordinary clothing; AMJ-specific backgrounds and race-specific starts are not implemented by this slice.
+## Dependencies and compatibility
 
-The exact initial balance and automated coverage are recorded in [Core standard Scenario](Docs/Design.md#core標準scenario). The new runtime start tests are implemented; their local build/game run is still pending.
+**Required:** RimWorld 1.6. **No mandatory additional Mods or DLC.**
 
-## Millet crop choices
+**Optional:** Medieval Overhaul (MO) and [Crop Cold Tolerance Overhaul](https://steamcommunity.com/sharedfiles/filedetails/?id=3812412548) (CCTO).
 
-AMJC intentionally gives **Awa (foxtail millet), Hie (Japanese barnyard millet), and Kibi (proso millet)** different cultivation roles rather than making them interchangeable crops.
+The `loadAfter` entry for MO is an **optional ordering hint, not a hard dependency**. MO-specific definitions and patches load only when MO is active through `loadFolders.xml`; `BaseWithoutMO` supplies the fallback path otherwise. CCTO adds explicit cold-death support when installed.
 
-| Crop | Best used when... | Main trade-off |
-|---|---|---|
-| **Kibi / キビ** | the growing season is short or soil fertility is poor | smallest harvest per crop and more frequent sow/harvest work |
-| **Awa / アワ** | you have ordinary-to-fertile main fields and enough time to finish the crop | slower than Kibi, but gives more grain per harvest |
-| **Hie / ヒエ** | cold temperatures shorten the useful growing season | lower nominal output in ordinary conditions, but keeps growing better on the cold side |
+New Village is now owned by the separate AMJ Scenarios Mod. Grains keeps a conditional legacy compatibility copy only when Scenarios is absent.
 
-The exact balance values are **gameplay abstractions, not literal real-world measurements**. Real agronomic traits are used as reference points, then translated into RimWorld growth time, fertility sensitivity, and temperature curves.
+## Development status
 
-**Detailed comparison:** [Millet cultivation balance — Awa / Hie / Kibi](Docs/Balance/Crops/Millet_Cultivation_Balance.md)
+The author confirmed on 2026-10-10 that Grains has not been installed or used. **There are no existing Grains saves to migrate.** Historical save migration, enabling/disabling mid-save and removing MO from old saves are **out of scope**, not release blockers.
 
-The detailed page includes bilingual graphs for:
-- fertility → growth-rate modifier;
-- fertility → theoretical grain-output index;
-- temperature → growth-rate modifier.
+The mandatory MO dependency has been removed. Previous fresh-start Vanilla / MO × CCTO tests passed on their tested revisions; current-revision game loading and native Bills, final graphics, UI/language and gameplay balance remain to be verified. This development build has not been publicly released.
 
-## Dependencies
+## Documentation
 
-Required:
-- Medieval Overhaul
-
-Optional:
-- Crop Cold Tolerance Overhaul (CCTO), used as the framework for explicit cold-death/dormancy behavior when installed. AMJC owns its custom crops' temperature data and optional compatibility XML.
-
-[AMJC crop cold-tolerance values and data ownership](Docs/Balance/Crops/ColdTolerance.md)
-
-## Save compatibility
-
-Adding to or removing from existing saves has not been verified. AMJC adds custom crops, items, processing content, and the New Village start's own player faction and pawn kind. Existing saves do not receive the Scenario's initial pawns, items, or research. New Village saves refer to the custom faction/pawn kind, so safe removal is not guaranteed.
-
-## Development documents
-
-- [Core design](Docs/Design.md)
-- [Millet cultivation balance](Docs/Balance/Crops/Millet_Cultivation_Balance.md)
-- [Art style](Docs/ArtStyle.md)
-- [Development tools and testing](Docs/DevelopmentTools.md)
-- [Grains dependency-migration test profiles](Docs/GrainsProfileTesting.md)
+- [Design and ownership](Docs/Design.md)
+- [MO dependency audit](Docs/GrainsDependencyAudit.md)
+- [Four-profile testing and open runtime gates](Docs/GrainsProfileTesting.md)
+- [Crop cold tolerance](Docs/Balance/Crops/ColdTolerance.md)
+- [Development tools](Docs/DevelopmentTools.md)

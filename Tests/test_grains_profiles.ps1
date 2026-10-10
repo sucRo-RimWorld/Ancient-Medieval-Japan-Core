@@ -137,12 +137,21 @@ try {
     }
     [xml]$productionLoader = Get-Content -LiteralPath (Join-Path $repo 'loadFolders.xml') -Raw
     Assert ($productionLoader.loadFolders.'v1.6'.li[1].IfModActive -eq 'DankPyon.Medieval.Overhaul') 'Fixture condition leaked into production.'
+    [xml]$productionAbout = Get-Content -LiteralPath (Join-Path $repo 'About/About.xml') -Raw
+    Assert ($productionAbout.SelectNodes('/ModMetaData/modDependencies/li').Count -eq 0) 'Production Grains still declares mandatory MO/other Mod.'
+    Assert ($productionAbout.SelectNodes('/ModMetaData/loadAfter/li').Count -eq 2) 'Optional load-order hints changed.'
+    Assert ($productionAbout.SelectNodes('/ModMetaData/loadAfter/li')[0].InnerText -eq 'DankPyon.Medieval.Overhaul') 'MO optional loadAfter guard missing.'
+    Assert ($productionAbout.SelectNodes('/ModMetaData/loadAfter/li')[1].InnerText -eq 'sucro.cropcoldtoleranceoverhaul') 'CCTO optional loadAfter guard missing.'
     . (Join-Path $repo 'Scripts/AmjProfileXml.ps1')
     foreach ($xmlProfile in @('vanilla','mo')) {
         $projection = Get-AmjProfileXml $repo $xmlProfile
         $table = $projection.SelectSingleNode("/Defs/ThingDef[defName='AMJC_GrainProcessingTable']")
-        $metal = if ($xmlProfile -eq 'mo') { 'DankPyon_IronIngot' } else { 'Steel' }
-        Assert ($table.costList.SelectSingleNode($metal).InnerText -eq '30') 'Projected processing table material differs.'
+        $steel = $table.SelectSingleNode('costList/Steel')
+        Assert ($null -ne $steel -and $steel.InnerText -eq '30' -and
+            $table.SelectNodes('costList/*').Count -eq 1) 'AMJG processing table must keep Steel 30 in both profiles.'
+        Assert ($null -eq $table.SelectSingleNode('researchPrerequisites')) 'AMJG processing table must stay research-free.'
+        $barley = $projection.SelectSingleNode("/Defs/ThingDef[defName='AMJC_Plant_Barley']")
+        Assert ($null -ne $barley -and $null -eq $barley.SelectSingleNode('plant/sowResearchPrerequisites')) 'AMJG barley must stay research-free.'
         $research = $projection.SelectNodes("/Defs/ScenarioDef[defName='AMJC_NewVillage']/scenario/parts/li[@Class='ScenPart_StartingResearch']")
         $expected = if ($xmlProfile -eq 'mo') { 3 } else { 0 }
         Assert ($research.Count -eq $expected) 'Projected scenario research differs.'

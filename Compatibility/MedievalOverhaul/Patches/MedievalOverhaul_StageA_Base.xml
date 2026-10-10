@@ -1,14 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Patch>
   <Operation Class="PatchOperationAdd">
-    <xpath>/Defs/ThingDef[defName="AMJC_Plant_Barley"]/plant</xpath>
-    <value>
-      <sowResearchPrerequisites>
-        <li>DankPyon_BasicAgriculture</li>
-      </sowResearchPrerequisites>
-    </value>
-  </Operation>
-  <Operation Class="PatchOperationAdd">
     <xpath>/Defs/ThingDef[defName="AMJC_Wheat"]</xpath>
     <value>
       <thingCategories>
@@ -20,22 +12,6 @@
     <xpath>/Defs/ThingDef[defName="AMJC_GrainProcessingSpot"]/stuffCategories</xpath>
     <value>
       <li>DankPyon_RawWood</li>
-    </value>
-  </Operation>
-  <Operation Class="PatchOperationReplace">
-    <xpath>/Defs/ThingDef[defName="AMJC_GrainProcessingTable"]/costList</xpath>
-    <value>
-      <costList>
-        <DankPyon_IronIngot>30</DankPyon_IronIngot>
-      </costList>
-    </value>
-  </Operation>
-  <Operation Class="PatchOperationAdd">
-    <xpath>/Defs/ThingDef[defName="AMJC_GrainProcessingTable"]</xpath>
-    <value>
-      <researchPrerequisites>
-        <li>DankPyon_BasicAgriculture</li>
-      </researchPrerequisites>
     </value>
   </Operation>
   <Operation Class="PatchOperationAdd">
