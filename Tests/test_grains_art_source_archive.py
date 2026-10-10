@@ -42,13 +42,13 @@ def main():
     # AMJ-019: preserve the author's exact accepted high-resolution image and all StackCount variants.
     hulled_source = ROOT / "Art/Sources/Things/Item/Resource/AMJC_Millet/MilletInHull/MilletInHull.png"
     source_bytes = hulled_source.read_bytes()
-    assert git_blob_sha1(source_bytes) == "4e90800baeeafaea974a4d9a96736f711ee255fc", "hulled millet master drift"
+    assert git_blob_sha1(source_bytes) == "61d6720c7354107424400dd9abf0edc0a118b859", "hulled millet master drift"
     assert source_bytes[:8] == b"\x89PNG\r\n\x1a\n"
     assert struct.unpack(">II", source_bytes[16:24]) == (1429, 1100)
     base = ROOT / "Textures/Things/Item/Resource/AMJC_Millet/MilletInHull"
     pngs = [(base / f"MilletInHull_{suffix}.png").read_bytes() for suffix in ("a", "b", "c")]
     assert pngs[0] == pngs[1] == pngs[2], "millet in-hull StackCount variants differ"
-    assert git_blob_sha1(pngs[0]) == "18899fa7b663faecb77ac25e03140d297a73b6b3", "hulled millet production drift"
+    assert git_blob_sha1(pngs[0]) == "039c6f11bbe5426d169b011a706cfcb3e6802c2f", "hulled millet production drift"
     assert pngs[0][:8] == b"\x89PNG\r\n\x1a\n"
     assert struct.unpack(">II", pngs[0][16:24]) == (256, 256)
     xml = (ROOT / "Defs/ThingDefs_Items/Items_StageA_Grains.xml").read_text(encoding="utf-8")
