@@ -111,11 +111,13 @@ The two buildings should remain visually related but clearly communicate the exi
 
 ### AMJ-019 — Millet hulled / edible grain production artwork
 
-**Owner:** Grains Art/graphics. **Status:** OPEN — two post-harvest images remain unfinished (author correction 2026-10-10 JST).
+**Owner:** Grains Art/graphics. **Status:** IN PROGRESS — author-accepted in-hull image integrated; edible image and in-game review OPEN (2026-10-10 JST).
 
-`AMJC_MilletInHull` (殻付き雑穀) currently uses older `Things/Item/Resource/AMJC_Millet/MilletInHull` art; `AMJC_Millet` (殻なし・可食雑穀) uses older `Things/Item/Resource/AMJC_Millet/Millet` art. Existing PNGs and Def paths are not evidence of accepted new finished artwork. These two are **not part of the 7 immature + 7 mature + 5 sheaf = 19 integrated crop/sheaf states**, and must remain OPEN. Awa/Hie/Kibi share the same two grain ThingDefs; no separate post-harvest item art for each species.
+`AMJC_MilletInHull`（殻付き雑穀）は作者が提示したPNGを完成画像として承認。原画（1429×1100）を `Art/Sources/Things/Item/Resource/AMJC_Millet/MilletInHull/MilletInHull.png` に無加工で保存し、既存 `texPath` の `Graphic_StackCount` 用 `MilletInHull_a/b/c.png` を256×256、3枚同一データで置換した。元原画Git blob `4e90800baeeafaea974a4d9a96736f711ee255fc`、出力Git blob `18899fa7b663faecb77ac25e03140d297a73b6b3`。定量・レシピ・DefName・既存texPathは変更なし。PNG整合性・静的契約はCI結果で確定すること。実ゲームの見た目は未検証。
 
-**Confirmed production scope:** replace only grain *contents* in the accepted masu container, following `Docs/GoldenPaths/BoxedResourceIconPipeline.md`. Preserve old accepted masters and production PNGs until an exact replacement is accepted. Archive accepted full-resolution sources in `Art/Sources`, export required StackCount `_a/_b/_c` PNGs, update graphic paths as necessary, then run static integrity, provider checks and real-game sprite review. No grain balance, recipes or DefName changes. Old `Art/Sources/Inventory.md` G10/G11 source recovery is historical and not final artwork approval. Canonical specification: `Docs/Design.md §12.1.3`.
+`AMJC_Millet`（殻なし・可食雑穀）は旧テクスチャのままで、作者採用済みの新画像がないため引き続きOPEN。アワ・ヒエ・キビの加工後状態は同一ThingDefを共有し、種別ごとの重複画像は不要。19種の栽培・束画像とは別計上する。正本: `Docs/Design.md §12.1.3`。
+
+**Next:** 殻なし雑穀の採用・原画保存・3枚書き出し後、両方の通常ズームでの実ゲーム表示を確認。
 
 ### AMJ-018 — Current private-play and eventual public readiness
 
