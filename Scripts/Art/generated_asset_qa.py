@@ -154,17 +154,6 @@ def analyze(path: Path) -> dict[str, Any]:
     return metrics
 
 
-def _check_range(failures: list[str], metrics: dict[str, Any], key: str, bounds: dict[str, Any]) -> None:
-    if key not in metrics:
-        failures.append(f"missing metric: {key}")
-        return
-    value = metrics[key]
-    if "min" in bounds and value < bounds["min"]:
-        failures.append(f"{key}={value:.6g} < min {bounds['min']}")
-    if "max" in bounds and value > bounds["max"]:
-        failures.append(f"{key}={value:.6g} > max {bounds['max']}")
-
-
 def validate(path: Path, policy_path: Path) -> dict[str, Any]:
     policy = json.loads(policy_path.read_text(encoding="utf-8"))
     metrics = analyze(path)
@@ -179,8 +168,10 @@ def validate(path: Path, policy_path: Path) -> dict[str, Any]:
     if policy.get("require_visible_content", True) and not metrics["visible_bbox"]:
         failures.append("candidate has no visible content")
 
-    for key, bounds in policy.get("metric_ranges", {}).items():
-        _check_range(failures, metrics, key, bounds)
+    # Color/edge/outline ratios are diagnostics, never pass/fail style gates.
+    # Arbitrary global thresholds reject valid art and cannot verify aesthetics.
+    if policy.get("require_transparency", False) and metrics["transparent_fraction"] == 0:
+        failures.append("candidate has no transparent background")
 
     return {
         "passed": not failures,

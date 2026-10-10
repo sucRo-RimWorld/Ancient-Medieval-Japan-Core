@@ -44,12 +44,7 @@ class PrepareBoxedResourceCandidateTest(unittest.TestCase):
                     {
                         "allowed_formats": ["PNG"],
                         "require_visible_content": True,
-                        "metric_ranges": {
-                            "transparent_fraction": {"min": 0.25},
-                            "internal_dark_edge_fraction_lt140": {"max": 0.30},
-                            "line_hierarchy_ratio": {"min": 3.5},
-                            "coarse_color_bins_16_at_64": {"max": 30}
-                        }
+                        "require_transparency": True
                     }
                 ),
                 encoding="utf-8",

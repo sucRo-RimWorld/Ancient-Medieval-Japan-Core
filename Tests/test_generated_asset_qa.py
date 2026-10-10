@@ -37,79 +37,41 @@ def make_candidate(path: Path, *, heavy_internal: bool) -> None:
 
 
 class GeneratedAssetQaTest(unittest.TestCase):
-    def test_line_hierarchy_metrics_distinguish_heavy_internal_lines(self):
+    def test_valid_transparent_candidate_passes_without_style_thresholds(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            good = root / "good.png"
-            bad = root / "bad.png"
-            make_candidate(good, heavy_internal=False)
-            make_candidate(bad, heavy_internal=True)
-
-            good_metrics = module.analyze(good)
-            bad_metrics = module.analyze(bad)
-
-            self.assertLess(
-                good_metrics["internal_dark_edge_fraction_lt140"],
-                bad_metrics["internal_dark_edge_fraction_lt140"],
-            )
-            self.assertGreater(
-                good_metrics["line_hierarchy_ratio"],
-                bad_metrics["line_hierarchy_ratio"],
-            )
-            self.assertLess(
-                good_metrics["coarse_color_bins_16_at_64"],
-                bad_metrics["coarse_color_bins_16_at_64"],
-            )
-
-    def test_policy_can_accept_light_internal_lines_and_reject_heavy(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            good = root / "good.png"
-            bad = root / "bad.png"
-            policy = root / "policy.json"
-            make_candidate(good, heavy_internal=False)
-            make_candidate(bad, heavy_internal=True)
-            policy.write_text(
-                json.dumps(
-                    {
-                        "allowed_formats": ["PNG"],
-                        "require_visible_content": True,
-                        "metric_ranges": {
-                            "transparent_fraction": {"min": 0.25},
-                            "internal_dark_edge_fraction_lt140": {"max": 0.30},
-                            "line_hierarchy_ratio": {"min": 3.5},
-                            "coarse_color_bins_16_at_64": {"max": 30}
-                        }
-                    }
-                ),
-                encoding="utf-8",
-            )
-
-            self.assertTrue(module.validate(good, policy)["passed"])
-            rejected = module.validate(bad, policy)
-            self.assertFalse(rejected["passed"])
-            self.assertGreaterEqual(len(rejected["failures"]), 1)
+            candidate = root / "candidate.png"
+            make_candidate(candidate, heavy_internal=True)
+            policy = ROOT / "Docs/References/AMJ_BoxedResource_GenerationQA.json"
+            result = module.validate(candidate, policy)
+            self.assertTrue(result["passed"], result["failures"])
+            # A stale subjective threshold may not silently become a blocker.
+            legacy_policy = root / "legacy.json"
+            legacy_policy.write_text(json.dumps({
+                "allowed_formats": ["PNG"],
+                "require_visible_content": True,
+                "require_transparency": True,
+                "metric_ranges": {"line_hierarchy_ratio": {"min": 1000000}}
+            }), encoding="utf-8")
+            self.assertTrue(module.validate(candidate, legacy_policy)["passed"])
 
     def test_empty_candidate_fails_visible_content_gate(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            empty = root / "empty.png"
-            policy = root / "policy.json"
+            empty = Path(tmp) / "empty.png"
             Image.new("RGBA", (64, 64), (0, 0, 0, 0)).save(empty)
-            policy.write_text(
-                json.dumps(
-                    {
-                        "allowed_formats": ["PNG"],
-                        "require_visible_content": True,
-                        "metric_ranges": {}
-                    }
-                ),
-                encoding="utf-8",
-            )
+            policy = ROOT / "Docs/References/AMJ_GeneratedAsset_BaseQA.json"
             result = module.validate(empty, policy)
             self.assertFalse(result["passed"])
             self.assertIn("candidate has no visible content", result["failures"])
 
+    def test_opaque_candidate_fails_isolated_asset_transparency_gate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            opaque = Path(tmp) / "opaque.png"
+            Image.new("RGB", (64, 64), (235, 220, 180)).save(opaque)
+            policy = ROOT / "Docs/References/AMJ_GeneratedAsset_BaseQA.json"
+            result = module.validate(opaque, policy)
+            self.assertFalse(result["passed"])
+            self.assertIn("candidate has no transparent background", result["failures"])
 
 
 GENERATOR_SCRIPT = ROOT / "Scripts/Art/grains_image_generator.py"

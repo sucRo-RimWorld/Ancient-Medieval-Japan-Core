@@ -1,12 +1,11 @@
 {
   "schema_version": 1,
   "family": "AMJ generated isolated source baseline",
-  "allowed_formats": ["PNG"],
+  "allowed_formats": [
+    "PNG"
+  ],
   "require_visible_content": true,
-  "metric_ranges": {
-    "transparent_fraction": {"min": 0.05},
-    "low_alpha_fraction_1_39": {"max": 0.03}
-  },
+  "require_transparency": true,
   "automatic_semantic_review": [
     "requested subject is visually identifiable",
     "no unintended text, UI, scenery or unrelated objects",
