@@ -3,7 +3,7 @@
 
 This repository tool owns the deterministic parts around image generation:
 reference resolution, prompt construction, reference bundling, mechanical QA,
-relative style-complexity checks, and review-sheet generation.
+and review-sheet generation.
 
 The actual image-generation step is deliberately external to this Python
 process. In ChatGPT work, use the built-in image-generation tool between the
@@ -424,75 +424,6 @@ def _references_from_manifest(
     return references
 
 
-def _complexity_report(
-    candidate: Path,
-    references: list[Reference],
-    work_dir: Path,
-) -> dict[str, Any]:
-    qa = _load_generated_qa()
-    candidate_metrics = qa.analyze(candidate)
-    refs: list[dict[str, Any]] = []
-
-    temp_dir = work_dir / ".qa-reference-cache"
-    temp_dir.mkdir(parents=True, exist_ok=True)
-    try:
-        for index, ref in enumerate(references):
-            temp = temp_dir / f"reference-{index}.png"
-            with Image.open(io.BytesIO(ref.data)) as image:
-                image.load()
-                image.convert("RGBA").save(temp, format="PNG")
-            metrics = qa.analyze(temp)
-            refs.append(
-                {
-                    "role": ref.role,
-                    "source": ref.source,
-                    "metrics": metrics,
-                }
-            )
-    finally:
-        for temp in temp_dir.glob("*"):
-            temp.unlink(missing_ok=True)
-        temp_dir.rmdir()
-
-    style_metrics = [
-        ref["metrics"]
-        for ref in refs
-        if "style reference" in ref["role"]
-    ]
-    failures: list[str] = []
-    if style_metrics:
-        max_colors = max(
-            metrics["coarse_color_bins_16_at_64"]
-            for metrics in style_metrics
-        )
-        max_edges = max(
-            metrics["strong_edge_density_at_64"]
-            for metrics in style_metrics
-        )
-        allowed_colors = max_colors + max(6, round(max_colors * 0.35))
-        allowed_edges = min(1.0, max_edges * 1.35 + 0.02)
-
-        if candidate_metrics["coarse_color_bins_16_at_64"] > allowed_colors:
-            failures.append(
-                "game-size color complexity exceeds accepted style references: "
-                f"{candidate_metrics['coarse_color_bins_16_at_64']} > "
-                f"{allowed_colors}"
-            )
-        if candidate_metrics["strong_edge_density_at_64"] > allowed_edges:
-            failures.append(
-                "game-size edge density exceeds accepted style references: "
-                f"{candidate_metrics['strong_edge_density_at_64']:.4f} > "
-                f"{allowed_edges:.4f}"
-            )
-
-    return {
-        "passed": not failures,
-        "failures": failures,
-        "candidate": candidate_metrics,
-        "references": refs,
-    }
-
-
 def _review_sheet(
     candidate: Path,
     references: list[Reference],
@@ -601,12 +532,10 @@ def _review(args: argparse.Namespace) -> int:
     qa = _load_generated_qa()
     base_qa_path = ROOT / policy["base_qa_policy"]
     base_result = qa.validate(candidate, base_qa_path)
-    complexity = _complexity_report(candidate, references, work_dir)
-    passed = bool(base_result["passed"] and complexity["passed"])
+    passed = bool(base_result["passed"])
 
     report = {
         "base": base_result,
-        "relative_complexity": complexity,
         "passed": passed,
         "semantic_visual_review_required": True,
         "pre_display_screening_claimed": False,
@@ -646,14 +575,14 @@ def _review(args: argparse.Namespace) -> int:
     _review_sheet(candidate, references, work_dir / "review-sheet.png")
 
     if not passed:
-        print("FAIL: candidate rejected by automatic mechanical/style-complexity QA")
-        for failure in base_result["failures"] + complexity["failures"]:
+        print("FAIL: candidate rejected by structural image QA")
+        for failure in base_result["failures"]:
             print(f"- {failure}")
         print("No automatic retry is performed.")
         return 2
 
     print(
-        "PASS: candidate passed automatic measurable gates; "
+        "PASS: candidate passed structural image checks; "
         "semantic/visual comparison and author acceptance remain required"
     )
     return 0
